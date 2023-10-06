@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LearnedAI</string>
+    <string name="home">home</string>
+    <string name="bottom_bar_label_home">Home</string>
+    <string name="bottom_bar_label_search">Search</string>
+    <string name="bottom_bar_label_profile">Profile</string>
+</resources>
