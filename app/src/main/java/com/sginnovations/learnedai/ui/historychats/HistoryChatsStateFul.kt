@@ -87,7 +87,7 @@ fun StateLessHistoryChats(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
+                    .clickable { //TODO POINTER CLICABLE YOU CAN SEE THE HITBOX
                         onNavigateNewConversation()
                     }
             ) {

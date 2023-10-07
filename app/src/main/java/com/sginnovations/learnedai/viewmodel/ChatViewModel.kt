@@ -30,7 +30,7 @@ class ChatViewModel @Inject constructor(
     val isNewConversation = mutableStateOf(false)
 
     // Response of OPENAI API
-    private val openaiApiResponse = mutableStateOf<Message?>(null)
+    val openaiApiResponse = mutableStateOf<Message?>(null)
 
     val messages = mutableStateOf<List<MessageEntity>>(emptyList())
     val conversations = mutableStateOf<List<ConversationEntity>>(emptyList())
@@ -90,8 +90,6 @@ class ChatViewModel @Inject constructor(
                     timestamp = timestamp
                 )
             )
-
-            getAllMessages()
 
             openaiApiResponse.value = response.body()?.choices?.first()?.message
 

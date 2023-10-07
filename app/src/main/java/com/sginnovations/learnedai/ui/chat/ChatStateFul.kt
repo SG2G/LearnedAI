@@ -2,14 +2,7 @@
 
 package com.sginnovations.learnedai.ui.chat
 
-import android.util.Log
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,18 +24,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import com.sginnovations.learnedai.data.database.entities.MessageEntity
 import com.sginnovations.learnedai.data.database.util.Assistant
@@ -58,19 +50,18 @@ fun StateFulChat(
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
+    val chatMode = remember { mutableStateOf(false) }
     val messages = vmChat.messages
 
     LaunchedEffect(messages) {
         vmChat.setUpMessageHistory()
-        Log.d("yowchat", "StateFulChat: ${messages.value}")
-        while (true) {
-            listState.animateScrollToItem(index = messages.value.size - 1)
-        }
-
+        listState.animateScrollToItem(index = messages.value.size - 1) //TODO DELETEE
     }
 
     StateLessChat(
         messages = messages,
+
+        chatMode = chatMode,
 
         listState = listState
 
@@ -85,65 +76,150 @@ fun StateFulChat(
 fun StateLessChat(
     messages: MutableState<List<MessageEntity>>,
 
+    chatMode: MutableState<Boolean>,
+
     listState: LazyListState,
 
     onClick: (String) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-
     val text = remember { mutableStateOf("") }
+
+    var lastItemVisible by remember { mutableStateOf(false) }
+
+    var learnedPlaceHolder by remember { mutableStateOf(false) }
+    var userPlaceHolder by remember { mutableStateOf("") }
+
+    val lastIndex = messages.value.size - 1
+
+    LaunchedEffect(messages.value.size) {
+        listState.animateScrollToItem(messages.value.size - 1)
+        learnedPlaceHolder = false
+    }
+    LaunchedEffect(Unit) { //TODO TRY TO DELETE IT
+        while (true) {
+            listState.animateScrollToItem(messages.value.size - 1)
+        }
+    }
+
 
     Column(
         Modifier.fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .imePadding(),
             state = listState,
         ) {
             itemsIndexed(
                 items = messages.value,
-                itemContent = { _, message ->
-                    if (message.role == User.role) {
-                        Column {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Info,
-                                    contentDescription = "Info Icon"
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = User.name)
+                itemContent = { index, message ->
+                    if (index == lastIndex) {
+                        Box(
+                            Modifier.onGloballyPositioned {
+                                lastItemVisible =
+                                    listState.layoutInfo.visibleItemsInfo.any { it.index == lastIndex }
                             }
-                            Text(
-                                modifier = Modifier.padding(16.dp),
-                                text = message.content
-                            )
+                        ) {
+                            if (message.role == User.role) {
+                                // Last user msg
+                                Column {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Info,
+                                            contentDescription = "Info Icon"
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(text = User.name)
+                                    }
+                                    Text(
+                                        modifier = Modifier.padding(16.dp),
+                                        text = userPlaceHolder
+                                    )
+                                }
+                            } else {
+                                // Last AI message
+                                Column {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Info,
+                                            contentDescription = "Info Icon"
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(text = Assistant.name)
+                                    }
+                                    if (chatMode.value) {
+                                        // Animate the last message
+                                        if (learnedPlaceHolder) {
+                                            Text(
+                                                modifier = Modifier.padding(16.dp),
+                                                text = "Toy pensando"
+                                            ) // When i enter this is the last message
+                                        } else {
+                                            TypingTextAnimation(message.content)
+                                        }
+                                    } else {
+                                        // Message just enter the chat
+                                        Text(
+                                            modifier = Modifier.padding(16.dp),
+                                            text = message.content
+                                        )
+                                    }
+                                }
+                            }
                         }
                     } else {
-                        Column {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Info,
-                                    contentDescription = "Info Icon"
+                        if (message.role == User.role) {
+                            // Other user msg
+                            Column {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+                                        contentDescription = "Info Icon"
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(text = User.name)
+                                }
+                                Text(
+                                    modifier = Modifier.padding(16.dp),
+                                    text = message.content
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = Assistant.name)
                             }
-                            AnimatedText(message.content)
-//                            Text(
-//                                modifier = Modifier.padding(16.dp),
-//                                text = message.content
-//                            )
+                        } else {
+                            // Other AI msg
+                            Column {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+                                        contentDescription = "Info Icon"
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(text = Assistant.name)
+                                }
+                                Text(
+                                    modifier = Modifier.padding(16.dp),
+                                    text = message.content
+                                )
+                            }
                         }
                     }
                 }
             )
         }
+
         TextField(
             value = text.value,
             onValueChange = { text.value = it },
@@ -154,8 +230,13 @@ fun StateLessChat(
                 IconButton(onClick = {
                     scope.launch {
                         onClick(text.value)
+
+                        userPlaceHolder = text.value
+
                         text.value = ""
 
+                        learnedPlaceHolder = true
+                        chatMode.value = true
                     }
                 }) {
                     Icon(Icons.Default.Send, contentDescription = "Send")
@@ -165,13 +246,20 @@ fun StateLessChat(
     }
 }
 
-@Composable
-fun AnimatedText(text: String) {
-    val textLength by animateFloatAsState(
-        targetValue = text.length.toFloat(),
-        animationSpec = tween(2000, easing = LinearEasing), label = ""
-    )
 
-    Text(text = text.substring(0, textLength.toInt()))
+@Composable
+fun TypingTextAnimation(message: String) {
+    val typingState = remember { mutableStateOf("") }
+    LaunchedEffect(message) {
+        message.forEach { char ->
+            delay(1)
+            typingState.value += char
+        }
+    }
+    Text(
+        modifier = Modifier.padding(16.dp),
+        text = typingState.value
+    )
 }
+
 
