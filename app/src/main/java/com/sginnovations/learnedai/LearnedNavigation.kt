@@ -1,7 +1,10 @@
 package com.sginnovations.learnedai
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,10 +21,10 @@ import com.sginnovations.learnedai.ui.chat.StateFulChat
 import com.sginnovations.learnedai.ui.historychats.StateFulHistoryChats
 import com.sginnovations.learnedai.ui.navigation.Chat
 import com.sginnovations.learnedai.ui.navigation.NewConversation
-import com.sginnovations.learnedai.ui.navigation.bottombar.Home
+import com.sginnovations.learnedai.ui.navigation.bottombar.Camera
+import com.sginnovations.learnedai.ui.navigation.bottombar.Chats
 import com.sginnovations.learnedai.ui.navigation.bottombar.LearnedBottomBar
 import com.sginnovations.learnedai.ui.navigation.bottombar.Profile
-import com.sginnovations.learnedai.ui.navigation.bottombar.Search
 import com.sginnovations.learnedai.ui.navigation.topbar.LearnedTopBar
 import com.sginnovations.learnedai.ui.newconversation.NewConversationStateFul
 import com.sginnovations.learnedai.viewmodel.ChatViewModel
@@ -47,6 +50,7 @@ fun LearnedNavigation(
     val currentScreenTitle = currentScreen?.getName(context) ?: ""
 
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars,
         topBar = {
             LearnedTopBar(
                 currentScreenTitle = currentScreenTitle,
@@ -62,19 +66,20 @@ fun LearnedNavigation(
                 backStackEntry = backStackEntry
             )
         },
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Home.route,
+            startDestination = Camera.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             /**
              *  Bottom Bar Destinations
              */
-            composable(route = Home.route) {
-                Text(text = "Tamo en home")
+            composable(route = Camera.route) {
+                Text(text = "Tamo en Camera")
             }
-            composable(route = Search.route) {
+            composable(route = Chats.route) {
                 StateFulHistoryChats(
                     vmChat = vmChat,
 

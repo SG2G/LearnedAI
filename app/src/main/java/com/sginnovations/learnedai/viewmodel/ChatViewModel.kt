@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.learnedai.data.database.entities.ConversationEntity
 import com.sginnovations.learnedai.data.database.entities.MessageEntity
+import com.sginnovations.learnedai.data.database.util.Assistant
+import com.sginnovations.learnedai.data.database.util.User
 import com.sginnovations.learnedai.model.ChatCompletionRequest
 import com.sginnovations.learnedai.model.Message
 import com.sginnovations.learnedai.repository.ChatRepository
@@ -58,8 +60,9 @@ class ChatViewModel @Inject constructor(
     }
 
     suspend fun sendMessageToOpenaiApi(prompt: String) {
-        val userMessage = Message(role = "user", content = prompt)
+        val userMessage = Message(role = User.role, content = prompt)
 
+        // Create conversation if needed
         if (idConversation.intValue == 0) {
             idConversation.intValue = roomRepository.createConversation(
                 ConversationEntity(name = prompt, category = category.value)
@@ -85,7 +88,7 @@ class ChatViewModel @Inject constructor(
             roomRepository.insertMessage(
                 MessageEntity(
                     idConversation = idConversation.intValue,
-                    role = userMessage.role,
+                    role = User.role,
                     content = userMessage.content,
                     timestamp = timestamp
                 )
@@ -99,7 +102,7 @@ class ChatViewModel @Inject constructor(
                 roomRepository.insertMessage(
                     MessageEntity(
                         idConversation = idConversation.intValue,
-                        role = apiResponse.role,
+                        role = Assistant.role,
                         content = apiResponse.content,
                         timestamp = timestamp
                     )

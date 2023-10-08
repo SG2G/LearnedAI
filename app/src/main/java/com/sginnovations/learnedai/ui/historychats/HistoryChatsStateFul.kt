@@ -2,6 +2,7 @@ package com.sginnovations.learnedai.ui.historychats
 
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +27,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.sginnovations.learnedai.data.database.entities.ConversationEntity
 import com.sginnovations.learnedai.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
@@ -56,8 +63,10 @@ fun StateFulHistoryChats(
             onNavigateMessages()
         },
         onNavigateNewConversation = {
-            vmChat.idConversation.intValue = 0
-            vmChat.isNewConversation.value = true
+            scope.launch {
+                vmChat.idConversation.intValue = 0
+                vmChat.isNewConversation.value = true
+            }
             onNavigateNewConversation()
         }
     )
@@ -80,21 +89,35 @@ fun StateLessHistoryChats(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "Chats history")
+                Text(
+                    text = "Chats history", color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = TextStyle(
+                        fontSize = 22.sp
+                    ),
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
         item {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { //TODO POINTER CLICABLE YOU CAN SEE THE HITBOX
-                        onNavigateNewConversation()
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = {
+                                onNavigateNewConversation()
+                            }
+                        )
                     }
             ) {
                 OutlinedCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    colors = CardDefaults.outlinedCardColors(
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        containerColor = Color.Transparent
+                    )
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -118,17 +141,25 @@ fun StateLessHistoryChats(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable {
-                                Log.i(
-                                    "StateLessHistoryChats",
-                                    "idConversation: ${conversation.idConversation}"
+                            .pointerInput(Unit) {
+                                detectTapGestures(
+                                    onTap = {
+                                        Log.i(
+                                            "StateLessHistoryChats",
+                                            "idConversation: ${conversation.idConversation}"
+                                        )
+                                        onNavigateMessages(conversation.idConversation ?: 0)
+                                    }
                                 )
-                                onNavigateMessages(conversation.idConversation ?: 0)
-                            }
+                            },
+                        colors = CardDefaults.elevatedCardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                        )
                     ) {
                         Text(
                             modifier = Modifier.padding(16.dp),
-                            text = conversation.name
+                            text = conversation.name,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                 }

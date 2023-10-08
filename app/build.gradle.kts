@@ -53,7 +53,6 @@ android {
 
 dependencies {
 
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     // Retrofit 2

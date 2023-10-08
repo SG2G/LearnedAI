@@ -12,6 +12,8 @@ class Constants {
         const val ROLE_ASSISTANT = "assistant"
         // Categories
         const val CATEGORY_MATH = "math"
+        // Chat
+        const val AI_NAME = "Asked"
 
     }
 }
