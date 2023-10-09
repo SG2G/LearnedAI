@@ -15,11 +15,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.sginnovations.learnedai.viewmodel.CameraViewModel
 import com.sginnovations.learnedai.viewmodel.ChatViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NewConversationStateFul(
     vmChat: ChatViewModel,
+    vmCamera: CameraViewModel,
 
     onNavigateChat: (Int) -> Unit,
 ) {
@@ -37,6 +40,10 @@ fun NewConversationStateFul(
     val idConversation = vmChat.idConversation.intValue
     val isNewConversation = vmChat.isNewConversation.value
     val isLoading = remember { mutableStateOf(false) }
+
+    LaunchedEffect(vmCamera.imageText.value) {
+        text.value = vmCamera.imageText.value
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Button(onClick = {

@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sginnovations.learnedai"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -53,6 +53,24 @@ android {
 
 dependencies {
 
+    /// Text Recognition ///
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")
+    implementation("com.google.mlkit:vision-common:17.3.0")
+    /// Cropify ///
+    implementation("com.github.moyuruaizawa:cropify:0.3.1")
+
+    /// Camera X ///
+    val cameraxVersion = "1.3.0-rc01"
+
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
+
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-extensions:$cameraxVersion")
+    /// Permissions ///
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     // Retrofit 2

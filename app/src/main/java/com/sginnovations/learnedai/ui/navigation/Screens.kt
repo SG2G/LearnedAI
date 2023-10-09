@@ -16,3 +16,7 @@ object NewConversation : Screens {
     override val route = "NewConversation"
     override fun getName(context: Context) = "New Chat"
 }
+object Crop : Screens {
+    override val route = "Crop"
+    override fun getName(context: Context) = "Crop"
+}
