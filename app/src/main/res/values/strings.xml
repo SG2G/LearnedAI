@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">LearnedAI</string>
     <string name="home">home</string>
+    <string name="web_client_id">812406104224-rjc9n2u51qvlgl24gmkninoc4mov0d5p.apps.googleusercontent.com</string>
+
     <string name="bottom_bar_label_camera">Camera</string>
     <string name="bottom_bar_label_search">Search</string>
     <string name="bottom_bar_label_profile">Profile</string>
+
+
 </resources>

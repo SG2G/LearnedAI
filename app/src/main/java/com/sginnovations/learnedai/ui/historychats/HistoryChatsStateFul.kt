@@ -64,12 +64,15 @@ fun StateFulHistoryChats(
         },
         onNavigateNewConversation = {
             scope.launch {
-                vmChat.idConversation.intValue = 0
-                vmChat.isNewConversation.value = true
+                setUpNewConversation(vmChat)
             }
             onNavigateNewConversation()
         }
     )
+}
+private fun setUpNewConversation(vmChat: ChatViewModel) { //TODO 1
+    vmChat.idConversation.intValue = 0
+    vmChat.isNewConversation.value = true
 }
 
 @Composable

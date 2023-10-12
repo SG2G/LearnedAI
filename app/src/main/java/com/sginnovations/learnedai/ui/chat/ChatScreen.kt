@@ -116,8 +116,6 @@ fun StateLessChat(
         }
     }
 
-
-
     Column(
         Modifier.fillMaxSize()
     ) {
@@ -149,7 +147,6 @@ fun StateLessChat(
                                         TypingTextAnimation(
                                             message.content,
                                             chatMsgPadding,
-                                            lastItemVisible,
                                         ) { chatAnimation.value = false }
                                     }
                                 } else {
@@ -256,7 +253,6 @@ fun StateLessChat(
 fun TypingTextAnimation(
     message: String,
     msgPadding: PaddingValues,
-    lastItemVisible: Boolean,
 
     onStopTextAnimation: () -> Unit,
 ) {

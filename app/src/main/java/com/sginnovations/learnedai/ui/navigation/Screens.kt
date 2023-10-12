@@ -20,3 +20,8 @@ object Crop : Screens {
     override val route = "Crop"
     override fun getName(context: Context) = "Crop"
 }
+
+object SingIn : Screens {
+    override val route = "SingIn"
+    override fun getName(context: Context) = "SingIn"
+}
