@@ -1,4 +1,4 @@
-package com.sginnovations.learnedai
+package com.sginnovations.learnedai.ui.sign_in
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
@@ -6,27 +6,32 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sginnovations.learnedai.R
 import com.sginnovations.learnedai.presentation.sign_in.GoogleAuthUiClient
 import com.sginnovations.learnedai.presentation.sign_in.SignInState
-import com.sginnovations.learnedai.viewmodel.SignInViewModel
+import com.sginnovations.learnedai.ui.ui_components.sign_in.GoogleSignInButton
+import com.sginnovations.learnedai.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun LearnedAuth(
-    vmAuth: SignInViewModel,
+    vmAuth: AuthViewModel,
     state: SignInState,
 
     googleAuthUiClient: GoogleAuthUiClient,
@@ -104,12 +109,31 @@ fun LearnedAuthStateLess(
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-        Button(onClick = { onSignInClick() }
-        ) {
-            Text(text = "Sign in")
-        }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        /**
+         * Logo Image
+         */
+
+        Image(
+            painter = painterResource(id = R.drawable.person_fill1_wght400_grad0_opsz24),
+            contentDescription = "Icon Image",
+            modifier = Modifier
+                .size(48.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        /**
+         * Component
+         * Google Sign in Button
+         */
+        GoogleSignInButton(
+            onClick = { onSignInClick() }
+        )
     }
 }

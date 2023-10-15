@@ -1,6 +1,11 @@
 package com.sginnovations.learnedai
 
-import android.util.Log
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
@@ -19,58 +24,61 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.auth.api.identity.Identity
 import com.sginnovations.learnedai.presentation.sign_in.GoogleAuthUiClient
 import com.sginnovations.learnedai.ui.camera.CameraStateFul
-import com.sginnovations.learnedai.ui.camera.crop.CropStateFul
-import com.sginnovations.learnedai.ui.chat.StateFulChat
+import com.sginnovations.learnedai.ui.chat.ChatStateFul
+import com.sginnovations.learnedai.ui.crop.CropStateFul
 import com.sginnovations.learnedai.ui.historychats.StateFulHistoryChats
-import com.sginnovations.learnedai.ui.navigation.Chat
-import com.sginnovations.learnedai.ui.navigation.Crop
-import com.sginnovations.learnedai.ui.navigation.NewConversation
-import com.sginnovations.learnedai.ui.navigation.SingIn
-import com.sginnovations.learnedai.ui.navigation.bottombar.Camera
-import com.sginnovations.learnedai.ui.navigation.bottombar.Chats
-import com.sginnovations.learnedai.ui.navigation.bottombar.LearnedBottomBar
-import com.sginnovations.learnedai.ui.navigation.bottombar.Profile
-import com.sginnovations.learnedai.ui.navigation.topbar.LearnedTopBar
+import com.sginnovations.learnedai.ui.navigation_bars.Auth
+import com.sginnovations.learnedai.ui.navigation_bars.Chat
+import com.sginnovations.learnedai.ui.navigation_bars.Crop
+import com.sginnovations.learnedai.ui.navigation_bars.NewConversation
+import com.sginnovations.learnedai.ui.navigation_bars.Points
+import com.sginnovations.learnedai.ui.navigation_bars.bottombar.Camera
+import com.sginnovations.learnedai.ui.navigation_bars.bottombar.Chats
+import com.sginnovations.learnedai.ui.navigation_bars.bottombar.LearnedBottomBar
+import com.sginnovations.learnedai.ui.navigation_bars.bottombar.Profile
+import com.sginnovations.learnedai.ui.navigation_bars.topbar.LearnedTopBar
 import com.sginnovations.learnedai.ui.newconversation.NewConversationStateFul
+import com.sginnovations.learnedai.ui.points.PointsStateFul
 import com.sginnovations.learnedai.ui.profile.StateFulProfile
+import com.sginnovations.learnedai.ui.sign_in.LearnedAuth
+import com.sginnovations.learnedai.viewmodel.AdsViewModel
+import com.sginnovations.learnedai.viewmodel.AuthViewModel
 import com.sginnovations.learnedai.viewmodel.CameraViewModel
 import com.sginnovations.learnedai.viewmodel.ChatViewModel
-import com.sginnovations.learnedai.viewmodel.SignInViewModel
+import com.sginnovations.learnedai.viewmodel.TokenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearnedNavigation(
+    googleAuthUiClient: GoogleAuthUiClient,
+
     vmChat: ChatViewModel = hiltViewModel(),
     vmCamera: CameraViewModel = hiltViewModel(),
-    vmAuth: SignInViewModel = hiltViewModel(),
-
+    vmAuth: AuthViewModel = hiltViewModel(),
+    vmTokens: TokenViewModel = hiltViewModel(),
+    vmAds: AdsViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
     val context = LocalContext.current
     val state by vmAuth.state.collectAsStateWithLifecycle()
 
-    val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = context,
-            oneTapClient = Identity.getSignInClient(context)
-        )
-    }
-    fun navigateUserLogged(){
+    //TODO NAVIGATOR CLASS
+    fun navigateUserLogged() {
         navController.popBackStack(navController.graph.startDestinationId, true)
         navController.navigate(route = Camera.route)
     }
 
-    fun navigateUserNotLogged(){
+    fun navigateUserNotLogged() {
         navController.popBackStack(Profile.route, true)
-        navController.navigate(route = "sing_in")
+        navController.navigate(route = Auth.route)
 
     }
+
     LaunchedEffect(Unit) {
-        if(googleAuthUiClient.getSignedInUser() != null) {
+        if (googleAuthUiClient.getSignedInUser() != null) {
             navigateUserLogged()
         }
     }
@@ -80,19 +88,22 @@ fun LearnedNavigation(
     // Get the name of the current screen
     val currentScreen =
         when (navController.currentBackStackEntryAsState().value?.destination?.route) {
-            NewConversation.route -> NewConversation
-            Chat.route -> Chat
+            Auth.getName(context) -> Auth
+            Chat.getName(context) -> Chat
+            Points.getName(context) -> Points
             else -> null
         }
     val currentScreenTitle = currentScreen?.getName(context) ?: ""
 
-     Scaffold(
+    Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
         topBar = {
             LearnedTopBar(
+                vmTokens = vmTokens,
                 currentScreenTitle = currentScreenTitle,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                onNavigatePoints = { navController.navigate(Points.route) },
+                navigateUp = { navController.navigateUp() },
             )
         },
 
@@ -108,10 +119,10 @@ fun LearnedNavigation(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = SingIn.route,
+            startDestination = Auth.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = SingIn.route) {
+            composable(route = Auth.route) {
                 LearnedAuth(
                     vmAuth = vmAuth,
                     state = state,
@@ -121,17 +132,26 @@ fun LearnedNavigation(
                     navigateUserLogged()
                 }
             }
+
             /**
              *  Bottom Bar Destinations
              */
-            composable(route = Camera.route) {
+            composable(
+                route = Camera.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
                 CameraStateFul(
                     vmCamera = vmCamera,
 
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
             }
-            composable(route = Chats.route) {
+            composable(
+                route = Chats.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
                 StateFulHistoryChats(
                     vmChat = vmChat,
 
@@ -141,10 +161,13 @@ fun LearnedNavigation(
                     }
                 )
             }
-            composable(route = Profile.route) {
+            composable(
+                route = Profile.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
                 StateFulProfile(
-                    vmAuth = vmAuth,
-                    state = state,
+                    vmTokens = vmTokens,
 
                     googleAuthUiClient = googleAuthUiClient
 
@@ -153,7 +176,7 @@ fun LearnedNavigation(
                 }
             }
             /**
-             * Crop
+             * Camera Crop
              */
             composable(route = Crop.route) {
                 CropStateFul(
@@ -184,9 +207,40 @@ fun LearnedNavigation(
             /**
              * Chat
              */
-            composable(route = Chat.route) {
-                StateFulChat(
-                    vmChat = vmChat
+            composable(
+                route = Chat.route,
+                enterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearEasing
+                        )
+                    )
+                },
+                exitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearEasing
+                        )
+                    )
+                },
+            ) {
+                ChatStateFul(
+                    vmChat = vmChat,
+
+                    googleAuthUiClient = googleAuthUiClient
+                )
+            }
+            /**
+             * Get more Points
+             */
+            composable(route = Points.route) {
+                PointsStateFul(
+                    vmTokens = vmTokens,
+                    vmAds = vmAds,
                 )
             }
         }

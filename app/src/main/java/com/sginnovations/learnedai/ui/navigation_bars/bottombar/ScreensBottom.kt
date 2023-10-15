@@ -1,19 +1,14 @@
-package com.sginnovations.learnedai.ui.navigation.bottombar
+package com.sginnovations.learnedai.ui.navigation_bars.bottombar
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.PersonOutline
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import com.sginnovations.learnedai.R
 
 interface BottomBarDestinations {

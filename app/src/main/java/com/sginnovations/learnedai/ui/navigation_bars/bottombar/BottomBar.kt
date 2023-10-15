@@ -1,12 +1,10 @@
-package com.sginnovations.learnedai.ui.navigation.bottombar
+package com.sginnovations.learnedai.ui.navigation_bars.bottombar
 
 import android.util.Log
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -30,11 +28,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.sginnovations.learnedai.R
 
 @Composable
 fun LearnedBottomBar(
@@ -47,7 +43,7 @@ fun LearnedBottomBar(
 
     if (!canNavigateBack) {
         Log.i("LearnedBottom", "LearnedBottomBar: ${currentScreenTitle.toString()}")
-        if (currentScreenTitle != "sign_in") {
+        if (currentScreenTitle != "SingIn") {
             val items = listOf(Camera, Chats, Profile)
             NavigationBar(
                 modifier = Modifier.height(64.dp),

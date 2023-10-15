@@ -1,23 +1,21 @@
 package com.sginnovations.learnedai.ui.profile
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import com.sginnovations.learnedai.presentation.sign_in.GoogleAuthUiClient
-import com.sginnovations.learnedai.presentation.sign_in.SignInState
-import com.sginnovations.learnedai.viewmodel.SignInViewModel
-import kotlinx.coroutines.delay
+import com.sginnovations.learnedai.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "StateFulProfile"
+
 @Composable
 fun StateFulProfile(
-    vmAuth: SignInViewModel,
-    state: SignInState,
+    vmTokens: TokenViewModel,
 
     googleAuthUiClient: GoogleAuthUiClient,
 
@@ -26,6 +24,7 @@ fun StateFulProfile(
     val scope = rememberCoroutineScope()
 
     StateLessProfile(
+        vmTokens = vmTokens,
 
         onSignOut = {
             scope.launch {
@@ -38,12 +37,27 @@ fun StateFulProfile(
 
 @Composable
 fun StateLessProfile(
+    vmTokens: TokenViewModel,
+
     onSignOut: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
+    val tokens by vmTokens.tokens.collectAsState()
+
     Column {
-        Button(onClick = { onSignOut() }
+        Text(text = "Tokens: ${tokens}")
+        Button(onClick = {
+            scope.launch {
+                vmTokens.oneLessToken()
+            }
+        }
         ) {
-            Text(text = "Sing out")
+            Text(text = "Rest 1")
+        }
+        
+        Button(onClick = { onSignOut() }) {
+            Text(text = "Sign Out")
         }
     }
 }

@@ -54,6 +54,8 @@ android {
 
 dependencies {
 
+    /// admob ///
+    implementation("com.google.android.gms:play-services-ads:22.4.0")
     /// Coil ///
     implementation("io.coil-kt:coil-compose:2.2.2")
     // Import the BoM for the Firebase platform
@@ -70,6 +72,7 @@ dependencies {
     /// Cropify ///
     implementation("com.github.moyuruaizawa:cropify:0.3.1")
     implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
 
     /// Camera X ///
     val cameraxVersion = "1.3.0-rc02"

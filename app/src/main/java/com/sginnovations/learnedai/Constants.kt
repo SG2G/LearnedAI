@@ -14,6 +14,12 @@ class Constants {
         const val CATEGORY_MATH = "math"
         // Chat
         const val AI_NAME = "Asked"
+        // Tokens
+        const val TOKENS_NAME = "tokens"
+        const val USERS_NAME = "users"
+        // Chat image
+        const val DEFAULT_PROFILE_URL = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+        const val ASSISTANT_PROFILE_URL = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
 
     }
 }

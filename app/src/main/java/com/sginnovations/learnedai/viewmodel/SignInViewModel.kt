@@ -1,6 +1,9 @@
 package com.sginnovations.learnedai.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.sginnovations.learnedai.presentation.sign_in.GoogleAuthUiClient
 import com.sginnovations.learnedai.presentation.sign_in.SignInResult
 import com.sginnovations.learnedai.presentation.sign_in.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,10 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-@HiltViewModel
-class SignInViewModel @Inject constructor(
+private const val TAG = "SignInViewModel"
 
-):ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor():ViewModel() {
 
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
@@ -23,7 +26,6 @@ class SignInViewModel @Inject constructor(
             signInError = result.errorMessage
         ) }
     }
-
     fun resetState() {
         _state.update { SignInState() }
     }

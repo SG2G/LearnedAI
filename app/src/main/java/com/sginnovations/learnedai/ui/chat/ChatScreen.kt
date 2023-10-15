@@ -2,28 +2,27 @@
 
 package com.sginnovations.learnedai.ui.chat
 
-import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,23 +42,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.learnedai.Constants.Companion.AI_NAME
+import com.sginnovations.learnedai.Constants.Companion.DEFAULT_PROFILE_URL
 import com.sginnovations.learnedai.data.database.entities.MessageEntity
 import com.sginnovations.learnedai.data.database.util.Assistant
 import com.sginnovations.learnedai.data.database.util.User
-import com.sginnovations.learnedai.ui.components.chat.IconUserMsg
+import com.sginnovations.learnedai.presentation.sign_in.GoogleAuthUiClient
+import com.sginnovations.learnedai.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.learnedai.ui.ui_components.chat.IconUserMsg
+import com.sginnovations.learnedai.ui.ui_components.chat.TypingTextAnimation
+import com.sginnovations.learnedai.ui.ui_components.points.TokenIcon
 import com.sginnovations.learnedai.viewmodel.ChatViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+private const val TAG = "Chat"
+
 @Composable
-fun StateFulChat(
+fun ChatStateFul(
     vmChat: ChatViewModel,
+
+    googleAuthUiClient: GoogleAuthUiClient,
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -67,19 +74,24 @@ fun StateFulChat(
     val chatAnimation = remember { mutableStateOf(false) }
     val messages = vmChat.messages
 
+    val userName = googleAuthUiClient.getSignedInUser()?.userName
+    val userProfileUrl = googleAuthUiClient.getSignedInUser()?.profilePictureUrl
+
     LaunchedEffect(messages) {
         vmChat.setUpMessageHistory()
         listState.scrollToItem(messages.value.size - 1)
     }
 
-    StateLessChat(
+
+    ChatStateLess(
         messages = messages,
-
         chatAnimation = chatAnimation,
+        listState = listState,
 
-        listState = listState
+        userName = userName,
+        userProfileUrl = userProfileUrl,
 
-    ) { prompt ->
+        ) { prompt ->
         scope.launch {
             vmChat.sendMessageToOpenaiApi(prompt)
         }
@@ -87,12 +99,13 @@ fun StateFulChat(
 }
 
 @Composable
-fun StateLessChat(
+fun ChatStateLess(
     messages: MutableState<List<MessageEntity>>,
-
     chatAnimation: MutableState<Boolean>,
-
     listState: LazyListState,
+
+    userName: String?,
+    userProfileUrl: String?,
 
     onClick: (String) -> Unit,
 ) {
@@ -101,23 +114,35 @@ fun StateLessChat(
 
     var lastItemVisible by remember { mutableStateOf(false) }
 
-    var learnedPlaceHolder by remember { mutableStateOf(false) }
+    var chatPlaceHolder by remember { mutableStateOf(false) }
     var userPlaceHolder by remember { mutableStateOf("") }
+    var assistantPlaceHolder = "Thinking..."
 
     val lastIndex = messages.value.size - 1
 
     val chatMsgPadding = PaddingValues(start = 32.dp, top = 8.dp, end = 8.dp, bottom = 16.dp)
-    val chatTitleColor = MaterialTheme.colorScheme.onSurfaceVariant
 
     LaunchedEffect(messages.value.size) {
-        learnedPlaceHolder = false
+        chatPlaceHolder = false
         while (chatAnimation.value) {
             listState.animateScrollToItem(messages.value.size - 1)
         }
     }
 
+    fun sendButton(text: MutableState<String>) {
+        onClick(text.value)
+
+        userPlaceHolder = text.value
+        chatAnimation.value = true
+        chatPlaceHolder = true
+
+        text.value = ""
+    }
+
     Column(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -133,17 +158,19 @@ fun StateLessChat(
                     Box(
                         Modifier.onGloballyPositioned {
                             lastItemVisible =
-                                listState.layoutInfo.visibleItemsInfo.any { it.index == lastIndex }
+                                listState.layoutInfo.visibleItemsInfo.any {
+                                    it.index == lastIndex
+                                }
                         }
                     ) {
                         if (message.role == Assistant.role) {
                             // Last AI message
                             Column {
-                                IconUserMsg(AI_NAME, chatTitleColor)
+                                IconAssistantMsg(AI_NAME)
 
                                 if (chatAnimation.value) {
                                     // Animate the last message
-                                    if (!learnedPlaceHolder) {
+                                    if (!chatPlaceHolder) {
                                         TypingTextAnimation(
                                             message.content,
                                             chatMsgPadding,
@@ -163,7 +190,14 @@ fun StateLessChat(
                     if (message.role == User.role) {
                         // Other user msg
                         Column {
-                            IconUserMsg(message.role, chatTitleColor)
+                            if (userName != null) {
+                                if (userProfileUrl != null) {
+                                    IconUserMsg(userName, userProfileUrl)
+                                }
+                            } else {
+                                IconUserMsg(User.role, DEFAULT_PROFILE_URL)
+                            }
+
                             Text(
                                 modifier = Modifier.padding(chatMsgPadding),
                                 text = message.content
@@ -172,7 +206,7 @@ fun StateLessChat(
                     } else {
                         // Other AI msg
                         Column {
-                            IconUserMsg(AI_NAME, chatTitleColor)
+                            IconAssistantMsg(AI_NAME)
 
                             Text(
                                 modifier = Modifier.padding(chatMsgPadding),
@@ -183,9 +217,15 @@ fun StateLessChat(
                 }
             }
             item {
-                if (learnedPlaceHolder) {
+                if (chatPlaceHolder) {
                     Column {
-                        IconUserMsg(User.role, chatTitleColor)
+                        if (userName != null) {
+                            if (userProfileUrl != null) {
+                                IconUserMsg(userName, userProfileUrl)
+                            }
+                        } else {
+                            IconUserMsg(User.role, DEFAULT_PROFILE_URL)
+                        }
 
                         Text(
                             modifier = Modifier.padding(chatMsgPadding),
@@ -193,17 +233,30 @@ fun StateLessChat(
                         )
                     }
                     Column {
-                        IconUserMsg(AI_NAME, chatTitleColor)
+                        IconAssistantMsg(AI_NAME)
 
                         Text(
                             modifier = Modifier.padding(chatMsgPadding),
-                            text = "Tamo procesando tu solicitud rey"
+                            text = assistantPlaceHolder
                         )
                     }
                 }
             }
         }
 
+        /**
+         * TextField
+         */
+        Row(
+            modifier = Modifier
+                .scale(0.8f)
+                .padding(start = 16.dp)
+        ) {
+            Text(text = "-1")
+            TokenIcon()
+            Spacer(modifier = Modifier.width(2.dp))
+            Text(text = "message")
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -229,11 +282,7 @@ fun StateLessChat(
                 onClick = {
                     scope.launch {
                         if (text.value.isNotEmpty()) {
-                            onClick(text.value)
-                            userPlaceHolder = text.value
-                            text.value = ""
-                            chatAnimation.value = true
-                            learnedPlaceHolder = true
+                            sendButton(text)
                         }
                     }
                 },
@@ -242,52 +291,10 @@ fun StateLessChat(
                 Icon(
                     Icons.Default.Send,
                     contentDescription = "Send",
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
             }
         }
     }
 }
-
-@Composable
-fun TypingTextAnimation(
-    message: String,
-    msgPadding: PaddingValues,
-
-    onStopTextAnimation: () -> Unit,
-) {
-    val typingState = remember { mutableStateOf("") }
-
-    val vibrator = LocalContext.current.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-    LaunchedEffect(message) {
-        var counter = 0
-        message.forEach { char ->
-            if (counter % 10 == 0) {
-                delay(1)
-            }
-            typingState.value += char
-
-            // Vibration
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // For API 26 and higher
-                val effect =
-                    VibrationEffect.createOneShot(1, 5)
-                vibrator.vibrate(effect)
-            }
-
-            counter++
-        }
-        onStopTextAnimation()
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(msgPadding)
-    ) {
-        Text(text = typingState.value)
-        Icon(Icons.Default.Info, contentDescription = null)
-    }
-}
-
 

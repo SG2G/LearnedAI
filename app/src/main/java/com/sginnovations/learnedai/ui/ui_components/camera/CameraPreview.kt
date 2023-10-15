@@ -1,13 +1,9 @@
-package com.sginnovations.learnedai.ui.components.camera
+package com.sginnovations.learnedai.ui.ui_components.camera
 
 import android.util.Size
-import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

@@ -1,4 +1,4 @@
-package com.sginnovations.learnedai.ui.navigation
+package com.sginnovations.learnedai.ui.navigation_bars
 
 import android.content.Context
 
@@ -21,7 +21,11 @@ object Crop : Screens {
     override fun getName(context: Context) = "Crop"
 }
 
-object SingIn : Screens {
-    override val route = "SingIn"
-    override fun getName(context: Context) = "SingIn"
+object Auth : Screens {
+    override val route = "Auth"
+    override fun getName(context: Context) = "Auth"
+}
+object Points : Screens {
+    override val route = "Points"
+    override fun getName(context: Context) = "Points"
 }
