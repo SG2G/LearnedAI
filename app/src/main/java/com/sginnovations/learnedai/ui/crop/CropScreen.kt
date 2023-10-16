@@ -57,7 +57,6 @@ fun CropStateLess(
 
     navController: NavController,
 ) {
-
     val cropifyOptions = CropifyOption(
         backgroundColor = MaterialTheme.colorScheme.background,
         gridColor = Color.Transparent,
@@ -69,8 +68,7 @@ fun CropStateLess(
 
 
     croppedImage?.let {
-        //TextPreviewDialog(vmCamera = vmCamera, onDismissRequest = { croppedImage = null })
-        setUpNewConversation(vmChat)
+        vmChat.setUpNewConversation()
 
         vmCamera.getTextFromImage(it)
 
@@ -87,7 +85,7 @@ fun CropStateLess(
         modifier = Modifier
             .fillMaxSize()
     )
-    Column {
+
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -114,17 +112,12 @@ fun CropStateLess(
                 Text(text = "Crop")
             }
         }
-    }
-}
 
-private fun setUpNewConversation(vmChat: ChatViewModel) {
-    vmChat.idConversation.intValue = 0
-    vmChat.isNewConversation.value = true
 }
 
 @Composable
 fun TextPreviewDialog(vmCamera: CameraViewModel, onDismissRequest: () -> Unit) {
-    Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest) { //TODO TRANSLATE
         Text(text = vmCamera.imageText.value)
     }
 }

@@ -30,14 +30,14 @@ import com.sginnovations.learnedai.ui.chat.ChatStateFul
 import com.sginnovations.learnedai.ui.crop.CropStateFul
 import com.sginnovations.learnedai.ui.historychats.StateFulHistoryChats
 import com.sginnovations.learnedai.ui.navigation_bars.Auth
+import com.sginnovations.learnedai.ui.navigation_bars.Camera
 import com.sginnovations.learnedai.ui.navigation_bars.Chat
+import com.sginnovations.learnedai.ui.navigation_bars.ChatsHistory
 import com.sginnovations.learnedai.ui.navigation_bars.Crop
 import com.sginnovations.learnedai.ui.navigation_bars.NewConversation
 import com.sginnovations.learnedai.ui.navigation_bars.Points
-import com.sginnovations.learnedai.ui.navigation_bars.bottombar.Camera
-import com.sginnovations.learnedai.ui.navigation_bars.bottombar.Chats
+import com.sginnovations.learnedai.ui.navigation_bars.Profile
 import com.sginnovations.learnedai.ui.navigation_bars.bottombar.LearnedBottomBar
-import com.sginnovations.learnedai.ui.navigation_bars.bottombar.Profile
 import com.sginnovations.learnedai.ui.navigation_bars.topbar.LearnedTopBar
 import com.sginnovations.learnedai.ui.newconversation.NewConversationStateFul
 import com.sginnovations.learnedai.ui.points.PointsStateFul
@@ -57,7 +57,7 @@ fun LearnedNavigation(
     vmChat: ChatViewModel = hiltViewModel(),
     vmCamera: CameraViewModel = hiltViewModel(),
     vmAuth: AuthViewModel = hiltViewModel(),
-    vmTokens: TokenViewModel = hiltViewModel(),
+    vmToken: TokenViewModel = hiltViewModel(),
     vmAds: AdsViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
@@ -81,6 +81,8 @@ fun LearnedNavigation(
         if (googleAuthUiClient.getSignedInUser() != null) {
             navigateUserLogged()
         }
+        // Load and ad
+        vmAds.loadInterstitialAd(context) //TODO SET MSG IF AD NOT LOADED
     }
 
     // Get current back stack entry
@@ -89,19 +91,25 @@ fun LearnedNavigation(
     val currentScreen =
         when (navController.currentBackStackEntryAsState().value?.destination?.route) {
             Auth.getName(context) -> Auth
+
+            Camera.getName(context) -> Camera
+            ChatsHistory.getName(context) -> ChatsHistory
+            Profile.getName(context) -> Profile
+
             Chat.getName(context) -> Chat
             Points.getName(context) -> Points
             else -> null
         }
-    val currentScreenTitle = currentScreen?.getName(context) ?: ""
+    val currentScreenTitle = currentScreen?.route ?: ""
 
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
         topBar = {
             LearnedTopBar(
-                vmTokens = vmTokens,
+                vmTokens = vmToken,
                 currentScreenTitle = currentScreenTitle,
                 canNavigateBack = navController.previousBackStackEntry != null,
+
                 onNavigatePoints = { navController.navigate(Points.route) },
                 navigateUp = { navController.navigateUp() },
             )
@@ -148,7 +156,7 @@ fun LearnedNavigation(
                 )
             }
             composable(
-                route = Chats.route,
+                route = ChatsHistory.route,
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
@@ -167,7 +175,7 @@ fun LearnedNavigation(
                 exitTransition = { ExitTransition.None }
             ) {
                 StateFulProfile(
-                    vmTokens = vmTokens,
+                    vmToken = vmToken,
 
                     googleAuthUiClient = googleAuthUiClient
 
@@ -193,11 +201,12 @@ fun LearnedNavigation(
                 NewConversationStateFul(
                     vmChat = vmChat,
                     vmCamera = vmCamera,
+                    vmAds = vmAds,
 
                     onNavigateChat = {
                         navController.popBackStack(navController.graph.startDestinationId, true)
-                        navController.navigate(Chats.route) {
-                            popUpTo(Chats.route) { inclusive = true }
+                        navController.navigate(ChatsHistory.route) {
+                            popUpTo(ChatsHistory.route) { inclusive = true }
                             launchSingleTop = true
                         }
                         navController.navigate(Chat.route)
@@ -230,6 +239,7 @@ fun LearnedNavigation(
             ) {
                 ChatStateFul(
                     vmChat = vmChat,
+                    vmToken = vmToken,
 
                     googleAuthUiClient = googleAuthUiClient
                 )
@@ -239,7 +249,7 @@ fun LearnedNavigation(
              */
             composable(route = Points.route) {
                 PointsStateFul(
-                    vmTokens = vmTokens,
+                    vmToken = vmToken,
                     vmAds = vmAds,
                 )
             }

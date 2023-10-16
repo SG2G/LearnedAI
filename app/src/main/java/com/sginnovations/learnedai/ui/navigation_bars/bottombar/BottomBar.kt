@@ -31,6 +31,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import com.sginnovations.learnedai.ui.navigation_bars.Auth
+import com.sginnovations.learnedai.ui.navigation_bars.Camera
+import com.sginnovations.learnedai.ui.navigation_bars.ChatsHistory
+import com.sginnovations.learnedai.ui.navigation_bars.Profile
+import com.sginnovations.learnedai.ui.navigation_bars.ScreensDestinations
 
 @Composable
 fun LearnedBottomBar(
@@ -42,9 +47,10 @@ fun LearnedBottomBar(
     val currentRoute = remember { mutableStateOf(Camera.route) }
 
     if (!canNavigateBack) {
-        Log.i("LearnedBottom", "LearnedBottomBar: ${currentScreenTitle.toString()}")
-        if (currentScreenTitle != "SingIn") {
-            val items = listOf(Camera, Chats, Profile)
+        Log.i("LearnedBottom", "LearnedBottomBar: $currentScreenTitle")
+
+        if (currentScreenTitle != Auth.route) {
+            val items = listOf(Camera, ChatsHistory, Profile)
             NavigationBar(
                 modifier = Modifier.height(64.dp),
             ) {
@@ -81,7 +87,7 @@ fun LearnedBottomBar(
 }
 
 @Composable
-fun AnimatedIconWithLine(item: BottomBarDestinations, isSelected: Boolean) {
+fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
     val transition = updateTransition(targetState = isSelected, label = "transition")
     val lineWidth by transition.animateDp(
         transitionSpec = { tween(durationMillis = 500) },
@@ -100,7 +106,7 @@ fun AnimatedIconWithLine(item: BottomBarDestinations, isSelected: Boolean) {
     }
 }
 @Composable
-fun AnimatedIcon(item: BottomBarDestinations, isSelected: Boolean) {
+fun AnimatedIcon(item: ScreensDestinations, isSelected: Boolean) {
     val scale = remember { androidx.compose.animation.core.Animatable(1f) }
     LaunchedEffect(isSelected) {
         scale.animateTo(
@@ -113,12 +119,16 @@ fun AnimatedIcon(item: BottomBarDestinations, isSelected: Boolean) {
         )
     }
 
-    Crossfade(targetState = isSelected, animationSpec = tween(durationMillis = 750)) { selected ->
-        Icon(
-            modifier = Modifier.scale(scale.value),
-            imageVector = if (selected) item.selectedIcon else item.icon,
-            contentDescription = null
-        )
+    Crossfade(targetState = isSelected, animationSpec = tween(durationMillis = 750),
+        label = ""
+    ) { selected ->
+        (if (selected) item.selectedIcon else item.icon)?.let {
+            Icon(
+                modifier = Modifier.scale(scale.value),
+                imageVector = it,
+                contentDescription = null
+            )
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 package com.sginnovations.learnedai.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,17 +27,14 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
-    val category = mutableStateOf("Math")
-    val timestamp = System.currentTimeMillis()
-
-    val isNewConversation = mutableStateOf(false)
+    val category = mutableStateOf("Math") //TODO HAHA
+    private val timestamp = System.currentTimeMillis()
 
     // Response of OPENAI API
-    val openaiApiResponse = mutableStateOf<Message?>(null)
+    private val openaiApiResponse = mutableStateOf<Message?>(null)
 
     val messages = mutableStateOf<List<MessageEntity>>(emptyList())
     val conversations = mutableStateOf<List<ConversationEntity>>(emptyList())
-
 
     /**
      *  MutableList whit all the actual conversation
@@ -58,14 +56,42 @@ class ChatViewModel @Inject constructor(
             }
         }
     }
+    fun setUpNewConversation() {
+        viewModelScope.launch {
+            idConversation.intValue = 0
+        }
+    }
 
+    suspend fun getAllConversations() {
+        viewModelScope.launch {
+            conversations.value = roomRepository.getAllConversations()
+        }
+    }
+
+    suspend fun getAllMessages() {
+        Log.i(TAG, "getting all messages of id: $idConversation")
+        viewModelScope.launch {
+            messages.value = roomRepository.getAllMessages(idConversation.intValue)
+        }
+    }
+
+    suspend fun hideConversation(id: Int) {
+        viewModelScope.launch {
+            roomRepository.hideConversation(id)
+            getAllConversations()
+        }
+    }
+
+    /**
+     * Call to GPT
+     */
     suspend fun sendMessageToOpenaiApi(prompt: String) {
         val userMessage = Message(role = User.role, content = prompt)
 
         // Create conversation if needed
         if (idConversation.intValue == 0) {
             idConversation.intValue = roomRepository.createConversation(
-                ConversationEntity(name = prompt, category = category.value)
+                ConversationEntity(name = shortenString(prompt), category = category.value, visible = true)
             ).toInt()
         }
 
@@ -80,6 +106,7 @@ class ChatViewModel @Inject constructor(
          * API CALL RESPONSE
          */
         Log.i(TAG, "getChatResponse: Sending to repository")
+
         val response = chatRepository.getChatResponse(chatCompletionRequest)
 
         if (response.isSuccessful) {
@@ -124,17 +151,12 @@ class ChatViewModel @Inject constructor(
         Log.i(TAG, "messageHistory: $messageHistory")
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")
     }
-
-    suspend fun getAllMessages() {
-        Log.i(TAG, "getting all messages of id: $idConversation")
-        messages.value = roomRepository.getAllMessages(idConversation.intValue)
-    }
-
-    suspend fun getAllConversations() {
-        conversations.value = roomRepository.getAllConversations()
-    }
-
-    suspend fun getAlldb() {
-        Log.i(TAG, "getAlldb: ${roomRepository.getAll()}")
+    private fun shortenString(input: String): String {
+        val maxLength = 30
+        return if (input.length > maxLength) {
+            input.substring(0, maxLength) + "..."
+        } else {
+            input
+        }
     }
 }

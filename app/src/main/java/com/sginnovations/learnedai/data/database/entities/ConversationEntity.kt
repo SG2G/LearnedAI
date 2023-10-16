@@ -11,4 +11,5 @@ data class ConversationEntity(
     val idConversation: Int? = null,
     val name: String,
     val category: String,
+    val visible: Boolean,
 )

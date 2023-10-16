@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -58,6 +58,7 @@ import com.sginnovations.learnedai.ui.ui_components.chat.IconUserMsg
 import com.sginnovations.learnedai.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.learnedai.ui.ui_components.points.TokenIcon
 import com.sginnovations.learnedai.viewmodel.ChatViewModel
+import com.sginnovations.learnedai.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "Chat"
@@ -65,6 +66,7 @@ private const val TAG = "Chat"
 @Composable
 fun ChatStateFul(
     vmChat: ChatViewModel,
+    vmToken: TokenViewModel,
 
     googleAuthUiClient: GoogleAuthUiClient,
 ) {
@@ -77,11 +79,13 @@ fun ChatStateFul(
     val userName = googleAuthUiClient.getSignedInUser()?.userName
     val userProfileUrl = googleAuthUiClient.getSignedInUser()?.profilePictureUrl
 
-    LaunchedEffect(messages) {
+    LaunchedEffect(messages.value.size) {
         vmChat.setUpMessageHistory()
-        listState.scrollToItem(messages.value.size - 1)
+        if (messages.value.isNotEmpty()) {
+            listState.scrollToItem(messages.value.size - 1)
+        }
+        Log.i(TAG, messages.value.toString())
     }
-
 
     ChatStateLess(
         messages = messages,
@@ -94,6 +98,7 @@ fun ChatStateFul(
         ) { prompt ->
         scope.launch {
             vmChat.sendMessageToOpenaiApi(prompt)
+            vmToken.oneLessToken()
         }
     }
 }
@@ -113,19 +118,21 @@ fun ChatStateLess(
     val text = remember { mutableStateOf("") }
 
     var lastItemVisible by remember { mutableStateOf(false) }
+    var lastIndex  by remember { mutableIntStateOf(0) }
 
     var chatPlaceHolder by remember { mutableStateOf(false) }
     var userPlaceHolder by remember { mutableStateOf("") }
     var assistantPlaceHolder = "Thinking..."
 
-    val lastIndex = messages.value.size - 1
-
     val chatMsgPadding = PaddingValues(start = 32.dp, top = 8.dp, end = 8.dp, bottom = 16.dp)
 
     LaunchedEffect(messages.value.size) {
+        if (messages.value.isNotEmpty()) {
+            lastIndex = messages.value.size - 1
+        }
         chatPlaceHolder = false
         while (chatAnimation.value) {
-            listState.animateScrollToItem(messages.value.size - 1)
+            listState.animateScrollToItem(lastIndex)
         }
     }
 
@@ -135,8 +142,6 @@ fun ChatStateLess(
         userPlaceHolder = text.value
         chatAnimation.value = true
         chatPlaceHolder = true
-
-        text.value = ""
     }
 
     Column(
@@ -175,6 +180,11 @@ fun ChatStateLess(
                                             message.content,
                                             chatMsgPadding,
                                         ) { chatAnimation.value = false }
+                                    } else {
+                                        Text(
+                                            modifier = Modifier.padding(chatMsgPadding),
+                                            text = message.content
+                                        )
                                     }
                                 } else {
                                     // Message static last AI msg
@@ -269,14 +279,14 @@ fun ChatStateLess(
                 onValueChange = { text.value = it },
                 modifier = Modifier
                     .weight(1f)
-                    .imePadding()
-                    .height(48.dp),
+                    .imePadding(),
                 placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
                 textStyle = TextStyle(fontSize = 14.sp),
                 shape = RoundedCornerShape(20.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     textColor = MaterialTheme.colorScheme.onBackground,
-                )
+                ),
+                maxLines = Int.MAX_VALUE
             )
             IconButton(
                 onClick = {
@@ -297,4 +307,3 @@ fun ChatStateLess(
         }
     }
 }
-

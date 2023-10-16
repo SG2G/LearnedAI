@@ -28,5 +28,8 @@ class RoomRepository @Inject constructor(
     suspend fun getAllConversations(): List<ConversationEntity> {
         return chatDao.getAllConversations()
     }
+    suspend fun hideConversation(id: Int){
+        chatDao.hideConversation(id)
+    }
 
 }

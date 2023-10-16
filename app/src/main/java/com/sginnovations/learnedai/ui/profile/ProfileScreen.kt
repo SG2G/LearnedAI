@@ -15,7 +15,7 @@ private const val TAG = "StateFulProfile"
 
 @Composable
 fun StateFulProfile(
-    vmTokens: TokenViewModel,
+    vmToken: TokenViewModel,
 
     googleAuthUiClient: GoogleAuthUiClient,
 
@@ -24,7 +24,7 @@ fun StateFulProfile(
     val scope = rememberCoroutineScope()
 
     StateLessProfile(
-        vmTokens = vmTokens,
+        vmToken = vmToken,
 
         onSignOut = {
             scope.launch {
@@ -37,19 +37,19 @@ fun StateFulProfile(
 
 @Composable
 fun StateLessProfile(
-    vmTokens: TokenViewModel,
+    vmToken: TokenViewModel,
 
     onSignOut: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
-    val tokens by vmTokens.tokens.collectAsState()
+    val tokens by vmToken.tokens.collectAsState()
 
     Column {
         Text(text = "Tokens: ${tokens}")
         Button(onClick = {
             scope.launch {
-                vmTokens.oneLessToken()
+                vmToken.oneLessToken()
             }
         }
         ) {

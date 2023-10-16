@@ -24,6 +24,9 @@ interface ChatDao {
     @Query("SELECT * FROM $MESSAGE_TABLE_NAME WHERE idConversation = :idConversation")
     suspend fun getConversationMessages(idConversation: Int): List<MessageEntity>
 
+    @Query("UPDATE $CONVERSATION_TABLE_NAME SET visible = 0 WHERE idConversation = :idConversation")
+    suspend fun hideConversation(idConversation: Int)
+
     // More testing
     @Query("SELECT * FROM $MESSAGE_TABLE_NAME")
     suspend fun getAll(): List<MessageEntity>

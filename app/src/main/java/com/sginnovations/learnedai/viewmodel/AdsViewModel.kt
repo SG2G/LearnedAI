@@ -18,5 +18,11 @@ class AdsViewModel @Inject constructor(
     fun showRewardedAd(activity: Activity) {
         adManager.showRewardedAd(activity)
     }
+    fun loadInterstitialAd(context: Context) {
+        adManager.loadInterstitialAd(context)
+    }
+    fun showInterstitialAd(activity: Activity) {
+        adManager.showInterstitialAd(activity)
+    }
 
 }

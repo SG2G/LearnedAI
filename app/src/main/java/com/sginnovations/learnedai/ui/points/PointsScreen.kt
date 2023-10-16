@@ -43,7 +43,7 @@ import com.sginnovations.learnedai.viewmodel.TokenViewModel
 private const val TAG = "PointsStateFul"
 @Composable
 fun PointsStateFul(
-    vmTokens: TokenViewModel,
+    vmToken: TokenViewModel,
     vmAds: AdsViewModel
 ) {
     val context = LocalContext.current
@@ -56,7 +56,7 @@ fun PointsStateFul(
     }
     val activity = context.getActivity()
 
-    val tokens = vmTokens.tokens.collectAsState()
+    val tokens = vmToken.tokens.collectAsState()
 
     LaunchedEffect(Unit) {
         Log.i(TAG, "Loading Ad in LauncherEffect")

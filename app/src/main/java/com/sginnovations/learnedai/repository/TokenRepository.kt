@@ -22,7 +22,7 @@ class TokenRepository @Inject constructor(
     private val db: FirebaseFirestore,
 ) {
     private val user = FirebaseAuth.getInstance().currentUser
-    private val document = db.collection(USERS_NAME).document(user!!.uid)
+    private val document = user?.let { db.collection(USERS_NAME).document(it.uid) }
 
     fun giveReward() {
         incrementTokens(tokensRewardQuantity)
@@ -35,7 +35,7 @@ class TokenRepository @Inject constructor(
      * Model
      */
     suspend fun getTokens(): Flow<Long> = callbackFlow {
-        val listenerRegistration = document.addSnapshotListener { snapshot, e ->
+        val listenerRegistration = document?.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
                 return@addSnapshotListener
@@ -52,14 +52,14 @@ class TokenRepository @Inject constructor(
                 Log.d(TAG, "Current data: null")
             }
         }
-        awaitClose { listenerRegistration.remove() }
+        awaitClose { listenerRegistration?.remove() }
     }
     private fun incrementTokens(increment: Int) {
-        document.update(TOKENS_NAME, FieldValue.increment(increment.toLong()))
-            .addOnSuccessListener {
+        document?.update(TOKENS_NAME, FieldValue.increment(increment.toLong()))
+            ?.addOnSuccessListener {
                 Log.i(TAG, "oneMoreToken correct")
             }
-            .addOnFailureListener { e ->
+            ?.addOnFailureListener { e ->
                 Log.i(TAG, "oneMoreToken ERROR")
             }
     }

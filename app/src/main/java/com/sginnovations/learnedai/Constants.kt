@@ -20,6 +20,8 @@ class Constants {
         // Chat image
         const val DEFAULT_PROFILE_URL = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
         const val ASSISTANT_PROFILE_URL = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-
+        // ADS
+        const val REWARD_AD_UNIT = "ca-app-pub-3940256099942544/5224354917"
+        const val INTERSTITIAL_AD_UNIT = "ca-app-pub-3940256099942544/1033173712"
     }
 }
