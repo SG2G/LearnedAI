@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sginnovations.learnedai"
+    namespace = "com.sginnovations.asked"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.sginnovations.learnedai"
+        applicationId = "com.sginnovations.asked"
         minSdk = 23
         targetSdk = 33
         versionCode = 1
@@ -41,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -53,6 +54,12 @@ android {
 }
 
 dependencies {
+
+    /// Firebase ///
+    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
+    implementation("com.google.firebase:firebase-config:21.5.0")
+    implementation("com.google.firebase:firebase-dynamic-links-ktx")
     // accompanist
     implementation ("com.google.accompanist:accompanist-pager:0.20.0")
     /// admob ///
@@ -72,8 +79,6 @@ dependencies {
     implementation("com.google.mlkit:vision-common:17.3.0")
     /// Cropify ///
     implementation("com.github.moyuruaizawa:cropify:0.3.1")
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
 
     /// Camera X ///
     val cameraxVersion = "1.3.0-rc02"
@@ -118,7 +123,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.10.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
