@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.navigation_bars.bottombar
+package com.sginnovations.asked.ui.top_bottom_bar.bottombar
 
 import android.util.Log
 import androidx.compose.animation.Crossfade
@@ -31,11 +31,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.sginnovations.asked.ui.navigation_bars.Auth
-import com.sginnovations.asked.ui.navigation_bars.Camera
-import com.sginnovations.asked.ui.navigation_bars.ChatsHistory
-import com.sginnovations.asked.ui.navigation_bars.Profile
-import com.sginnovations.asked.ui.navigation_bars.ScreensDestinations
+import com.sginnovations.asked.ui.top_bottom_bar.Auth
+import com.sginnovations.asked.ui.top_bottom_bar.Camera
+import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
+import com.sginnovations.asked.ui.top_bottom_bar.Profile
+import com.sginnovations.asked.ui.top_bottom_bar.ScreensDestinations
 
 @Composable
 fun LearnedBottomBar(

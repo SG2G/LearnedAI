@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalPermissionsApi::class)
 
-package com.sginnovations.asked.ui.camera
+package com.sginnovations.asked.ui.main_bottom_bar.camera
 
 import android.content.Context
 import android.content.Intent
@@ -22,22 +22,23 @@ import com.google.accompanist.permissions.shouldShowRationale
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraCheckPermissions(
-
+    permsAsked: String,
+    
     onPermissionGranted: () -> Unit,
 ) {
-    val cameraPermissionState = rememberPermissionState(permission = android.Manifest.permission.CAMERA)
+    val permissionState = rememberPermissionState(permission = permsAsked)
 
     val context = LocalContext.current
 
-    LaunchedEffect(cameraPermissionState) {
-        cameraPermissionState.launchPermissionRequest()
+    LaunchedEffect(permissionState) {
+        permissionState.launchPermissionRequest()
     }
     when {
-        cameraPermissionState.status.isGranted -> {
+        permissionState.status.isGranted -> {
             // Permission is granted. Show the camera preview.
             onPermissionGranted()
         }
-        cameraPermissionState.status.shouldShowRationale -> {
+        permissionState.status.shouldShowRationale -> {
             // Permission is not granted, but the user hasn't denied it permanently.
             // Show a rationale message and request the permission again.
             AlertDialog(
@@ -47,7 +48,7 @@ fun CameraCheckPermissions(
                 confirmButton = {
                     Button(
                         onClick = {
-                            cameraPermissionState.launchPermissionRequest()
+                            permissionState.launchPermissionRequest()
                         }
                     ) {
                         Text("OK")

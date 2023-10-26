@@ -17,6 +17,9 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.sginnovations.asked.Constants.Companion.INTERSTITIAL_AD_UNIT
 import com.sginnovations.asked.Constants.Companion.REWARD_AD_UNIT
 import com.sginnovations.asked.repository.TokenRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -84,7 +87,9 @@ class AdManager @Inject constructor(
                     val rewardType = rewardItem.type
 
                     // Reward
-                    tokenRepository.giveReward()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        tokenRepository.giveAdReward()
+                    }
 
                     Log.d(TAG, "User earned the reward. Amount: $rewardAmount, Type: $rewardType")
                 }

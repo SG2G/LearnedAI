@@ -15,17 +15,16 @@ private const val TAG = "TokenViewModel"
 
 @HiltViewModel
 class TokenViewModel @Inject constructor(
-    private val db: FirebaseFirestore,
     private val tokenRepository: TokenRepository,
 ) : ViewModel() {
 
     private val _tokens = MutableStateFlow<Long>(0)
     val tokens = _tokens.asStateFlow()
 
-    private val _isPointsVisible = MutableStateFlow<Boolean>(false)
-    val isPointsVisible = _isPointsVisible.asStateFlow()
+    private val _pointsScreenVisible = MutableStateFlow(false)
+    val pointsScreenVisible = _pointsScreenVisible.asStateFlow()
 
-    init {
+    fun startTokenListener() {
         viewModelScope.launch {
             tokenRepository.getTokens().collect { tokens ->
                 Log.i(TAG, "Launching token listener")
@@ -34,13 +33,14 @@ class TokenViewModel @Inject constructor(
         }
     }
 
-    fun testGivePoints() {
+    fun testGivePoints() { //TODO DELETE
         viewModelScope.launch {
+            Log.i(TAG, "testGivePoints: 10")
             _tokens.value += 10
         }
     }
 
-    suspend fun oneLessToken() {
+    fun oneLessToken() {
         viewModelScope.launch {
             Log.i(TAG, "oneLessToken")
             tokenRepository.oneLessToken()
@@ -49,6 +49,6 @@ class TokenViewModel @Inject constructor(
 
     fun switchPointsVisibility() {
         Log.i(TAG, "switchPointsVisibility")
-        _isPointsVisible.value = !_isPointsVisible.value
+        _pointsScreenVisible.value = !_pointsScreenVisible.value
     }
 }

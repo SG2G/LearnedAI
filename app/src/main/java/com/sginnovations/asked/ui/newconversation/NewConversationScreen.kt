@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.ui.ui_components.points.TokenIcon
@@ -113,6 +114,18 @@ fun NewConversationStateLess(
     onClick: () -> Unit,
 ) {
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        TitleChatUseExample(text = "Titulo1")
+        SubTitleChatUseExample(text = "Subtitle1")
+
+        TitleChatUseExample(text = "Titulo2")
+        SubTitleChatUseExample(text = "Subtitle2")
+    }
+
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         Row(
             modifier = Modifier
@@ -156,4 +169,24 @@ fun NewConversationStateLess(
             }
         }
     }
+}
+
+@Composable
+fun TitleChatUseExample(text: String) {
+    Text(
+        text = text, color = MaterialTheme.colorScheme.onBackground,
+        style = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp
+        )
+    )
+}
+@Composable
+fun SubTitleChatUseExample(text: String) {
+    Text(
+        text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
+        style = TextStyle(
+            fontSize = 16.sp
+        )
+    )
 }

@@ -1,4 +1,4 @@
-package com.sginnovations.asked.presentation.sign_in
+package com.sginnovations.asked.auth.sign_in
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.util.Log
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -22,6 +23,7 @@ class GoogleAuthUiClient (
 ) {
     private val auth = Firebase.auth
     private val firestore = Firebase.firestore
+    val user = FirebaseAuth.getInstance().currentUser
     suspend fun signIn(): IntentSender? {
         Log.i(TAG, "signIn:")
         val result = try {
@@ -35,11 +37,12 @@ class GoogleAuthUiClient (
         }
         return result?.pendingIntent?.intentSender
     }
-    
+
     suspend fun signInWithIntent(intent: Intent): SignInResult {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredential = GoogleAuthProvider.getCredential(googleIdToken,null)
+
         return try {
             Log.i(TAG, "signInWithIntent: ")
             val result = auth.signInWithCredential(googleCredential).await()

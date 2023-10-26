@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,11 +28,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,14 +50,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.Constants.Companion.AI_NAME
-import com.sginnovations.asked.Constants.Companion.DEFAULT_PROFILE_URL
+import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
-import com.sginnovations.asked.presentation.sign_in.GoogleAuthUiClient
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
-import com.sginnovations.asked.ui.ui_components.chat.IconUserMsg
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
+import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
+import com.sginnovations.asked.ui.ui_components.chat.messages.ChatUserMessage
 import com.sginnovations.asked.ui.ui_components.points.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AuthViewModel
@@ -75,13 +75,14 @@ fun ChatStateFul(
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    val googleAuthUiClient = vmAuth.getGoogleAuthUiClient()
 
     val chatAnimation = remember { mutableStateOf(false) }
     val messages = vmChat.messages
 
-    val userName = googleAuthUiClient.getSignedInUser()?.userName
-    val userProfileUrl = googleAuthUiClient.getSignedInUser()?.profilePictureUrl
+    val userAuth = vmAuth.userAuth.collectAsState()
+
+    val userName = userAuth.value?.userName
+    val userProfileUrl = userAuth.value?.profilePictureUrl
 
     LaunchedEffect(messages.value.size) {
         vmChat.setUpMessageHistory()
@@ -134,7 +135,7 @@ fun ChatStateLess(
     var userPlaceHolder by remember { mutableStateOf("") }
     var assistantPlaceHolder = "Thinking..."
 
-    val chatMsgPadding = PaddingValues(start = 32.dp, top = 8.dp, end = 8.dp, bottom = 16.dp)
+    val backgroundColor = MaterialTheme.colorScheme.primaryContainer
 
     LaunchedEffect(messages.value.size) {
         if (messages.value.isNotEmpty()) {
@@ -173,8 +174,7 @@ fun ChatStateLess(
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
-                .imePadding()
-                .padding(8.dp),
+                .imePadding(),
             state = listState,
         ) {
             itemsIndexed(
@@ -191,26 +191,31 @@ fun ChatStateLess(
                     ) {
                         if (message.role == Assistant.role) {
                             // Last AI message
-                            Column {
-                                IconAssistantMsg(AI_NAME)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .background(backgroundColor)
+                                    .padding(16.dp)
+                                    .fillMaxSize()
+                            ) {
+                                IconAssistantMsg()
 
                                 if (chatAnimation.value) {
                                     // Animate the last message
                                     if (!chatPlaceHolder) {
                                         TypingTextAnimation(
                                             message.content,
-                                            chatMsgPadding,
                                         ) { chatAnimation.value = false }
                                     } else {
                                         Text(
-                                            modifier = Modifier.padding(chatMsgPadding),
+                                            modifier = Modifier.padding(CHAT_MSG_PADDING),
                                             text = message.content
                                         )
                                     }
                                 } else {
                                     // Message static last AI msg
                                     Text(
-                                        modifier = Modifier.padding(chatMsgPadding),
+                                        modifier = Modifier.padding(CHAT_MSG_PADDING),
                                         text = message.content
                                     )
                                 }
@@ -220,57 +225,25 @@ fun ChatStateLess(
                 } else {
                     if (message.role == User.role) {
                         // Other user msg
-                        Column {
-                            if (userName != null) {
-                                if (userProfileUrl != null) {
-                                    IconUserMsg(userName, userProfileUrl)
-                                }
-                            } else {
-                                IconUserMsg(User.role, DEFAULT_PROFILE_URL)
-                            }
-
-                            Text(
-                                modifier = Modifier.padding(chatMsgPadding),
-                                text = message.content
-                            )
-                        }
+                        ChatUserMessage(
+                            userName,
+                            userProfileUrl,
+                            message.content
+                        )
                     } else {
                         // Other AI msg
-                        Column {
-                            IconAssistantMsg(AI_NAME)
-
-                            Text(
-                                modifier = Modifier.padding(chatMsgPadding),
-                                text = message.content
-                            )
-                        }
+                        ChatAiMessage(message.content)
                     }
                 }
             }
             item {
                 if (chatPlaceHolder) {
-                    Column {
-                        if (userName != null) {
-                            if (userProfileUrl != null) {
-                                IconUserMsg(userName, userProfileUrl)
-                            }
-                        } else {
-                            IconUserMsg(User.role, DEFAULT_PROFILE_URL)
-                        }
-
-                        Text(
-                            modifier = Modifier.padding(chatMsgPadding),
-                            text = userPlaceHolder
-                        )
-                    }
-                    Column {
-                        IconAssistantMsg(AI_NAME)
-
-                        Text(
-                            modifier = Modifier.padding(chatMsgPadding),
-                            text = assistantPlaceHolder
-                        )
-                    }
+                    ChatUserMessage(
+                        userName,
+                        userProfileUrl,
+                        userPlaceHolder,
+                    )
+                    ChatAiMessage(assistantPlaceHolder)
                 }
             }
         }
@@ -304,11 +277,13 @@ fun ChatStateLess(
                 placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
                 textStyle = TextStyle(fontSize = 14.sp),
                 shape = RoundedCornerShape(20.dp),
-                colors = TextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                ),
-                maxLines = Int.MAX_VALUE
-            )
+
+                    ),
+                maxLines = Int.MAX_VALUE,
+
+                )
             IconButton(
                 onClick = {
                     scope.launch {

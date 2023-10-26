@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.navigation_bars
+package com.sginnovations.asked.ui.top_bottom_bar
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
@@ -80,6 +80,12 @@ object Points : ScreensDestinations {
 object RefCode : ScreensDestinations {
     override val route = "RefCode"
     override fun getName(context: Context) = "RefCode"
+    override val icon: ImageVector? = null
+    override val selectedIcon: ImageVector? = null
+}
+object Subscription : ScreensDestinations {
+    override val route = "Subscription"
+    override fun getName(context: Context) = "Subscription"
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }

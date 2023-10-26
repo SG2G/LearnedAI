@@ -23,7 +23,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
 import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
-import com.sginnovations.asked.ui.navigation_bars.NewConversation
+import com.sginnovations.asked.ui.top_bottom_bar.NewConversation
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import io.moyuru.cropify.Cropify

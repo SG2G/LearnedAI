@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.sginnovations.asked.ui.historychats
+package com.sginnovations.asked.ui.main_bottom_bar.historychats
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -161,18 +161,6 @@ fun StateLessHistoryChats(
                         )
                     ),
                     visible = conversation.visible,
-//                    enter = slideInVertically(
-//                        animationSpec = tween(600)
-//                    ) {
-//                        // Slide in from 40 dp from the top.
-//                        with(density) { -40.dp.roundToPx() }
-//                    } + expandVertically(
-//                        // Expand from the top.
-//                        expandFrom = Alignment.Top
-//                    ) + fadeIn(
-//                        // Fade in with the initial alpha of 0.3f.
-//                        initialAlpha = 0.3f
-//                    ),
                     exit = shrinkHorizontally(
                         animationSpec = tween(600),
                         targetWidth = { 0 }

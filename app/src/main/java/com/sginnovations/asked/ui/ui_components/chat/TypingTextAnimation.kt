@@ -18,12 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
 import kotlinx.coroutines.delay
 
 @Composable
 fun TypingTextAnimation(
     message: String,
-    msgPadding: PaddingValues,
 
     onStopTextAnimation: () -> Unit,
 ) {
@@ -54,7 +54,7 @@ fun TypingTextAnimation(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(msgPadding)
+        modifier = Modifier.padding(CHAT_MSG_PADDING)
     ) {
         Text(text = typingState.value)
         Icon(Icons.Default.Info, contentDescription = null)

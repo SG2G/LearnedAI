@@ -1,4 +1,4 @@
-package com.sginnovations.asked.presentation.sign_in
+package com.sginnovations.asked.auth.sign_in
 
 data class SignInState (
     val isSignInSuccessful: Boolean = false,

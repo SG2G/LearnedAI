@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalPagerApi::class)
 
-package com.sginnovations.asked.ui.camera
+package com.sginnovations.asked.ui.main_bottom_bar.camera
 
 import android.graphics.Bitmap
 import androidx.camera.view.CameraController
@@ -24,7 +24,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Keyboard
+import androidx.compose.material.icons.outlined.PhotoLibrary
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,6 +48,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -49,8 +56,10 @@ import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
 import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
 import com.sginnovations.asked.ui.ui_components.camera.CameraPreview
 import com.sginnovations.asked.ui.ui_components.camera.PhotoButton
+import com.sginnovations.asked.ui.ui_components.points.PointsDisplay
 import com.sginnovations.asked.ui.ui_components.points.TokenIcon
 import com.sginnovations.asked.viewmodel.CameraViewModel
+import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "CameraStateFul"
@@ -58,12 +67,14 @@ private const val TAG = "CameraStateFul"
 @Composable
 fun CameraStateFul(
     vmCamera: CameraViewModel,
+    vmToken: TokenViewModel,
 
     onCropNavigation: () -> Unit,
 ) {
     /// Check Camera Perms ///
     val cameraPermissionGranted = remember { mutableStateOf(false) }
     CameraCheckPermissions(
+        permsAsked = android.Manifest.permission.CAMERA,
         onPermissionGranted = {
             cameraPermissionGranted.value = true
         }
@@ -71,6 +82,7 @@ fun CameraStateFul(
 
     if (cameraPermissionGranted.value) {
         CameraStateLess(
+            vmToken = vmToken,
 
             onPhotoTaken = { bitmap ->
                 vmCamera.onTakePhoto(bitmap)
@@ -86,6 +98,8 @@ fun CameraStateFul(
 
 @Composable
 fun CameraStateLess(
+    vmToken: TokenViewModel,
+
     onPhotoTaken: (Bitmap) -> Unit,
 
     onChangeCategory: (String) -> Unit,
@@ -100,6 +114,8 @@ fun CameraStateLess(
         }
     }
 
+    val tokens = vmToken.tokens.collectAsStateWithLifecycle()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -112,6 +128,15 @@ fun CameraStateLess(
         )
         Row(
             modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.End,
+        ) {
+            PointsDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
+        }
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 0.dp, start = 16.dp, end = 16.dp, top = 16.dp),
@@ -121,17 +146,40 @@ fun CameraStateLess(
                 Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Carousel(
                     onChangeCategory = {
                         onChangeCategory(it)
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                PhotoButton(
-                    context = context,
-                    controller = controller
 
-                ) { onPhotoTaken(it) }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Outlined.PhotoLibrary,
+                            contentDescription = "PhotoLibrary",
+                            modifier = Modifier.size(38.dp)
+                        )
+                    }
+                    PhotoButton(
+                        context = context,
+                        controller = controller
+
+                    ) { onPhotoTaken(it) }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Keyboard,
+                            contentDescription = "Keyboard",
+                            modifier = Modifier.size(38.dp)
+                        )
+                    }
+                }
+
             }
         }
     }
@@ -190,7 +238,9 @@ fun Carousel(
                 )
                 AnimatedVisibility(
                     visible = isSelected,
-                    enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(initialAlpha = 0.3f),
+                    enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(
+                        initialAlpha = 0.3f
+                    ),
                     exit = slideOutVertically(targetOffsetY = { -40 }) + shrinkVertically() + fadeOut()
                 ) {
                     Row(

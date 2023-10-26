@@ -1,5 +1,8 @@
 package com.sginnovations.asked
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.dp
+
 class Constants {
 
     companion object {
@@ -26,6 +29,8 @@ class Constants {
         //
         const val CAMERA_TEXT = "Text"
         const val CAMERA_MATH = "Math"
+
+        val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
 
     }
 }

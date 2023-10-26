@@ -2,62 +2,53 @@ package com.sginnovations.asked.repository
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.sginnovations.asked.Constants.Companion.TOKENS_NAME
 import com.sginnovations.asked.Constants.Companion.USERS_NAME
+import com.sginnovations.asked.domain.token.GetTokensUseCase
+import com.sginnovations.asked.domain.token.IncrementTokensUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val TAG = "TokenRepository"
 
-private const val tokensRewardQuantity = 2
+private const val tokensAdRewardQuantity = 2
 private const val tokensRefCodeReward = 10
 private const val tokensOneLess = -1
 @Singleton
 class TokenRepository @Inject constructor(
     private val db: FirebaseFirestore,
+
+    private val getTokensUseCase: GetTokensUseCase,
+    private val incrementTokensUseCase: IncrementTokensUseCase,
 ) {
+
     private val user = FirebaseAuth.getInstance().currentUser
-    private val document = user?.let { db.collection(USERS_NAME).document(it.uid) }
+    private val documentReference = user?.let { db.collection(USERS_NAME).document(it.uid) }
 
-    fun giveReward() = incrementTokens(tokensRewardQuantity)
-    fun giveRefCodeReward() = incrementTokens(tokensRefCodeReward)
-    fun oneLessToken() = incrementTokens(tokensOneLess)
-
-    /**
-     * Model
-     */
     suspend fun getTokens(): Flow<Long> = callbackFlow {
-        val listenerRegistration = document?.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && snapshot.exists()) {
-                val tokens = snapshot.getLong("tokens")
-                if (tokens != null) {
+        Log.i(TAG, "getTokens")
+        val listenerRegistration = documentReference?.addSnapshotListener { documentReference, e ->
+            launch(Dispatchers.IO) {
+                getTokensUseCase(documentReference?.reference).collect { tokens ->
                     trySend(tokens)
-                } else {
-                    trySend(0)
                 }
-            } else {
-                Log.d(TAG, "Current data: null")
             }
         }
         awaitClose { listenerRegistration?.remove() }
     }
-    private fun incrementTokens(increment: Int) {
-        document?.update(TOKENS_NAME, FieldValue.increment(increment.toLong()))
-            ?.addOnSuccessListener {
-                Log.i(TAG, "oneMoreToken correct")
-            }
-            ?.addOnFailureListener { e ->
-                Log.i(TAG, "oneMoreToken ERROR")
-            }
+
+    private suspend fun incrementTokens(numTokens: Int) {
+        Log.i(TAG, "incrementTokens")
+        if (documentReference != null) incrementTokensUseCase(documentReference,numTokens)
     }
+
+    suspend fun giveAdReward() = incrementTokens(tokensAdRewardQuantity)
+    suspend fun giveRefCodeReward() = incrementTokens(tokensRefCodeReward)
+    suspend fun oneLessToken() = incrementTokens(tokensOneLess)
 }

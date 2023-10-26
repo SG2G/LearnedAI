@@ -81,7 +81,7 @@ fun PointsStateLess(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onSwitchVisibility() },
-        modifier = Modifier.fillMaxSize().padding(top = 64.dp),
+        modifier = Modifier.fillMaxSize().padding(top = 16.dp),
     ) {
         Column(
             Modifier

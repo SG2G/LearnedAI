@@ -64,7 +64,7 @@ fun LearnedApp(
 
                     scope.launch {
                         val minVersion = remoteConfig.getValue("minVersion")
-                        delay(10000)
+                        delay(5000)
 
                         needToUpdate.value = needToUpdate(context, minVersion)
                     }

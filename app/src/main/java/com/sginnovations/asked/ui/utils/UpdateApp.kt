@@ -25,15 +25,15 @@ fun UpdateApp() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Actualiza coño",
+            text = "You have a older version, for access new features please update.",
             color = MaterialTheme.colorScheme.onBackground
         )
         Button(onClick = {
             scope.launch {
-                openAppInPlayStore("com.sginnovations.quicknotes", context)
+                openAppInPlayStore("com.sginnovations.quicknotes", context) //TODO CHANGE TO ASKED
             }
         }) {
-            Text("Abrir en Google Play Store")
+            Text("Open Google Play Store")
         }
     }
 

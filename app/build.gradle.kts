@@ -14,8 +14,8 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 23
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -55,6 +55,8 @@ android {
 
 dependencies {
 
+    // Payments //
+    implementation("com.android.billingclient:billing-ktx:6.0.1")
     /// Firebase ///
     implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
     implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
