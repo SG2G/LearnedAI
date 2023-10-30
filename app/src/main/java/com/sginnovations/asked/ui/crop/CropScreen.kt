@@ -1,9 +1,11 @@
 package com.sginnovations.asked.ui.crop
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,17 +20,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
 import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
+import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.top_bottom_bar.Chat
+import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
 import com.sginnovations.asked.ui.top_bottom_bar.NewConversation
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import io.moyuru.cropify.Cropify
 import io.moyuru.cropify.CropifyOption
 import io.moyuru.cropify.rememberCropifyState
+
+private const val TAG = "CropStateFul"
 
 @Composable
 fun CropStateFul(
@@ -78,6 +90,14 @@ fun CropStateLess(
                 vmCamera.getTextFromImage(it)
 
                 if (navController.currentDestination?.route != NewConversation.route) {
+                    Log.i(TAG, "Starting nav")
+
+                    navController.navigate(ChatsHistory.route) {
+                        // This ensures that the previous screen is removed from the backstack
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                     navController.navigate(NewConversation.route)
                 }
             }
@@ -96,37 +116,50 @@ fun CropStateLess(
         modifier = Modifier
             .fillMaxSize()
     )
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.Bottom,
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        Button(
+            onClick = { navController.navigateUp() },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            shape = RoundedCornerShape(10.dp),
         ) {
-            Button(
-                onClick = { navController.navigateUp() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            Text(
+                text = stringResource(R.string.crop_retake), modifier = Modifier.padding(4.dp),
+                style = TextStyle(
+                    fontSize = 16.sp
                 )
-            ) {
-                Text(text = "Retake")
-            }
-            Button(
-                onClick = { cropifyState.crop() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            ) {
-                Text(text = "Crop")
-            }
+            )
         }
+        Button(
+            onClick = { cropifyState.crop() },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.crop_crop), modifier = Modifier.padding(4.dp),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+    }
 
 }
 
 @Composable
-fun TextPreviewDialog(vmCamera: CameraViewModel, onDismissRequest: () -> Unit) {
+fun TextPreviewDialog(vmCamera: CameraViewModel, onDismissRequest: () -> Unit) { // TODO EH
     Dialog(onDismissRequest = onDismissRequest) { //TODO TRANSLATE
         Text(text = vmCamera.imageText.value)
     }

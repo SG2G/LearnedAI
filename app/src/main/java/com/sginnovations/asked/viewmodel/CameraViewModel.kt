@@ -20,6 +20,7 @@ class CameraViewModel @Inject constructor(
 ) : ViewModel() {
 
     val imageText = mutableStateOf("")
+    val isLoading = mutableStateOf(false)
     val cameraCategory = mutableStateOf("Text")
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
 
@@ -28,8 +29,10 @@ class CameraViewModel @Inject constructor(
     }
 
     fun getTextFromImage(imageBitmap: ImageBitmap) {
+        isLoading.value = true
         viewModelScope.launch {
             imageText.value = mlkitRepository.getTextFromImage(imageBitmap)
+            isLoading.value = false
         }
     }
 

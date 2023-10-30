@@ -1,14 +1,19 @@
 package com.sginnovations.asked.ui.main_bottom_bar.profile
 
 import android.app.Activity
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,12 +26,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.UserData
 import com.sginnovations.asked.ui.ui_components.profile.DeleteAccountButton
 import com.sginnovations.asked.ui.ui_components.profile.LogOutButton
+import com.sginnovations.asked.ui.ui_components.profile.ProfileButton
 import com.sginnovations.asked.ui.ui_components.profile.ProfilePicture
+import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
@@ -41,11 +52,9 @@ fun StateFulProfile(
     onNavigateUserNotLogged: () -> Unit,
 
     onNavigateRefCode: () -> Unit,
+    onNavigateSubscriptions: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-
-    val intent = remember { (context as Activity).intent }
 
     val userAuth = vmAuth.userAuth.collectAsState()
 
@@ -61,12 +70,11 @@ fun StateFulProfile(
             }
         },
         onDeleteAccount = {
-            scope.launch {
-                vmAuth.deleteAccount()
-            }
+            scope.launch {  }
 
         },
-        onNavigateRefCode = { onNavigateRefCode() }
+        onNavigateRefCode = { onNavigateRefCode() },
+        onNavigateSubscriptions = { onNavigateSubscriptions() }
     )
 }
 
@@ -80,10 +88,11 @@ fun StateLessProfile(
     onDeleteAccount: () -> Unit,
 
     onNavigateRefCode: () -> Unit,
+    onNavigateSubscriptions: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
-    val tokens by vmToken.tokens.collectAsState()
+    val tokens = vmToken.tokens.collectAsStateWithLifecycle()
 
     Column {
         Row(
@@ -101,27 +110,48 @@ fun StateLessProfile(
                     Text(
                         text = userAuth.value?.userName!!,
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
+                    PointsDisplay(modifier = Modifier.scale(0.8f),tokens = tokens, showPlus = false) { vmToken.switchPointsVisibility() }
+                }
+                Button(
+                    onClick = { onNavigateSubscriptions() },
+                    shape = RoundedCornerShape(5.dp)
+                ) {
+                    Text(text = "Upgrade")
                 }
             }
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "KeyboardArrowRight",
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
         }
 
-        LogOutButton(
-            onClick = { onSignOut() }
-        )
+        LogOutButton(onClick = { onSignOut() })
         DeleteAccountButton(onClick = { onDeleteAccount() })
+
+        Box(modifier = Modifier.padding(8.dp)) {
+            Card(
+                modifier = Modifier.padding(8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                ProfileButton(
+                    text = "Get more Tokens",
+                    painterResource = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
+                    onClick = { vmToken.switchPointsVisibility() }
+                )
+                ProfileButton(
+                    text = "Invite Friends",
+                    painterResource = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
+                    onClick = { onNavigateRefCode() }
+                )
+            }
+        }
+
 
         /**
          * Testing
          */
-        Text(text = "Tokens: ${tokens}")
+        Text(text = "Testing")
         Button(onClick = {
             scope.launch {
                 vmToken.oneLessToken()

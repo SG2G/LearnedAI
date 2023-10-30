@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.ui_components.points
+package com.sginnovations.asked.ui.ui_components.tokens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PointsCard(
+fun TokensCard(
+    num: String,
     text: String,
     buttonText: String,
 
@@ -42,7 +43,7 @@ fun PointsCard(
     Card(
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .border(3.dp, borderColor, RoundedCornerShape(10.dp)),
+            .border(1.dp, borderColor, RoundedCornerShape(10.dp)),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = cardContainerColor
@@ -56,11 +57,16 @@ fun PointsCard(
             ) {
                 TokenIcon()
                 Spacer(modifier = Modifier.width(4.dp))
+                Text(text = "+$num", modifier = Modifier.width(36.dp),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    ))
                 Text(
                     text = text, modifier = Modifier.weight(1f),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                        fontSize = 18.sp
                     )
                 )
                 Button(

@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,13 +19,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -39,7 +41,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sginnovations.asked.ui.ui_components.points.TokenIcon
+import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
@@ -72,9 +74,17 @@ fun NewConversationStateFul(
 
     val activity = context.getActivity()
 
-    LaunchedEffect(vmCamera.imageText.value) {
-        text.value = vmCamera.imageText.value
+    if (vmCamera.isLoading.value) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+
     }
+
+    text.value = vmCamera.imageText.value
 
     LaunchedEffect(Unit) {
         vmAds.loadInterstitialAd(context) //TODO MAYBE TOO MUCH WE NEED TO CLEAR CACHE
@@ -106,7 +116,6 @@ fun NewConversationStateFul(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewConversationStateLess(
     text: MutableState<String>,
@@ -152,10 +161,11 @@ fun NewConversationStateLess(
                 placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
                 textStyle = TextStyle(fontSize = 14.sp),
                 shape = RoundedCornerShape(20.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
+                colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                ),
-                maxLines = Int.MAX_VALUE
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    ),
+                maxLines = Int.MAX_VALUE,
             )
             IconButton(
                 onClick = { onClick() },

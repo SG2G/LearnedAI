@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sginnovations.asked.ui.ui_components.points.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 
@@ -37,6 +37,7 @@ fun ChatTopBar(
     navigateUp: () -> Unit,
 ) {
     val tokens = vmTokens.tokens.collectAsState()
+
     val id = vmChat.idConversation.intValue - 1
     val conversations = vmChat.conversations.value
 
@@ -47,15 +48,16 @@ fun ChatTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(
-                    text = conversations[id].name,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = TextStyle(
-                        fontSize = 20.sp
-                    ),
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
+                //TODO NAME OF CONVERSATION
+                    Text(
+                        text = "",
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = TextStyle(
+                            fontSize = 20.sp
+                        ),
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
         },
         navigationIcon = {
             IconButton(onClick = navigateUp) {

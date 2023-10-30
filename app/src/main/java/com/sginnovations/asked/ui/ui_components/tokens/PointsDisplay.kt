@@ -1,13 +1,11 @@
-package com.sginnovations.asked.ui.ui_components.points
+package com.sginnovations.asked.ui.ui_components.tokens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +32,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun PointsDisplay(
+    modifier: Modifier = Modifier,
+
     tokens: State<Long>,
 
     showPlus: Boolean, //TODO MAYBE DELETE
@@ -44,7 +43,7 @@ fun PointsDisplay(
     val scale: MutableState<Float> = remember { mutableFloatStateOf(1f) }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(end = 16.dp)
             .pointerInput(Unit) {
                 detectTapGestures(

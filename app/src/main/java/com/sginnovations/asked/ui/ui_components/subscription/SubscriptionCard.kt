@@ -32,16 +32,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.subscription.Option
 
 @Composable
 fun SubscriptionCard(
-    numMonths: String,
-    priceEachMonths: String,
+    durationTime: String,
     allPrice: String,
     subscriptionOption: Option,
     userOption: Option,
@@ -80,19 +81,19 @@ fun SubscriptionCard(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = numMonths,
+                        text = "3-day FREE TRIAL, Auto renewable",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = TextStyle(
+                            fontSize = 12.sp
+                        ),
+                    )
+                    Text(
+                        text = allPrice + durationTime,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
                         )
-                    )
-                    Text(
-                        text = priceEachMonths,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = TextStyle(
-                            fontSize = 12.sp
-                        ),
                     )
                 }
                 Column(
@@ -101,14 +102,14 @@ fun SubscriptionCard(
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        text = allPrice,
+                        text = "",
                         color = MaterialTheme.colorScheme.onBackground,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                         )
                     )
                     Text(
-                        text = "Prepayment",
+                        text = "",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = TextStyle(
                             fontSize = 12.sp
@@ -142,23 +143,23 @@ fun SubscriptionCard(
                     }
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                ElevatedCard(
-                    elevation = CardDefaults.elevatedCardElevation(
-                        defaultElevation = 4.dp
-                    ),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
-                ) {
-                    Text(
-                        modifier = Modifier.padding(4.dp),
-                        text = "Save 50%",
-                        style = TextStyle(
-                            fontSize = 12.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                }
+//                ElevatedCard(
+//                    elevation = CardDefaults.elevatedCardElevation(
+//                        defaultElevation = 4.dp
+//                    ),
+//                    colors = CardDefaults.elevatedCardColors(
+//                        containerColor = MaterialTheme.colorScheme.primaryContainer
+//                    )
+//                ) {
+//                    Text(
+//                        modifier = Modifier.padding(4.dp),
+//                        text = "Save 50%",
+//                        style = TextStyle(
+//                            fontSize = 12.sp
+//                        ),
+//                        color = MaterialTheme.colorScheme.onPrimaryContainer
+//                    )
+//                }
             }
         } // Box 2
     } // Box 1

@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.ui.ui_components.points.TokenIcon
+import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 
 @Composable
 fun PointsTopBar(

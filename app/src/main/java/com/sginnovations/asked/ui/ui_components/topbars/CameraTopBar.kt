@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sginnovations.asked.ui.ui_components.points.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
 import com.sginnovations.asked.viewmodel.TokenViewModel
 
 @Composable

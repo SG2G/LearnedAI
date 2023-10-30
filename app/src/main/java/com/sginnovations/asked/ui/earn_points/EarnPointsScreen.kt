@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.sginnovations.asked.ui.points
+package com.sginnovations.asked.ui.earn_points
 
 import android.app.Activity
 import android.content.Context
@@ -26,17 +26,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.ui.ui_components.points.PointsCard
-import com.sginnovations.asked.ui.ui_components.points.PointsDisplay
+import com.sginnovations.asked.Constants.Companion.AD_REWARD_NUM_TOKEN
+import com.sginnovations.asked.Constants.Companion.INVITE_REWARD_NUM_TOKEN
+import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.TokensCard
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 
-private const val TAG = "PointsStateFul"
+private const val TAG = "EarnPointsStateFul"
 @Composable
-fun PointsStateFul(
+fun EarnPointsStateFul(
     vmToken: TokenViewModel,
     vmAds: AdsViewModel,
+
+    onNavigateSubscriptions: () -> Unit,
+    onNavigateRefCode: () -> Unit,
 ) {
     val context = LocalContext.current
     fun Context.getActivity(): Activity? {
@@ -55,7 +62,7 @@ fun PointsStateFul(
         vmAds.loadRewardedAd(context)
     }
 
-    PointsStateLess(
+    EarnPointsStateLess(
         tokens = tokens,
 
         onShowAd = {
@@ -63,15 +70,20 @@ fun PointsStateFul(
                 vmAds.showRewardedAd(activity)
             }
         },
-        onSwitchVisibility = { vmToken.switchPointsVisibility() }
+        onNavigateSubscriptions = { onNavigateSubscriptions() },
+        onNavigateRefCode = { onNavigateRefCode() },
+        onSwitchVisibility = { vmToken.switchPointsVisibility() },
     )
 }
 
 @Composable
-fun PointsStateLess(
+fun EarnPointsStateLess(
     tokens: State<Long>,
 
+    onNavigateSubscriptions: () -> Unit,
+    onNavigateRefCode: () -> Unit,
     onShowAd: () -> Unit,
+
     onSwitchVisibility: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -81,7 +93,9 @@ fun PointsStateLess(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onSwitchVisibility() },
-        modifier = Modifier.fillMaxSize().padding(top = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp),
     ) {
         Column(
             Modifier
@@ -101,31 +115,34 @@ fun PointsStateLess(
             Text(text = "Hola")
 
             Space(n = 16)
-            PointsCard(
-                text = "Unlimited Points",
-                buttonText = "See more",
+            TokensCard(
+                num = "∞",
+                text = stringResource(R.string.earn_token_unlimited_points),
+                buttonText = stringResource(R.string.earn_token_see_more),
                 borderColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 buttonColor = MaterialTheme.colorScheme.background,
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { }
+                onClick = { onNavigateSubscriptions() }
             )
             Space(16)
-            PointsCard(
-                text = "+2 Watch ad",
-                buttonText = "Watch",
+            TokensCard(
+                num = AD_REWARD_NUM_TOKEN,
+                text = stringResource(R.string.earn_token_watch),
+                buttonText = stringResource(R.string.earn_token_watch),
                 borderColor = Color.Transparent,
                 buttonColor = MaterialTheme.colorScheme.background,
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onShowAd() }
             )
             Space(16)
-            PointsCard(
-                text = "Daily Redward",
-                buttonText = "Claim",
+            TokensCard(
+                num = INVITE_REWARD_NUM_TOKEN,
+                text = stringResource(R.string.earn_token_invite_friends),
+                buttonText = stringResource(R.string.earn_token_button_invite),
                 borderColor = Color.Transparent,
                 buttonColor = MaterialTheme.colorScheme.background,
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = {}
+                onClick = { onNavigateRefCode() }
             )
         }
     } // ModalBottom

@@ -49,7 +49,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sginnovations.asked.Constants.Companion.AI_NAME
 import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
@@ -58,7 +57,7 @@ import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatUserMessage
-import com.sginnovations.asked.ui.ui_components.points.TokenIcon
+import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
@@ -279,10 +278,9 @@ fun ChatStateLess(
                 shape = RoundedCornerShape(20.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
-
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                     ),
                 maxLines = Int.MAX_VALUE,
-
                 )
             IconButton(
                 onClick = {

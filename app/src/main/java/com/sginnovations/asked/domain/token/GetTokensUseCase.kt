@@ -21,6 +21,7 @@ class GetTokensUseCase @Inject constructor(){
 
             if (snapshot != null && snapshot.exists()) {
                 val tokens = snapshot.getLong("tokens")
+                Log.i(TAG, "tokens: ${tokens.toString()}")
                 if (tokens != null) {
                     trySend(tokens)
                 } else {

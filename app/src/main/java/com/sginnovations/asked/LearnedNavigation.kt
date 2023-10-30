@@ -27,28 +27,30 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.chat.ChatStateFul
 import com.sginnovations.asked.ui.crop.CropStateFul
+import com.sginnovations.asked.ui.earn_points.EarnPoints
+import com.sginnovations.asked.ui.gallery.GalleryStateFull
+import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
+import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
+import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
+import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
+import com.sginnovations.asked.ui.sign_in.LearnedAuth
+import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
 import com.sginnovations.asked.ui.top_bottom_bar.Auth
 import com.sginnovations.asked.ui.top_bottom_bar.Camera
 import com.sginnovations.asked.ui.top_bottom_bar.Chat
 import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
 import com.sginnovations.asked.ui.top_bottom_bar.Crop
+import com.sginnovations.asked.ui.top_bottom_bar.Gallery
 import com.sginnovations.asked.ui.top_bottom_bar.NewConversation
 import com.sginnovations.asked.ui.top_bottom_bar.Points
 import com.sginnovations.asked.ui.top_bottom_bar.Profile
 import com.sginnovations.asked.ui.top_bottom_bar.RefCode
+import com.sginnovations.asked.ui.top_bottom_bar.Subscription
 import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.ui.top_bottom_bar.topbar.LearnedTopBar
-import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
-import com.sginnovations.asked.ui.points.PointsStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
-import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
-import com.sginnovations.asked.ui.sign_in.LearnedAuth
-import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
-import com.sginnovations.asked.ui.top_bottom_bar.Subscription
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.BillingViewModel
@@ -59,6 +61,7 @@ import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "LearnedNavigation"
+
 @Composable
 fun LearnedNavigation(
     vmChat: ChatViewModel = hiltViewModel(),
@@ -77,7 +80,6 @@ fun LearnedNavigation(
     val scope = rememberCoroutineScope()
 
     val intent = remember { (context as Activity).intent }
-
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
@@ -85,7 +87,7 @@ fun LearnedNavigation(
         when (navController.currentBackStackEntryAsState().value?.destination?.route) {
             Auth.getName(context) -> Auth
 
-            //Camera.getName(context) -> Camera
+            Crop.getName(context) -> Crop
             ChatsHistory.getName(context) -> ChatsHistory
             Profile.getName(context) -> Profile
 
@@ -94,8 +96,6 @@ fun LearnedNavigation(
             else -> null
         }
     val currentScreenTitle = currentScreen?.route ?: ""
-
-    val pointsScreenVisible = vmToken.pointsScreenVisible.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
@@ -106,11 +106,12 @@ fun LearnedNavigation(
             Log.i(TAG, "Calling SetUp")
             vmAuth.userJustLogged()
             vmToken.startTokenListener()
-            vmReferral.checkReferralInvite(intent)
+            vmReferral.handleDynamicLink(intent)
             vmAds.loadInterstitialAd(context)
+
         }
     }
-    
+
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
         topBar = {
@@ -121,6 +122,7 @@ fun LearnedNavigation(
                 currentScreenTitle = currentScreenTitle,
                 canNavigateBack = navController.previousBackStackEntry != null,
 
+                onNavigate = { navController.navigate(it.route) },
                 navigateUp = { navController.navigateUp() },
             )
         },
@@ -153,8 +155,9 @@ fun LearnedNavigation(
                         Log.i(TAG, "Calling SetUp")
                         vmAuth.userJustLogged()
                         vmToken.startTokenListener()
-                        vmReferral.checkReferralInvite(intent)
+                        vmReferral.handleDynamicLink(intent)
                         vmAds.loadInterstitialAd(context)
+
                     }
                 }
             }
@@ -168,17 +171,23 @@ fun LearnedNavigation(
                 exitTransition = { ExitTransition.None }
             ) {
                 CameraStateFul(
+                    navController = navController,
+
                     vmCamera = vmCamera,
                     vmToken = vmToken,
 
-                    onCropNavigation = { navController.navigate(route = Crop.route) }
+                    onCropNavigation = { navController.navigate(route = Crop.route) },
+                    onNavigateNewConversation  = {
+                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
+                            // This ensures that the previous screen is removed from the backstack
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                        navController.navigate(NewConversation.route)
+                    }
                 )
-                if (pointsScreenVisible.value) {
-                    PointsStateFul(
-                        vmToken = vmToken,
-                        vmAds = vmAds,
-                    )
-                }
+                EarnPoints(vmToken,vmAds,navController)
             }
             composable(
                 route = ChatsHistory.route,
@@ -207,14 +216,10 @@ fun LearnedNavigation(
                         navController.popBackStack(Profile.route, true)
                         navController.navigate(route = Auth.route)
                     },
-                    onNavigateRefCode = { navController.navigate(route = Subscription.route) }
+                    onNavigateRefCode = { navController.navigate(route = RefCode.route) },
+                    onNavigateSubscriptions = { navController.navigate(route = Subscription.route) }
                 )
-                if (pointsScreenVisible.value) {
-                    PointsStateFul(
-                        vmToken = vmToken,
-                        vmAds = vmAds,
-                    )
-                }
+                EarnPoints(vmToken,vmAds,navController)
             }
             /**
              * Camera Crop
@@ -237,10 +242,15 @@ fun LearnedNavigation(
                     vmAds = vmAds,
 
                     onNavigateChat = {
-                        navController.popBackStack(navController.graph.startDestinationId, true)
+                        // This is where you handle navigation
                         navController.navigate(ChatsHistory.route) {
-                            popUpTo(ChatsHistory.route) { inclusive = true }
+                            // This ensures that the previous screen is removed from the backstack
+                            popUpTo(navController.currentDestination?.route ?: "") {
+                                inclusive = true
+                                saveState = true
+                            }
                             launchSingleTop = true
+                            restoreState = true
                         }
                         navController.navigate(Chat.route)
                     }
@@ -275,12 +285,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
                     vmAuth = vmAuth,
                 )
-                if (pointsScreenVisible.value) {
-                    PointsStateFul(
-                        vmToken = vmToken,
-                        vmAds = vmAds,
-                    )
-                }
+                EarnPoints(vmToken,vmAds,navController)
             }
             composable(route = RefCode.route) {
                 ReferralCodeStateFul(
@@ -291,6 +296,12 @@ fun LearnedNavigation(
             composable(route = Subscription.route) {
                 SubscriptionStateFull(
                     vmBilling = vmBilling,
+                )
+            }
+            composable(route = Gallery.route) {
+                GalleryStateFull(
+                    vmCamera = vmCamera,
+                    onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
             }
         }

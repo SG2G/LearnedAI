@@ -49,7 +49,6 @@ fun LearnedAuth(
             ).show()
 
             onNavigationUserAlreadySigned()
-            vmAuth.resetState()
         }
     }
 

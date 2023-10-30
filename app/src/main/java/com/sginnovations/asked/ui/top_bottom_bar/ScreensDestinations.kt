@@ -89,3 +89,9 @@ object Subscription : ScreensDestinations {
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }
+object Gallery : ScreensDestinations {
+    override val route = "Gallery"
+    override fun getName(context: Context) = "Gallery"
+    override val icon: ImageVector? = null
+    override val selectedIcon: ImageVector? = null
+}

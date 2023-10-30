@@ -13,8 +13,8 @@ class ReferralViewModel @Inject constructor(
     private val referralCodeRepository: ReferralCodeRepository
 ) : ViewModel() {
 
-    suspend fun checkReferralInvite(intent: Intent) {
+    suspend fun handleDynamicLink(intent: Intent) {
         Log.d(TAG, "ViewModel -> checkReferralInvite")
-        referralCodeRepository.checkReferralCodeInvite(intent)
+        referralCodeRepository.handleDynamicLink(intent)
     }
 }

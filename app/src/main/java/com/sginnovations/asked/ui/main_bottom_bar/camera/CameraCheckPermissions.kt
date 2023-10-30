@@ -21,7 +21,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraCheckPermissions(
+fun CheckPermissions(
     permsAsked: String,
     
     onPermissionGranted: () -> Unit,

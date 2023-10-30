@@ -6,5 +6,14 @@
     <string name="bottom_bar_label_camera">Camera</string>
     <string name="bottom_bar_label_search">Search</string>
     <string name="bottom_bar_label_profile">Profile</string>
+    <string name="subscription_week">" / Week"</string>
+    <string name="crop_retake">Retake</string>
+    <string name="crop_crop">Crop</string>
+    <string name="earn_token_unlimited_points">Unlimited Points</string>
+    <string name="earn_token_watch_ad">Watch ad</string>
+    <string name="earn_token_invite_friends">Invite Friends</string>
+    <string name="earn_token_button_invite">Invite</string>
+    <string name="earn_token_watch">Watch</string>
+    <string name="earn_token_see_more">See more</string>
 
 </resources>

@@ -1,5 +1,9 @@
 package com.sginnovations.asked.ui.subscription
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,44 +21,92 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.billingclient.api.ProductDetails
+import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import kotlin.collections.firstOrNull
 
+private const val TAG = "SubscriptionStateFull"
 
 enum class Option {
-    Option1Months,
-    Option6Months,
-    Option12Months
+    OptionWeekly,
+    OptionLifetime,
 }
 
 @Composable
 fun SubscriptionStateFull(
     vmBilling: BillingViewModel,
 ) {
-    val userOption = remember { mutableStateOf(Option.Option1Months) }
-    val productDetails = vmBilling.productDetails.value
+    val userOption = remember { mutableStateOf(Option.OptionWeekly) }
+    val productDetailsList = vmBilling.productDetails
 
-    if (productDetails != null) {
+    val context = LocalContext.current
+
+    fun Context.getActivity(): Activity? {
+        return when (this) {
+            is Activity -> this
+            is ContextWrapper -> baseContext.getActivity()
+            else -> null
+        }
+    }
+
+    val activity = context.getActivity()
+
+    Log.i(TAG, "SubscriptionStateFull: ${productDetailsList.value}")
+    if (productDetailsList.value.isNotEmpty()) {
         SubscriptionStateLess(
-            productDetails,
+            productDetailsList.value[0],
+            productDetailsList.value[1],
 
-            userOption
-        )
+            userOption,
+
+            ) { productDetails ->
+            if (activity != null) {
+                Log.i(TAG, "SubscriptionStateFull: Activity not null, launching billing flow")
+                when (userOption.value) {
+                    Option.OptionWeekly ->
+                        vmBilling.launchBillingFlowSubs(
+                        activity,
+                        productDetails,
+                    )
+                    Option.OptionLifetime ->
+                        vmBilling.launchBillingFlowInApp(
+                        activity,
+                        productDetails,
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
 fun SubscriptionStateLess(
-    productDetails: ProductDetails,
+    productLifetime: ProductDetails,
+    productWeekly: ProductDetails,
 
     userOption: MutableState<Option>,
+
+    onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
+    val priceInApp = remember { mutableStateOf(productLifetime.oneTimePurchaseOfferDetails?.formattedPrice ?: "null")}
+    val priceSub = remember { mutableStateOf(getProductPrice(productWeekly)) }
+
+    val selectedPlan = remember { mutableStateOf(productWeekly) }
+
+    when (userOption.value) {
+        Option.OptionWeekly -> selectedPlan.value = productWeekly
+        Option.OptionLifetime -> selectedPlan.value = productLifetime
+    }
+
+    Log.i(TAG, "$priceSub / $priceInApp")
 
     Column(
         Modifier.padding(vertical = 16.dp)
@@ -72,40 +124,27 @@ fun SubscriptionStateLess(
                 ),
             )
         }
-        val subscriptionOfferDetailsList = productDetails.subscriptionOfferDetails
-        val price = subscriptionOfferDetailsList
-            ?.firstOrNull()?.pricingPhases?.pricingPhaseList
-            ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
-
 
 
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
         ) {
+            // Product 1 - Weekly
             SubscriptionCard(
-                numMonths = productDetails.zza().toString(),
-                priceEachMonths = productDetails.name,
-                allPrice = price.toString(),
-                subscriptionOption = Option.Option12Months,
+                durationTime = stringResource(R.string.subscription_week),
+                allPrice = priceSub.value,
+                subscriptionOption = Option.OptionWeekly,
                 userOption = userOption.value
-            ) { userOption.value = Option.Option12Months }
+            ) { userOption.value = Option.OptionWeekly }
 
+            // Product 2 - LifeTime
             SubscriptionCard(
-                numMonths = "1 Months",
-                priceEachMonths = "6,98€ each month",
-                allPrice = "6,98€",
-                subscriptionOption = Option.Option12Months,
+                durationTime = "/ Lifetime",
+                allPrice = priceInApp.value,
+                subscriptionOption = Option.OptionLifetime,
                 userOption = userOption.value
-            ) { userOption.value = Option.Option12Months }
-
-            SubscriptionCard(
-                numMonths = "12 Months",
-                priceEachMonths = "5,6€ each month",
-                allPrice = "67,2€",
-                subscriptionOption = Option.Option1Months,
-                userOption = userOption.value
-            ) { userOption.value = Option.Option1Months }
+            ) { userOption.value = Option.OptionLifetime }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -113,7 +152,7 @@ fun SubscriptionStateLess(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { onLaunchPurchaseFlow(selectedPlan.value) }, //TODO AD
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     ),
@@ -132,7 +171,12 @@ fun SubscriptionStateLess(
                 }
             }
         }
-
     }
+}
+fun getProductPrice(productDetails: ProductDetails): String {
+    val subscriptionOfferDetailsList = productDetails.subscriptionOfferDetails
+    return subscriptionOfferDetailsList
+        ?.firstOrNull()?.pricingPhases?.pricingPhaseList
+        ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice.toString()
 }
 

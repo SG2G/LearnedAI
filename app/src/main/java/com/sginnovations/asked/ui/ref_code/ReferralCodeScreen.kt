@@ -25,15 +25,16 @@ fun ReferralCodeStateFul(
     val context = LocalContext.current
 
     val userId = vmAuth.userAuth.collectAsState().value?.userId
+    val deepLink = Uri.parse("https://askedai.page.link/?invitedby=$userId")
     val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-        .setLink(Uri.parse("https://askedai.page.link/?invitedby=$userId"))
+        .setLink(deepLink)
         .setDomainUriPrefix("https://askedai.page.link")
         .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
         .buildDynamicLink()
 
     val dynamicLinkUri = dynamicLink.uri
 
-
+    Log.i(TAG, "dynamicLink: $dynamicLinkUri")
 
     ReferralCodeStateLess(
         dynamicLinkUri = dynamicLinkUri

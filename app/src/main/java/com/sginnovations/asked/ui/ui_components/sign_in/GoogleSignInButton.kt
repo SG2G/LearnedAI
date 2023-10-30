@@ -40,7 +40,7 @@ fun GoogleSignInButton(
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "Sign in whit Google",
+            text = "Sign in with Google",
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }

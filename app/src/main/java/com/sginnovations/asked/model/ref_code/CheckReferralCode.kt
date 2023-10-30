@@ -9,8 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
-private const val TAG = "CheckReferralCode"
-class CheckReferralCode @Inject constructor(
+private const val TAG = "HandleDynamicLink"
+class HandleDynamicLink @Inject constructor(
     private val executor: Executor,
 ) {
     suspend operator fun invoke(

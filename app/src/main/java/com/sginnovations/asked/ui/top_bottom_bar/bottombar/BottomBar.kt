@@ -37,6 +37,8 @@ import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
 import com.sginnovations.asked.ui.top_bottom_bar.Profile
 import com.sginnovations.asked.ui.top_bottom_bar.ScreensDestinations
 
+private const val TAG = "LearnedBottomBar"
+
 @Composable
 fun LearnedBottomBar(
     navController: NavController,
@@ -44,10 +46,9 @@ fun LearnedBottomBar(
     canNavigateBack: Boolean,
     backStackEntry: NavBackStackEntry?,
 ) {
-    val currentRoute = remember { mutableStateOf(Camera.route) }
-
+    Log.i(TAG, "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController")
     if (!canNavigateBack) {
-        Log.i("LearnedBottom", "LearnedBottomBar: $currentScreenTitle")
+        Log.i(TAG, "currentScreenTitle: $currentScreenTitle")
 
         if (currentScreenTitle != Auth.route) {
             val items = listOf(Camera, ChatsHistory, Profile)
@@ -71,8 +72,6 @@ fun LearnedBottomBar(
                                 }
                                 launchSingleTop = true
                                 restoreState = true
-
-                                currentRoute.value = item.route
                             }
                         },
                         colors = NavigationBarItemDefaults.colors(

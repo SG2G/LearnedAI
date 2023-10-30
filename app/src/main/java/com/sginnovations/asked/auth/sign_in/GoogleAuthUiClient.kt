@@ -13,13 +13,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sginnovations.asked.R
+import com.sginnovations.asked.repository.AuthRepository
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
+import javax.inject.Inject
 
 private const val TAG = "GoogleAuthUiClient"
 class GoogleAuthUiClient (
     private val context: Context,
-    private val oneTapClient: SignInClient
+    private val oneTapClient: SignInClient,
 ) {
     private val auth = Firebase.auth
     private val firestore = Firebase.firestore

@@ -30,6 +30,10 @@ class Constants {
         const val CAMERA_TEXT = "Text"
         const val CAMERA_MATH = "Math"
 
+        const val AD_REWARD_NUM_TOKEN = "2"
+        const val INVITE_REWARD_NUM_TOKEN = "10"
+
+
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
 
     }
