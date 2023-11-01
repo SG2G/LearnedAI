@@ -35,7 +35,7 @@ class BillingViewModel @Inject constructor(
         }
     }
 
-    private fun connectToGooglePlay() {
+    fun connectToGooglePlay() {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {

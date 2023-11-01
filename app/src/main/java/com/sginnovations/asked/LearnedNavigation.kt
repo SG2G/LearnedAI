@@ -108,7 +108,9 @@ fun LearnedNavigation(
             vmToken.startTokenListener()
             vmReferral.handleDynamicLink(intent)
             vmAds.loadInterstitialAd(context)
+            vmBilling.connectToGooglePlay()
 
+            navController.navigate(route = Subscription.route)
         }
     }
 
@@ -157,7 +159,9 @@ fun LearnedNavigation(
                         vmToken.startTokenListener()
                         vmReferral.handleDynamicLink(intent)
                         vmAds.loadInterstitialAd(context)
+                        vmBilling.connectToGooglePlay()
 
+                        navController.navigate(route = Subscription.route)
                     }
                 }
             }
@@ -177,7 +181,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
 
                     onCropNavigation = { navController.navigate(route = Crop.route) },
-                    onNavigateNewConversation  = {
+                    onNavigateNewConversation = {
                         navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
                             // This ensures that the previous screen is removed from the backstack
                             popUpTo(navController.graph.id) {
@@ -187,8 +191,9 @@ fun LearnedNavigation(
                         navController.navigate(NewConversation.route)
                     }
                 )
-                EarnPoints(vmToken,vmAds,navController)
+                EarnPoints(vmToken, vmAds, navController)
             }
+
             composable(
                 route = ChatsHistory.route,
                 enterTransition = { EnterTransition.None },
@@ -219,7 +224,7 @@ fun LearnedNavigation(
                     onNavigateRefCode = { navController.navigate(route = RefCode.route) },
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) }
                 )
-                EarnPoints(vmToken,vmAds,navController)
+                EarnPoints(vmToken, vmAds, navController)
             }
             /**
              * Camera Crop
@@ -285,7 +290,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
                     vmAuth = vmAuth,
                 )
-                EarnPoints(vmToken,vmAds,navController)
+                EarnPoints(vmToken, vmAds, navController)
             }
             composable(route = RefCode.route) {
                 ReferralCodeStateFul(

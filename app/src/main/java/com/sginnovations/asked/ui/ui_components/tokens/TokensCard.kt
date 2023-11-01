@@ -57,7 +57,7 @@ fun TokensCard(
             ) {
                 TokenIcon()
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "+$num", modifier = Modifier.width(36.dp),
+                Text(text = num, modifier = Modifier.width(36.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp

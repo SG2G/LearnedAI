@@ -13,6 +13,7 @@ import javax.inject.Inject
 private const val TAG = "HandleDynamicLink"
 class ReferralCodeRepository @Inject constructor(
     private val handleDynamicLink: HandleDynamicLink,
+
     private val refCodeReward: RefCodeRewardUseCase,
 ) {
     @OptIn(DelicateCoroutinesApi::class)

@@ -15,5 +15,7 @@
     <string name="earn_token_button_invite">Invite</string>
     <string name="earn_token_watch">Watch</string>
     <string name="earn_token_see_more">See more</string>
+    <string name="profile_get_more_tokens">Get more Tokens</string>
+    <string name="profile_invite_friends">Invite Friends</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sginnovations.asked.R
@@ -90,8 +93,6 @@ fun StateLessProfile(
     onNavigateRefCode: () -> Unit,
     onNavigateSubscriptions: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
-
     val tokens = vmToken.tokens.collectAsStateWithLifecycle()
 
     Column {
@@ -123,10 +124,7 @@ fun StateLessProfile(
                 }
             }
         }
-
-        LogOutButton(onClick = { onSignOut() })
-        DeleteAccountButton(onClick = { onDeleteAccount() })
-
+        
         Box(modifier = Modifier.padding(8.dp)) {
             Card(
                 modifier = Modifier.padding(8.dp),
@@ -135,40 +133,54 @@ fun StateLessProfile(
                 )
             ) {
                 ProfileButton(
-                    text = "Get more Tokens",
-                    painterResource = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
+                    text = stringResource(R.string.profile_get_more_tokens),
+                    painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
                     onClick = { vmToken.switchPointsVisibility() }
                 )
                 ProfileButton(
-                    text = "Invite Friends",
-                    painterResource = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
+                    text = stringResource(R.string.profile_invite_friends),
+                    painterResource = painterResource(id = R.drawable.share_fill0_wght400_grad0_opsz48),
                     onClick = { onNavigateRefCode() }
                 )
             }
         }
+        LogOutButton(onClick = { onSignOut() })
+
+        //DeleteAccountButton(onClick = { throw RuntimeException("Test Crash") })
 
 
         /**
          * Testing
          */
-        Text(text = "Testing")
-        Button(onClick = {
-            scope.launch {
-                vmToken.oneLessToken()
-            }
-        }
+//        Text(text = "Testing")
+//        Button(onClick = {
+//            scope.launch {
+//                vmToken.oneLessToken()
+//            }
+//        }
+//        ) {
+//            Text(text = "Rest 1")
+//        }
+//        Button(onClick = { onSignOut() }) {
+//            Text(text = "Sign Out")
+//        }
+//        Button(onClick = { vmToken.testGivePoints() }) {
+//            Text(text = "Give Tokens")
+//        }
+//        Button(onClick = { onNavigateRefCode() }) {
+//            Text(text = "Ref coded / subscription")
+//        }
+        Box(modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Text(text = "Rest 1")
+            Text(
+                text = "uid: ${userAuth.value?.userId}",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall
+            )
         }
-        Button(onClick = { onSignOut() }) {
-            Text(text = "Sign Out")
-        }
-        Button(onClick = { vmToken.testGivePoints() }) {
-            Text(text = "Give Tokens")
-        }
-        Button(onClick = { onNavigateRefCode() }) {
-            Text(text = "Ref coded / subscription")
-        }
+
     }
 }
 

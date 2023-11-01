@@ -4,6 +4,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -14,8 +15,8 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 23
         targetSdk = 33
-        versionCode = 2
-        versionName = "0.0.1"
+        versionCode = 3
+        versionName = "0.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -62,6 +63,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
     implementation("com.google.firebase:firebase-config:21.5.0")
     implementation("com.google.firebase:firebase-dynamic-links-ktx")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
     // accompanist
     implementation ("com.google.accompanist:accompanist-pager:0.20.0")
     /// admob ///
@@ -81,6 +84,7 @@ dependencies {
     implementation("com.google.mlkit:vision-common:17.3.0")
     /// Cropify ///
     implementation("com.github.moyuruaizawa:cropify:0.3.1")
+    testImplementation("junit:junit:4.12")
 
     /// Camera X ///
     val cameraxVersion = "1.3.0-rc02"

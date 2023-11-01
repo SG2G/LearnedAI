@@ -126,7 +126,7 @@ fun EarnPointsStateLess(
             )
             Space(16)
             TokensCard(
-                num = AD_REWARD_NUM_TOKEN,
+                num = "+$AD_REWARD_NUM_TOKEN",
                 text = stringResource(R.string.earn_token_watch),
                 buttonText = stringResource(R.string.earn_token_watch),
                 borderColor = Color.Transparent,
@@ -136,7 +136,7 @@ fun EarnPointsStateLess(
             )
             Space(16)
             TokensCard(
-                num = INVITE_REWARD_NUM_TOKEN,
+                num = "+$INVITE_REWARD_NUM_TOKEN",
                 text = stringResource(R.string.earn_token_invite_friends),
                 buttonText = stringResource(R.string.earn_token_button_invite),
                 borderColor = Color.Transparent,
