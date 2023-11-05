@@ -13,16 +13,20 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sginnovations.asked.R
+import com.sginnovations.asked.domain.firebase.SetDefaultTokensUseCase
 import com.sginnovations.asked.repository.AuthRepository
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
 private const val TAG = "GoogleAuthUiClient"
-class GoogleAuthUiClient (
+class GoogleAuthUiClient @Inject constructor (
     private val context: Context,
     private val oneTapClient: SignInClient,
+
+    private val setDefaultTokensUseCase: SetDefaultTokensUseCase
 ) {
+
     private val auth = Firebase.auth
     private val firestore = Firebase.firestore
     val user = FirebaseAuth.getInstance().currentUser
@@ -52,7 +56,8 @@ class GoogleAuthUiClient (
 
             if (result.additionalUserInfo?.isNewUser == true) {
                 if (user != null) {
-                    firestore.collection("users").document(user.uid).set(mapOf("tokens" to 7))
+                    Log.d(TAG, "signInWithIntent: setDefaultTokensUseCase")
+                    setDefaultTokensUseCase(firestore, user)
                 }
             }
 

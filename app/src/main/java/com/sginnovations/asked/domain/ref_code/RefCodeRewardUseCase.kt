@@ -1,4 +1,4 @@
-package com.sginnovations.asked.domain
+package com.sginnovations.asked.domain.ref_code
 
 import android.util.Log
 import com.sginnovations.asked.repository.TokenRepository
@@ -8,12 +8,12 @@ private const val TAG = "RefCodeRewardUseCase"
 class RefCodeRewardUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
     private val isNewAccountUseCase: NewAccountUseCase,
-    private val eligibleForReward: EligibleForReward,
+    private val eligibleForRewardUseCase: EligibleForRewardUseCase,
 ) {
     suspend fun invoke(userId: String) {
         Log.i(TAG, "Ref Code reward")
         if (isNewAccountUseCase.invoke()) {
-            if (eligibleForReward.invoke(userId)) {
+            if (eligibleForRewardUseCase.invoke(userId)) {
                 tokenRepository.giveRefCodeReward()
             }
         }

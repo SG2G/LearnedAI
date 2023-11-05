@@ -60,6 +60,7 @@ import com.sginnovations.asked.ui.ui_components.chat.messages.ChatUserMessage
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AuthViewModel
+import com.sginnovations.asked.viewmodel.AuthViewModel.Companion.isPremium
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
@@ -255,10 +256,12 @@ fun ChatStateLess(
                 .scale(0.8f)
                 .padding(start = 16.dp)
         ) {
-            Text(text = "-1")
-            TokenIcon()
-            Spacer(modifier = Modifier.width(2.dp))
-            Text(text = "message")
+            if (!isPremium.value) {
+                Text(text = "-1")
+                TokenIcon()
+                Spacer(modifier = Modifier.width(2.dp))
+                Text(text = "message")
+            }
         }
         Row(
             modifier = Modifier

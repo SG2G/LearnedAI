@@ -11,6 +11,7 @@ import com.sginnovations.asked.Constants.Companion.USERS_NAME
 import com.sginnovations.asked.domain.token.GetTokensUseCase
 import com.sginnovations.asked.domain.token.IncrementTokensUseCase
 import com.sginnovations.asked.viewmodel.AuthViewModel
+import com.sginnovations.asked.viewmodel.AuthViewModel.Companion.isPremium
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -24,6 +25,7 @@ import javax.inject.Singleton
 private const val TAG = "TokenRepository"
 
 private const val tokensOneLess = -1
+
 @Singleton
 class TokenRepository @Inject constructor(
     private val getTokensUseCase: GetTokensUseCase,
@@ -52,10 +54,14 @@ class TokenRepository @Inject constructor(
 
     private suspend fun incrementTokens(numTokens: Int) {
         Log.i(TAG, "incrementTokens")
-        if (documentReference != null) incrementTokensUseCase(documentReference!!,numTokens)
+        if (documentReference != null) incrementTokensUseCase(documentReference!!, numTokens)
     }
 
     suspend fun giveAdReward() = incrementTokens(AD_REWARD_NUM_TOKEN.toInt())
     suspend fun giveRefCodeReward() = incrementTokens(INVITE_REWARD_NUM_TOKEN.toInt())
-    suspend fun oneLessToken() = incrementTokens(tokensOneLess)
+    suspend fun oneLessToken() {
+        if (!isPremium.value) {
+            incrementTokens(tokensOneLess)
+        }
+    }
 }

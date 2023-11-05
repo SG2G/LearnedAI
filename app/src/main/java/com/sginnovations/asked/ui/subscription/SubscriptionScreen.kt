@@ -12,12 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,31 +30,34 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.collections.firstOrNull
 
 private const val TAG = "SubscriptionStateFull"
 
-enum class Option {
-    OptionWeekly,
-    OptionLifetime,
-}
+enum class Option { OptionWeekly, OptionLifetime }
 
 @Composable
 fun SubscriptionStateFull(
     vmBilling: BillingViewModel,
 ) {
     val userOption = remember { mutableStateOf(Option.OptionWeekly) }
-
-    val productDetailsList = remember { mutableStateOf(vmBilling.productDetails).value }
     val showComposable = remember { mutableStateOf(false) }
 
+    val productLifetime = vmBilling.productLifetime
+    val productWeekly = vmBilling.productWeekly
+
+    val priceInApp = remember { mutableStateOf<String?>(null) }
+    val priceSub = remember { mutableStateOf<String?>(null) }
+
+
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     fun Context.getActivity(): Activity? {
         return when (this) {
@@ -66,41 +66,59 @@ fun SubscriptionStateFull(
             else -> null
         }
     }
-
     val activity = context.getActivity()
 
-    LaunchedEffect(productDetailsList.value) {
-        Log.i(TAG, "${productDetailsList.value.size}")
+    LaunchedEffect(Unit) {
+        var attempts = 0
+        while (priceInApp.value == null && attempts < 5) { // try up to 5 times
+            priceInApp.value = productLifetime.value?.oneTimePurchaseOfferDetails?.formattedPrice
 
-        if (productDetailsList.value.size == 2) {
+            priceSub.value = productWeekly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+
+            delay(250)
+            Log.i(TAG, "$attempts $priceSub / $priceInApp")
+
+            attempts++
+        }
+
+        // Check if priceInApp is not null before setting showComposable to true
+        if (priceInApp.value != null && priceSub.value != null) {
             showComposable.value = true
         }
     }
 
-    Log.i(TAG, "ALL DATA productDetailsList: ${productDetailsList.value}")
 
     if (showComposable.value) {
         SubscriptionStateLess(
-            productDetailsList.value[0],
-            productDetailsList.value[1],
+            productLifetime,
+            productWeekly,
+
+            priceInApp,
+            priceSub,
 
             userOption,
 
             ) { productDetails ->
             if (activity != null) {
-                Log.i(TAG, "SubscriptionStateFull: Activity not null, launching billing flow")
-                when (userOption.value) {
-                    Option.OptionWeekly ->
-                        vmBilling.launchBillingFlowSubs(
-                            activity,
-                            productDetails,
-                        )
+                scope.launch {
+                    Log.i(
+                        TAG,
+                        "SubscriptionStateFull: Activity not null, launching billing flow"
+                    )
+                    when (userOption.value) {
+                        Option.OptionWeekly ->
+                            vmBilling.launchBillingFlowSubs(
+                                activity,
+                                productDetails,
+                            )
 
-                    Option.OptionLifetime ->
-                        vmBilling.launchBillingFlowInApp(
-                            activity,
-                            productDetails,
-                        )
+                        Option.OptionLifetime ->
+                            vmBilling.launchBillingFlowInApp(
+                                activity,
+                                productDetails,
+                            )
+                    }
                 }
             }
         }
@@ -109,30 +127,16 @@ fun SubscriptionStateFull(
 
 @Composable
 fun SubscriptionStateLess(
-    productLifetime: ProductDetails,
-    productWeekly: ProductDetails,
+    productLifetime: MutableState<ProductDetails?>,
+    productWeekly: MutableState<ProductDetails?>,
+
+    priceInApp: MutableState<String?>,
+    priceSub: MutableState<String?>,
 
     userOption: MutableState<Option>,
 
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
-    val priceInApp = remember { mutableStateOf("Error") }
-    val priceSub = remember { mutableStateOf("Error") }
-
-    //Observe the changes in productLifetime and productWeekly
-    LaunchedEffect(productLifetime, productWeekly) {
-        val newPriceInApp = productLifetime.oneTimePurchaseOfferDetails?.formattedPrice
-        if (newPriceInApp != null && newPriceInApp != "Error") {
-            priceInApp.value = newPriceInApp
-        }
-
-        val newPriceSub = productWeekly.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
-            ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
-        if (newPriceSub != null && newPriceSub != "Error") {
-            priceSub.value = newPriceSub
-        }
-    }
-
     val selectedPlan = remember { mutableStateOf(productWeekly) }
 
     when (userOption.value) {
@@ -140,7 +144,7 @@ fun SubscriptionStateLess(
         Option.OptionLifetime -> selectedPlan.value = productLifetime
     }
 
-    Log.i(TAG, "$priceSub / $priceInApp")
+    Log.i(TAG, "SubscriptionStateLess - $priceSub / $priceInApp")
 
     Column(
         Modifier
@@ -167,20 +171,26 @@ fun SubscriptionStateLess(
         verticalArrangement = Arrangement.Bottom
     ) {
         // Product 1 - Weekly
-        SubscriptionCard(
-            durationTime = stringResource(R.string.subscription_week),
-            allPrice = priceSub.value,
-            subscriptionOption = Option.OptionWeekly,
-            userOption = userOption.value
-        ) { userOption.value = Option.OptionWeekly }
+        priceSub.value?.let {
+            SubscriptionCard(
+                durationTime = stringResource(R.string.subscription_week),
+                smallText = "3-day FREE TRIAL, Auto renewable",
+                allPrice = it,
+                subscriptionOption = Option.OptionWeekly,
+                userOption = userOption.value
+            ) { userOption.value = Option.OptionWeekly }
+        }
 
         // Product 2 - LifeTime
-        SubscriptionCard(
-            durationTime = "/ Lifetime",
-            allPrice = priceInApp.value.toString(),
-            subscriptionOption = Option.OptionLifetime,
-            userOption = userOption.value
-        ) { userOption.value = Option.OptionLifetime }
+        priceInApp.value?.let {
+            SubscriptionCard(
+                durationTime = stringResource(R.string.subscription_lifetime),
+                smallText = "Full time, Lifetime",
+                allPrice = it,
+                subscriptionOption = Option.OptionLifetime,
+                userOption = userOption.value
+            ) { userOption.value = Option.OptionLifetime }
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -188,7 +198,7 @@ fun SubscriptionStateLess(
             horizontalArrangement = Arrangement.Center
         ) {
             Button(
-                onClick = { onLaunchPurchaseFlow(selectedPlan.value) }, //TODO AD
+                onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } }, //TODO AD
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
@@ -208,11 +218,3 @@ fun SubscriptionStateLess(
         }
     }
 }
-
-fun getProductPrice(productDetails: ProductDetails): String {
-    val subscriptionOfferDetailsList = productDetails.subscriptionOfferDetails
-    return subscriptionOfferDetailsList
-        ?.firstOrNull()?.pricingPhases?.pricingPhaseList
-        ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice.toString()
-}
-

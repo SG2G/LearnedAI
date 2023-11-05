@@ -1,34 +1,25 @@
 package com.sginnovations.asked.ui.main_bottom_bar.profile
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,11 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.UserData
-import com.sginnovations.asked.ui.ui_components.profile.DeleteAccountButton
 import com.sginnovations.asked.ui.ui_components.profile.LogOutButton
 import com.sginnovations.asked.ui.ui_components.profile.ProfileButton
+import com.sginnovations.asked.ui.ui_components.profile.ProfileName
 import com.sginnovations.asked.ui.ui_components.profile.ProfilePicture
-import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
@@ -73,7 +64,7 @@ fun StateFulProfile(
             }
         },
         onDeleteAccount = {
-            scope.launch {  }
+            scope.launch { }
 
         },
         onNavigateRefCode = { onNavigateRefCode() },
@@ -108,13 +99,12 @@ fun StateLessProfile(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(
-                        text = userAuth.value?.userName!!,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    PointsDisplay(modifier = Modifier.scale(0.8f),tokens = tokens, showPlus = false) { vmToken.switchPointsVisibility() }
+                    ProfileName(userAuth.value?.userName.toString())
+                    TokenDisplay(
+                        modifier = Modifier.scale(0.8f),
+                        tokens = tokens,
+                        showPlus = false
+                    ) { vmToken.switchPointsVisibility() }
                 }
                 Button(
                     onClick = { onNavigateSubscriptions() },
@@ -124,7 +114,7 @@ fun StateLessProfile(
                 }
             }
         }
-        
+
         Box(modifier = Modifier.padding(8.dp)) {
             Card(
                 modifier = Modifier.padding(8.dp),
@@ -145,9 +135,6 @@ fun StateLessProfile(
             }
         }
         LogOutButton(onClick = { onSignOut() })
-
-        //DeleteAccountButton(onClick = { throw RuntimeException("Test Crash") })
-
 
         /**
          * Testing
@@ -170,7 +157,8 @@ fun StateLessProfile(
 //        Button(onClick = { onNavigateRefCode() }) {
 //            Text(text = "Ref coded / subscription")
 //        }
-        Box(modifier = Modifier.fillMaxSize(),
+        Box(
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(

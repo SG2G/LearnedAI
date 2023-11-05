@@ -16,13 +16,6 @@ class AuthRepository @Inject constructor(
 ) {
     private var documentReference: DocumentReference? = null
 
-    fun getDocumentReference(): DocumentReference? {
-        Log.i(TAG, "getDocumentReference: ${firebaseAuth.currentUser?.displayName}")
-        return firebaseAuth.currentUser?.let { user ->
-            firebaseStore.collection(Constants.USERS_NAME).document(user.uid)
-        }
-    }
-
     init {
         firebaseAuth.addAuthStateListener {
             documentReference = firebaseAuth.currentUser?.let { user ->
@@ -30,5 +23,11 @@ class AuthRepository @Inject constructor(
             }
         }
     }
-}
 
+    fun getDocumentReference(): DocumentReference? {
+        Log.i(TAG, "getDocumentReference: ${firebaseAuth.currentUser?.displayName}")
+        return firebaseAuth.currentUser?.let { user ->
+            firebaseStore.collection(Constants.USERS_NAME).document(user.uid)
+        }
+    }
+}

@@ -2,11 +2,10 @@ package com.sginnovations.asked.repository
 
 import android.content.Intent
 import android.util.Log
-import com.sginnovations.asked.domain.RefCodeRewardUseCase
+import com.sginnovations.asked.domain.ref_code.RefCodeRewardUseCase
 import com.sginnovations.asked.model.ref_code.HandleDynamicLink
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +19,7 @@ class ReferralCodeRepository @Inject constructor(
     suspend fun handleDynamicLink(intent: Intent) {
         Log.d("handleDynamicLink", "checkReferralCodeInvite: ")
         handleDynamicLink(
-            intent,
+            intent = intent,
             onRewardUser = { userId ->
                 Log.d(TAG, "handleDynamicLink: Reward granted and given yesyes")
                 GlobalScope.launch {

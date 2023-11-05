@@ -26,7 +26,7 @@ import javax.inject.Inject
 private const val TAG = "AdManager"
 
 class AdManager @Inject constructor(
-    private val tokenRepository: TokenRepository
+    private val tokenRepository: TokenRepository,
 ) {
     private var rewardedAd: RewardedAd? = null
     private val rewardAdUnit = REWARD_AD_UNIT
@@ -43,7 +43,9 @@ class AdManager @Inject constructor(
                     Log.d(TAG, adError.toString())
                     interstitialAd = null
                     Log.d(TAG, "Interstitial Ad failed, trying again.")
+
                     loadInterstitialAd(context)
+
                 }
 
                 override fun onAdLoaded(ad: InterstitialAd) {
@@ -52,6 +54,7 @@ class AdManager @Inject constructor(
                 }
             })
     }
+
     fun showInterstitialAd(activity: Activity) {
         if (interstitialAd != null) {
             interstitialAd?.show(activity)
@@ -69,7 +72,9 @@ class AdManager @Inject constructor(
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     Log.d(TAG, adError.toString())
                     rewardedAd = null
+
                     loadRewardedAd(context)
+
                 }
 
                 override fun onAdLoaded(ad: RewardedAd) {
@@ -107,7 +112,9 @@ class AdManager @Inject constructor(
                     Log.d(TAG, "Rewarded Ad showed fullscreen content.")
                     // Se llama después de que se muestra el anuncio a pantalla completa.
                     // Recargamos el anuncio para que esté listo para la próxima vez.
+
                     loadRewardedAd(activity)
+
                 }
             }
         } ?: run {

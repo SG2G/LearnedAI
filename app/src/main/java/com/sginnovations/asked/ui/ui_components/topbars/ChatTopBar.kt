@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 
@@ -72,7 +72,7 @@ fun ChatTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
             ) {
-                PointsDisplay(
+                TokenDisplay(
                     tokens = tokens,
                     showPlus = true
                 ) { vmTokens.switchPointsVisibility() }

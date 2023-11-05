@@ -34,7 +34,7 @@ import com.sginnovations.asked.ui.top_bottom_bar.Gallery
 import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
 import com.sginnovations.asked.ui.ui_components.camera.CameraPreview
 import com.sginnovations.asked.ui.ui_components.camera.PhotoButton
-import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 
@@ -120,7 +120,7 @@ fun CameraStateLess(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End,
         ) {
-            PointsDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
+            TokenDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
         }
         Row(
             modifier = Modifier

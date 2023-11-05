@@ -164,7 +164,7 @@ fun NewConversationStateLess(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    ),
+                ),
                 maxLines = Int.MAX_VALUE,
             )
             IconButton(
@@ -191,6 +191,7 @@ fun TitleChatUseExample(text: String) {
         )
     )
 }
+
 @Composable
 fun SubTitleChatUseExample(text: String) {
     Text(

@@ -9,10 +9,6 @@ class RoomRepository @Inject constructor(
     private val chatDao: ChatDao
 ) {
 
-    suspend fun getAll(): List<MessageEntity> {
-        return chatDao.getAll()
-    }
-
     suspend fun createConversation(conversationEntity: ConversationEntity): Long {
         return chatDao.insertConversation(conversationEntity)
     }

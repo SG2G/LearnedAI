@@ -1,17 +1,20 @@
-package com.sginnovations.asked.domain
+package com.sginnovations.asked.domain.ref_code
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sginnovations.asked.Constants.Companion.USERS_NAME
+import com.sginnovations.asked.domain.firebase.SetUserInvitedUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 private const val TAG = "EligibleForReward"
-class EligibleForReward @Inject constructor(
+class EligibleForRewardUseCase @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth,
+
+    private val setUserInvitedUseCase: SetUserInvitedUseCase
 ) {
     suspend fun invoke(invitationUserId: String): Boolean {
         var currentUser = firebaseAuth.currentUser
@@ -32,12 +35,7 @@ class EligibleForReward @Inject constructor(
                 val invitationsCollection = userDocument.collection("invitations")
                 val querySnapshot = invitationsCollection.get().await()
                 if (querySnapshot.isEmpty) {
-                    Log.i(TAG, "invitationsCollection empty")
-                    // The collection doesn't exist or is empty.
-                    // Here you can create the collection and add the document.
-                    val invitationData = mapOf("invited" to true, "invitedBy" to invitationUserId)
-                    invitationsCollection.document().set(invitationData).await()
-                    true
+                    setUserInvitedUseCase(invitationsCollection, invitationUserId)
                 } else {
                     Log.i(TAG, "invitationsCollection NOT empty, User already invited")
                     // The collection exists and is not empty.

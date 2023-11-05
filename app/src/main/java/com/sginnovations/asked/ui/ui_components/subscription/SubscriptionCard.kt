@@ -43,6 +43,7 @@ import com.sginnovations.asked.ui.subscription.Option
 @Composable
 fun SubscriptionCard(
     durationTime: String,
+    smallText: String,
     allPrice: String,
     subscriptionOption: Option,
     userOption: Option,
@@ -81,7 +82,7 @@ fun SubscriptionCard(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = "3-day FREE TRIAL, Auto renewable",
+                        text = smallText,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = TextStyle(
                             fontSize = 12.sp

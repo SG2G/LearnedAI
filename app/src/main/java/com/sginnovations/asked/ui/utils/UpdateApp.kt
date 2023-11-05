@@ -25,15 +25,21 @@ fun UpdateApp() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "You have a older version, for access new features please update.",
-            color = MaterialTheme.colorScheme.onBackground
+            text = "Critical Updates Required",
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = "There are critical updates avaliable. Please update the app to apply these changes.",
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodyMedium
         )
         Button(onClick = {
             scope.launch {
-                openAppInPlayStore("com.sginnovations.quicknotes", context) //TODO CHANGE TO ASKED
+                openAppInPlayStore("com.sginnovations.asked", context)
             }
         }) {
-            Text("Open Google Play Store")
+            Text("Update")
         }
     }
 

@@ -13,7 +13,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 
 @Composable
-fun SubscriptionsTopBar(
+fun SubscriptionsTopBar( //TODO DELETE
     currentScreenTitle: String?,
 
     navigateUp: () -> Unit,

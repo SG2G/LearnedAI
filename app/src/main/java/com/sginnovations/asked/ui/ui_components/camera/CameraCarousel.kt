@@ -53,7 +53,7 @@ fun CameraCarousel(
             count = sliderList.size,
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 144.dp),
-            modifier = Modifier.height(38.dp)
+            modifier = Modifier.height(48.dp)
         ) { item ->
             val isSelected = pagerState.currentPage == item
             val targetAlpha = if (isSelected) 1f else 0.5f

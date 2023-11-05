@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,19 +23,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.Constants.Companion.AD_REWARD_NUM_TOKEN
 import com.sginnovations.asked.Constants.Companion.INVITE_REWARD_NUM_TOKEN
 import com.sginnovations.asked.R
-import com.sginnovations.asked.ui.ui_components.tokens.PointsDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
+import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.ui.ui_components.tokens.TokensCard
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
+import kotlinx.coroutines.launch
 
 private const val TAG = "EarnPointsStateFul"
 @Composable
@@ -46,6 +51,7 @@ fun EarnPointsStateFul(
     onNavigateRefCode: () -> Unit,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     fun Context.getActivity(): Activity? {
         return when(this) {
             is Activity -> this
@@ -67,7 +73,9 @@ fun EarnPointsStateFul(
 
         onShowAd = {
             if (activity != null) {
-                vmAds.showRewardedAd(activity)
+                scope.launch {
+                    vmAds.showRewardedAd(activity)
+                }
             }
         },
         onNavigateSubscriptions = { onNavigateSubscriptions() },
@@ -89,13 +97,14 @@ fun EarnPointsStateLess(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp / 5
 
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onSwitchVisibility() },
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp),
+            .padding(top = screenHeight),
     ) {
         Column(
             Modifier
@@ -107,16 +116,21 @@ fun EarnPointsStateLess(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Spacer(modifier = Modifier.weight(1f))
-                PointsDisplay(
+                TokenDisplay(
                     tokens = tokens,
                     showPlus = false
                 ) {}
             }
-            Text(text = "Hola")
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Earn more Tokens!" , color = MaterialTheme.colorScheme.onBackground)
+                TokenIcon()
+            }
 
-            Space(n = 16)
+            Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
-                num = "∞",
+                num = stringResource(R.string.infinite),
                 text = stringResource(R.string.earn_token_unlimited_points),
                 buttonText = stringResource(R.string.earn_token_see_more),
                 borderColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -124,7 +138,7 @@ fun EarnPointsStateLess(
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onNavigateSubscriptions() }
             )
-            Space(16)
+            Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
                 num = "+$AD_REWARD_NUM_TOKEN",
                 text = stringResource(R.string.earn_token_watch),
@@ -134,7 +148,7 @@ fun EarnPointsStateLess(
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onShowAd() }
             )
-            Space(16)
+            Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
                 num = "+$INVITE_REWARD_NUM_TOKEN",
                 text = stringResource(R.string.earn_token_invite_friends),
@@ -147,11 +161,3 @@ fun EarnPointsStateLess(
         }
     } // ModalBottom
 }
-
-@Composable
-fun Space(n: Int) {
-    Spacer(modifier = Modifier.height(n.dp))
-}
-
-
-
