@@ -1,6 +1,7 @@
 package com.sginnovations.asked.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
@@ -8,18 +9,23 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sginnovations.asked.repository.MathpixRepository
 import com.sginnovations.asked.repository.MlkitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "CameraViewModel"
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val mlkitRepository: MlkitRepository,
+    private val mathpixRepository: MathpixRepository,
 ) : ViewModel() {
 
     val imageText = mutableStateOf("")
+    val imageMath = mutableStateOf("")
+
     val isLoading = mutableStateOf(false)
     val cameraCategory = mutableStateOf("Text")
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
@@ -29,17 +35,26 @@ class CameraViewModel @Inject constructor(
     }
 
     fun getTextFromImage(imageBitmap: ImageBitmap) {
+        Log.d(TAG, "getMathFromImage")
         isLoading.value = true
         viewModelScope.launch {
             imageText.value = mlkitRepository.getTextFromImage(imageBitmap)
             isLoading.value = false
         }
     }
-
-    private fun convertBitmapToImageBitmap(bitmap: Bitmap): ImageBitmap {
-        return bitmap.asImageBitmap()
+    fun getMathFromImage(imageBitmap: ImageBitmap) {
+        Log.d(TAG, "getMathFromImage")
+        isLoading.value = true
+        viewModelScope.launch {
+            imageMath.value = mathpixRepository.getMathFromImage(imageBitmap)
+            isLoading.value = false
+        }
     }
 
+    /**
+     * Do not touch it
+     */
+    private fun convertBitmapToImageBitmap(bitmap: Bitmap): ImageBitmap { return bitmap.asImageBitmap() }
     private fun createBlackImageBitmap(width: Int, height: Int): ImageBitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         bitmap.eraseColor(Color.Black.toArgb())

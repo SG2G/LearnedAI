@@ -1,14 +1,27 @@
 package com.sginnovations.asked.repository
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
-import kotlinx.coroutines.tasks.await
+import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
+import kotlin.math.log
+
+private const val RC_DEFAULT_TOKENS = "defaultTokens"
+private const val RC_AD_REWARD_TOKENS = "adRewardTokens"
+private const val RC_INVITE_REWARD_TOKENS = "inviteRewardTokens"
+private const val RC_OPENAI = "openAIAPIKey"
+
+private const val TAG = "RemoteConfigRepository"
 
 class RemoteConfigRepository @Inject constructor() {
+
     private val remoteConfig = Firebase.remoteConfig
 
     init {
@@ -18,18 +31,37 @@ class RemoteConfigRepository @Inject constructor() {
         remoteConfig.setConfigSettingsAsync(configSettings)
     }
 
+    fun getDefaultTokens(): String {
+        return getValue(RC_DEFAULT_TOKENS)
+    }
+    fun getAdRewardTokens(): String {
+        return getValue(RC_AD_REWARD_TOKENS)
+    }
+    fun getInviteRewardTokens(): String {
+        return getValue(RC_INVITE_REWARD_TOKENS)
+    }
+    fun getOpenAIAPI(): String {
+        return getValue(RC_OPENAI)
+    }
+
+    /**
+     * Remote Config SetUp
+     */
     fun addUpdateListener(listener: ConfigUpdateListener) {
         remoteConfig.addOnConfigUpdateListener(listener)
     }
+
     fun remoteConfigActivate(): Task<Boolean> {
         return remoteConfig.activate()
     }
 
-    fun fetchAndActivate(): Task<Boolean> {
+    fun remoteConfigFetchAndActivate(): Task<Boolean> {
         return remoteConfig.fetchAndActivate()
     }
 
     fun getValue(key: String): String {
-        return remoteConfig.getValue(key).asString()
+        val remoteConfig = remoteConfig.getValue(key).asString()
+        Log.d(TAG, "getValue: $remoteConfig")
+        return remoteConfig
     }
 }

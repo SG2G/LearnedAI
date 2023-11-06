@@ -51,15 +51,14 @@ import com.sginnovations.asked.ui.top_bottom_bar.RefCode
 import com.sginnovations.asked.ui.top_bottom_bar.Subscription
 import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.ui.top_bottom_bar.topbar.LearnedTopBar
+import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.AuthViewModel
-import com.sginnovations.asked.viewmodel.AuthViewModel.Companion.isPremium
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "LearnedNavigation"
@@ -78,8 +77,6 @@ fun LearnedNavigation(
 ) {
     val context = LocalContext.current
     val state by vmAuth.state.collectAsStateWithLifecycle()
-
-    vmAuth.checkIsPremium()
 
     val scope = rememberCoroutineScope()
 
@@ -114,8 +111,9 @@ fun LearnedNavigation(
             vmAds.loadInterstitialAd(context)
             vmBilling.connectToGooglePlay()
 
-            delay(1000)
-            if (!isPremium.value) {
+            checkIsPremium()
+
+            if (!checkIsPremium()) {
                 navController.navigate(route = Subscription.route)
             }
         }
@@ -168,8 +166,7 @@ fun LearnedNavigation(
                         vmAds.loadInterstitialAd(context)
                         vmBilling.connectToGooglePlay()
 
-                        delay(1000)
-                        if (!isPremium.value) {
+                        if (!checkIsPremium()) {
                             navController.navigate(route = Subscription.route)
                         }
                     }

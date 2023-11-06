@@ -1,23 +1,15 @@
 package com.sginnovations.asked.repository
 
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.sginnovations.asked.Constants
-import com.sginnovations.asked.Constants.Companion.AD_REWARD_NUM_TOKEN
-import com.sginnovations.asked.Constants.Companion.INVITE_REWARD_NUM_TOKEN
-import com.sginnovations.asked.Constants.Companion.USERS_NAME
 import com.sginnovations.asked.domain.token.GetTokensUseCase
 import com.sginnovations.asked.domain.token.IncrementTokensUseCase
-import com.sginnovations.asked.viewmodel.AuthViewModel
-import com.sginnovations.asked.viewmodel.AuthViewModel.Companion.isPremium
+import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,6 +23,8 @@ class TokenRepository @Inject constructor(
     private val getTokensUseCase: GetTokensUseCase,
     private val incrementTokensUseCase: IncrementTokensUseCase,
     private val authRepository: AuthRepository,
+
+    private val remoteConfigRepository: RemoteConfigRepository,
 ) {
     private val documentReference: DocumentReference?
         get() = authRepository.getDocumentReference()
@@ -57,10 +51,15 @@ class TokenRepository @Inject constructor(
         if (documentReference != null) incrementTokensUseCase(documentReference!!, numTokens)
     }
 
-    suspend fun giveAdReward() = incrementTokens(AD_REWARD_NUM_TOKEN.toInt())
-    suspend fun giveRefCodeReward() = incrementTokens(INVITE_REWARD_NUM_TOKEN.toInt())
+    suspend fun giveAdReward() = incrementTokens(
+        remoteConfigRepository.getAdRewardTokens().toInt()
+    )
+    suspend fun giveRefCodeReward() = incrementTokens(
+        remoteConfigRepository.getInviteRewardTokens().toInt()
+    )
+
     suspend fun oneLessToken() {
-        if (!isPremium.value) {
+        if (!checkIsPremium()) {
             incrementTokens(tokensOneLess)
         }
     }

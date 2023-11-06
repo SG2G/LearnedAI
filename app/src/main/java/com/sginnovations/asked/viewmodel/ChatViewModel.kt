@@ -9,9 +9,10 @@ import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
-import com.sginnovations.asked.model.ChatCompletionRequest
-import com.sginnovations.asked.model.Message
+import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
+import com.sginnovations.asked.data.api_gpt.Message
 import com.sginnovations.asked.repository.ChatRepository
+import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ private const val TAG = "ChatViewModel"
 class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository,
+    private val remoteConfigRepository: RemoteConfigRepository
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
@@ -85,6 +87,8 @@ class ChatViewModel @Inject constructor(
      * Call to GPT
      */
     suspend fun sendMessageToOpenaiApi(prompt: String) {
+        val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
+
         val userMessage = Message(role = User.role, content = prompt)
 
         // Create conversation if needed
@@ -106,7 +110,7 @@ class ChatViewModel @Inject constructor(
          */
         Log.i(TAG, "getChatResponse: Sending to repository")
 
-        val response = chatRepository.getChatResponse(chatCompletionRequest)
+        val response = chatRepository.getChatResponse(openAIAPIKey, chatCompletionRequest)
 
         if (response?.isSuccessful == true) {
             Log.i(TAG, "getChatResponse: Correct")

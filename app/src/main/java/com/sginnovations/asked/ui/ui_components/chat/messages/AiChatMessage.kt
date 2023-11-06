@@ -18,9 +18,9 @@ fun ChatAiMessage(
     assistantPlaceHolder: String,
 ) {
     val backgroundColor = MaterialTheme.colorScheme.primaryContainer
-    
+
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         modifier = Modifier
             .background(backgroundColor)
             .padding(16.dp)

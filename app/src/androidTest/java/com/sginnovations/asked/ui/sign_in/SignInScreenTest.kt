@@ -1,7 +1,5 @@
 package com.sginnovations.asked.ui.sign_in
 
-import com.sginnovations.asked.auth.sign_in.SignInState
-import org.junit.Assert.*
 import org.junit.Test
 
 class SignInScreenTest {

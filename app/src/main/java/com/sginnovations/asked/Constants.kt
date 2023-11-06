@@ -2,11 +2,12 @@ package com.sginnovations.asked
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.repository.RemoteConfigRepository
+import javax.inject.Inject
 
 class Constants {
 
     companion object {
-        const val OPENAI_API_KEY = "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"
         // Room names
         const val MESSAGE_TABLE_NAME = "message_table"
         const val CONVERSATION_TABLE_NAME = "conversation_table"
@@ -29,9 +30,6 @@ class Constants {
         //
         const val CAMERA_TEXT = "Text"
         const val CAMERA_MATH = "Math"
-
-        const val AD_REWARD_NUM_TOKEN = "2"
-        const val INVITE_REWARD_NUM_TOKEN = "10"
 
         const val IS_PREMIUM = "isPremium"
 

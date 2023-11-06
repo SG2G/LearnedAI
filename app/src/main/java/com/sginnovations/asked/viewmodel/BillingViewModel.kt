@@ -2,7 +2,6 @@ package com.sginnovations.asked.viewmodel
 
 import android.app.Activity
 import android.content.Context
-import android.text.PrecomputedText.Params
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +18,7 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.google.common.collect.ImmutableList
-import com.sginnovations.asked.domain.firebase.SetPremiumUseCase
+import com.sginnovations.asked.domain.firebase.setters.SetPremiumUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CompletableDeferred
@@ -44,7 +43,6 @@ class BillingViewModel @Inject constructor(
     val billingResponseCode = MutableLiveData<Int>()
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
-        // Handle updated purchases here
         viewModelScope.launch {
             Log.d(TAG, "purchasesUpdatedListener ")
             onPurchasesUpdated(billingResult, purchases)

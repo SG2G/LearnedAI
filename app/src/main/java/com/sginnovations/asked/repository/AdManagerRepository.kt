@@ -1,4 +1,4 @@
-package com.sginnovations.asked.model.rewarded_ad
+package com.sginnovations.asked.repository
 
 import android.app.Activity
 import android.content.Context
@@ -14,25 +14,22 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.sginnovations.asked.Constants.Companion.INTERSTITIAL_AD_UNIT
-import com.sginnovations.asked.Constants.Companion.REWARD_AD_UNIT
-import com.sginnovations.asked.repository.TokenRepository
+import com.sginnovations.asked.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "AdManagerRepository"
 
-private const val TAG = "AdManager"
-
-class AdManager @Inject constructor(
+class AdManagerRepository @Inject constructor(
     private val tokenRepository: TokenRepository,
 ) {
     private var rewardedAd: RewardedAd? = null
-    private val rewardAdUnit = REWARD_AD_UNIT
+    private val rewardAdUnit = Constants.REWARD_AD_UNIT
 
     private var interstitialAd: InterstitialAd? = null
-    private val interstitialAdUnit = INTERSTITIAL_AD_UNIT
+    private val interstitialAdUnit = Constants.INTERSTITIAL_AD_UNIT
 
     fun loadInterstitialAd(context: Context) {
         val adRequest = AdRequest.Builder().build()
@@ -42,14 +39,20 @@ class AdManager @Inject constructor(
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     Log.d(TAG, adError.toString())
                     interstitialAd = null
-                    Log.d(TAG, "Interstitial Ad failed, trying again.")
+                    Log.d(
+                        TAG,
+                        "Interstitial Ad failed, trying again."
+                    )
 
                     loadInterstitialAd(context)
 
                 }
 
                 override fun onAdLoaded(ad: InterstitialAd) {
-                    Log.d(TAG, "Interstitial Ad was loaded.")
+                    Log.d(
+                        TAG,
+                        "Interstitial Ad was loaded."
+                    )
                     interstitialAd = ad
                 }
             })
@@ -58,7 +61,10 @@ class AdManager @Inject constructor(
     fun showInterstitialAd(activity: Activity) {
         if (interstitialAd != null) {
             interstitialAd?.show(activity)
-            Log.d(TAG, "showInterstitialAd: Interstitial ad show")
+            Log.d(
+                TAG,
+                "showInterstitialAd: Interstitial ad show"
+            )
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.")
         }
@@ -96,20 +102,32 @@ class AdManager @Inject constructor(
                         tokenRepository.giveAdReward()
                     }
 
-                    Log.d(TAG, "User earned the reward. Amount: $rewardAmount, Type: $rewardType")
+                    Log.d(
+                        TAG,
+                        "User earned the reward. Amount: $rewardAmount, Type: $rewardType"
+                    )
                 }
             })
             ad.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
-                    Log.d(TAG, "Rewarded Ad was dismissed.")
+                    Log.d(
+                        TAG,
+                        "Rewarded Ad was dismissed."
+                    )
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Log.d(TAG, "Rewarded Ad failed to show.")
+                    Log.d(
+                        TAG,
+                        "Rewarded Ad failed to show."
+                    )
                 }
 
                 override fun onAdShowedFullScreenContent() {
-                    Log.d(TAG, "Rewarded Ad showed fullscreen content.")
+                    Log.d(
+                        TAG,
+                        "Rewarded Ad showed fullscreen content."
+                    )
                     // Se llama después de que se muestra el anuncio a pantalla completa.
                     // Recargamos el anuncio para que esté listo para la próxima vez.
 
@@ -118,7 +136,10 @@ class AdManager @Inject constructor(
                 }
             }
         } ?: run {
-            Log.d(TAG, "The rewarded ad wasn't ready yet.")
+            Log.d(
+                TAG,
+                "The rewarded ad wasn't ready yet."
+            )
             Toast.makeText(activity, "Try again later!", Toast.LENGTH_SHORT).show()
         }
     }

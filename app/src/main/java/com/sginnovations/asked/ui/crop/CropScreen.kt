@@ -15,6 +15,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,11 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
 import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
 import com.sginnovations.asked.R
-import com.sginnovations.asked.ui.top_bottom_bar.Chat
 import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
 import com.sginnovations.asked.ui.top_bottom_bar.NewConversation
 import com.sginnovations.asked.viewmodel.CameraViewModel
@@ -39,6 +38,8 @@ import com.sginnovations.asked.viewmodel.ChatViewModel
 import io.moyuru.cropify.Cropify
 import io.moyuru.cropify.CropifyOption
 import io.moyuru.cropify.rememberCropifyState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val TAG = "CropStateFul"
 
@@ -76,43 +77,33 @@ fun CropStateLess(
     )
 
     val cropifyState = rememberCropifyState()
+    val scope = rememberCoroutineScope()
+
     var cropifyOption by remember { mutableStateOf(cropifyOptions) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
     val cameraOption = vmCamera.cameraCategory
     // Variable whit the cameraOptionSelect
 
-    croppedImage?.let {
-        when (cameraOption.value) {
-            CAMERA_TEXT -> {
-                vmChat.setUpNewConversation()
+    suspend fun onImageCropped(imageCropped: ImageBitmap?) {
+        croppedImage = imageCropped
 
-                vmCamera.getTextFromImage(it)
-
-                if (navController.currentDestination?.route != NewConversation.route) {
-                    Log.i(TAG, "Starting nav")
-
-                    navController.navigate(ChatsHistory.route) {
-                        // This ensures that the previous screen is removed from the backstack
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                    navController.navigate(NewConversation.route)
-                }
-            }
-
-            CAMERA_MATH -> {
-
-            }
+        while (croppedImage == null) {
+            delay(250)
         }
+
+        getTextFromCroppedImage(vmCamera, vmChat, croppedImage!!, navController, cameraOption) //TODO CROP VIEWMODEL
     }
 
     Cropify(
         bitmap = photoImageBitmap.value,
         state = cropifyState,
         option = cropifyOption,
-        onImageCropped = { croppedImage = it },
+        onImageCropped = {
+            scope.launch {
+                onImageCropped(it)
+            }
+        },
         modifier = Modifier
             .fillMaxSize()
     )
@@ -155,7 +146,56 @@ fun CropStateLess(
             )
         }
     }
+}
 
+fun getTextFromCroppedImage(
+    vmCamera: CameraViewModel,
+    vmChat: ChatViewModel,
+
+    croppedImage: ImageBitmap,
+
+    navController: NavController,
+    cameraOption: MutableState<String>,
+) {
+    when (cameraOption.value) {
+        CAMERA_TEXT -> {
+            Log.d(TAG, "CropStateLess: CAMERA_TEXT")
+            vmChat.setUpNewConversation()
+
+            vmCamera.getTextFromImage(croppedImage)
+
+            if (navController.currentDestination?.route != NewConversation.route) {
+                Log.i(TAG, "Starting nav")
+
+                navController.navigate(ChatsHistory.route) {
+                    // This ensures that the previous screen is removed from the backstack
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+                navController.navigate(NewConversation.route)
+            }
+        }
+
+        CAMERA_MATH -> {
+            Log.d(TAG, "CropStateLess: CAMERA_MATH")
+            vmChat.setUpNewConversation()
+
+            vmCamera.getMathFromImage(croppedImage)
+
+            if (navController.currentDestination?.route != NewConversation.route) {
+                Log.i(TAG, "Starting nav")
+
+                navController.navigate(ChatsHistory.route) {
+                    // This ensures that the previous screen is removed from the backstack
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+                navController.navigate(NewConversation.route)
+            }
+        }
+    }
 }
 
 @Composable

@@ -1,4 +1,4 @@
-package com.sginnovations.asked.domain.firebase
+package com.sginnovations.asked.domain.firebase.setters
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth

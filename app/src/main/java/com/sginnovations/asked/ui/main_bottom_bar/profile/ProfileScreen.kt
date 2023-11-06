@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,7 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sginnovations.asked.R
-import com.sginnovations.asked.auth.sign_in.UserData
+import com.sginnovations.asked.auth.sign_in.data.UserData
 import com.sginnovations.asked.ui.ui_components.profile.LogOutButton
 import com.sginnovations.asked.ui.ui_components.profile.ProfileButton
 import com.sginnovations.asked.ui.ui_components.profile.ProfileName
@@ -115,13 +116,16 @@ fun StateLessProfile(
             }
         }
 
-        Box(modifier = Modifier.padding(8.dp)) {
-            Card(
-                modifier = Modifier.padding(8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
+        ElevatedCard(
+            modifier = Modifier.padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            ),
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 8.dp
+            )
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
                 ProfileButton(
                     text = stringResource(R.string.profile_get_more_tokens),
                     painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
@@ -136,9 +140,11 @@ fun StateLessProfile(
         }
         LogOutButton(onClick = { onSignOut() })
 
-        /**
-         * Testing
-         */
+    }
+
+    /**
+     * Testing
+     */
 //        Text(text = "Testing")
 //        Button(onClick = {
 //            scope.launch {
@@ -157,18 +163,17 @@ fun StateLessProfile(
 //        Button(onClick = { onNavigateRefCode() }) {
 //            Text(text = "Ref coded / subscription")
 //        }
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Text(
-                text = "uid: ${userAuth.value?.userId}",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Text(
+            text = "uid: ${userAuth.value?.userId}",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodySmall
+        )
     }
+
 }
 

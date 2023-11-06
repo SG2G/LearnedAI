@@ -16,10 +16,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -28,11 +33,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.R
-import com.sginnovations.asked.viewmodel.AuthViewModel.Companion.isPremium
+import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
+import kotlinx.coroutines.async
 
 @Composable
 fun TokenDisplay(
@@ -45,6 +50,12 @@ fun TokenDisplay(
     onNavigatePoints: () -> Unit,
 ) {
     val scale: MutableState<Float> = remember { mutableFloatStateOf(1f) }
+    val scope = rememberCoroutineScope()
+    var isPremium by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isPremium = scope.async { checkIsPremium() }.await()
+    }
 
     Box(
         modifier = modifier
@@ -91,9 +102,9 @@ fun TokenDisplay(
             }
 
             Text(
-                text = if (isPremium.value) stringResource(R.string.infinite) else tokens.value.toString(),
+                text = if (isPremium) stringResource(R.string.infinite) else tokens.value.toString(),
                 modifier = Modifier
-                    .padding(bottom = if (isPremium.value) 4.dp else 0.dp),
+                    .padding(bottom = if (isPremium) 4.dp else 0.dp),
                 color = MaterialTheme.colorScheme.primary,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,

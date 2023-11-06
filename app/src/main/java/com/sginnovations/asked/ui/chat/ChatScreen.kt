@@ -58,11 +58,12 @@ import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatUserMessage
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
+import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AuthViewModel
-import com.sginnovations.asked.viewmodel.AuthViewModel.Companion.isPremium
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 private const val TAG = "Chat"
@@ -80,7 +81,6 @@ fun ChatStateFul(
     val messages = vmChat.messages
 
     val userAuth = vmAuth.userAuth.collectAsState()
-
     val userName = userAuth.value?.userName
     val userProfileUrl = userAuth.value?.profilePictureUrl
 
@@ -133,21 +133,24 @@ fun ChatStateLess(
 
     var chatPlaceHolder by remember { mutableStateOf(false) }
     var userPlaceHolder by remember { mutableStateOf("") }
-    var assistantPlaceHolder = "Thinking..."
+    val assistantPlaceHolder = "Thinking..."
 
     val backgroundColor = MaterialTheme.colorScheme.primaryContainer
 
+    var isPremium by remember { mutableStateOf(false) }
+
     LaunchedEffect(messages.value.size) {
+        isPremium = scope.async { checkIsPremium() }.await()
         if (messages.value.isNotEmpty()) {
             lastIndex = messages.value.size - 1
-        }
-        chatPlaceHolder = false
-        while (chatAnimation.value) {
-            listState.animateScrollToItem(lastIndex)
+            chatPlaceHolder = false
+            while (chatAnimation.value) {
+                listState.animateScrollToItem(lastIndex)
+            }
         }
     }
 
-    fun sendButton(text: MutableState<String>) {
+    fun chatButtonClicked(text: MutableState<String>) {
         if (NetworkUtils.isOnline(context)) {
             if (vmToken.tokens.value > 0) {
                 onClick(text.value)
@@ -192,7 +195,7 @@ fun ChatStateLess(
                         if (message.role == Assistant.role) {
                             // Last AI message
                             Row(
-                                verticalAlignment = Alignment.CenterVertically,
+                                verticalAlignment = Alignment.Top,
                                 modifier = Modifier
                                     .background(backgroundColor)
                                     .padding(16.dp)
@@ -256,7 +259,7 @@ fun ChatStateLess(
                 .scale(0.8f)
                 .padding(start = 16.dp)
         ) {
-            if (!isPremium.value) {
+            if (!isPremium) {
                 Text(text = "-1")
                 TokenIcon()
                 Spacer(modifier = Modifier.width(2.dp))
@@ -282,9 +285,9 @@ fun ChatStateLess(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    ),
+                ),
                 maxLines = Int.MAX_VALUE,
-                )
+            )
             IconButton(
                 onClick = {
                     scope.launch {
@@ -292,7 +295,7 @@ fun ChatStateLess(
                             /**
                              * Send message
                              */
-                            sendButton(text)
+                            chatButtonClicked(text)
 
                         }
                     }

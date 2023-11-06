@@ -1,6 +1,5 @@
 package com.sginnovations.asked.ui.ui_components.profile
 
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -48,7 +47,7 @@ fun LogOutButton(
         },
         shape = RoundedCornerShape(10),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth().padding(8.dp)
     ) {
         Row(
             modifier = Modifier

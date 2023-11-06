@@ -13,8 +13,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sginnovations.asked.R
-import com.sginnovations.asked.domain.firebase.SetDefaultTokensUseCase
-import com.sginnovations.asked.repository.AuthRepository
+import com.sginnovations.asked.auth.sign_in.data.SignInResult
+import com.sginnovations.asked.auth.sign_in.data.UserData
+import com.sginnovations.asked.domain.firebase.setters.SetDefaultTokensUseCase
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
@@ -30,6 +31,7 @@ class GoogleAuthUiClient @Inject constructor (
     private val auth = Firebase.auth
     private val firestore = Firebase.firestore
     val user = FirebaseAuth.getInstance().currentUser
+
     suspend fun signIn(): IntentSender? {
         Log.i(TAG, "signIn:")
         val result = try {
@@ -42,6 +44,20 @@ class GoogleAuthUiClient @Inject constructor (
             null
         }
         return result?.pendingIntent?.intentSender
+    }
+
+    private fun buildSignInRequest(): BeginSignInRequest {
+        Log.i(TAG, "buildSignInRequest: ")
+        return BeginSignInRequest.Builder()
+            .setGoogleIdTokenRequestOptions(
+                GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(context.getString(R.string.web_client_id))
+                    .build()
+            )
+            .setAutoSelectEnabled(true)
+            .build()
     }
 
     suspend fun signInWithIntent(intent: Intent): SignInResult {
@@ -60,9 +76,11 @@ class GoogleAuthUiClient @Inject constructor (
                     setDefaultTokensUseCase(firestore, user)
                 }
             }
+            Log.d(TAG, "Calling signinResult ${user?.displayName}")
 
             SignInResult(
                 data = user?.run {
+                    Log.d(TAG, "Sign in result done")
                     UserData(
                         userId = uid,
                         userName = displayName,
@@ -98,19 +116,5 @@ class GoogleAuthUiClient @Inject constructor (
             userName = displayName,
             profilePictureUrl = photoUrl?.toString()
         )
-    }
-
-    private fun buildSignInRequest(): BeginSignInRequest {
-        Log.i(TAG, "buildSignInRequest: ")
-        return BeginSignInRequest.Builder()
-            .setGoogleIdTokenRequestOptions(
-                GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(context.getString(R.string.web_client_id))
-                    .build()
-            )
-            .setAutoSelectEnabled(true)
-            .build()
     }
 }

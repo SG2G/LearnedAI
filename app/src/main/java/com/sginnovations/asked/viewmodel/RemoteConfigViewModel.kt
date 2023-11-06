@@ -9,12 +9,15 @@ import com.google.firebase.remoteconfig.ConfigUpdate
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.sginnovations.asked.repository.RemoteConfigRepository
-import com.sginnovations.asked.utils.CheckMinVersion.needToUpdate
+import com.sginnovations.asked.utils.CheckMinVersion.checkMinVersion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+
+private const val RC_MIN_VERSION = "minVersion"
+private const val RC_DEFAULT_TOKENS = "defaultTokens"
 
 private const val TAG = "RemoteConfigViewModel"
 
@@ -27,29 +30,41 @@ class RemoteConfigViewModel @Inject constructor(
 
     val needToUpdate = mutableStateOf(false)
 
-    init {
+    init { setUp() }
+
+    private fun setUp() {
         viewModelScope.launch {
-            val updated = remoteConfigRepository.fetchAndActivate().await()
+            val updated = remoteConfigRepository.remoteConfigFetchAndActivate().await()
             if (updated) {
-                val minVersion = remoteConfigRepository.getValue("minVersion")
-                needToUpdate.value = needToUpdate(context, minVersion)
+                Log.d(TAG, "setUp: updated")
+                val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
+                val defaultTokens = remoteConfigRepository.getValue(RC_DEFAULT_TOKENS)
+
+                needToUpdate.value = checkMinVersion(context, minVersion)
+
+                Log.d(TAG, "setUp: minVersion $minVersion, defaultTokens $defaultTokens")
             }
         }
 
         remoteConfigRepository.addUpdateListener(object : ConfigUpdateListener {
             override fun onUpdate(configUpdate: ConfigUpdate) {
-                if (configUpdate.updatedKeys.contains("minVersion")) {
-                    remoteConfigRepository.fetchAndActivate().addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.i(TAG, "onUpdate: minVersion")
-                            remoteConfigRepository.remoteConfigActivate().addOnCompleteListener {
-                                val minVersion = remoteConfigRepository.getValue("minVersion")
-                                viewModelScope.launch {
-                                    needToUpdate.value = needToUpdate(context, minVersion)
-                                }
+                if (configUpdate.updatedKeys.contains(RC_MIN_VERSION)) {
+                    remoteConfigRepository.remoteConfigFetchAndActivate()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.i(TAG, "onUpdate: minVersion")
+                                remoteConfigRepository.remoteConfigActivate()
+                                    .addOnCompleteListener {
+                                        viewModelScope.launch {
+                                            val minVersion =
+                                                remoteConfigRepository.getValue(RC_MIN_VERSION)
+
+                                            needToUpdate.value =
+                                                checkMinVersion(context, minVersion)
+                                        }
+                                    }
                             }
                         }
-                    }
                 }
             }
 
@@ -59,4 +74,10 @@ class RemoteConfigViewModel @Inject constructor(
         })
     }
 
+    fun getAdRewardTokens(): String {
+        return remoteConfigRepository.getAdRewardTokens()
+    }
+    fun getInviteRewardTokens(): String {
+        return remoteConfigRepository.getInviteRewardTokens()
+    }
 }

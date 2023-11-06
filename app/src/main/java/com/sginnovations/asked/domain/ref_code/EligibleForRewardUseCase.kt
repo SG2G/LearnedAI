@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sginnovations.asked.Constants.Companion.USERS_NAME
-import com.sginnovations.asked.domain.firebase.SetUserInvitedUseCase
+import com.sginnovations.asked.domain.firebase.setters.SetUserInvitedUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

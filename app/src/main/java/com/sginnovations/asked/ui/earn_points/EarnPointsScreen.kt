@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.sginnovations.asked.ui.earn_points
 
@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,13 +30,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.Constants.Companion.AD_REWARD_NUM_TOKEN
-import com.sginnovations.asked.Constants.Companion.INVITE_REWARD_NUM_TOKEN
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.ui.ui_components.tokens.TokensCard
 import com.sginnovations.asked.viewmodel.AdsViewModel
+import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
@@ -86,6 +85,8 @@ fun EarnPointsStateFul(
 
 @Composable
 fun EarnPointsStateLess(
+    vmRemoteConfig: RemoteConfigViewModel = hiltViewModel(),
+
     tokens: State<Long>,
 
     onNavigateSubscriptions: () -> Unit,
@@ -140,7 +141,7 @@ fun EarnPointsStateLess(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
-                num = "+$AD_REWARD_NUM_TOKEN",
+                num = "+"+ vmRemoteConfig.getAdRewardTokens(),
                 text = stringResource(R.string.earn_token_watch),
                 buttonText = stringResource(R.string.earn_token_watch),
                 borderColor = Color.Transparent,
@@ -150,7 +151,7 @@ fun EarnPointsStateLess(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
-                num = "+$INVITE_REWARD_NUM_TOKEN",
+                num = "+"+ vmRemoteConfig.getInviteRewardTokens(),
                 text = stringResource(R.string.earn_token_invite_friends),
                 buttonText = stringResource(R.string.earn_token_button_invite),
                 borderColor = Color.Transparent,

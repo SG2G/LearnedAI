@@ -1,4 +1,4 @@
-package com.sginnovations.asked.model
+package com.sginnovations.asked.data.api_gpt
 
 // Request
 data class ChatCompletionRequest(
@@ -7,7 +7,7 @@ data class ChatCompletionRequest(
 )
 
 // Response
-data class ChatCompletionResponse(
+data class ChatGPTResponse(
     val id: String,
     val created: Int,
     val model: String,

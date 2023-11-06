@@ -21,11 +21,12 @@ fun ChatUserMessage(
 ) {
 
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize()
     ) {
+
         if (userName != null && userProfileUrl != null) {
             IconUserMsg(userProfileUrl)
         } else {

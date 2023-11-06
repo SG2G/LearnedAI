@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
-import com.sginnovations.asked.auth.sign_in.SignInState
+import com.sginnovations.asked.auth.sign_in.data.SignInState
 import com.sginnovations.asked.ui.ui_components.sign_in.GoogleSignInButton
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch

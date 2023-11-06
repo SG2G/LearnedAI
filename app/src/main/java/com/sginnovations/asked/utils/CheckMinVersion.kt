@@ -8,8 +8,10 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 private const val TAG = "RemoteConfigViewModelVersionCheck"
 
 object CheckMinVersion {
-    suspend fun needToUpdate(context: Context, minVersion: String): Boolean {
-
+    suspend fun checkMinVersion(
+        context: Context,
+        minVersion: String,
+    ): Boolean {
         val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
         val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             pInfo.longVersionCode

@@ -26,7 +26,6 @@ import com.sginnovations.asked.Constants.Companion.ASSISTANT_PROFILE_URL
 fun IconUserMsg(
     photoUrl: String,
 ) {
-
     AsyncImage(
         model = photoUrl,
         contentDescription = null,
