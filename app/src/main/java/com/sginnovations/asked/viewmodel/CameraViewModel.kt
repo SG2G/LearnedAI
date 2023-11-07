@@ -23,8 +23,7 @@ class CameraViewModel @Inject constructor(
     private val mathpixRepository: MathpixRepository,
 ) : ViewModel() {
 
-    val imageText = mutableStateOf("")
-    val imageMath = mutableStateOf("")
+    val imageToText = mutableStateOf("")
 
     val isLoading = mutableStateOf(false)
     val cameraCategory = mutableStateOf("Text")
@@ -35,10 +34,10 @@ class CameraViewModel @Inject constructor(
     }
 
     fun getTextFromImage(imageBitmap: ImageBitmap) {
-        Log.d(TAG, "getMathFromImage")
+        Log.d(TAG, "getTextFromImage")
         isLoading.value = true
         viewModelScope.launch {
-            imageText.value = mlkitRepository.getTextFromImage(imageBitmap)
+            imageToText.value = mlkitRepository.getTextFromImage(imageBitmap)
             isLoading.value = false
         }
     }
@@ -46,7 +45,7 @@ class CameraViewModel @Inject constructor(
         Log.d(TAG, "getMathFromImage")
         isLoading.value = true
         viewModelScope.launch {
-            imageMath.value = mathpixRepository.getMathFromImage(imageBitmap)
+            imageToText.value = mathpixRepository.getMathFromImage(imageBitmap)
             isLoading.value = false
         }
     }

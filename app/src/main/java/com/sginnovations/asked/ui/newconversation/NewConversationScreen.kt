@@ -68,9 +68,10 @@ fun NewConversationStateFul(
     val scope = rememberCoroutineScope()
 
     val text = remember { mutableStateOf("") }
-    text.value = vmCamera.imageMath.value // TODO SHOULD SUPPORT THE 2 OR MORE CATEGORIES
+    text.value = vmCamera.imageToText.value
 
     val idConversation = vmChat.idConversation.intValue
+    val prefixPrompt = vmChat.prefixPrompt.value
 
     fun Context.getActivity(): Activity? {
         return when (this) {
@@ -82,15 +83,13 @@ fun NewConversationStateFul(
 
     val activity = context.getActivity()
 
-
     if (vmCamera.isLoading.value) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.BottomCenter,
         ) {
             CircularProgressIndicator()
         }
-
     }
 
     LaunchedEffect(Unit) {
@@ -109,7 +108,8 @@ fun NewConversationStateFul(
                     }
 
                     // GPT call
-                    val deferred = async { vmChat.sendMessageToOpenaiApi(text.value) }
+                    val deferred =
+                        async { vmChat.sendMessageToOpenaiApi("$prefixPrompt ${text.value}") }
                     deferred.await()
                     Log.i("NewConversation", "Continuing the code, Sending $idConversation")
 

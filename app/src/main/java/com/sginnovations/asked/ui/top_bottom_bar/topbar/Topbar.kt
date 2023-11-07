@@ -2,17 +2,15 @@ package com.sginnovations.asked.ui.top_bottom_bar.topbar
 
 import android.util.Log
 import androidx.compose.runtime.Composable
-import com.sginnovations.asked.ui.top_bottom_bar.Camera
-import com.sginnovations.asked.ui.top_bottom_bar.Chat
-import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
-import com.sginnovations.asked.ui.top_bottom_bar.Crop
-import com.sginnovations.asked.ui.top_bottom_bar.Points
-import com.sginnovations.asked.ui.top_bottom_bar.Profile
-import com.sginnovations.asked.ui.top_bottom_bar.ScreensDestinations
+import com.sginnovations.asked.Camera
+import com.sginnovations.asked.Chat
+import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.Points
+import com.sginnovations.asked.Profile
+import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.ui.ui_components.topbars.CameraTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
-import com.sginnovations.asked.ui.ui_components.topbars.CropTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.DefaultTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.PointsTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ProfileTopBar
@@ -59,8 +57,6 @@ fun LearnedTopBar(
             currentScreenTitle,
             navigateUp
         )
-
-        Crop.route -> CropTopBar(navigateUp)
 
         else ->
             if (canNavigateBack) {

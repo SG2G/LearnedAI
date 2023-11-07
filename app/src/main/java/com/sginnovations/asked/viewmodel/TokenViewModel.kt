@@ -3,6 +3,7 @@ package com.sginnovations.asked.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,8 @@ private const val TAG = "TokenViewModel"
 @HiltViewModel
 class TokenViewModel @Inject constructor(
     private val tokenRepository: TokenRepository,
+
+    private val remoteConfigRepository: RemoteConfigRepository,
 ) : ViewModel() {
 
     private val _tokens = MutableStateFlow<Long>(0)
@@ -32,18 +35,15 @@ class TokenViewModel @Inject constructor(
         }
     }
 
-    fun testGivePoints() { //TODO DELETE
-        viewModelScope.launch {
-            Log.i(TAG, "testGivePoints: 10")
-            _tokens.value += 10
-        }
-    }
-
-    fun oneLessToken() {
+    fun lessToken(num: Int) {
         viewModelScope.launch {
             Log.i(TAG, "oneLessToken")
-            tokenRepository.oneLessToken()
+            tokenRepository.lessToken(num)
         }
+    }
+    fun getCameraMathTokens(): String {
+        Log.i(TAG, "getCameraMathTokens")
+        return remoteConfigRepository.getCameraMathTokens()
     }
 
     fun switchPointsVisibility() {

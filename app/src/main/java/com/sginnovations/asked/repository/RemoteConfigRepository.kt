@@ -17,6 +17,9 @@ private const val RC_DEFAULT_TOKENS = "defaultTokens"
 private const val RC_AD_REWARD_TOKENS = "adRewardTokens"
 private const val RC_INVITE_REWARD_TOKENS = "inviteRewardTokens"
 private const val RC_OPENAI = "openAIAPIKey"
+private const val RC_MATHPIX = "mathpixAPIKey"
+private const val RC_CAMERA_MATH = "cameraMathCostTokens"
+private const val RC_ADS_ALLOWED = "isAdsAllowed"
 
 private const val TAG = "RemoteConfigRepository"
 
@@ -31,18 +34,18 @@ class RemoteConfigRepository @Inject constructor() {
         remoteConfig.setConfigSettingsAsync(configSettings)
     }
 
-    fun getDefaultTokens(): String {
-        return getValue(RC_DEFAULT_TOKENS)
-    }
-    fun getAdRewardTokens(): String {
-        return getValue(RC_AD_REWARD_TOKENS)
-    }
-    fun getInviteRewardTokens(): String {
-        return getValue(RC_INVITE_REWARD_TOKENS)
-    }
-    fun getOpenAIAPI(): String {
-        return getValue(RC_OPENAI)
-    }
+    //TOKENS
+    fun getDefaultTokens()= getValue(RC_DEFAULT_TOKENS)
+    fun getAdRewardTokens() = getValue(RC_AD_REWARD_TOKENS)
+    fun getInviteRewardTokens() = getValue(RC_INVITE_REWARD_TOKENS)
+    fun getCameraMathTokens() = getValue(RC_CAMERA_MATH)
+
+    //API
+    fun getOpenAIAPI() = getValue(RC_OPENAI)
+    fun getMathpixAPI() = getValue(RC_MATHPIX)
+    // ADS
+    fun isAdsAllowed() = getValue(RC_ADS_ALLOWED)
+
 
     /**
      * Remote Config SetUp

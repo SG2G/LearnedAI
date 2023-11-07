@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -154,9 +155,11 @@ fun StateLessProfile(
 //        ) {
 //            Text(text = "Rest 1")
 //        }
-//        Button(onClick = { onSignOut() }) {
-//            Text(text = "Sign Out")
-//        }
+//    ProfileButton(
+//        text = Locale.current.region + " " + Locale.current.language,
+//        painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
+//        onClick = { vmToken.switchPointsVisibility() }
+//    )
 //        Button(onClick = { vmToken.testGivePoints() }) {
 //            Text(text = "Give Tokens")
 //        }

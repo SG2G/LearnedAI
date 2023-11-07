@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.top_bottom_bar
+package com.sginnovations.asked
 
 import android.content.Context
 import androidx.compose.material.icons.Icons
@@ -9,7 +9,6 @@ import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.sginnovations.asked.R
 
 interface ScreensDestinations {
     val route: String
@@ -78,8 +77,8 @@ object Points : ScreensDestinations {
     override val selectedIcon: ImageVector? = null
 }
 object RefCode : ScreensDestinations {
-    override val route = "RefCode"
-    override fun getName(context: Context) = "RefCode"
+    override val route = "Share"
+    override fun getName(context: Context) = "Share"
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }

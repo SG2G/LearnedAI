@@ -31,10 +31,13 @@ import androidx.navigation.NavController
 import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
 import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
 import com.sginnovations.asked.R
-import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
-import com.sginnovations.asked.ui.top_bottom_bar.NewConversation
+import com.sginnovations.asked.data.Math
+import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
+import com.sginnovations.asked.viewmodel.TokenViewModel
 import io.moyuru.cropify.Cropify
 import io.moyuru.cropify.CropifyOption
 import io.moyuru.cropify.rememberCropifyState
@@ -47,14 +50,17 @@ private const val TAG = "CropStateFul"
 fun CropStateFul(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
+    vmToken: TokenViewModel,
 
     navController: NavController,
 ) {
     val photoImageBitmap = vmCamera.photoImageBitmap
+    val cameraOption = vmCamera.cameraCategory
 
     CropStateLess(
-        vmCamera = vmCamera,
-        vmChat = vmChat,
+        onImageCropped = { croppedImage ->
+            getTextFromCroppedImage(vmCamera, vmChat,vmToken, croppedImage, navController, cameraOption)
+        },
 
         photoImageBitmap = photoImageBitmap,
 
@@ -64,8 +70,7 @@ fun CropStateFul(
 
 @Composable
 fun CropStateLess(
-    vmCamera: CameraViewModel,
-    vmChat: ChatViewModel,
+    onImageCropped: (ImageBitmap) -> Unit,
 
     photoImageBitmap: MutableState<ImageBitmap>,
 
@@ -79,20 +84,22 @@ fun CropStateLess(
     val cropifyState = rememberCropifyState()
     val scope = rememberCoroutineScope()
 
-    var cropifyOption by remember { mutableStateOf(cropifyOptions) }
+    val cropifyOption by remember { mutableStateOf(cropifyOptions) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    val cameraOption = vmCamera.cameraCategory
+
     // Variable whit the cameraOptionSelect
 
-    suspend fun onImageCropped(imageCropped: ImageBitmap?) {
+    suspend fun cropImage(imageCropped: ImageBitmap?) {
         croppedImage = imageCropped
 
-        while (croppedImage == null) {
-            delay(250)
-        }
+        while (croppedImage == null) { delay(250) }
 
-        getTextFromCroppedImage(vmCamera, vmChat, croppedImage!!, navController, cameraOption) //TODO CROP VIEWMODEL
+        try {
+            onImageCropped(croppedImage!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     Cropify(
@@ -101,7 +108,7 @@ fun CropStateLess(
         option = cropifyOption,
         onImageCropped = {
             scope.launch {
-                onImageCropped(it)
+                cropImage(it)
             }
         },
         modifier = Modifier
@@ -151,6 +158,7 @@ fun CropStateLess(
 fun getTextFromCroppedImage(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
+    vmToken: TokenViewModel,
 
     croppedImage: ImageBitmap,
 
@@ -162,6 +170,7 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
 
+            vmCamera.cameraCategory.value = Text.name
             vmCamera.getTextFromImage(croppedImage)
 
             if (navController.currentDestination?.route != NewConversation.route) {
@@ -181,7 +190,11 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_MATH")
             vmChat.setUpNewConversation()
 
+            vmCamera.cameraCategory.value = Math.name
             vmCamera.getMathFromImage(croppedImage)
+
+            val cameraCostTokens = vmToken.getCameraMathTokens()
+            vmToken.lessToken(cameraCostTokens.toInt())
 
             if (navController.currentDestination?.route != NewConversation.route) {
                 Log.i(TAG, "Starting nav")
@@ -199,8 +212,8 @@ fun getTextFromCroppedImage(
 }
 
 @Composable
-fun TextPreviewDialog(vmCamera: CameraViewModel, onDismissRequest: () -> Unit) { // TODO EH
+fun TextPreviewDialog(vmCamera: CameraViewModel, onDismissRequest: () -> Unit) { // TODO DELETE
     Dialog(onDismissRequest = onDismissRequest) { //TODO TRANSLATE
-        Text(text = vmCamera.imageText.value)
+        Text(text = "")
     }
 }

@@ -1,6 +1,7 @@
 package com.sginnovations.asked.ui.ui_components.chat.messages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,7 +16,9 @@ import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 
 @Composable
 fun ChatAiMessage(
-    assistantPlaceHolder: String,
+    assistantMessage: String,
+
+    onSetClip: (String) -> Unit,
 ) {
     val backgroundColor = MaterialTheme.colorScheme.primaryContainer
 
@@ -29,8 +32,12 @@ fun ChatAiMessage(
         IconAssistantMsg()
 
         Text(
-            modifier = Modifier.padding(CHAT_MSG_PADDING),
-            text = assistantPlaceHolder
+            modifier = Modifier
+                .padding(CHAT_MSG_PADDING)
+                .clickable {
+                    onSetClip(assistantMessage)
+                },
+            text = assistantMessage
         )
     }
 }

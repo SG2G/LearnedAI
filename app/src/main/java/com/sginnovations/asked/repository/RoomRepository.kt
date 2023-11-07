@@ -1,5 +1,6 @@
 package com.sginnovations.asked.repository
 
+import com.sginnovations.asked.data.Category
 import com.sginnovations.asked.data.database.dao.ChatDao
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.data.database.entities.MessageEntity
@@ -20,12 +21,17 @@ class RoomRepository @Inject constructor(
     suspend fun getAllMessages(id: Int): List<MessageEntity> {
         return chatDao.getConversationMessages(id)
     }
-
     suspend fun getAllConversations(): List<ConversationEntity> {
         return chatDao.getAllConversations()
     }
+    suspend fun getCategoryConversations(category: String): List<ConversationEntity> {
+        return chatDao.getCategoryConversations(category)
+    }
     suspend fun hideConversation(id: Int){
         chatDao.hideConversation(id)
+    }
+    suspend fun deleteConversation(id: Int){
+        chatDao.deleteConversation(id)
     }
 
 }

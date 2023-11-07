@@ -21,8 +21,11 @@ private const val TAG = "MathpixRepository"
 
 class MathpixRepository @Inject constructor(
     private val mathpixOCRService: MathpixOCRService,
+
+    private val remoteConfigRepository: RemoteConfigRepository
 ) {
     suspend fun getMathFromImage(imageBitmap: ImageBitmap): String = suspendCancellableCoroutine { continuation ->
+        val mathpixAPIKey = remoteConfigRepository.getMathpixAPI()
         val base64Image = convertImageBitmapToBase64(imageBitmap)
 
         Log.d(TAG, "getMathFromImage: Trying to send request ${base64Image.byteInputStream()}")
@@ -36,7 +39,7 @@ class MathpixRepository @Inject constructor(
 
         val call = mathpixOCRService.processImage(
             appId = "asked_e64f8d_941236",
-            appKey = "0abc13fb4bf8df5adbe28fd571839ebee004c6633a3a83d508312f671759ec3a",
+            appKey = mathpixAPIKey,
             request
         )
 

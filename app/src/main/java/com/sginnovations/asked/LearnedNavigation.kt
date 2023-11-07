@@ -38,17 +38,6 @@ import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
 import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
 import com.sginnovations.asked.ui.sign_in.LearnedAuth
 import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
-import com.sginnovations.asked.ui.top_bottom_bar.Auth
-import com.sginnovations.asked.ui.top_bottom_bar.Camera
-import com.sginnovations.asked.ui.top_bottom_bar.Chat
-import com.sginnovations.asked.ui.top_bottom_bar.ChatsHistory
-import com.sginnovations.asked.ui.top_bottom_bar.Crop
-import com.sginnovations.asked.ui.top_bottom_bar.Gallery
-import com.sginnovations.asked.ui.top_bottom_bar.NewConversation
-import com.sginnovations.asked.ui.top_bottom_bar.Points
-import com.sginnovations.asked.ui.top_bottom_bar.Profile
-import com.sginnovations.asked.ui.top_bottom_bar.RefCode
-import com.sginnovations.asked.ui.top_bottom_bar.Subscription
 import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.ui.top_bottom_bar.topbar.LearnedTopBar
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
@@ -94,6 +83,9 @@ fun LearnedNavigation(
 
             Chat.getName(context) -> Chat
             Points.getName(context) -> Points
+
+            Subscription.getName(context) -> Subscription
+            RefCode.getName(context) -> RefCode
             else -> null
         }
     val currentScreenTitle = currentScreen?.route ?: ""
@@ -240,6 +232,7 @@ fun LearnedNavigation(
                 CropStateFul(
                     vmCamera = vmCamera,
                     vmChat = vmChat,
+                    vmToken = vmToken,
 
                     navController = navController,
                 )

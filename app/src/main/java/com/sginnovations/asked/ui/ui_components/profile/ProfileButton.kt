@@ -48,6 +48,7 @@ fun ProfileButton(
             Text(
                 text = text,
                 color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.weight(1f)
             )
             Icon(

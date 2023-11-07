@@ -6,7 +6,11 @@ import android.graphics.Matrix
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -15,6 +19,8 @@ import androidx.compose.material.icons.sharp.Circle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -23,41 +29,50 @@ import androidx.core.content.ContextCompat
 
 @Composable
 fun PhotoButton(
+    modifier: Modifier = Modifier,
     context: Context,
     controller: LifecycleCameraController,
 
+    isSelected: Boolean,
+
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
-    IconButton(
-        modifier = Modifier
-            .padding(bottom = 20.dp)
-            .size(70.dp)
-            .border(4.dp, Color.White, CircleShape)
-            .graphicsLayer {
-                shape = CircleShape
-                clip = true
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(if (isPressed && isSelected) 0.90f else 1f)
+
+    Box(modifier = modifier) {
+        IconButton(
+            modifier = modifier
+                .padding(bottom = 16.dp)
+                .size(70.dp)
+                .border(4.dp, Color.White, CircleShape)
+                .graphicsLayer {
+                    shape = CircleShape
+                    clip = true
+                    scaleX = scale
+                    scaleY = scale
+                },
+            onClick = {
+                if (isSelected) {
+                    takePhoto(
+                        context = context,
+                        controller = controller,
+                        onPhotoTaken = { onPhotoTaken(it) }
+                    )
+                }
             },
-        onClick = {
-            takePhoto(
-                context = context,
-                controller = controller,
-                onPhotoTaken = { onPhotoTaken(it) }
+            interactionSource = interactionSource
+        ) {
+            Icon(
+                imageVector = Icons.Sharp.Circle,
+                contentDescription = "Take photo",
+                modifier = Modifier
+                    .size(65.dp)
             )
         }
-    ) {
-        Icon(
-            imageVector = Icons.Sharp.Circle,
-            contentDescription = "Take photo",
-            modifier = Modifier
-                .size(65.dp)
-//                .border(4.dp, Color.White, CircleShape)
-//                .graphicsLayer {
-//                    shadowElevation = 2.dp.toPx()
-//                    shape = CircleShape
-//                    clip = true
-//                },
-        )
     }
+
 }
 
 private fun takePhoto(

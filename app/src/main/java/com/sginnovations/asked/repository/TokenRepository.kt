@@ -31,9 +31,7 @@ class TokenRepository @Inject constructor(
 
     suspend fun getTokens(): Flow<Long> = callbackFlow {
         Log.i(TAG, "getTokens")
-        while (documentReference == null) {
-            delay(500)
-        }
+        while (documentReference == null) { delay(500) }
 
         val listenerRegistration = documentReference!!.addSnapshotListener { documentReference, e ->
             Log.i(TAG, "documentRef ${documentReference.toString()}")
@@ -58,9 +56,9 @@ class TokenRepository @Inject constructor(
         remoteConfigRepository.getInviteRewardTokens().toInt()
     )
 
-    suspend fun oneLessToken() {
+    suspend fun lessToken(num: Int) {
         if (!checkIsPremium()) {
-            incrementTokens(tokensOneLess)
+            incrementTokens(num)
         }
     }
 }

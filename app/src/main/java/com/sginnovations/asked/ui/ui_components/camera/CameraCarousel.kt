@@ -2,6 +2,8 @@
 
 package com.sginnovations.asked.ui.ui_components.camera
 
+import android.graphics.Bitmap
+import androidx.camera.view.LifecycleCameraController
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -25,44 +27,70 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.sginnovations.asked.Constants
+import com.sginnovations.asked.data.Math
+import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
+import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun CameraCarousel(
+    vmToken: TokenViewModel,
+    controller: LifecycleCameraController,
+
     onChangeCategory: (String) -> Unit,
+
+    onPhotoTaken: (Bitmap) -> Unit,
 ) {
     val pagerState = rememberPagerState(initialPage = 0)
-    val sliderList = listOf(Constants.CAMERA_TEXT, Constants.CAMERA_MATH)
+    val sliderList = listOf(Text.name, Math.name)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Row {
         HorizontalPager(
             count = sliderList.size,
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 144.dp),
-            modifier = Modifier.height(48.dp)
+            modifier = Modifier.height(148.dp)
         ) { item ->
             val isSelected = pagerState.currentPage == item
             val targetAlpha = if (isSelected) 1f else 0.5f
             val targetScale = if (isSelected) 1f else 0.8f
+            val alpha by animateFloatAsState(targetAlpha)
+            val scale by animateFloatAsState(targetScale)
 
             onChangeCategory(sliderList[pagerState.currentPage])
 
-            val alpha by animateFloatAsState(targetAlpha)
-            val scale by animateFloatAsState(targetScale)
+            val mathCostToken = vmToken.getCameraMathTokens()
+
+            // Tokens Cost Subtitle
+            val tokenCost = when (sliderList[item]) {
+                Text.name -> "Free"
+                Math.name ->
+                    if (mathCostToken == "0") {
+                        "Free"
+                    } else {
+                        mathCostToken
+                    }
+
+                else -> {
+                    "Free"
+                }
+            }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -104,7 +132,8 @@ fun CameraCarousel(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Free",
+                            text =
+                            tokenCost,
                             style = TextStyle(
                                 shadow = Shadow(
                                     color = Color.Black,
@@ -116,6 +145,20 @@ fun CameraCarousel(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         TokenIcon()
+                    }
+                }
+                Spacer(
+                    modifier = Modifier.height(if (isSelected) 0.dp else 16.dp)
+                )
+                PhotoButton(
+                    modifier = Modifier.scale(if (isSelected) 1f else 0.9f),
+                    context = context,
+                    controller = controller,
+                    isSelected = isSelected,
+
+                    ) {
+                    if (isSelected) {
+                        onPhotoTaken(it)
                     }
                 }
 

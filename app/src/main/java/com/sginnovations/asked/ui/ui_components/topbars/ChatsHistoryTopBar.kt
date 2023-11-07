@@ -16,12 +16,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.sginnovations.asked.ui.top_bottom_bar.ScreensDestinations
-import com.sginnovations.asked.ui.top_bottom_bar.Subscription
+import com.sginnovations.asked.ScreensDestinations
+import com.sginnovations.asked.Subscription
 
 @Composable
 fun ChatsHistoryTopBar(

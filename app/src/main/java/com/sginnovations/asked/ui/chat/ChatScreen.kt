@@ -5,6 +5,7 @@ package com.sginnovations.asked.ui.chat
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -105,7 +108,7 @@ fun ChatStateFul(
         ) { prompt ->
         scope.launch {
             vmChat.sendMessageToOpenaiApi(prompt)
-            vmToken.oneLessToken()
+            vmToken.lessToken(-1)
         }
     }
 }
@@ -126,6 +129,7 @@ fun ChatStateLess(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
+    val clipboardManager = LocalClipboardManager.current
     val text = remember { mutableStateOf("") }
 
     var lastItemVisible by remember { mutableStateOf(false) }
@@ -218,7 +222,11 @@ fun ChatStateLess(
                                 } else {
                                     // Message static last AI msg
                                     Text(
-                                        modifier = Modifier.padding(CHAT_MSG_PADDING),
+                                        modifier = Modifier
+                                            .padding(CHAT_MSG_PADDING)
+                                            .clickable {
+                                                clipboardManager.setText(AnnotatedString(message.content))
+                                            },
                                         text = message.content
                                     )
                                 }
@@ -231,11 +239,21 @@ fun ChatStateLess(
                         ChatUserMessage(
                             userName,
                             userProfileUrl,
-                            message.content
+                            message.content,
+
+                            onSetClip = { text ->
+                                clipboardManager.setText(AnnotatedString(text))
+                            }
                         )
                     } else {
                         // Other AI msg
-                        ChatAiMessage(message.content)
+                        ChatAiMessage(
+                            message.content,
+
+                            onSetClip = { text ->
+                                clipboardManager.setText(AnnotatedString(text))
+                            }
+                        )
                     }
                 }
             }
@@ -245,8 +263,18 @@ fun ChatStateLess(
                         userName,
                         userProfileUrl,
                         userPlaceHolder,
+
+                        onSetClip = { text ->
+                            clipboardManager.setText(AnnotatedString(text))
+                        }
                     )
-                    ChatAiMessage(assistantPlaceHolder)
+                    ChatAiMessage(
+                        assistantPlaceHolder,
+
+                        onSetClip = { text ->
+                            clipboardManager.setText(AnnotatedString(text))
+                        }
+                    )
                 }
             }
         }

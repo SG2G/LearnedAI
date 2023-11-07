@@ -3,18 +3,23 @@ package com.sginnovations.asked.viewmodel
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sginnovations.asked.data.Category
+import com.sginnovations.asked.data.Math
+import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
+import com.sginnovations.asked.data.api_gpt.Message
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
-import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
-import com.sginnovations.asked.data.api_gpt.Message
 import com.sginnovations.asked.repository.ChatRepository
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,11 +29,13 @@ private const val TAG = "ChatViewModel"
 class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository,
-    private val remoteConfigRepository: RemoteConfigRepository
+    private val remoteConfigRepository: RemoteConfigRepository,
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
-    val category = mutableStateOf("Math") //TODO HAHA
+    val category = mutableStateOf(Text.name)
+    val prefixPrompt = mutableStateOf("")
+
     private val timestamp = System.currentTimeMillis()
 
     // Response of OPENAI API
@@ -41,7 +48,12 @@ class ChatViewModel @Inject constructor(
      *  MutableList whit all the actual conversation
      */
     private val messageHistory =
-        mutableListOf(Message(role = "system", content = "You are a helpful assistant."))
+        mutableListOf(
+            Message(
+                role = "system",
+                content = "You are a helpful assistant. Respond on language: ${Locale.current.language}"
+            )
+        )
 
     fun setUpMessageHistory() {
         viewModelScope.launch {
@@ -55,8 +67,10 @@ class ChatViewModel @Inject constructor(
                     )
                 )
             }
+            Log.d(TAG, "setUpMessageHistory: messageHistory -> $messageHistory ")
         }
     }
+
     fun setUpNewConversation() {
         viewModelScope.launch {
             idConversation.intValue = 0
@@ -66,6 +80,12 @@ class ChatViewModel @Inject constructor(
     suspend fun getAllConversations() {
         viewModelScope.launch {
             conversations.value = roomRepository.getAllConversations()
+        }
+    }
+
+    suspend fun getCategoryConversations(category: String) {
+        viewModelScope.launch {
+            conversations.value = roomRepository.getCategoryConversations(category)
         }
     }
 
@@ -80,6 +100,8 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             roomRepository.hideConversation(id)
             getAllConversations()
+            delay(2000)
+            roomRepository.deleteConversation(id)
         }
     }
 
@@ -89,12 +111,24 @@ class ChatViewModel @Inject constructor(
     suspend fun sendMessageToOpenaiApi(prompt: String) {
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
 
+        prefixPrompt.value = when (category.value) {
+            Text.name -> ""
+            Math.name -> "Resolve step by step "
+            else -> {
+                ""
+            }
+        }
+
         val userMessage = Message(role = User.role, content = prompt)
 
         // Create conversation if needed
         if (idConversation.intValue == 0) {
             idConversation.intValue = roomRepository.createConversation(
-                ConversationEntity(name = shortenString(prompt), category = category.value, visible = true)
+                ConversationEntity(
+                    name = shortenString(prompt),
+                    category = category.value,
+                    visible = true
+                )
             ).toInt()
         }
 
@@ -154,6 +188,7 @@ class ChatViewModel @Inject constructor(
         Log.i(TAG, "messageHistory: $messageHistory")
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")
     }
+
     private fun shortenString(input: String): String {
         val maxLength = 30
         return if (input.length > maxLength) {

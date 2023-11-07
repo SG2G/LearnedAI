@@ -185,7 +185,7 @@ fun SubscriptionStateLess(
         priceInApp.value?.let {
             SubscriptionCard(
                 durationTime = stringResource(R.string.subscription_lifetime),
-                smallText = "Full time, Lifetime",
+                smallText = "Billed once",
                 allPrice = it,
                 subscriptionOption = Option.OptionLifetime,
                 userOption = userOption.value
@@ -207,13 +207,23 @@ fun SubscriptionStateLess(
                     .padding(16.dp)
                     .height(48.dp)
             ) {
-                Text(
-                    text = "Buy AskedAI Pro", color = MaterialTheme.colorScheme.onBackground,
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                if (userOption.value == Option.OptionWeekly) {
+                    Text(
+                        text = "Start Free Trial & Plan", color = MaterialTheme.colorScheme.onBackground,
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
+                } else {
+                    Text(
+                        text = "Buy AskedAI Pro", color = MaterialTheme.colorScheme.onBackground,
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
             }
         }
     }
