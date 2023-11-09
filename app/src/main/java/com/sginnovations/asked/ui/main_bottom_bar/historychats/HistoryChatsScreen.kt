@@ -2,33 +2,23 @@
 
 package com.sginnovations.asked.ui.main_bottom_bar.historychats
 
+import android.app.Activity
+import android.os.Build
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,31 +37,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
-import com.sginnovations.asked.Constants
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.data.database.entities.ConversationEntity
-import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.ChatViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "HistoryChats"
@@ -84,6 +63,13 @@ fun StateFulHistoryChats(
     onNavigateNewConversation: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    SideEffect {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            (context as Activity).window.navigationBarColor = Color(0xFF191c22).toArgb()
+        }
+    }
 
     LaunchedEffect(Unit) {
         vmChat.getAllConversations()
@@ -106,7 +92,7 @@ fun StateFulHistoryChats(
                 if (category == All.name) {
                     vmChat.getAllConversations()
                 } else {
-                    vmChat.getCategoryConversations(category)
+                    vmChat.getConversationsFromCategory(category)
                 }
             }
         },
@@ -115,7 +101,7 @@ fun StateFulHistoryChats(
             scope.launch {
                 Log.i(TAG, "Searching messages whit id: $idConversation")
                 vmChat.idConversation.intValue = idConversation
-                vmChat.getAllMessages()
+                vmChat.getMessagesFromIdConversation()
             }
             Log.d(TAG, "StateFulHistoryChats: Navigating to messages")
             onNavigateMessages()

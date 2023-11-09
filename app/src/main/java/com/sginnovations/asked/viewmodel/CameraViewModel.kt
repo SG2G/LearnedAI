@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.repository.MathpixRepository
 import com.sginnovations.asked.repository.MlkitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +27,7 @@ class CameraViewModel @Inject constructor(
     val imageToText = mutableStateOf("")
 
     val isLoading = mutableStateOf(false)
-    val cameraCategory = mutableStateOf("Text")
+    val cameraOCRCategory = mutableStateOf(Text.name)
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
 
     fun onTakePhoto(bitmap: Bitmap) {

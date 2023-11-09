@@ -2,6 +2,9 @@ package com.sginnovations.asked.repository
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.sginnovations.asked.Constants.Companion.TOKENS_NAME
+import com.sginnovations.asked.Constants.Companion.USERS_NAME
 import com.sginnovations.asked.domain.token.GetTokensUseCase
 import com.sginnovations.asked.domain.token.IncrementTokensUseCase
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
@@ -15,8 +18,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val TAG = "TokenRepository"
-
-private const val tokensOneLess = -1
 
 @Singleton
 class TokenRepository @Inject constructor(
@@ -56,9 +57,34 @@ class TokenRepository @Inject constructor(
         remoteConfigRepository.getInviteRewardTokens().toInt()
     )
 
-    suspend fun lessToken(num: Int) {
-        if (!checkIsPremium()) {
-            incrementTokens(num)
-        }
+    suspend fun lessTokenCheckPremium(num: Int) {
+        if (!checkIsPremium()) incrementTokens(num)
+    }
+
+    fun giveInvitorReward(inviteUserId: String) {
+        val firestore = FirebaseFirestore.getInstance()
+        val plusTokens = remoteConfigRepository.getInviteRewardTokens().toInt()
+
+        firestore.collection(USERS_NAME).document(inviteUserId).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val currentTokens = document[TOKENS_NAME] as Long
+                    val updatedTokens = currentTokens + plusTokens
+                    firestore.collection(USERS_NAME).document(inviteUserId)
+                        .set(mapOf(TOKENS_NAME to updatedTokens))
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w(TAG, "Error updating document", e)
+                        }
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
     }
 }

@@ -35,10 +35,10 @@ class TokenViewModel @Inject constructor(
         }
     }
 
-    fun lessToken(num: Int) {
+    fun lessTokenCheckPremium(num: Int) {
         viewModelScope.launch {
             Log.i(TAG, "oneLessToken")
-            tokenRepository.lessToken(num)
+            tokenRepository.lessTokenCheckPremium(num)
         }
     }
     fun getCameraMathTokens(): String {

@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sginnovations.asked.data.Category
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
@@ -18,6 +17,7 @@ import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.repository.ChatRepository
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
+import com.sginnovations.asked.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,6 +29,8 @@ private const val TAG = "ChatViewModel"
 class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository,
+    private val tokensRepository: TokenRepository,
+
     private val remoteConfigRepository: RemoteConfigRepository,
 ) : ViewModel() {
 
@@ -83,13 +85,13 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    suspend fun getCategoryConversations(category: String) {
+    suspend fun getConversationsFromCategory(category: String) {
         viewModelScope.launch {
-            conversations.value = roomRepository.getCategoryConversations(category)
+            conversations.value = roomRepository.getConversationsFromCategory(category)
         }
     }
 
-    suspend fun getAllMessages() {
+    suspend fun getMessagesFromIdConversation() {
         Log.i(TAG, "getting all messages of id: $idConversation")
         viewModelScope.launch {
             messages.value = roomRepository.getAllMessages(idConversation.intValue)
@@ -105,10 +107,22 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    fun newConversationCostTokens() = remoteConfigRepository.getAllNewConversationCostTokens()
+    fun lessTokenNewConversationCheckPremium() {
+        viewModelScope.launch {
+            val costTokens = newConversationCostTokens()
+            tokensRepository.lessTokenCheckPremium(costTokens.toInt())
+        }
+    }
+
     /**
      * Call to GPT
      */
     suspend fun sendMessageToOpenaiApi(prompt: String) {
+        /**
+         * Set up
+         */
+        //Get Key
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
 
         prefixPrompt.value = when (category.value) {
@@ -183,7 +197,7 @@ class ChatViewModel @Inject constructor(
             messageHistory.removeAt(1)
         }
 
-        getAllMessages()
+        getMessagesFromIdConversation()
 
         Log.i(TAG, "messageHistory: $messageHistory")
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")

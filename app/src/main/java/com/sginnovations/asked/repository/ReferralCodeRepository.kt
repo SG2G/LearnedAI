@@ -13,17 +13,17 @@ private const val TAG = "HandleDynamicLink"
 class ReferralCodeRepository @Inject constructor(
     private val handleDynamicLink: HandleDynamicLink,
 
-    private val refCodeReward: RefCodeRewardUseCase,
+    private val refCodeRewardUseCase: RefCodeRewardUseCase,
 ) {
     @OptIn(DelicateCoroutinesApi::class)
     suspend fun handleDynamicLink(intent: Intent) {
         Log.d("handleDynamicLink", "checkReferralCodeInvite: ")
         handleDynamicLink(
             intent = intent,
-            onRewardUser = { userId ->
+            onRewardUser = { inviteUserId ->
                 Log.d(TAG, "handleDynamicLink: Reward granted and given yesyes")
                 GlobalScope.launch {
-                    refCodeReward.invoke(userId)
+                    refCodeRewardUseCase(inviteUserId)
                 }
             }
         )

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,6 +42,7 @@ import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "EarnPointsStateFul"
+
 @Composable
 fun EarnPointsStateFul(
     vmToken: TokenViewModel,
@@ -52,12 +54,13 @@ fun EarnPointsStateFul(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     fun Context.getActivity(): Activity? {
-        return when(this) {
+        return when (this) {
             is Activity -> this
             is ContextWrapper -> baseContext.getActivity()
             else -> null
         }
     }
+
     val activity = context.getActivity()
 
     val tokens = vmToken.tokens.collectAsState()
@@ -111,24 +114,22 @@ fun EarnPointsStateLess(
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.weight(1f))
                 TokenDisplay(
                     tokens = tokens,
                     showPlus = false
                 ) {}
+                Text(
+                    text = "Earn more Tokens!", color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Earn more Tokens!" , color = MaterialTheme.colorScheme.onBackground)
-                TokenIcon()
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
                 num = stringResource(R.string.infinite),
@@ -141,7 +142,7 @@ fun EarnPointsStateLess(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
-                num = "+"+ vmRemoteConfig.getAdRewardTokens(),
+                num = "+" + vmRemoteConfig.getAdRewardTokens(),
                 text = stringResource(R.string.earn_token_watch),
                 buttonText = stringResource(R.string.earn_token_watch),
                 borderColor = Color.Transparent,
@@ -151,7 +152,7 @@ fun EarnPointsStateLess(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
-                num = "+"+ vmRemoteConfig.getInviteRewardTokens(),
+                num = "+" + vmRemoteConfig.getInviteRewardTokens(),
                 text = stringResource(R.string.earn_token_invite_friends),
                 buttonText = stringResource(R.string.earn_token_button_invite),
                 borderColor = Color.Transparent,

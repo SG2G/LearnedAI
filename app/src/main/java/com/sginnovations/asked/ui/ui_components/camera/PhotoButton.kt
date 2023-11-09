@@ -7,6 +7,7 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -35,13 +37,17 @@ fun PhotoButton(
 
     isSelected: Boolean,
 
+    onChangeIcon: () -> Unit,
+
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(if (isPressed && isSelected) 0.90f else 1f)
 
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+    ) {
         IconButton(
             modifier = modifier
                 .padding(bottom = 16.dp)
@@ -60,6 +66,8 @@ fun PhotoButton(
                         controller = controller,
                         onPhotoTaken = { onPhotoTaken(it) }
                     )
+                } else {
+                    onChangeIcon()
                 }
             },
             interactionSource = interactionSource
@@ -69,6 +77,7 @@ fun PhotoButton(
                 contentDescription = "Take photo",
                 modifier = Modifier
                     .size(65.dp)
+                    .alpha(if (!isSelected) 0.6f else 1f)
             )
         }
     }

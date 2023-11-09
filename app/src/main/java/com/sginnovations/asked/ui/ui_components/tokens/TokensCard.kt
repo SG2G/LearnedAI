@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ fun TokensCard(
 ) {
     val cardsPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
 
-    Card(
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth(0.9f)
             .border(1.dp, borderColor, RoundedCornerShape(10.dp)),
@@ -57,17 +58,16 @@ fun TokensCard(
             ) {
                 TokenIcon()
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = num, modifier = Modifier.width(36.dp),
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    ))
                 Text(
-                    text = text, modifier = Modifier.weight(1f),
+                    text = num, modifier = Modifier.width(36.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
                     )
+                )
+                Text(
+                    text = text, modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Button(
                     onClick = { onClick() },
@@ -76,7 +76,10 @@ fun TokensCard(
                         containerColor = buttonColor
                     )
                 ) {
-                    Text(text = buttonText, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = buttonText, color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
             }
         }

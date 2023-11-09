@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,6 +49,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CameraCarousel(
+    modifier: Modifier = Modifier,
+
     vmToken: TokenViewModel,
     controller: LifecycleCameraController,
 
@@ -60,109 +63,92 @@ fun CameraCarousel(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    Row {
-        HorizontalPager(
-            count = sliderList.size,
-            state = pagerState,
-            contentPadding = PaddingValues(horizontal = 144.dp),
-            modifier = Modifier.height(148.dp)
-        ) { item ->
-            val isSelected = pagerState.currentPage == item
-            val targetAlpha = if (isSelected) 1f else 0.5f
-            val targetScale = if (isSelected) 1f else 0.8f
-            val alpha by animateFloatAsState(targetAlpha)
-            val scale by animateFloatAsState(targetScale)
+    HorizontalPager(
+        count = sliderList.size,
+        state = pagerState,
+        contentPadding = PaddingValues(horizontal = 64.dp),
+        modifier = modifier
+    ) { item ->
+        val isSelected = pagerState.currentPage == item
+        val targetAlpha = if (isSelected) 1f else 0.5f
+        val targetScale = if (isSelected) 1f else 0.8f
+        val alpha by animateFloatAsState(targetAlpha)
+        val scale by animateFloatAsState(targetScale)
 
-            onChangeCategory(sliderList[pagerState.currentPage])
+        onChangeCategory(sliderList[pagerState.currentPage])
 
-            val mathCostToken = vmToken.getCameraMathTokens()
+        val mathCostToken = vmToken.getCameraMathTokens()
 
-            // Tokens Cost Subtitle
-            val tokenCost = when (sliderList[item]) {
-                Text.name -> "Free"
-                Math.name ->
-                    if (mathCostToken == "0") {
-                        "Free"
-                    } else {
-                        mathCostToken
-                    }
-
-                else -> {
+        // Tokens Cost Subtitle
+        val tokenCost = when (sliderList[item]) {
+            Text.name -> "Free"
+            Math.name ->
+                if (mathCostToken == "0") {
                     "Free"
+                } else {
+                    mathCostToken
                 }
-            }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+            else -> {
+                "Free"
+            }
+        }
+
+        Column(
+            modifier = Modifier.pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        scope.launch { pagerState.animateScrollToPage(item) }
+                    }
+                )
+            },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = sliderList[item],
+                modifier = Modifier
+                    .graphicsLayer {
+                        this.alpha = alpha
+                        this.scaleX = scale
+                        this.scaleY = scale
+                    },
+                style = MaterialTheme.typography.titleMedium
+            )
+            AnimatedVisibility(
+                visible = isSelected,
+                enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(
+                    initialAlpha = 0.3f
+                ),
+                exit = slideOutVertically(targetOffsetY = { -40 }) + shrinkVertically() + fadeOut(),
+                modifier = Modifier.padding(bottom = 2.dp)
             ) {
-                Text(
-                    text = sliderList[item],
-                    modifier = Modifier
-                        .graphicsLayer {
-                            this.alpha = alpha
-                            this.scaleX = scale
-                            this.scaleY = scale
-                        }
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onTap = {
-                                    scope.launch { pagerState.animateScrollToPage(item) }
-                                }
-                            )
-                        },
-                    style = TextStyle(
-                        shadow = Shadow(
-                            color = Color.Black,
-                            offset = Offset(0f, 0f),
-                            blurRadius = 8f
-                        ),
-                        fontSize = 20.sp
-                    )
-                )
-                AnimatedVisibility(
-                    visible = isSelected,
-                    enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(
-                        initialAlpha = 0.3f
-                    ),
-                    exit = slideOutVertically(targetOffsetY = { -40 }) + shrinkVertically() + fadeOut(),
-                    modifier = Modifier.padding(bottom = 2.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text =
-                            tokenCost,
-                            style = TextStyle(
-                                shadow = Shadow(
-                                    color = Color.Black,
-                                    offset = Offset(0f, 0f),
-                                    blurRadius = 8f
-                                ),
-                                fontSize = 8.sp
-                            ),
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        TokenIcon()
-                    }
+                    Text(
+                        text = tokenCost,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    TokenIcon()
                 }
-                Spacer(
-                    modifier = Modifier.height(if (isSelected) 0.dp else 16.dp)
-                )
-                PhotoButton(
-                    modifier = Modifier.scale(if (isSelected) 1f else 0.9f),
-                    context = context,
-                    controller = controller,
-                    isSelected = isSelected,
-
-                    ) {
-                    if (isSelected) {
-                        onPhotoTaken(it)
-                    }
-                }
-
             }
+
+            PhotoButton(
+                modifier = Modifier.scale(if (isSelected) 1f else 0.8f),
+                context = context,
+                controller = controller,
+
+                isSelected = isSelected,
+
+                onChangeIcon = { scope.launch { pagerState.animateScrollToPage(item) } },
+                ) {
+                if (isSelected) {
+                    onPhotoTaken(it)
+                }
+            }
+
         }
     }
 }

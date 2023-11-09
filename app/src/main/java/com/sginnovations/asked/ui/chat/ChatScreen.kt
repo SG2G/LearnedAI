@@ -2,6 +2,8 @@
 
 package com.sginnovations.asked.ui.chat
 
+import android.app.Activity
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -34,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -45,6 +48,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -79,6 +84,7 @@ fun ChatStateFul(
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val chatAnimation = remember { mutableStateOf(false) }
     val messages = vmChat.messages
@@ -86,6 +92,13 @@ fun ChatStateFul(
     val userAuth = vmAuth.userAuth.collectAsState()
     val userName = userAuth.value?.userName
     val userProfileUrl = userAuth.value?.profilePictureUrl
+
+    // Change navigator bar color
+    SideEffect {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb()
+        }
+    }
 
     LaunchedEffect(messages.value.size) {
         vmChat.setUpMessageHistory()
@@ -108,7 +121,7 @@ fun ChatStateFul(
         ) { prompt ->
         scope.launch {
             vmChat.sendMessageToOpenaiApi(prompt)
-            vmToken.lessToken(-1)
+            vmToken.lessTokenCheckPremium(-1)
         }
     }
 }
@@ -278,64 +291,78 @@ fun ChatStateLess(
                 }
             }
         }
+    }
 
         /**
          * TextField
          */
-        Row(
-            modifier = Modifier
-                .scale(0.8f)
-                .padding(start = 16.dp)
-        ) {
-            if (!isPremium) {
-                Text(text = "-1")
-                TokenIcon()
-                Spacer(modifier = Modifier.width(2.dp))
-                Text(text = "message")
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = text.value,
-                onValueChange = { text.value = it },
-                modifier = Modifier
-                    .weight(1f)
-                    .imePadding(),
-                placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
-                textStyle = TextStyle(fontSize = 14.sp),
-                shape = RoundedCornerShape(20.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                ),
-                maxLines = Int.MAX_VALUE,
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Column(
+            modifier = Modifier.background(
+                MaterialTheme.colorScheme.background,
+                RoundedCornerShape(topStart =  25.dp, topEnd = 25.dp)
             )
-            IconButton(
-                onClick = {
-                    scope.launch {
-                        if (text.value.isNotEmpty()) {
-                            /**
-                             * Send message
-                             */
-                            chatButtonClicked(text)
-
-                        }
-                    }
-                },
-                modifier = Modifier.size(36.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .scale(0.8f)
+                    .padding(start = 16.dp, top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Default.Send,
-                    contentDescription = "Send",
-                    modifier = Modifier.size(24.dp),
+                if (!isPremium) {
+                    Text(text = "-1")
+                    TokenIcon()
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "message")
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = text.value,
+                    onValueChange = { text.value = it },
+                    modifier = Modifier
+                        .weight(1f)
+                        .imePadding(),
+                    placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
+                    textStyle = TextStyle(fontSize = 14.sp),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    ),
+                    maxLines = Int.MAX_VALUE,
                 )
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            if (text.value.isNotEmpty()) {
+                                /**
+                                 * Send message
+                                 */
+                                chatButtonClicked(text)
+
+                            }
+                        }
+                    },
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Send,
+                        contentDescription = "Send",
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
             }
         }
-    }
+    } // Column Free msg + Textfield
 }

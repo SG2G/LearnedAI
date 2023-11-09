@@ -16,12 +16,35 @@ val monaSansFontFamily = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
+    displayLarge = TextStyle(
         fontFamily = monaSansFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = monaSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = monaSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 26.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = monaSansFontFamily,
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = monaSansFontFamily,
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = monaSansFontFamily,
     ),
     titleLarge = TextStyle(
         fontFamily = monaSansFontFamily,
@@ -36,6 +59,29 @@ val Typography = Typography(
         fontSize = 18.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = monaSansFontFamily,
+        fontWeight = FontWeight.Bold
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = monaSansFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = monaSansFontFamily,
+    ),
+    bodySmall = TextStyle(
+        fontFamily = monaSansFontFamily,
+    ),
+    labelLarge = TextStyle(
+        fontFamily = monaSansFontFamily,
+    ),
+    labelMedium = TextStyle(
+        fontFamily = monaSansFontFamily,
     ),
 
     labelSmall = TextStyle(

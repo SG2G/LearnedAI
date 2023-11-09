@@ -44,11 +44,6 @@ fun DefaultTopBar(
                         modifier = Modifier.padding(16.dp)
                     )
                 }
-                Icon(
-                    imageVector = Icons.Filled.Cancel,
-                    contentDescription = null,
-                    tint = Color.Transparent
-                )
             }
         },
         navigationIcon = {
@@ -56,6 +51,15 @@ fun DefaultTopBar(
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowLeft,
                     contentDescription = "ArrowBack"
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.Cancel,
+                    contentDescription = null,
+                    tint = Color.Transparent
                 )
             }
         },

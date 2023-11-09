@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,7 +42,7 @@ fun LearnedAuth(
     val googleAuthUiClient = vmAuth.getGoogleAuthUiClient()
 
     LaunchedEffect(state.isSignInSuccessful) {
-        if(state.isSignInSuccessful) {
+        if (state.isSignInSuccessful) {
             Toast.makeText(
                 context,
                 "Sign in successful",
@@ -55,7 +56,7 @@ fun LearnedAuth(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
         onResult = { result ->
-            if(result.resultCode == RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 scope.launch {
                     val signInResult = googleAuthUiClient.signInWithIntent(
                         intent = result.data ?: return@launch
@@ -109,12 +110,11 @@ fun LearnedAuthStateLess(
         /**
          * Logo Image
          */
-
         Image(
-            painter = painterResource(id = R.drawable.person_fill1_wght400_grad0_opsz24),
-            contentDescription = "Icon Image",
+            painter = painterResource(id = R.drawable.sign_in_light),
+            contentDescription = "sign_in",
             modifier = Modifier
-                .size(48.dp)
+                .fillMaxWidth()
                 .padding(bottom = 16.dp)
         )
 

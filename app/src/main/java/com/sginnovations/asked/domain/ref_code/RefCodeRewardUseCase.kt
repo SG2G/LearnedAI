@@ -7,14 +7,17 @@ import javax.inject.Inject
 private const val TAG = "RefCodeRewardUseCase"
 class RefCodeRewardUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
-    private val isNewAccountUseCase: NewAccountUseCase,
-    private val eligibleForRewardUseCase: EligibleForRewardUseCase,
+    private val isActualDeviceNewAccountUseCase: NewAccountUseCase,
+    private val isActualDeviceEligibleForRewardUseCase: EligibleForRewardUseCase,
 ) {
-    suspend fun invoke(userId: String) {
+    suspend operator fun invoke(inviteUserId: String) {
         Log.i(TAG, "Ref Code reward")
-        if (isNewAccountUseCase.invoke()) {
-            if (eligibleForRewardUseCase.invoke(userId)) {
+        if (isActualDeviceNewAccountUseCase()) {
+            if (isActualDeviceEligibleForRewardUseCase(inviteUserId)) {
+                // Tokens for local user
                 tokenRepository.giveRefCodeReward()
+                // Give user who invited Tokens
+                tokenRepository.giveInvitorReward(inviteUserId)
             }
         }
     }

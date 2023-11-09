@@ -1,5 +1,6 @@
 package com.sginnovations.asked.ui.ui_components.profile
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -28,9 +29,8 @@ fun ProfileName(userAuth: String) {
     }
 
     if (!isPremium) {
-        Row(
+        Column(
             modifier = Modifier.padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = userAuth,
@@ -39,14 +39,13 @@ fun ProfileName(userAuth: String) {
             )
             Text(
                 text = " - Base Plan",
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
     } else {
-        Row(
+        Column(
             modifier = Modifier.padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = userAuth,
@@ -59,7 +58,7 @@ fun ProfileName(userAuth: String) {
             )
             Text(
                 text = " Plan",
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }

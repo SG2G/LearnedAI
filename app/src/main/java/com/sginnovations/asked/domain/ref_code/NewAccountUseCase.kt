@@ -12,7 +12,7 @@ import kotlin.coroutines.suspendCoroutine
 private const val TAG = "NewAccountUseCase"
 
 class NewAccountUseCase @Inject constructor() {
-    suspend fun invoke(): Boolean {
+    suspend operator fun invoke(): Boolean {
         val auth = Firebase.auth
         val db = Firebase.firestore
 

@@ -26,7 +26,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
 import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
@@ -55,7 +54,7 @@ fun CropStateFul(
     navController: NavController,
 ) {
     val photoImageBitmap = vmCamera.photoImageBitmap
-    val cameraOption = vmCamera.cameraCategory
+    val cameraOption = vmCamera.cameraOCRCategory
 
     CropStateLess(
         onImageCropped = { croppedImage ->
@@ -170,7 +169,7 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraCategory.value = Text.name
+            vmCamera.cameraOCRCategory.value = Text.name
             vmCamera.getTextFromImage(croppedImage)
 
             if (navController.currentDestination?.route != NewConversation.route) {
@@ -190,11 +189,11 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_MATH")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraCategory.value = Math.name
+            vmCamera.cameraOCRCategory.value = Math.name
             vmCamera.getMathFromImage(croppedImage)
 
             val cameraCostTokens = vmToken.getCameraMathTokens()
-            vmToken.lessToken(cameraCostTokens.toInt())
+            vmToken.lessTokenCheckPremium(cameraCostTokens.toInt())
 
             if (navController.currentDestination?.route != NewConversation.route) {
                 Log.i(TAG, "Starting nav")
@@ -208,12 +207,5 @@ fun getTextFromCroppedImage(
                 navController.navigate(NewConversation.route)
             }
         }
-    }
-}
-
-@Composable
-fun TextPreviewDialog(vmCamera: CameraViewModel, onDismissRequest: () -> Unit) { // TODO DELETE
-    Dialog(onDismissRequest = onDismissRequest) { //TODO TRANSLATE
-        Text(text = "")
     }
 }

@@ -3,8 +3,10 @@ package com.sginnovations.asked.ui.newconversation
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +25,6 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,12 +43,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
@@ -73,6 +77,8 @@ fun NewConversationStateFul(
     val idConversation = vmChat.idConversation.intValue
     val prefixPrompt = vmChat.prefixPrompt.value
 
+    val newConversationCostToken = vmChat.newConversationCostTokens()
+
     fun Context.getActivity(): Activity? {
         return when (this) {
             is Activity -> this
@@ -80,15 +86,23 @@ fun NewConversationStateFul(
             else -> null
         }
     }
-
     val activity = context.getActivity()
 
     if (vmCamera.isLoading.value) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 72.dp)
+                .zIndex(10f),
             contentAlignment = Alignment.BottomCenter,
         ) {
             CircularProgressIndicator()
+        }
+    }
+
+    SideEffect {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb()
         }
     }
 
@@ -99,9 +113,12 @@ fun NewConversationStateFul(
     NewConversationStateLess(
         text = text,
 
+        newConversationCostToken = newConversationCostToken,
+
         onClick = {
             scope.launch {
                 if (NetworkUtils.isOnline(context)) {
+                    vmCamera.isLoading.value = true
                     // Show ad
                     if (activity != null) {
                         vmAds.showInterstitialAd(activity)
@@ -112,7 +129,15 @@ fun NewConversationStateFul(
                         async { vmChat.sendMessageToOpenaiApi("$prefixPrompt ${text.value}") }
                     deferred.await()
                     Log.i("NewConversation", "Continuing the code, Sending $idConversation")
+                    // Token cost of the call
+                    try {
+                        vmChat.lessTokenNewConversationCheckPremium()
+                    } catch (e: Exception) {
+                        // NewConversation tokens cost failed
+                        e.printStackTrace()
+                    }
 
+                    vmCamera.isLoading.value = false
                     onNavigateChat(idConversation)
                 } else {
                     Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
@@ -127,15 +152,18 @@ fun NewConversationStateFul(
 fun NewConversationStateLess(
     text: MutableState<String>,
 
+    newConversationCostToken: String,
+
     onClick: () -> Unit,
 ) {
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         ElevatedCard(
+            modifier = Modifier.padding(8.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp
             )
@@ -150,9 +178,8 @@ fun NewConversationStateLess(
                 SubTitleChatUseExample(text = "Take photos of your text or mathematical problems and learn by talking to the chat.")
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
         ElevatedCard(
+            modifier = Modifier.padding(8.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp
             )
@@ -168,8 +195,8 @@ fun NewConversationStateLess(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
         ElevatedCard(
+            modifier = Modifier.padding(8.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp
             )
@@ -184,58 +211,79 @@ fun NewConversationStateLess(
                 SubTitleChatUseExample(text = "Create a slogan for a dogs social media.")
             }
         }
-
     }
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
-        Row(
-            modifier = Modifier
-                .scale(0.8f)
-                .padding(start = 16.dp)
-        ) {
-            TokenIcon()
-            Spacer(modifier = Modifier.width(2.dp))
-            Text(text = "FREE message")
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = text.value,
-                onValueChange = { text.value = it },
-                modifier = Modifier
-                    .weight(1f)
-                    .imePadding(),
-                placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
-                textStyle = TextStyle(fontSize = 14.sp),
-                shape = RoundedCornerShape(20.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                ),
-                maxLines = Int.MAX_VALUE,
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Column(
+            modifier = Modifier.background(
+                MaterialTheme.colorScheme.background,
+                RoundedCornerShape(topStart =  25.dp, topEnd = 25.dp)
             )
-            IconButton(
-                onClick = { onClick() },
-                modifier = Modifier.size(36.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .scale(0.8f)
+                    .padding(start = 16.dp, top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Default.Send,
-                    contentDescription = "Send",
-                    modifier = Modifier.size(24.dp)
+                TokenIcon()
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text =
+                    when (newConversationCostToken.toInt()) {
+                        0 -> "FREE message"
+                        else -> {
+                            "$newConversationCostToken message"
+                        }
+                    }
                 )
             }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = text.value,
+                    onValueChange = { text.value = it },
+                    modifier = Modifier
+                        .weight(1f)
+                        .imePadding(),
+                    placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
+                    textStyle = TextStyle(fontSize = 14.sp),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    ),
+                    maxLines = Int.MAX_VALUE,
+                )
+                IconButton(
+                    onClick = { onClick() },
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Send,
+                        contentDescription = "Send",
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
         }
+
     }
 }
 
 @Composable
 fun TitleChatUseExample(painterResource: Painter, text: String) {
     Row(
+        modifier = Modifier.padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -247,10 +295,7 @@ fun TitleChatUseExample(painterResource: Painter, text: String) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text, color = MaterialTheme.colorScheme.onBackground,
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp
-            )
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
@@ -259,9 +304,8 @@ fun TitleChatUseExample(painterResource: Painter, text: String) {
 fun SubTitleChatUseExample(text: String) {
     Spacer(modifier = Modifier.height(8.dp))
     Text(
+        modifier = Modifier.padding(8.dp),
         text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
-        style = TextStyle(
-            fontSize = 16.sp
-        )
+        style = MaterialTheme.typography.titleSmall
     )
 }

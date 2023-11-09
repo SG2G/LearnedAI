@@ -65,9 +65,9 @@ fun LearnedNavigation(
     navController: NavHostController = rememberNavController(),
 ) {
     val context = LocalContext.current
-    val state by vmAuth.state.collectAsStateWithLifecycle()
-
     val scope = rememberCoroutineScope()
+
+    val state by vmAuth.state.collectAsStateWithLifecycle()
 
     val intent = remember { (context as Activity).intent }
     // Get current back stack entry
@@ -81,6 +81,7 @@ fun LearnedNavigation(
             ChatsHistory.getName(context) -> ChatsHistory
             Profile.getName(context) -> Profile
 
+            NewConversation.getName(context) -> NewConversation
             Chat.getName(context) -> Chat
             Points.getName(context) -> Points
 
@@ -89,27 +90,6 @@ fun LearnedNavigation(
             else -> null
         }
     val currentScreenTitle = currentScreen?.route ?: ""
-
-    LaunchedEffect(Unit) {
-        if (vmAuth.userAuth.value != null) {
-            // User its logged - set up
-            navController.popBackStack(navController.graph.startDestinationId, true)
-            navController.navigate(route = Camera.route)
-
-            Log.i(TAG, "Calling SetUp")
-            vmAuth.userJustLogged()
-            vmToken.startTokenListener()
-            vmReferral.handleDynamicLink(intent)
-            vmAds.loadInterstitialAd(context)
-            vmBilling.connectToGooglePlay()
-
-            checkIsPremium()
-
-            if (!checkIsPremium()) {
-                navController.navigate(route = Subscription.route)
-            }
-        }
-    }
 
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
@@ -174,21 +154,20 @@ fun LearnedNavigation(
                 exitTransition = { ExitTransition.None }
             ) {
                 CameraStateFul(
-                    navController = navController,
-
                     vmCamera = vmCamera,
                     vmToken = vmToken,
 
+                    onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
                     onCropNavigation = { navController.navigate(route = Crop.route) },
-                    onNavigateNewConversation = {
-                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
-                            // This ensures that the previous screen is removed from the backstack
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
-                            }
-                        }
-                        navController.navigate(NewConversation.route)
-                    }
+//                    onNavigateNewConversation = {
+//                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
+//                            // This ensures that the previous screen is removed from the backstack
+//                            popUpTo(navController.graph.id) {
+//                                inclusive = true
+//                            }
+//                        }
+//                        navController.navigate(NewConversation.route)
+//                    }
                 )
                 EarnPoints(vmToken, vmAds, navController)
             }
@@ -247,17 +226,24 @@ fun LearnedNavigation(
                     vmAds = vmAds,
 
                     onNavigateChat = {
-                        // This is where you handle navigation
-                        navController.navigate(ChatsHistory.route) {
+                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
                             // This ensures that the previous screen is removed from the backstack
-                            popUpTo(navController.currentDestination?.route ?: "") {
+                            popUpTo(navController.graph.id) {
                                 inclusive = true
-                                saveState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
                         navController.navigate(Chat.route)
+                        // This is where you handle navigation
+//                        navController.navigate(ChatsHistory.route) {
+//                            // This ensures that the previous screen is removed from the backstack
+//                            popUpTo(navController.currentDestination?.route ?: "") {
+//                                inclusive = true
+//                                saveState = true
+//                            }
+//                            launchSingleTop = true
+//                            restoreState = true
+//                        }
+//                        navController.navigate(Chat.route)
                     }
                 )
             }
@@ -301,6 +287,7 @@ fun LearnedNavigation(
             composable(route = Subscription.route) {
                 SubscriptionStateFull(
                     vmBilling = vmBilling,
+                    onNavigateUp = { navController.navigateUp() }
                 )
             }
             composable(route = Gallery.route) {
@@ -308,6 +295,32 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            if (vmAuth.userAuth.value != null) {
+                // User its logged - set up
+                try {
+                    navController.popBackStack(navController.graph.startDestinationId, true)
+                    navController.navigate(route = Camera.route)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+
+                Log.i(TAG, "Calling SetUp")
+                vmAuth.userJustLogged()
+                vmToken.startTokenListener()
+                vmReferral.handleDynamicLink(intent)
+                vmAds.loadInterstitialAd(context)
+                vmBilling.connectToGooglePlay()
+
+                checkIsPremium()
+
+                if (!checkIsPremium()) {
+                    navController.navigate(route = Subscription.route)
+                }
             }
         }
     }

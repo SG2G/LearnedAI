@@ -16,7 +16,11 @@ class EligibleForRewardUseCase @Inject constructor(
 
     private val setUserInvitedUseCase: SetUserInvitedUseCase
 ) {
-    suspend fun invoke(invitationUserId: String): Boolean {
+    /**
+     * If user is not EligibleForReward is because the data is already created
+     * If user is EligibleForReward the data will be set here
+     */
+    suspend operator fun invoke(invitationUserId: String): Boolean {
         var currentUser = firebaseAuth.currentUser
         var attempts = 0
         while (currentUser == null && attempts < 5) {
@@ -39,7 +43,6 @@ class EligibleForRewardUseCase @Inject constructor(
                 } else {
                     Log.i(TAG, "invitationsCollection NOT empty, User already invited")
                     // The collection exists and is not empty.
-                    // Here you can perform the other action you mentioned.
                     false
                 }
             }

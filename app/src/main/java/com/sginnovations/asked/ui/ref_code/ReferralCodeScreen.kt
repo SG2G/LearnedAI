@@ -55,10 +55,7 @@ fun ReferralCodeStateFul(
 
     Log.i(TAG, "dynamicLink: $dynamicLinkUri")
 
-    ReferralCodeStateLess(
-        dynamicLinkUri = dynamicLinkUri
-
-    ) {
+    ReferralCodeStateLess() {
         sendReferralLink(context, dynamicLinkUri) //TODO VIEWMODEL
     }
 }
@@ -66,8 +63,6 @@ fun ReferralCodeStateFul(
 
 @Composable
 fun ReferralCodeStateLess(
-    dynamicLinkUri: Uri,
-
     onInviteFriend: () -> Unit,
 ) {
     val scroll = rememberScrollState()

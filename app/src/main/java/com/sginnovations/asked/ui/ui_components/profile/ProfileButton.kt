@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
@@ -31,7 +32,7 @@ fun ProfileButton(
         onClick = { onClick() },
         shape = RoundedCornerShape(10),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth().padding(8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -43,7 +44,47 @@ fun ProfileButton(
                 contentDescription = "ProfileButton",
                 modifier = Modifier
                     .padding(end = 8.dp)
-                    .size(28.dp)
+                    .size(32.dp)
+            )
+            Text(
+                text = text,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = "KeyboardArrowRight",
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileButton(
+    text: String,
+    imageVector: ImageVector,
+
+    onClick: () -> Unit,
+) {
+
+    TextButton(
+        onClick = { onClick() },
+        shape = RoundedCornerShape(10),
+        modifier = Modifier
+            .fillMaxWidth().padding(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = "ProfileButton",
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(32.dp)
             )
             Text(
                 text = text,

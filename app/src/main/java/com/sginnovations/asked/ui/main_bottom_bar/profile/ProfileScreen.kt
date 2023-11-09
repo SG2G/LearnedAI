@@ -1,5 +1,8 @@
 package com.sginnovations.asked.ui.main_bottom_bar.profile
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,8 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +27,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.data.UserData
@@ -50,6 +57,7 @@ fun StateFulProfile(
     onNavigateRefCode: () -> Unit,
     onNavigateSubscriptions: () -> Unit,
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val userAuth = vmAuth.userAuth.collectAsState()
@@ -65,10 +73,9 @@ fun StateFulProfile(
                 onNavigateUserNotLogged()
             }
         },
-        onDeleteAccount = {
-            scope.launch { }
+        onSendEmail = { sendEmail(context, userAuth) },
+        onRateUs = { rateUs(context) },
 
-        },
         onNavigateRefCode = { onNavigateRefCode() },
         onNavigateSubscriptions = { onNavigateSubscriptions() }
     )
@@ -81,7 +88,8 @@ fun StateLessProfile(
     userAuth: State<UserData?>,
 
     onSignOut: () -> Unit,
-    onDeleteAccount: () -> Unit,
+    onSendEmail: () -> Unit,
+    onRateUs: () -> Unit,
 
     onNavigateRefCode: () -> Unit,
     onNavigateSubscriptions: () -> Unit,
@@ -110,9 +118,15 @@ fun StateLessProfile(
                 }
                 Button(
                     onClick = { onNavigateSubscriptions() },
-                    shape = RoundedCornerShape(5.dp)
+                    shape = RoundedCornerShape(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
-                    Text(text = "Upgrade")
+                    Text(
+                        text = "Upgrade", color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
             }
         }
@@ -126,7 +140,7 @@ fun StateLessProfile(
                 defaultElevation = 8.dp
             )
         ) {
-            Column(modifier = Modifier.padding(8.dp)) {
+            Column {
                 ProfileButton(
                     text = stringResource(R.string.profile_get_more_tokens),
                     painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
@@ -139,44 +153,105 @@ fun StateLessProfile(
                 )
             }
         }
+        ElevatedCard(
+            modifier = Modifier.padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            ),
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 8.dp
+            )
+        ) {
+            Column {
+                ProfileButton(
+                    text = "Rate Us",
+                    imageVector = Icons.Filled.StarRate,
+                    onClick = { onRateUs() }
+                )
+
+                ProfileButton(
+                    text = "Email us",
+                    imageVector = Icons.Filled.Email,
+                    onClick = { onSendEmail() }
+                )
+
+            }
+        }
         LogOutButton(onClick = { onSignOut() })
 
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Text(
+                text = "uid: ${userAuth.value?.userId}",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+
+    }
+}
+
+fun sendEmail(context: Context, userAuth: State<UserData?>) { //TODO INTENT VIEWMODEL?
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(R.string.asked_email)))
+        putExtra(Intent.EXTRA_SUBJECT, "Your Custom Subject. My uid: ${userAuth.value?.userId}")
+    }
+    if (intent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(intent)
+    }
+    val packageManager = context.packageManager
+
+    val email = context.getString(R.string.asked_email)
+    val subject = "Your Custom Subject. My uid: ${userAuth.value?.userId}"
+
+// Intent for Gmail
+    val gmailIntent = Intent(Intent.ACTION_VIEW).apply {
+        `package` = "com.google.android.gm"
+        data = Uri.parse("mailto:")
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+        putExtra(Intent.EXTRA_SUBJECT, subject)
     }
 
-    /**
-     * Testing
-     */
-//        Text(text = "Testing")
-//        Button(onClick = {
-//            scope.launch {
-//                vmToken.oneLessToken()
-//            }
-//        }
-//        ) {
-//            Text(text = "Rest 1")
-//        }
-//    ProfileButton(
-//        text = Locale.current.region + " " + Locale.current.language,
-//        painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
-//        onClick = { vmToken.switchPointsVisibility() }
-//    )
-//        Button(onClick = { vmToken.testGivePoints() }) {
-//            Text(text = "Give Tokens")
-//        }
-//        Button(onClick = { onNavigateRefCode() }) {
-//            Text(text = "Ref coded / subscription")
-//        }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        Text(
-            text = "uid: ${userAuth.value?.userId}",
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall
-        )
+// Intent for Outlook
+    val outlookIntent = Intent(Intent.ACTION_VIEW).apply {
+        `package` = "com.microsoft.office.outlook"
+        data = Uri.parse("mailto:")
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+        putExtra(Intent.EXTRA_SUBJECT, subject)
     }
 
+// Check if intents can be handled and start activities
+    if (gmailIntent.resolveActivity(packageManager) != null) {
+        context.startActivity(gmailIntent)
+    } else if (outlookIntent.resolveActivity(packageManager) != null) {
+        context.startActivity(outlookIntent)
+    } else {
+        // Fallback to implicit intent if both apps are not installed
+        val implicitIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+        }
+        if (implicitIntent.resolveActivity(packageManager) != null) {
+            context.startActivity(implicitIntent)
+        }
+    }
+}
+
+fun rateUs(context: Context) {
+    val uri: Uri = Uri.parse("market://details?id=${context.packageName}")
+    val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+    // To count with Play market backstack, After pressing back button,
+    // to taken back to our application, we need to add following flags to intent.
+    goToMarket.addFlags(
+        Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+    )
+    context.startActivity(goToMarket)
 }
 

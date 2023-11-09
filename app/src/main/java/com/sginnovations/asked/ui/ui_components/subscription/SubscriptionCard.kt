@@ -97,26 +97,26 @@ fun SubscriptionCard(
                         )
                     )
                 }
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Text(
-                        text = "",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                        )
-                    )
-                    Text(
-                        text = "",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = TextStyle(
-                            fontSize = 12.sp
-                        ),
-                    )
-                }
+//                Column(
+//                    modifier = Modifier.weight(1f),
+//                    verticalArrangement = Arrangement.spacedBy(8.dp),
+//                    horizontalAlignment = Alignment.End
+//                ) {
+//                    Text(
+//                        text = "",
+//                        color = MaterialTheme.colorScheme.onBackground,
+//                        style = TextStyle(
+//                            fontWeight = FontWeight.Bold,
+//                        )
+//                    )
+//                    Text(
+//                        text = "",
+//                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                        style = TextStyle(
+//                            fontSize = 12.sp
+//                        ),
+//                    )
+//                }
             }
         }
         Box(modifier = Modifier.padding(start = 32.dp, top = 4.dp)) {
@@ -143,7 +143,7 @@ fun SubscriptionCard(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+//                Spacer(modifier = Modifier.width(8.dp))
 //                ElevatedCard(
 //                    elevation = CardDefaults.elevatedCardElevation(
 //                        defaultElevation = 4.dp

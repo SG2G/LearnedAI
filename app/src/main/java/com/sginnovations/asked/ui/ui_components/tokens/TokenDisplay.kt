@@ -75,7 +75,7 @@ fun TokenDisplay(
             .scale(animateFloatAsState(scale.value, label = "").value)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(15.dp)
             )
     ) {
         Row(

@@ -64,7 +64,8 @@ fun LogOutButton(
             Text(
                 text = "Log out",
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleSmall
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,

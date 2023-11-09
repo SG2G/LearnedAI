@@ -5,9 +5,11 @@ import androidx.compose.runtime.Composable
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.Points
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
+import com.sginnovations.asked.Subscription
 import com.sginnovations.asked.ui.ui_components.topbars.CameraTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
@@ -57,6 +59,8 @@ fun LearnedTopBar(
             currentScreenTitle,
             navigateUp
         )
+
+        Subscription.route -> {}
 
         else ->
             if (canNavigateBack) {
