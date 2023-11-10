@@ -2,7 +2,7 @@ package com.sginnovations.asked
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sginnovations.asked.ui.utils.UpdateApp
+import com.sginnovations.asked.ui.utils.UpdateScreen
 import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
 
 @Composable
@@ -12,7 +12,7 @@ fun LearnedApp(
     val needToUpdate = vmRemoteConfig.needToUpdate
 
     if (needToUpdate.value) {
-        UpdateApp()
+        UpdateScreen()
     } else {
         LearnedNavigation()
     }

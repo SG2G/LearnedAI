@@ -94,12 +94,11 @@ fun SubscriptionStateFull(
             else -> null
         }
     }
-
     val activity = context.getActivity()
 
     LaunchedEffect(Unit) {
         var attempts = 0
-        while (priceInApp.value == null && attempts < 5) { // try up to 5 times
+        while (priceInApp.value == null && priceSub.value == null && attempts < 20) { // try up to 5 times
             delay(250)
             priceInApp.value = productLifetime.value?.oneTimePurchaseOfferDetails?.formattedPrice
 

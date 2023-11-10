@@ -72,8 +72,12 @@
     <string name="message">mensaje</string>
     <string name="enter_your_text">Envia un mensaje.</string>
     <string name="sign_in_button_sign_in_with_google">Inicia sesión con Google</string>
-    <string name="gallery_select_the_ocr_you_want_to_use">Seleccione el proceso que desea utilizar</string>
+    <string name="gallery_select_the_ocr_you_want_to_use">Seleccione el tipo que desea utilizar:</string>
     <string name="gallery_process_text_based_problem">Problema basado en texto</string>
     <string name="gallery_process_math_problem">Problema basado en matemática</string>
     <string name="subscription_subtitle_load_pdf_gpt_4_turbo">- Cargar PDF\n- GPT 4 Turbo</string>
+    <string name="update_critical_updates_required">Actualizaciones críticas requeridas</string>
+    <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">Hay actualizaciones críticas disponibles. Actualice la aplicación para aplicar estos cambios.</string>
+    <string name="update_btn_update">Actualizar</string>
+    <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Mhmm, parece que no hay nada aquí.</string>
 </resources>

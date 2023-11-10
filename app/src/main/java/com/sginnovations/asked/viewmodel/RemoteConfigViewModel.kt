@@ -34,16 +34,9 @@ class RemoteConfigViewModel @Inject constructor(
 
     private fun setUp() {
         viewModelScope.launch {
-            val updated = remoteConfigRepository.remoteConfigFetchAndActivate().await()
-            if (updated) {
-                Log.d(TAG, "setUp: updated")
-                val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
-                val defaultTokens = remoteConfigRepository.getValue(RC_DEFAULT_TOKENS)
-
-                needToUpdate.value = checkMinVersion(context, minVersion)
-
-                Log.d(TAG, "setUp: minVersion $minVersion, defaultTokens $defaultTokens")
-            }
+            remoteConfigRepository.remoteConfigFetchAndActivate().await()
+            val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
+            needToUpdate.value = checkMinVersion(context, minVersion)
         }
 
         remoteConfigRepository.addUpdateListener(object : ConfigUpdateListener {
@@ -81,3 +74,15 @@ class RemoteConfigViewModel @Inject constructor(
         return remoteConfigRepository.getInviteRewardTokens()
     }
 }
+//viewModelScope.launch {
+//    val updated = remoteConfigRepository.remoteConfigFetchAndActivate().await()
+//    if (updated) {
+//        Log.d(TAG, "setUp: updated")
+//        val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
+//        val defaultTokens = remoteConfigRepository.getValue(RC_DEFAULT_TOKENS)
+//
+//        needToUpdate.value = checkMinVersion(context, minVersion)
+//
+//        Log.d(TAG, "setUp: minVersion $minVersion, defaultTokens $defaultTokens")
+//    }
+//}

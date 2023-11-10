@@ -11,8 +11,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
@@ -78,9 +81,11 @@ fun StateFulHistoryChats(
     }
 
     val conversations = vmChat.conversations
+    val category = vmChat.category
 
     StateLessHistoryChats(
         conversations = conversations,
+        category = category,
 
         onDeleteConversation = { id ->
             scope.launch {
@@ -107,20 +112,20 @@ fun StateFulHistoryChats(
             }
             Log.d(TAG, "StateFulHistoryChats: Navigating to messages")
             onNavigateMessages()
-        },
-        onNavigateNewConversation = {
-            scope.launch {
-                vmChat.setUpNewConversation()
-            }
-            onNavigateNewConversation()
         }
-    )
+    ) {
+        scope.launch {
+            vmChat.setUpNewConversation()
+        }
+        onNavigateNewConversation()
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StateLessHistoryChats(
     conversations: MutableState<List<ConversationEntity>>,
+    category: MutableState<String>,
 
     onDeleteConversation: (Int?) -> Unit,
     onChangeCategory: (String) -> Unit,
@@ -128,8 +133,6 @@ fun StateLessHistoryChats(
     onNavigateMessages: (Int) -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -181,6 +184,28 @@ fun StateLessHistoryChats(
                             text = stringResource(R.string.historychats_new_chat),
                         )
                     }
+                }
+            }
+        }
+        if (conversations.value.isEmpty()) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 64.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.thinking),
+                        contentDescription = "thinking",
+                        modifier = Modifier.fillMaxWidth(0.6f)
+                    )
+                    Text(
+                        text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
         }
