@@ -23,7 +23,7 @@ class HandleDynamicLink @Inject constructor(
             .getDynamicLink(intent)
             .addOnSuccessListener(executor) { pendingDynamicLinkData ->
                 // Get deep link from result (may be null if no link is found)
-                var deepLink: Uri? = null
+                val deepLink: Uri?
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
 

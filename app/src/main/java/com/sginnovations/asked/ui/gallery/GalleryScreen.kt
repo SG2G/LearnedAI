@@ -26,7 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CheckPermissions
@@ -45,6 +47,7 @@ fun GalleryStateFull(
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         CheckPermissions(
             permsAsked = Manifest.permission.READ_MEDIA_IMAGES,
+            permName = stringResource(R.string.perms_name_gallery),
             onPermissionGranted = {
                 galleryPermissionGranted.value = true
             }
@@ -52,6 +55,7 @@ fun GalleryStateFull(
     } else {
         CheckPermissions(
             permsAsked = Manifest.permission.READ_EXTERNAL_STORAGE,
+            permName = stringResource(R.string.perms_name_gallery),
             onPermissionGranted = {
                 galleryPermissionGranted.value = true
             }
@@ -99,7 +103,7 @@ fun GalleryStateFull(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Select the OCR you want to use",
+                text = stringResource(R.string.gallery_select_the_ocr_you_want_to_use),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleLarge
             )
@@ -108,7 +112,7 @@ fun GalleryStateFull(
              */
             Button(
                 onClick = {
-                    vmCamera.cameraOCRCategory.value = Text.name
+                    vmCamera.cameraOCRCategory.value = Text.root
                     launcher.launch("image/*")
                 },
                 modifier = Modifier
@@ -121,7 +125,7 @@ fun GalleryStateFull(
                 )
             ) {
                 Text(
-                    text = "Process Text Based Problem",
+                    text = stringResource(R.string.gallery_process_text_based_problem),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleSmall
                 )
@@ -131,7 +135,7 @@ fun GalleryStateFull(
              */
             Button(
                 onClick = {
-                    vmCamera.cameraOCRCategory.value = Math.name
+                    vmCamera.cameraOCRCategory.value = Math.getName(context)
                     launcher.launch("image/*")
                 },
                 modifier = Modifier
@@ -144,7 +148,7 @@ fun GalleryStateFull(
                 )
             ) {
                 Text(
-                    text = "Process Math Problem",
+                    text = stringResource(R.string.gallery_process_math_problem),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleSmall
                 )

@@ -1,5 +1,6 @@
 package com.sginnovations.asked.ui.crop
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -164,12 +166,13 @@ fun getTextFromCroppedImage(
     navController: NavController,
     cameraOption: MutableState<String>,
 ) {
+
     when (cameraOption.value) {
         CAMERA_TEXT -> {
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraOCRCategory.value = Text.name
+            vmCamera.cameraOCRCategory.value = Text.root
             vmCamera.getTextFromImage(croppedImage)
 
             if (navController.currentDestination?.route != NewConversation.route) {
@@ -189,7 +192,7 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_MATH")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraOCRCategory.value = Math.name
+            vmCamera.cameraOCRCategory.value = Math.root
             vmCamera.getMathFromImage(croppedImage)
 
             val cameraCostTokens = vmToken.getCameraMathTokens()

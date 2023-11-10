@@ -25,7 +25,6 @@ import com.sginnovations.asked.viewmodel.TokenViewModel
 @Composable
 fun CameraTopBar(
     vmTokens: TokenViewModel,
-    currentScreenTitle: String,
 ) {
     val tokens = vmTokens.tokens.collectAsState()
 

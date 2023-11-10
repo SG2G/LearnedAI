@@ -1,5 +1,6 @@
 package com.sginnovations.asked.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.repository.MathpixRepository
 import com.sginnovations.asked.repository.MlkitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +22,7 @@ private const val TAG = "CameraViewModel"
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val mlkitRepository: MlkitRepository,
     private val mathpixRepository: MathpixRepository,
 ) : ViewModel() {
@@ -27,7 +30,7 @@ class CameraViewModel @Inject constructor(
     val imageToText = mutableStateOf("")
 
     val isLoading = mutableStateOf(false)
-    val cameraOCRCategory = mutableStateOf(Text.name)
+    val cameraOCRCategory = mutableStateOf(Text.getName(context))
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
 
     fun onTakePhoto(bitmap: Bitmap) {

@@ -2,11 +2,10 @@ package com.sginnovations.asked.ui.top_bottom_bar.topbar
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
-import com.sginnovations.asked.NewConversation
-import com.sginnovations.asked.Points
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Subscription
@@ -14,7 +13,6 @@ import com.sginnovations.asked.ui.ui_components.topbars.CameraTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.DefaultTopBar
-import com.sginnovations.asked.ui.ui_components.topbars.PointsTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ProfileTopBar
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
@@ -26,37 +24,32 @@ fun LearnedTopBar(
     vmTokens: TokenViewModel,
     vmChat: ChatViewModel,
 
-    currentScreenTitle: String?,
+    currentScreen: ScreensDestinations?,
     canNavigateBack: Boolean,
 
     onNavigate: (ScreensDestinations) -> Unit,
     navigateUp: () -> Unit,
 ) {
-    Log.i(TAG, "LearnedTopBar: ${currentScreenTitle.toString()}")
+    val context = LocalContext.current
+    Log.i(TAG, "LearnedTopBar: ${currentScreen.toString()}")
 
-    when (currentScreenTitle) {
+    when (currentScreen?.route) {
         Camera.route -> CameraTopBar(
             vmTokens,
-            currentScreenTitle,
         )
 
         ChatsHistory.route -> ChatsHistoryTopBar(
-            currentScreenTitle
+            ChatsHistory.getName(context)
         ) { onNavigate(it) }
 
         Profile.route -> ProfileTopBar(
-            currentScreenTitle
+            Profile.getName(context)
         )
 
         Chat.route -> ChatTopBar(
             vmTokens,
             vmChat,
-            currentScreenTitle,
-            navigateUp
-        )
-
-        Points.route -> PointsTopBar(
-            currentScreenTitle,
+            Chat.getName(context),
             navigateUp
         )
 
@@ -65,7 +58,7 @@ fun LearnedTopBar(
         else ->
             if (canNavigateBack) {
                 DefaultTopBar(
-                    currentScreenTitle,
+                    currentScreen?.getName(context),
                     navigateUp
                 )
             }

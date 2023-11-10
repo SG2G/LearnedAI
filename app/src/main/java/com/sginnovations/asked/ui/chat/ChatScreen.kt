@@ -53,11 +53,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
+import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
@@ -317,7 +319,7 @@ fun ChatStateLess(
                     Text(text = "-1")
                     TokenIcon()
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "message")
+                    Text(text = stringResource(R.string.message))
                 }
             }
             Row(
@@ -333,7 +335,7 @@ fun ChatStateLess(
                     modifier = Modifier
                         .weight(1f)
                         .imePadding(),
-                    placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
+                    placeholder = { Text(text = stringResource(R.string.enter_your_text), fontSize = 14.sp) },
                     textStyle = TextStyle(fontSize = 14.sp),
                     shape = RoundedCornerShape(20.dp),
                     colors = OutlinedTextFieldDefaults.colors(

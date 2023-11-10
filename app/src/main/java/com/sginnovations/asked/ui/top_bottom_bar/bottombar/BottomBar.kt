@@ -41,15 +41,15 @@ private const val TAG = "LearnedBottomBar"
 @Composable
 fun LearnedBottomBar(
     navController: NavController,
-    currentScreenTitle: String,
+    currentScreen: ScreensDestinations?,
     canNavigateBack: Boolean,
     backStackEntry: NavBackStackEntry?,
 ) {
     Log.i(TAG, "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController")
     if (!canNavigateBack) {
-        Log.i(TAG, "currentScreenTitle: $currentScreenTitle")
+        Log.i(TAG, "currentScreenTitle: $currentScreen")
 
-        if (currentScreenTitle != Auth.route) {
+        if (currentScreen?.route != Auth.route) {
             val items = listOf(Camera, ChatsHistory, Profile)
             NavigationBar(
                 modifier = Modifier.height(64.dp),

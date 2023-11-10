@@ -34,7 +34,7 @@ class TokenRepository @Inject constructor(
         Log.i(TAG, "getTokens")
         while (documentReference == null) { delay(500) }
 
-        val listenerRegistration = documentReference!!.addSnapshotListener { documentReference, e ->
+        val listenerRegistration = documentReference!!.addSnapshotListener { documentReference, _ ->
             Log.i(TAG, "documentRef ${documentReference.toString()}")
             launch(Dispatchers.IO) {
                 getTokensUseCase(documentReference?.reference).collect { tokens ->

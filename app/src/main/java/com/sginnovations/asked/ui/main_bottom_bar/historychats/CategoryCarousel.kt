@@ -7,7 +7,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,20 +23,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
-import kotlinx.coroutines.launch
 
 private const val TAG = "CategoryCarousel"
 
@@ -46,7 +42,9 @@ private const val TAG = "CategoryCarousel"
 fun CategoryCarousel(
     onChangeCategory: (String) -> Unit,
 ) {
-    val sliderList = listOf(All.name, Text.name, Math.name)
+    val context = LocalContext.current
+
+    val sliderList = listOf(All, Text, Math)
     var actualOption by remember { mutableStateOf(sliderList[0]) }
 
     val cardsWidth = 72.dp
@@ -58,7 +56,7 @@ fun CategoryCarousel(
             val isSelected = actualOption == item
             Log.d(TAG, "isSelected -> $isSelected / actualOption -> $actualOption / item -> $item")
 
-            onChangeCategory(actualOption)
+            onChangeCategory(actualOption.root)
 
             if (isSelected) {
                 val scale = remember { Animatable(1f) }
@@ -96,7 +94,7 @@ fun CategoryCarousel(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = item,
+                            text = item.getName(context),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = TextStyle(
                                 fontWeight = FontWeight.Bold
@@ -129,7 +127,7 @@ fun CategoryCarousel(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = item,
+                            text = item.getName(context),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = TextStyle(
                                 fontWeight = FontWeight.Bold

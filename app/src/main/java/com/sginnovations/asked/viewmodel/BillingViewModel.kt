@@ -177,7 +177,7 @@ class BillingViewModel @Inject constructor(
                 .setProductType(BillingClient.ProductType.INAPP)
                 .build()
 
-            billingClient.queryPurchasesAsync(params) { billingResult, purchases ->
+            billingClient.queryPurchasesAsync(params) { _, purchases ->
                 if (purchases.isEmpty()) {
                     Log.d(TAG, "Purchases empty")
                     viewModelScope.launch {

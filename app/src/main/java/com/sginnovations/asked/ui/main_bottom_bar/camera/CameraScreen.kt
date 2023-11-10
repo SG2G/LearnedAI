@@ -49,13 +49,14 @@ fun CameraStateFul(
     val cameraPermissionGranted = remember { mutableStateOf(false) }
     CheckPermissions(
         permsAsked = android.Manifest.permission.CAMERA,
+        permName = "Camera",
         onPermissionGranted = {
             cameraPermissionGranted.value = true
         }
     )
+    vmCamera.cameraOCRCategory
+    val showPDFWorkingOn = remember { mutableStateOf(false) }
 
-    val showPDFWorkingOn = remember { mutableStateOf(false)
-    }
     if (cameraPermissionGranted.value) {
         CameraStateLess(
             vmToken = vmToken,

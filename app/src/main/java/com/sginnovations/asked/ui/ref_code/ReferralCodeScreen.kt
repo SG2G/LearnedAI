@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
@@ -73,12 +74,12 @@ fun ReferralCodeStateLess(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Invite Friends",
+            text = stringResource(R.string.share_invite_friends),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleLarge
         )
         Text(
-            text = "For you and your friend!",
+            text = stringResource(R.string.share_for_you_and_your_friend),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge
         )
@@ -89,12 +90,12 @@ fun ReferralCodeStateLess(
             contentScale = ContentScale.Fit
         )
         Text(
-            text = "Earn 10 Tokens immediately!",
+            text = stringResource(R.string.share_earn_10_tokens_immediately),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleLarge
         )
         Text(
-            text = "Are you going to run out of your tokens?",
+            text = stringResource(R.string.share_are_you_going_to_run_out_of_your_tokens),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyMedium
         )
@@ -106,7 +107,7 @@ fun ReferralCodeStateLess(
             shape = RoundedCornerShape(10.dp)
         ) {
             Text(
-                text = "Invite",
+                text = stringResource(R.string.share_invite),
                 style = MaterialTheme.typography.headlineMedium
             )
         }
@@ -120,12 +121,12 @@ fun ReferralCodeStateLess(
                 .padding(16.dp)
         ) {
             Text(
-                text = "How to earn the rewards?",
+                text = stringResource(R.string.share_how_to_earn_the_rewards),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = "Share the invitation link by clicking 'Invite.' When your friend creates an account, both of you will receive the reward, as simple as that",
+                text = stringResource(R.string.share_share_the_invitation_link_by_clicking_invite_when_your_friend_creates_an_account_both_of_you_will_receive_the_reward_as_simple_as_that),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -138,7 +139,10 @@ fun sendReferralLink(context: Context, dynamicLinkUri: Uri) {
         action = Intent.ACTION_SEND
         putExtra(
             Intent.EXTRA_TEXT,
-            "Join Asked! The best app for easy learning. Use my referral link: $dynamicLinkUri"
+            context.getString(
+                R.string.sharemsg_join_asked_the_best_app_for_easy_learning_use_my_referral_link,
+                dynamicLinkUri
+            )
         )
         type = "text/plain"
     }

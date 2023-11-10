@@ -67,29 +67,24 @@ fun LearnedNavigation(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val state by vmAuth.state.collectAsStateWithLifecycle()
-
     val intent = remember { (context as Activity).intent }
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
     val currentScreen =
         when (navController.currentBackStackEntryAsState().value?.destination?.route) {
-            Auth.getName(context) -> Auth
+            Auth.route -> Auth
 
-            Crop.getName(context) -> Crop
-            ChatsHistory.getName(context) -> ChatsHistory
-            Profile.getName(context) -> Profile
+            Crop.route -> Crop
+            ChatsHistory.route -> ChatsHistory
+            Profile.route -> Profile
 
-            NewConversation.getName(context) -> NewConversation
-            Chat.getName(context) -> Chat
-            Points.getName(context) -> Points
+            Chat.route -> Chat
 
-            Subscription.getName(context) -> Subscription
-            RefCode.getName(context) -> RefCode
+            Subscription.route -> Subscription
+            RefCode.route -> RefCode
             else -> null
         }
-    val currentScreenTitle = currentScreen?.route ?: ""
 
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
@@ -98,7 +93,7 @@ fun LearnedNavigation(
                 vmTokens = vmToken,
                 vmChat = vmChat,
 
-                currentScreenTitle = currentScreenTitle,
+                currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
 
                 onNavigate = { navController.navigate(it.route) },
@@ -109,7 +104,7 @@ fun LearnedNavigation(
         bottomBar = {
             LearnedBottomBar(
                 navController = navController,
-                currentScreenTitle = currentScreenTitle,
+                currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 backStackEntry = backStackEntry
             )
@@ -124,7 +119,6 @@ fun LearnedNavigation(
             composable(route = Auth.route) {
                 LearnedAuth(
                     vmAuth = vmAuth,
-                    state = state,
 
                     ) {
                     navController.popBackStack(navController.graph.startDestinationId, true)

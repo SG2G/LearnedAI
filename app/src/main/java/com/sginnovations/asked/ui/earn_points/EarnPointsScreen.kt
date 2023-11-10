@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.sginnovations.asked.ui.earn_points
 
@@ -126,7 +126,7 @@ fun EarnPointsStateLess(
                     showPlus = false
                 ) {}
                 Text(
-                    text = "Earn more Tokens!", color = MaterialTheme.colorScheme.onBackground,
+                    text = stringResource(R.string.earn_token_earn_more_tokens), color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -143,7 +143,7 @@ fun EarnPointsStateLess(
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
                 num = "+" + vmRemoteConfig.getAdRewardTokens(),
-                text = stringResource(R.string.earn_token_watch),
+                text = stringResource(R.string.earn_token_watch_ad),
                 buttonText = stringResource(R.string.earn_token_watch),
                 borderColor = Color.Transparent,
                 buttonColor = MaterialTheme.colorScheme.background,

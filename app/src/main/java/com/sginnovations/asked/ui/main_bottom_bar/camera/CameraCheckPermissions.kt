@@ -14,16 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.sginnovations.asked.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CheckPermissions(
     permsAsked: String,
-    
+    permName: String,
+
     onPermissionGranted: () -> Unit,
 ) {
     val permissionState = rememberPermissionState(permission = permsAsked)
@@ -43,8 +46,12 @@ fun CheckPermissions(
             // Show a rationale message and request the permission again.
             AlertDialog(
                 onDismissRequest = { },
-                title = { Text("Camera Permission Required",color = MaterialTheme.colorScheme.onBackground) },
-                text = { Text("This app requires access to your camera to take photos.",color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                title = { Text(stringResource(R.string.permissions_permission_required, permName),color = MaterialTheme.colorScheme.onBackground) },
+                text = { Text(
+                    stringResource(
+                        R.string.permissions_this_app_requires_access_to_your,
+                        permName
+                    ),color = MaterialTheme.colorScheme.onSurfaceVariant) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -60,10 +67,14 @@ fun CheckPermissions(
             // Permission is denied permanently. Show a message and navigate to app settings.
             AlertDialog(
                 onDismissRequest = { },
-                title = { Text("Camera Permission Denied",color = MaterialTheme.colorScheme.onBackground) },
+                title = { Text(stringResource(R.string.permissions_permission_denied, permName),color = MaterialTheme.colorScheme.onBackground) },
                 text = {
                     Text(
-                        "This app requires access to your camera to take photos. Please enable the camera permission in your device settings.",
+                        stringResource(
+                            R.string.permissions_this_app_requires_access_to_your_please_enable_the_permission_in_your_device_settings,
+                            permName,
+                            permName
+                        ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
@@ -73,7 +84,7 @@ fun CheckPermissions(
                             openAppSettings(context)
                         }
                     ) {
-                        Text("Open Settings")
+                        Text(stringResource(R.string.permissions_open_settings))
                     }
                 }
             )

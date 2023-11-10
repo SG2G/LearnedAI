@@ -15,7 +15,6 @@ fun CameraPreview(
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier
 ) {
-
     val imageAnalysis = ImageAnalysis.Builder().setTargetResolution(Size(720, 1080))
 
     val lifecycleOwner = LocalLifecycleOwner.current

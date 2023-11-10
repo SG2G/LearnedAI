@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -173,9 +174,9 @@ fun NewConversationStateLess(
             ) {
                 TitleChatUseExample(
                     painterResource = painterResource(id = R.drawable.icons8_brain_96),
-                    text = "Resolve"
+                    text = stringResource(R.string.new_conversation_resolve)
                 )
-                SubTitleChatUseExample(text = "Take photos of your text or mathematical problems and learn by talking to the chat.")
+                SubTitleChatUseExample(text = stringResource(R.string.new_conversation_take_photos_of_your_text_or_mathematical_problems_and_learn_by_talking_to_the_chat))
             }
         }
         ElevatedCard(
@@ -189,9 +190,9 @@ fun NewConversationStateLess(
             ) {
                 TitleChatUseExample(
                     painterResource = painterResource(id = R.drawable.icons8_write_64),
-                    text = "Write"
+                    text = stringResource(R.string.new_conversation_write)
                 )
-                SubTitleChatUseExample(text = "Give me a summary of the book 'To Kill a Mockingbird'.")
+                SubTitleChatUseExample(text = stringResource(R.string.new_conversation_give_me_a_summary_of_the_book_to_kill_a_mockingbird))
             }
         }
 
@@ -206,9 +207,9 @@ fun NewConversationStateLess(
             ) {
                 TitleChatUseExample(
                     painterResource = painterResource(id = R.drawable.icons8_magic_wand_64),
-                    text = "Creativity"
+                    text = stringResource(R.string.new_conversation_creativity)
                 )
-                SubTitleChatUseExample(text = "Create a slogan for a dogs social media.")
+                SubTitleChatUseExample(text = stringResource(R.string.new_conversation_create_a_slogan_for_a_dogs_social_media))
             }
         }
     }
@@ -235,9 +236,12 @@ fun NewConversationStateLess(
                 Text(
                     text =
                     when (newConversationCostToken.toInt()) {
-                        0 -> "FREE message"
+                        0 -> stringResource(R.string.new_conversation_free_message)
                         else -> {
-                            "$newConversationCostToken message"
+                            stringResource(
+                                R.string.new_conversation_cost_message,
+                                newConversationCostToken
+                            )
                         }
                     }
                 )

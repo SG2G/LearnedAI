@@ -1,5 +1,6 @@
 package com.sginnovations.asked.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,7 @@ import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
 import com.sginnovations.asked.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +29,7 @@ private const val TAG = "ChatViewModel"
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository,
     private val tokensRepository: TokenRepository,
@@ -35,7 +38,7 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
-    val category = mutableStateOf(Text.name)
+    val category = mutableStateOf(Text.getName(context))
     val prefixPrompt = mutableStateOf("")
 
     private val timestamp = System.currentTimeMillis()
@@ -125,9 +128,9 @@ class ChatViewModel @Inject constructor(
         //Get Key
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
 
-        prefixPrompt.value = when (category.value) {
-            Text.name -> ""
-            Math.name -> "Resolve step by step "
+        prefixPrompt.value = when (category.value) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
+            Text.getName(context) -> "Resolve step by step "
+            Math.getName(context) -> "Resolve step by step "
             else -> {
                 ""
             }

@@ -1,15 +1,13 @@
 <resources>
-    <string name="app_name">Asked</string>
-    <string name="home">home</string>
-    <string name="web_client_id">477579889386-m4sdcc2t8qkcodl1f4nhd2foobkugvb2.apps.googleusercontent.com</string>
+    <string name="app_name" translatable="false">Asked</string>
+    <string name="home" translatable="false">home</string>
+    <string name="web_client_id" translatable="false">477579889386-m4sdcc2t8qkcodl1f4nhd2foobkugvb2.apps.googleusercontent.com</string>
 
-    <string name="bottom_bar_label_camera">Camera</string>
-    <string name="bottom_bar_label_search">Search</string>
     <string name="bottom_bar_label_profile">Profile</string>
     <string name="subscription_week">" / Week"</string>
     <string name="crop_retake">Retake</string>
     <string name="crop_crop">Crop</string>
-    <string name="earn_token_unlimited_points">Unlimited Points</string>
+    <string name="earn_token_unlimited_points">Unlimited Tokens</string>
     <string name="earn_token_watch_ad">Watch ad</string>
     <string name="earn_token_invite_friends">Invite Friends</string>
     <string name="earn_token_button_invite">Invite</string>
@@ -18,7 +16,69 @@
     <string name="profile_get_more_tokens">Get more Tokens</string>
     <string name="profile_invite_friends">Invite Friends</string>
     <string name="subscription_lifetime">/ Lifetime</string>
-    <string name="infinite">∞</string>
-    <string name="asked_email">askedaihelp@gmail.com</string>
+    <string name="infinite" translatable="false">∞</string>
+    <string name="asked_email" translatable="false">askedaihelp@gmail.com</string>
+    <string name="subscription_unlimited">Unlimited</string>
+    <string name="subscription_exclusive_functions">Exclusive Functions</string>
+    <string name="subscription_higher_word_limit">Higher Word Limit</string>
+    <string name="subscription_no_ads">No ads</string>
+    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-day FREE TRIAL, Cancel anytime,\nAuto renewable</string>
+    <string name="subscription_billed_once">Billed once</string>
+    <string name="subscription_start_free_trial_plan"><![CDATA[Start Free Trial & Plan]]></string>
+    <string name="subscription_unlock_asked_ai_pro">Unlock Asked AI Pro</string>
+    <string name="subscription_cancel_anytime">Cancel Anytime</string>
+    <string name="subscription_no_payment_now">No Payment Now</string>
+    <string name="permissions_this_app_requires_access_to_your_please_enable_the_permission_in_your_device_settings">This app requires access to your %1$s. Please enable the %2$s permission in your device settings.</string>
+    <string name="permissions_permission_denied">%1$s Permission Denied</string>
+    <string name="permissions_this_app_requires_access_to_your">This app requires access to your %1$s.</string>
+    <string name="permissions_permission_required">%1$s Permission Required</string>
+    <string name="permissions_open_settings">Open Settings</string>
+    <string name="category_math">Math</string>
+    <string name="category_text">Text</string>
+    <string name="category_all">All</string>
+    <string name="perms_name_gallery">Gallery</string>
+    <string name="pdf_title_work_in_progress">Work in Progress...</string>
+    <string name="pdf_subtitle_pdf_reader_feature_for_premium_users">PDF reader feature for premium users.</string>
+    <string name="pdf_button_cool">Cool!</string>
+    <string name="historychats_new_chat">New Chat</string>
+    <string name="profile_upgrade">Upgrade</string>
+    <string name="profile_rate_us">Rate Us</string>
+    <string name="profile_email_us">Email us</string>
+    <string name="earn_token_earn_more_tokens">Earn more Tokens!</string>
+    <string name="share_invite_friends">Invite Friends!</string>
+    <string name="share_for_you_and_your_friend">For you and your friend!</string>
+    <string name="share_earn_10_tokens_immediately">Earn 10 Tokens immediately!</string>
+    <string name="share_are_you_going_to_run_out_of_your_tokens">Are you going to run out of your tokens?</string>
+    <string name="share_invite">Invite</string>
+    <string name="share_how_to_earn_the_rewards">How to earn the rewards?</string>
+    <string name="share_share_the_invitation_link_by_clicking_invite_when_your_friend_creates_an_account_both_of_you_will_receive_the_reward_as_simple_as_that">Share the invitation link by clicking \'Invite.\' When your friend creates an account, both of you will receive the reward, as simple as that</string>
+    <string name="sharemsg_join_asked_the_best_app_for_easy_learning_use_my_referral_link">Join Asked! The best app for easy learning. Use my referral link: %1$s</string>
+    <string name="log_out_button_confirm_action">Confirm Action</string>
+    <string name="log_out_button_are_you_sure_you_want_to_log_out">Are you sure you want to Log Out?</string>
+    <string name="log_out_button_log_out">Log out</string>
+    <string name="log_out_button_cancel">Cancel</string>
+    <string name="bottom_bar_label_camera">Camera</string>
+    <string name="profile_base_plan">" - Base Plan"</string>
+    <string name="profile_2_plan">" Plan"</string>
+    <string name="profile_1_premium">" - Premium"</string>
+    <string name="topbar_subscription">Subscriptions</string>
+    <string name="topbar_share">Share</string>
+    <string name="topbar_chats_history">Chats History</string>
+    <string name="topbar_profile">Profile</string>
+    <string name="new_conversation_resolve">Resolve</string>
+    <string name="new_conversation_take_photos_of_your_text_or_mathematical_problems_and_learn_by_talking_to_the_chat">Take photos of your text or mathematical problems and learn by talking to the chat.</string>
+    <string name="new_conversation_write">Write</string>
+    <string name="new_conversation_creativity">Creativity</string>
+    <string name="new_conversation_create_a_slogan_for_a_dogs_social_media">Create a slogan for a dogs social media.</string>
+    <string name="new_conversation_free_message">FREE message</string>
+    <string name="new_conversation_cost_message">%1$s message</string>
+    <string name="new_conversation_give_me_a_summary_of_the_book_to_kill_a_mockingbird">Give me a summary of the book \'To Kill a Mockingbird\'.</string>
+    <string name="message">message</string>
+    <string name="enter_your_text">Send a message.</string>
+    <string name="sign_in_button_sign_in_with_google">Sign in with Google</string>
+    <string name="gallery_select_the_ocr_you_want_to_use">Select the process you want to use</string>
+    <string name="gallery_process_text_based_problem">Text based problem</string>
+    <string name="gallery_process_math_problem">Math based problem</string>
+    <string name="subscription_subtitle_load_pdf_gpt_4_turbo">- Load PDF\n- GPT 4 Turbo</string>
 
 </resources>

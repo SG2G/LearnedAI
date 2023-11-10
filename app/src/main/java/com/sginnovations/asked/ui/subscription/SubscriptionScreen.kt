@@ -6,6 +6,8 @@ import android.content.ContextWrapper
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -79,6 +82,7 @@ fun SubscriptionStateFull(
     val priceInApp = remember { mutableStateOf<String?>(null) }
     val priceSub = remember { mutableStateOf<String?>(null) }
 
+    Log.d(TAG, "productLifetime-> ${productLifetime.value.toString()} productWeekly-> ${productWeekly.value.toString()} ")
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -211,7 +215,9 @@ fun SubscriptionStateLess(
     Log.i(TAG, "SubscriptionStateLess - $priceSub / $priceInApp")
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .scrollable(rememberScrollState(), Orientation.Vertical),
         verticalArrangement = Arrangement.Bottom
     ) {
         Box {
@@ -242,14 +248,14 @@ fun SubscriptionStateLess(
                     IconButton(onClick = { }) {}
                 }
                 Column(
-                    modifier = Modifier.padding(horizontal = 64.dp, vertical = 32.dp),
+                    modifier = Modifier.padding(horizontal = 64.dp, vertical = 16.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
                             painterResource = painterResource(id = R.drawable.subscription_infinity),
-                            text = "Unlimited"
+                            text = stringResource(R.string.subscription_unlimited)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         TokenIcon()
@@ -257,16 +263,16 @@ fun SubscriptionStateLess(
 
                     TitleBenefit(
                         painterResource = painterResource(id = R.drawable.subscription_star),
-                        text = "Exclusive Functions"
+                        text = stringResource(R.string.subscription_exclusive_functions)
                     )
-                    SubTitleBenefit(text = "- Load PDF\n- GPT 4 Turbo")
+                    SubTitleBenefit(text = stringResource(R.string.subscription_subtitle_load_pdf_gpt_4_turbo))
                     TitleBenefit(
                         painterResource = painterResource(id = R.drawable.subscription_morechat),
-                        text = "Higher Word Limit"
+                        text = stringResource(R.string.subscription_higher_word_limit)
                     )
                     TitleBenefit(
                         painterResource = painterResource(id = R.drawable.subscription_noad),
-                        text = "No ads"
+                        text = stringResource(R.string.subscription_no_ads)
                     )
                 }
             }
@@ -279,7 +285,7 @@ fun SubscriptionStateLess(
         priceSub.value?.let {
             SubscriptionCard(
                 durationTime = stringResource(R.string.subscription_week),
-                smallText = "3-day FREE TRIAL, Cancel anytime,\nAuto renewable",
+                smallText = stringResource(R.string.subscription_3_day_free_trial_cancel_anytime_auto_renewable),
                 allPrice = it,
                 subscriptionOption = Option.OptionWeekly,
                 userOption = userOption.value
@@ -290,7 +296,7 @@ fun SubscriptionStateLess(
         priceInApp.value?.let {
             SubscriptionCard(
                 durationTime = stringResource(R.string.subscription_lifetime),
-                smallText = "Billed once",
+                smallText = stringResource(R.string.subscription_billed_once),
                 allPrice = it,
                 subscriptionOption = Option.OptionLifetime,
                 userOption = userOption.value
@@ -315,7 +321,7 @@ fun SubscriptionStateLess(
             ) {
                 if (userOption.value == Option.OptionWeekly) {
                     Text(
-                        text = "Start Free Trial & Plan",
+                        text = stringResource(R.string.subscription_start_free_trial_plan),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = TextStyle(
                             fontSize = 18.sp,
@@ -324,7 +330,7 @@ fun SubscriptionStateLess(
                     )
                 } else {
                     Text(
-                        text = "Unlock Asked AI Pro",
+                        text = stringResource(R.string.subscription_unlock_asked_ai_pro),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = TextStyle(
                             fontSize = 18.sp,
@@ -350,7 +356,7 @@ fun SubscriptionStateLess(
             ) {
                 Box {
                     Text(
-                        text = "Cancel Anytime",
+                        text = stringResource(R.string.subscription_cancel_anytime),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -363,7 +369,7 @@ fun SubscriptionStateLess(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "No Payment Now",
+                        text = stringResource(R.string.subscription_no_payment_now),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodySmall
                     )

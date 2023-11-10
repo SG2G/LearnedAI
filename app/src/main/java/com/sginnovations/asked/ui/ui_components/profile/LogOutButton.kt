@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 
@@ -30,11 +31,11 @@ fun LogOutButton(
 
     if (showConfirmation) {
         ConfirmActionDialog(
-            title = "Confirm Action",
-            text = "Are you sure you want to Log Out?",
+            title = stringResource(R.string.log_out_button_confirm_action),
+            text = stringResource(R.string.log_out_button_are_you_sure_you_want_to_log_out),
 
-            confirmText = "Log out",
-            dismissText = "Cancel",
+            confirmText = stringResource(R.string.log_out_button_log_out),
+            dismissText = stringResource(R.string.log_out_button_cancel),
 
             onConfirm = { onClick() },
             onDismiss = { showConfirmation = false }
@@ -47,7 +48,8 @@ fun LogOutButton(
         },
         shape = RoundedCornerShape(10),
         modifier = Modifier
-            .fillMaxWidth().padding(8.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -62,7 +64,7 @@ fun LogOutButton(
                     .size(32.dp)
             )
             Text(
-                text = "Log out",
+                text = stringResource(R.string.log_out_button_log_out),
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleSmall

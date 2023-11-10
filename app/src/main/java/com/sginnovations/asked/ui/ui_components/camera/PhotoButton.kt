@@ -89,7 +89,8 @@ private fun takePhoto(
     controller: LifecycleCameraController,
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
-    val desiredHeight = 700
+
+
     controller.takePicture(
         ContextCompat.getMainExecutor(context),
         object : ImageCapture.OnImageCapturedCallback() {
@@ -101,14 +102,35 @@ private fun takePhoto(
                 }
                 val originalBitmap = image.toBitmap()
 
-                val startY = (originalBitmap.height - desiredHeight) / 2
+                // Set the aspect ratio to 9:16
+                val aspectRatio = 16.0 / 9.0
+
+                // Calculate the width and height based on the original bitmap's dimensions and the aspect ratio
+                val width: Int
+                val height: Int
+                if (originalBitmap.width < originalBitmap.height * aspectRatio) {
+                    width = originalBitmap.width
+                    height = (width / aspectRatio).toInt()
+                } else {
+                    height = originalBitmap.height
+                    width = (height * aspectRatio).toInt()
+                }
+
+                // Calculate the starting position for the crop
+                val startX = (originalBitmap.width - width) / 2
+                var startY = (originalBitmap.height - height) / 2
+
+                // Ensure startY + height does not exceed the original bitmap's height
+                if (startY + height > originalBitmap.height) {
+                    startY = originalBitmap.height - height
+                }
 
                 val croppedBitmap = Bitmap.createBitmap(
                     originalBitmap,
-                    0,
+                    startX,
                     startY,
-                    originalBitmap.width,
-                    desiredHeight
+                    width,
+                    height
                 )
 
                 val rotatedBitmap = Bitmap.createBitmap(
@@ -122,6 +144,8 @@ private fun takePhoto(
                 )
 
                 onPhotoTaken(rotatedBitmap)
+
+
             }
         }
     )

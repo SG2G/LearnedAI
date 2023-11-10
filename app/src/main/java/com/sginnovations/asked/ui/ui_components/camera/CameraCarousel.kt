@@ -58,10 +58,12 @@ fun CameraCarousel(
 
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
-    val pagerState = rememberPagerState(initialPage = 0)
-    val sliderList = listOf(Text.name, Math.name)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val pagerState = rememberPagerState(initialPage = 0)
+
+    val sliderList = listOf(Text, Math)
+
 
     HorizontalPager(
         count = sliderList.size,
@@ -75,20 +77,19 @@ fun CameraCarousel(
         val alpha by animateFloatAsState(targetAlpha)
         val scale by animateFloatAsState(targetScale)
 
-        onChangeCategory(sliderList[pagerState.currentPage])
+        onChangeCategory(sliderList[pagerState.currentPage].root)
 
         val mathCostToken = vmToken.getCameraMathTokens()
 
         // Tokens Cost Subtitle
-        val tokenCost = when (sliderList[item]) {
-            Text.name -> "Free"
-            Math.name ->
+        val tokenCost = when (sliderList[item].root) {
+            Text.root -> "Free"
+            Math.root ->
                 if (mathCostToken == "0") {
                     "Free"
                 } else {
                     mathCostToken
                 }
-
             else -> {
                 "Free"
             }
@@ -105,7 +106,7 @@ fun CameraCarousel(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = sliderList[item],
+                text = sliderList[item].getName(context),
                 modifier = Modifier
                     .graphicsLayer {
                         this.alpha = alpha

@@ -45,7 +45,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
@@ -89,7 +91,7 @@ fun StateFulHistoryChats(
         },
         onChangeCategory = { category ->
             scope.launch {
-                if (category == All.name) {
+                if (category == All.root) {
                     vmChat.getAllConversations()
                 } else {
                     vmChat.getConversationsFromCategory(category)
@@ -126,6 +128,7 @@ fun StateLessHistoryChats(
     onNavigateMessages: (Int) -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
+    val context = LocalContext.current
 
     LazyColumn(
         modifier = Modifier
@@ -175,7 +178,7 @@ fun StateLessHistoryChats(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "New Chat",
+                            text = stringResource(R.string.historychats_new_chat),
                         )
                     }
                 }
@@ -253,8 +256,8 @@ fun StateLessHistoryChats(
                                     text = conversation.category,
                                     color =
                                     when (conversation.category) {
-                                        Text.name -> Color.Yellow
-                                        Math.name -> Color.Cyan
+                                        Text.root -> Color.Yellow
+                                        Math.root -> Color.Cyan
                                         else -> MaterialTheme.colorScheme.onBackground
                                     },
                                     style = MaterialTheme.typography.bodySmall,

@@ -15,7 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import kotlinx.coroutines.async
 
@@ -38,7 +40,7 @@ fun ProfileName(userAuth: String) {
                 color = MaterialTheme.colorScheme.primary,
             )
             Text(
-                text = " - Base Plan",
+                text = stringResource(R.string.profile_base_plan),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground,
             )
@@ -53,11 +55,11 @@ fun ProfileName(userAuth: String) {
                 color = MaterialTheme.colorScheme.primary,
             )
             Text(
-                text = " - Premium", color = Color.Yellow,
+                text = stringResource(R.string.profile_1_premium), color = Color.Yellow,
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
-                text = " Plan",
+                text = stringResource(R.string.profile_2_plan),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground,
             )

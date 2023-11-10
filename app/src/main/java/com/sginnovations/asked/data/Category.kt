@@ -1,15 +1,22 @@
 package com.sginnovations.asked.data
 
+import android.content.Context
+import com.sginnovations.asked.R
+
 interface Category {
-    val name: String
+    val root: String
+    fun getName(context: Context): String
 
 }
 object All : Category {
-    override val name = "All"
+    override val root = "All"
+    override fun getName(context: Context) = context.getString(R.string.category_all)
 }
 object Text : Category {
-    override val name = "Text"
+    override val root = "Text"
+    override fun getName(context: Context) = context.getString(R.string.category_text)
 }
 object Math : Category {
-    override val name = "Math"
+    override val root = "Math"
+    override fun getName(context: Context) = context.getString(R.string.category_math)
 }

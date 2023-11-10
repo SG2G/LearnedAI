@@ -124,7 +124,7 @@ fun StateLessProfile(
                     )
                 ) {
                     Text(
-                        text = "Upgrade", color = MaterialTheme.colorScheme.onPrimary,
+                        text = stringResource(R.string.profile_upgrade), color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
@@ -164,13 +164,13 @@ fun StateLessProfile(
         ) {
             Column {
                 ProfileButton(
-                    text = "Rate Us",
+                    text = stringResource(R.string.profile_rate_us),
                     imageVector = Icons.Filled.StarRate,
                     onClick = { onRateUs() }
                 )
 
                 ProfileButton(
-                    text = "Email us",
+                    text = stringResource(R.string.profile_email_us),
                     imageVector = Icons.Filled.Email,
                     onClick = { onSendEmail() }
                 )
@@ -195,6 +195,7 @@ fun StateLessProfile(
 }
 
 fun sendEmail(context: Context, userAuth: State<UserData?>) { //TODO INTENT VIEWMODEL?
+    //TODO TRANSLATE
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
         putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(R.string.asked_email)))

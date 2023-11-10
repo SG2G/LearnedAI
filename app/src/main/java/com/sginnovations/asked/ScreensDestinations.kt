@@ -29,14 +29,14 @@ object Camera : ScreensDestinations {
 
 object ChatsHistory : ScreensDestinations {
     override val route = "Chats History"
-    override fun getName(context: Context) = "Chats History"
+    override fun getName(context: Context) = context.getString(R.string.topbar_chats_history)
     override val icon = Icons.Outlined.Chat
     override val selectedIcon = Icons.Filled.Chat
 }
 
 object Profile : ScreensDestinations {
     override val route = "Profile"
-    override fun getName(context: Context) = "Profile"
+    override fun getName(context: Context) = context.getString(R.string.topbar_profile)
     override val icon = Icons.Outlined.PersonOutline
     override val selectedIcon = Icons.Filled.Person
 }
@@ -70,21 +70,15 @@ object Auth : ScreensDestinations {
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }
-object Points : ScreensDestinations {
-    override val route = "Points"
-    override fun getName(context: Context) = "Points"
-    override val icon: ImageVector? = null
-    override val selectedIcon: ImageVector? = null
-}
 object RefCode : ScreensDestinations {
     override val route = "Share"
-    override fun getName(context: Context) = "Share"
+    override fun getName(context: Context) = context.getString(R.string.topbar_share)
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }
 object Subscription : ScreensDestinations {
     override val route = "Subscription"
-    override fun getName(context: Context) = "Subscription"
+    override fun getName(context: Context) = context.getString(R.string.topbar_subscription)
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }
