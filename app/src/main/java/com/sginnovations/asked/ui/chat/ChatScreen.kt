@@ -152,7 +152,7 @@ fun ChatStateLess(
 
     var chatPlaceHolder by remember { mutableStateOf(false) }
     var userPlaceHolder by remember { mutableStateOf("") }
-    val assistantPlaceHolder = "Thinking..."
+    val assistantPlaceHolder = stringResource(R.string.chat_thinking)
 
     val backgroundColor = MaterialTheme.colorScheme.primaryContainer
 

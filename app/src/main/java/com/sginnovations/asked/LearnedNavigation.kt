@@ -76,9 +76,11 @@ fun LearnedNavigation(
             Auth.route -> Auth
 
             Crop.route -> Crop
+
             ChatsHistory.route -> ChatsHistory
             Profile.route -> Profile
 
+            NewConversation.route -> NewConversation
             Chat.route -> Chat
 
             Subscription.route -> Subscription

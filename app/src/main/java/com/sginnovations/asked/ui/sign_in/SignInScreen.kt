@@ -40,6 +40,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
@@ -161,11 +162,16 @@ fun LearnedAuthStateLess(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Text(
+            text = stringResource(R.string.sign_in_title_sign_in),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = MaterialTheme.typography.titleLarge
+        )
         /**
          * Logo Image
          */
         Image(
-            painter = painterResource(id = R.drawable.sign_in_light),
+            painter = painterResource(id = R.drawable.sign_in),
             contentDescription = "sign_in",
             modifier = Modifier
                 .fillMaxWidth()

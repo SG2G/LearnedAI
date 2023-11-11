@@ -81,11 +81,9 @@ fun StateFulHistoryChats(
     }
 
     val conversations = vmChat.conversations
-    val category = vmChat.category
 
     StateLessHistoryChats(
         conversations = conversations,
-        category = category,
 
         onDeleteConversation = { id ->
             scope.launch {
@@ -125,7 +123,6 @@ fun StateFulHistoryChats(
 @Composable
 fun StateLessHistoryChats(
     conversations: MutableState<List<ConversationEntity>>,
-    category: MutableState<String>,
 
     onDeleteConversation: (Int?) -> Unit,
     onChangeCategory: (String) -> Unit,

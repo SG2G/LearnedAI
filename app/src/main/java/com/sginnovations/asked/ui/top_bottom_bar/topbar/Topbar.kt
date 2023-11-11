@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Subscription

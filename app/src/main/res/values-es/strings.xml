@@ -80,4 +80,7 @@
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">Hay actualizaciones críticas disponibles. Actualice la aplicación para aplicar estos cambios.</string>
     <string name="update_btn_update">Actualizar</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Mhmm, parece que no hay nada aquí.</string>
+    <string name="chat_thinking">Pensando...</string>
+    <string name="sign_in_title_sign_in">Iniciar sesión</string>
+    <string name="newchat_placeholder_enter_your_text">Introduce tu texto, pregunta a Asked.</string>
 </resources>

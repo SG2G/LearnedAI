@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -48,7 +50,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -77,6 +78,7 @@ fun NewConversationStateFul(
 
     val idConversation = vmChat.idConversation.intValue
     val prefixPrompt = vmChat.prefixPrompt.value
+    val isLoading = vmCamera.isLoading
 
     val newConversationCostToken = vmChat.newConversationCostTokens()
 
@@ -88,18 +90,6 @@ fun NewConversationStateFul(
         }
     }
     val activity = context.getActivity()
-
-    if (vmCamera.isLoading.value) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 72.dp)
-                .zIndex(10f),
-            contentAlignment = Alignment.BottomCenter,
-        ) {
-            CircularProgressIndicator()
-        }
-    }
 
     SideEffect {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -116,36 +106,37 @@ fun NewConversationStateFul(
 
         newConversationCostToken = newConversationCostToken,
 
-        onClick = {
-            scope.launch {
-                if (NetworkUtils.isOnline(context)) {
-                    vmCamera.isLoading.value = true
-                    // Show ad
-                    if (activity != null) {
-                        vmAds.showInterstitialAd(activity)
-                    }
+        isLoading = isLoading
 
-                    // GPT call
-                    val deferred =
-                        async { vmChat.sendMessageToOpenaiApi("$prefixPrompt ${text.value}") }
-                    deferred.await()
-                    Log.i("NewConversation", "Continuing the code, Sending $idConversation")
-                    // Token cost of the call
-                    try {
-                        vmChat.lessTokenNewConversationCheckPremium()
-                    } catch (e: Exception) {
-                        // NewConversation tokens cost failed
-                        e.printStackTrace()
-                    }
-
-                    vmCamera.isLoading.value = false
-                    onNavigateChat(idConversation)
-                } else {
-                    Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
+    ) {
+        scope.launch {
+            if (NetworkUtils.isOnline(context)) {
+                vmCamera.isLoading.value = true
+                // Show ad
+                if (activity != null) {
+                    vmAds.showInterstitialAd(activity)
                 }
+
+                // GPT call
+                val deferred =
+                    async { vmChat.sendMessageToOpenaiApi("$prefixPrompt ${text.value}") }
+                deferred.await()
+                Log.i("NewConversation", "Continuing the code, Sending $idConversation")
+                // Token cost of the call
+                try {
+                    vmChat.lessTokenNewConversationCheckPremium()
+                } catch (e: Exception) {
+                    // NewConversation tokens cost failed
+                    e.printStackTrace()
+                }
+
+                vmCamera.isLoading.value = false
+                onNavigateChat(idConversation)
+            } else {
+                Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
             }
         }
-    )
+    }
 
 }
 
@@ -155,22 +146,25 @@ fun NewConversationStateLess(
 
     newConversationCostToken: String,
 
+    isLoading: MutableState<Boolean>,
+
     onClick: () -> Unit,
 ) {
 
+    val elevatedCardPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         ElevatedCard(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(elevatedCardPadding),
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
+                defaultElevation = 4.dp
             )
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(8.dp),
             ) {
                 TitleChatUseExample(
                     painterResource = painterResource(id = R.drawable.icons8_brain_96),
@@ -180,13 +174,13 @@ fun NewConversationStateLess(
             }
         }
         ElevatedCard(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(elevatedCardPadding),
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
+                defaultElevation = 4.dp
             )
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(8.dp),
             ) {
                 TitleChatUseExample(
                     painterResource = painterResource(id = R.drawable.icons8_write_64),
@@ -197,13 +191,13 @@ fun NewConversationStateLess(
         }
 
         ElevatedCard(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(elevatedCardPadding),
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
+                defaultElevation = 4.dp
             )
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(8.dp),
             ) {
                 TitleChatUseExample(
                     painterResource = painterResource(id = R.drawable.icons8_magic_wand_64),
@@ -225,6 +219,18 @@ fun NewConversationStateLess(
                 RoundedCornerShape(topStart =  25.dp, topEnd = 25.dp)
             )
         ) {
+            if (isLoading.value) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth(0.9f)
+                    )
+                }
+            }
             Row(
                 modifier = Modifier
                     .scale(0.8f)
@@ -259,7 +265,7 @@ fun NewConversationStateLess(
                     modifier = Modifier
                         .weight(1f)
                         .imePadding(),
-                    placeholder = { Text(text = "Enter your text.", fontSize = 14.sp) },
+                    placeholder = { Text(text = stringResource(R.string.newchat_placeholder_enter_your_text), fontSize = 14.sp) },
                     textStyle = TextStyle(fontSize = 14.sp),
                     shape = RoundedCornerShape(20.dp),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -284,10 +290,13 @@ fun NewConversationStateLess(
     }
 }
 
+/**
+ * Estra composablesw
+ */
 @Composable
 fun TitleChatUseExample(painterResource: Painter, text: String) {
     Row(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -308,7 +317,7 @@ fun TitleChatUseExample(painterResource: Painter, text: String) {
 fun SubTitleChatUseExample(text: String) {
     Spacer(modifier = Modifier.height(8.dp))
     Text(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(4.dp),
         text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.titleSmall
     )
