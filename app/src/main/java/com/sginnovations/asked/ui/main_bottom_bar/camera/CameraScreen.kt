@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,10 @@ import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,7 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
+import com.sginnovations.asked.ui.ui_components.camera.CameraExamplesDialog
 import com.sginnovations.asked.ui.ui_components.camera.CameraPreview
 import com.sginnovations.asked.ui.ui_components.camera.PDFAlertDialog
 import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
@@ -54,15 +60,17 @@ fun CameraStateFul(
             cameraPermissionGranted.value = true
         }
     )
-    vmCamera.cameraOCRCategory
+
+    val category = vmCamera.cameraOCRCategory
     val showPDFWorkingOn = remember { mutableStateOf(false) }
+    val showCategoryExamples = remember { mutableStateOf(false) }
 
     if (cameraPermissionGranted.value) {
         CameraStateLess(
             vmToken = vmToken,
+            category = category,
 
             onGetPhotoGallery = { onGetPhotoGallery() },
-
             onPhotoTaken = { bitmap ->
                 vmCamera.onTakePhoto(bitmap)
                 onCropNavigation()
@@ -71,13 +79,25 @@ fun CameraStateFul(
                 // TODO PDF READER
                 showPDFWorkingOn.value = true
             },
+            onShowCategoryExamples = {
+                showCategoryExamples.value = true
+            },
 
-            onChangeCategory = { category ->
-                vmCamera.cameraOCRCategory.value = category
-            }
-        )
+            ) { category ->
+            vmCamera.cameraOCRCategory.value = category
+        }
+        /**
+         * Shows
+         */
         if (showPDFWorkingOn.value) {
-            PDFAlertDialog(onDismiss = {showPDFWorkingOn.value = false})
+            PDFAlertDialog(onDismiss = { showPDFWorkingOn.value = false })
+        }
+        if (showCategoryExamples.value) {
+            CameraExamplesDialog(
+                onDismissRequest = { showCategoryExamples.value = false },
+
+                category = category,
+            )
         }
     }
 }
@@ -85,10 +105,13 @@ fun CameraStateFul(
 @Composable
 fun CameraStateLess(
     vmToken: TokenViewModel,
+    category: MutableState<String>,
 
     onGetPhotoGallery: () -> Unit,
     onPhotoTaken: (Bitmap) -> Unit,
     onLoadPDF: () -> Unit,
+
+    onShowCategoryExamples: () -> Unit,
 
     onChangeCategory: (String) -> Unit,
 ) {
@@ -103,7 +126,6 @@ fun CameraStateLess(
         }
     }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -117,10 +139,23 @@ fun CameraStateLess(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 16.dp),
+                .padding(top = 16.dp, start = 16.dp),
             verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.End,
         ) {
+            Text(
+                text = when (category.value) {
+                    Text.root -> "Text Examples"
+                    else -> {
+                        "Math Examples"
+                    }
+                },
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.clickable {
+                    onShowCategoryExamples()
+                }
+            )
+            Spacer(modifier = Modifier.weight(1f))
             TokenDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
         }
 
@@ -163,6 +198,5 @@ fun CameraStateLess(
                 )
             }
         }
-
     }
 }

@@ -192,6 +192,7 @@ fun ChatStateLess(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .padding(bottom = 16.dp)
     ) {
         LazyColumn(
             modifier = Modifier

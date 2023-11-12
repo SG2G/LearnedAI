@@ -14,7 +14,12 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.sginnovations.asked.BuildConfig
 import com.sginnovations.asked.Constants
+import com.sginnovations.asked.Constants.Companion.INTERSTITIAL_AD_UNIT_DEBUG
+import com.sginnovations.asked.Constants.Companion.INTERSTITIAL_AD_UNIT_RELEASE
+import com.sginnovations.asked.Constants.Companion.REWARD_AD_UNIT_DEBUG
+import com.sginnovations.asked.Constants.Companion.REWARD_AD_UNIT_RELEASE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,10 +31,18 @@ class AdManagerRepository @Inject constructor(
     private val tokenRepository: TokenRepository,
 ) {
     private var rewardedAd: RewardedAd? = null
-    private val rewardAdUnit = Constants.REWARD_AD_UNIT
+    private val rewardAdUnit = if (BuildConfig.DEBUG) {
+        REWARD_AD_UNIT_DEBUG // Test Ad Unit ID
+    } else {
+        REWARD_AD_UNIT_RELEASE // Real Ad Unit ID
+    }
 
     private var interstitialAd: InterstitialAd? = null
-    private val interstitialAdUnit = Constants.INTERSTITIAL_AD_UNIT
+    private val interstitialAdUnit = if (BuildConfig.DEBUG) {
+        INTERSTITIAL_AD_UNIT_DEBUG // Test Ad Unit ID
+    } else {
+        INTERSTITIAL_AD_UNIT_RELEASE // Real Ad Unit ID
+    }
 
     fun loadInterstitialAd(context: Context) {
         val adRequest = AdRequest.Builder().build()
