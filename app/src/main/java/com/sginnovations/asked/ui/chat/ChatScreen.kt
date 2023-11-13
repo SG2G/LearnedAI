@@ -192,7 +192,7 @@ fun ChatStateLess(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 16.dp)
+            .padding(bottom = 104.dp)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -204,13 +204,11 @@ fun ChatStateLess(
                 items = messages.value
             ) { index, message ->
                 if (index == lastIndex) {
-                    Box(
-                        Modifier.onGloballyPositioned {
-                            lastItemVisible =
-                                listState.layoutInfo.visibleItemsInfo.any {
-                                    it.index == lastIndex
-                                }
+                    Box(Modifier.onGloballyPositioned {
+                        lastItemVisible = listState.layoutInfo.visibleItemsInfo.any {
+                            it.index == lastIndex
                         }
+                    }
                     ) {
                         if (message.role == Assistant.role) {
                             // Last AI message
@@ -296,19 +294,20 @@ fun ChatStateLess(
         }
     }
 
-        /**
-         * TextField
-         */
+    /**
+     * TextField
+     */
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
             .fillMaxSize(),
     ) {
         Column(
-            modifier = Modifier.background(
-                MaterialTheme.colorScheme.background,
-                RoundedCornerShape(topStart =  25.dp, topEnd = 25.dp)
-            )
+            modifier = Modifier
+                .background(
+                    MaterialTheme.colorScheme.background,
+                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                )
         ) {
             Row(
                 modifier = Modifier
@@ -336,7 +335,12 @@ fun ChatStateLess(
                     modifier = Modifier
                         .weight(1f)
                         .imePadding(),
-                    placeholder = { Text(text = stringResource(R.string.enter_your_text), fontSize = 14.sp) },
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.enter_your_text),
+                            fontSize = 14.sp
+                        )
+                    },
                     textStyle = TextStyle(fontSize = 14.sp),
                     shape = RoundedCornerShape(20.dp),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -365,6 +369,17 @@ fun ChatStateLess(
                         modifier = Modifier.size(24.dp),
                     )
                 }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.chat_supported_asked_can_make_mistakes_consider_checking_important_information),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    style = MaterialTheme.typography.labelSmall
+                )
             }
         }
     } // Column Free msg + Textfield

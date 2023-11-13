@@ -87,5 +87,8 @@
     <string name="chat_thinking">Thinking...</string>
     <string name="sign_in_title_sign_in">Sign In</string>
     <string name="newchat_placeholder_enter_your_text">Enter your text, ask Asked.</string>
+    <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked can make mistakes. Verify important information.</string>
+    <string name="camera_examples_example_of_text_based_problems">Example of Text Based problems.</string>
+    <string name="camera_examples_example_of_math_problems">Example of math problems.</string>
 
 </resources>

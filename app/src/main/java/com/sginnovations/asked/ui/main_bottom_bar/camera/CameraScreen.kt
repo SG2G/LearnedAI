@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
 import com.sginnovations.asked.ui.ui_components.camera.CameraExamplesDialog
@@ -61,14 +62,14 @@ fun CameraStateFul(
         }
     )
 
-    val category = vmCamera.cameraOCRCategory
+    val cameraOCRCategory = vmCamera.cameraOCRCategory
     val showPDFWorkingOn = remember { mutableStateOf(false) }
     val showCategoryExamples = remember { mutableStateOf(false) }
 
     if (cameraPermissionGranted.value) {
         CameraStateLess(
             vmToken = vmToken,
-            category = category,
+            cameraOCRCategory = cameraOCRCategory,
 
             onGetPhotoGallery = { onGetPhotoGallery() },
             onPhotoTaken = { bitmap ->
@@ -96,7 +97,7 @@ fun CameraStateFul(
             CameraExamplesDialog(
                 onDismissRequest = { showCategoryExamples.value = false },
 
-                category = category,
+                cameraOCRCategory = cameraOCRCategory,
             )
         }
     }
@@ -105,7 +106,7 @@ fun CameraStateFul(
 @Composable
 fun CameraStateLess(
     vmToken: TokenViewModel,
-    category: MutableState<String>,
+    cameraOCRCategory: MutableState<String>,
 
     onGetPhotoGallery: () -> Unit,
     onPhotoTaken: (Bitmap) -> Unit,
@@ -143,13 +144,12 @@ fun CameraStateLess(
             verticalAlignment = Alignment.Top,
         ) {
             Text(
-                text = when (category.value) {
-                    Text.root -> "Text Examples"
-                    else -> {
-                        "Math Examples"
-                    }
+                text = when (cameraOCRCategory.value) {
+                    Text.root -> "" // TODO TRANSLATE
+                    Math.root -> "Math Examples"
+                    else -> {""}
                 },
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.clickable {
                     onShowCategoryExamples()

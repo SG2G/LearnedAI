@@ -172,7 +172,9 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraOCRCategory.value = Text.root
+            vmCamera.cameraOCRCategory.value = Text.root //TODO LIADA CATEDRALICIA
+            vmChat.category.value = Text.root
+
             vmCamera.getTextFromImage(croppedImage)
 
             if (navController.currentDestination?.route != NewConversation.route) {
@@ -192,7 +194,9 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_MATH")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraOCRCategory.value = Math.root
+            vmCamera.cameraOCRCategory.value = Math.root //TODO LIADA CATEDRALICIA PARTE 2
+            vmChat.category.value = Math.root
+
             vmCamera.getMathFromImage(croppedImage)
 
             val cameraCostTokens = vmToken.getCameraMathTokens()

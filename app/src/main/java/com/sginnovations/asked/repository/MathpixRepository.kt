@@ -31,7 +31,7 @@ class MathpixRepository @Inject constructor(
         Log.d(TAG, "getMathFromImage: Trying to send request ${base64Image.byteInputStream()}")
         val request = MathpixRequest(
             src = "data:image/jpeg;base64,$base64Image",
-            formats = listOf("text", "data"),
+            formats = listOf("text", "data","latex_styled"),
             data_options = DataOptions(
                 include_asciimath = true,
             )
@@ -51,7 +51,7 @@ class MathpixRepository @Inject constructor(
                     Log.d(TAG, "onResponse: ${response.body().toString()}")
                     try {
                         val mathText = response.body()!!.data.firstOrNull()?.value.toString()
-                        Log.d(TAG, "getMathFromImage: ${response.body()!!.data.firstOrNull()?.value.toString()}")
+                        Log.d(TAG, "getMathFromImage: ${response.body()!!.data}")
                         continuation.resume(mathText)
                     } catch (e: Exception) {
                         Log.d(TAG, "getMathFromImage: catch Exception Error")

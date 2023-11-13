@@ -38,7 +38,7 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
-    val category = mutableStateOf(Text.getName(context))
+    val category = mutableStateOf(Text.root)
     val prefixPrompt = mutableStateOf("")
 
     private val timestamp = System.currentTimeMillis()

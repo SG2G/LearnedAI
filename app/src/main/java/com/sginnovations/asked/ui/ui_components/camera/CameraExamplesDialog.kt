@@ -3,114 +3,140 @@
 package com.sginnovations.asked.ui.ui_components.camera
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Text
+
+val mathImageList = listOf(
+    R.drawable.math_example_1, R.drawable.math_example_2,
+    R.drawable.math_example_3, R.drawable.math_example_4,
+    R.drawable.math_example_5, R.drawable.math_example_6,
+    R.drawable.math_example_7, R.drawable.math_example_8,
+    R.drawable.math_example_9, R.drawable.math_example_10,
+    R.drawable.math_example_12, R.drawable.math_example_13,
+    R.drawable.math_example_11, R.drawable.math_example_14,
+    R.drawable.math_example_15, R.drawable.math_example_16,
+    R.drawable.math_example_17, R.drawable.math_example_18,
+)
+val textImageList = listOf(
+    R.drawable.math_example_1,
+)
 
 @Composable
 fun CameraExamplesDialog(
     onDismissRequest: () -> Unit,
 
-    category: MutableState<String>,
+    cameraOCRCategory: MutableState<String>,
 ) {
-    val scrollState = rememberScrollState()
-
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
     ) {
-        if (category.value == Text.root) {
+        if (cameraOCRCategory.value == Text.root) {
             // Text
-
-            Row(
-                modifier = Modifier
-                    .scrollable(scrollState, Orientation.Horizontal)
-                    .background(
-                        Color.Black
-                    )
+            ElevatedCard(
+                shape = RoundedCornerShape(15.dp),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_morechat),
-                    contentDescription = null
-                )
+                Column(
+                    modifier = Modifier.padding(8.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.camera_examples_example_of_text_based_problems),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    for (i in textImageList.indices step 3) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+
+                            ) {
+                            for (j in i until minOf(i + 3, textImageList.size)) {
+                                Image(
+                                    painter = painterResource(id = textImageList[j]),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
             }
         } else {
             // Math
-            Text(text = "Holka que aps")
+            ElevatedCard(
+                shape = RoundedCornerShape(15.dp),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(8.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.camera_examples_example_of_math_problems),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
+                    for (i in mathImageList.indices step 3) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+
+                            ) {
+                            for (j in i until minOf(i + 3, mathImageList.size)) {
+                                Image(
+                                    painter = painterResource(id = mathImageList[j]),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
-
-//@Composable
-//fun ScrollableAlertDialog() {
-//    val openDialog = remember { mutableStateOf(true) }
-//    if (openDialog.value) {
-//        AlertDialog(
-//            onDismissRequest = { openDialog.value = false },
-//            title = { Text(text = "Title") },
-//            text = {
-//                // Wrap the text with a scrollable Column
-//                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-//                    Text(text = "Very long content...")
-//                }
-//            },
-//            confirmButton = {
-//                TextButton(onClick = { openDialog.value = false }) {
-//                    Text("Confirm")
-//                }
-//            }
-//        )
-//    }
-//}

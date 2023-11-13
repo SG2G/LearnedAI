@@ -83,4 +83,7 @@
     <string name="chat_thinking">Pensando...</string>
     <string name="sign_in_title_sign_in">Iniciar sesión</string>
     <string name="newchat_placeholder_enter_your_text">Introduce tu texto, pregunta a Asked.</string>
+    <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked puede cometer errores. Verifica información importante.</string>
+    <string name="camera_examples_example_of_text_based_problems">Ejemplos de problemas basados en Texto.</string>
+    <string name="camera_examples_example_of_math_problems">Ejemplos de problemas Matematicos.</string>
 </resources>

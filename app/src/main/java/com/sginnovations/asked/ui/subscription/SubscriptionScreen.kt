@@ -349,8 +349,7 @@ fun SubscriptionStateLess(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(28.dp)
-                    .padding(bottom = 8.dp, end = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
+                    .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box {
@@ -360,6 +359,7 @@ fun SubscriptionStateLess(
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
+                Spacer(modifier = Modifier.weight(1f))
                 Row {
                     Icon(
                         imageVector = Icons.Filled.Shield,
