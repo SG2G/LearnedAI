@@ -159,7 +159,7 @@ fun SubscriptionStateFull(
         ) {
             Box {
                 Image(
-                    painter = painterResource(id = R.drawable.subscription_background_school2_modifier2),
+                    painter = painterResource(id = R.drawable.subscription_background_school),
                     contentDescription = "subscription_background_school",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -221,7 +221,7 @@ fun SubscriptionStateLess(
     ) {
         Box {
             Image(
-                painter = painterResource(id = R.drawable.subscription_background_school2_modifier2),
+                painter = painterResource(id = R.drawable.subscription_background_school),
                 contentDescription = "subscription_background_school",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -349,7 +349,7 @@ fun SubscriptionStateLess(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(28.dp)
-                    .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box {

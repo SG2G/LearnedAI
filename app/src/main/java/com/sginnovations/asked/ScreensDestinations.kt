@@ -53,13 +53,13 @@ object Chat: ScreensDestinations {
 
 object NewConversation : ScreensDestinations {
     override val route = "NewConversation"
-    override fun getName(context: Context) = "New Chat"
+    override fun getName(context: Context) = context.getString(R.string.topbar_new_chat)
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }
 object Crop : ScreensDestinations {
     override val route = "Crop"
-    override fun getName(context: Context) = "Crop"
+    override fun getName(context: Context) = context.getString(R.string.topbar_crop)
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }

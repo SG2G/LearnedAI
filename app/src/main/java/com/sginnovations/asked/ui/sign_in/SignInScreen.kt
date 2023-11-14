@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -165,17 +167,23 @@ fun LearnedAuthStateLess(
         Text(
             text = stringResource(R.string.sign_in_title_sign_in),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        Image(
+            modifier = Modifier
+                .clip(CircleShape).size(64.dp),
+            painter = painterResource(id = R.drawable.asked30),
+            contentDescription = "asked_logo",
         )
         /**
-         * Logo Image
+         * Sign in Image
          */
         Image(
             painter = painterResource(id = R.drawable.sign_in),
             contentDescription = "sign_in",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = {
@@ -234,7 +242,7 @@ fun LearnedAuthStateLess(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(64.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         /**
          * Component
          * Google Sign in Button

@@ -94,7 +94,9 @@ fun CropStateLess(
     suspend fun cropImage(imageCropped: ImageBitmap?) {
         croppedImage = imageCropped
 
+        Log.d(TAG, "cropImage, starting loop until not null")
         while (croppedImage == null) { delay(250) }
+        Log.d(TAG, "cropImage ->> $croppedImage")
 
         try {
             onImageCropped(croppedImage!!)

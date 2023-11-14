@@ -190,11 +190,12 @@ fun CameraStateLess(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            IconButton(onClick = { onLoadPDF() }) {
+            IconButton(onClick = { /*onLoadPDF()*/ }) { //TODO DELETED
                 Icon(
                     imageVector = Icons.Outlined.PictureAsPdf,
                     contentDescription = "PictureAsPdf",
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier.size(38.dp),
+                    tint = Color.Transparent
                 )
             }
         }

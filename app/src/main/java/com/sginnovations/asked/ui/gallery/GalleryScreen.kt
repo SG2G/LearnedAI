@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -85,12 +86,12 @@ fun GalleryStateFull(
                 }
             }
 
-        bitmap.value?.let { btm ->
-            if (!hasExecuted.value) {
-                Log.i(TAG, " bitmap.value?.let")
-                vmCamera.onTakePhoto(btm)
+        LaunchedEffect(bitmap.value) {
+            Log.d(TAG, "GalleryStateFull: ${bitmap.value}")
+            if (bitmap.value != null) {
+                vmCamera.onTakePhoto(bitmap.value!!)
                 onCropNavigation()
-                hasExecuted.value = true
+                bitmap.value = null
             }
         }
 

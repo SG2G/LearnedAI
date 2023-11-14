@@ -40,7 +40,6 @@ class ChatViewModel @Inject constructor(
     val idConversation = mutableIntStateOf(0)
     val category = mutableStateOf(Text.root)
     val prefixPrompt = mutableStateOf("")
-
     private val timestamp = System.currentTimeMillis()
 
     // Response of OPENAI API

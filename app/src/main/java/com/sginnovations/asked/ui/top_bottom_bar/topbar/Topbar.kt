@@ -50,7 +50,6 @@ fun LearnedTopBar(
         Chat.route -> ChatTopBar(
             vmTokens,
             vmChat,
-            Chat.getName(context),
             navigateUp
         )
 

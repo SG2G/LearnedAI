@@ -79,16 +79,19 @@
     <string name="gallery_select_the_ocr_you_want_to_use">Select the type you want to use:</string>
     <string name="gallery_process_text_based_problem">Text based problem</string>
     <string name="gallery_process_math_problem">Math based problem</string>
-    <string name="subscription_subtitle_load_pdf_gpt_4_turbo">- Load PDF\n- GPT 4 Turbo</string>
+    <string name="subscription_subtitle_load_pdf_gpt_4_turbo">GPT 4 Turbo</string>
     <string name="update_critical_updates_required">Critical Updates Required</string>
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">There are critical updates avaliable. Please update the app to apply these changes.</string>
     <string name="update_btn_update">Update</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Hmm, it seems like there\'s nothing here.</string>
     <string name="chat_thinking">Thinking...</string>
-    <string name="sign_in_title_sign_in">Sign In</string>
+    <string name="sign_in_title_sign_in">Log in to Asked</string>
     <string name="newchat_placeholder_enter_your_text">Enter your text, ask Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked can make mistakes. Verify important information.</string>
     <string name="camera_examples_example_of_text_based_problems">Example of Text Based problems.</string>
     <string name="camera_examples_example_of_math_problems">Example of math problems.</string>
+    <string name="copy_copied">Copied!</string>
+    <string name="topbar_crop">Crop</string>
+    <string name="topbar_new_chat">New Chat</string>
 
 </resources>

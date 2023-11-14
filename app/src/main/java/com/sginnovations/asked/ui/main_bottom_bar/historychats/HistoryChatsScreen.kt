@@ -274,23 +274,28 @@ fun StateLessHistoryChats(
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     style = MaterialTheme.typography.titleMedium
                                 )
-                                Text(
-                                    text = conversation.category,
-                                    color =
-                                    when (conversation.category) {
-                                        Text.root -> Color.Yellow
-                                        Math.root -> Color.Cyan
-                                        else -> MaterialTheme.colorScheme.onBackground
-                                    },
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier
+                                Row(
+                                    modifier = Modifier.width(64.dp)
                                         .border(
                                             1.dp,
-                                            MaterialTheme.colorScheme.onSurfaceVariant,
+                                            MaterialTheme.colorScheme.surfaceVariant,
                                             RoundedCornerShape(10.dp)
-                                        )
-                                        .padding(8.dp)
-                                )
+                                        ),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    Text(
+                                        text = conversation.category,
+                                        color =
+                                        when (conversation.category) {
+                                            Text.root -> Color.Yellow
+                                            Math.root -> Color.Cyan
+                                            else -> MaterialTheme.colorScheme.onBackground
+                                        },
+                                        style = MaterialTheme.typography.bodySmall,
+                                        modifier = Modifier.padding(8.dp)
+                                    )
+                                }
                                 IconButton(
                                     onClick = { onDeleteConversation(conversation.idConversation) },
                                 ) {

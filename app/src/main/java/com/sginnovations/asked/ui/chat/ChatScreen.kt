@@ -58,6 +58,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_DEFAULT
+import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_PREMIUM
 import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
@@ -104,6 +106,7 @@ fun ChatStateFul(
 
     LaunchedEffect(messages.value.size) {
         vmChat.setUpMessageHistory()
+
         if (messages.value.isNotEmpty()) {
             listState.scrollToItem(messages.value.size - 1)
         }
@@ -143,6 +146,8 @@ fun ChatStateLess(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    val copyMsg = stringResource(R.string.copy_copied)
 
     val clipboardManager = LocalClipboardManager.current
     val text = remember { mutableStateOf("") }
@@ -230,7 +235,8 @@ fun ChatStateLess(
                                     } else {
                                         Text(
                                             modifier = Modifier.padding(CHAT_MSG_PADDING),
-                                            text = message.content
+                                            text = message.content,
+                                            style = MaterialTheme.typography.bodyMedium
                                         )
                                     }
                                 } else {
@@ -240,8 +246,12 @@ fun ChatStateLess(
                                             .padding(CHAT_MSG_PADDING)
                                             .clickable {
                                                 clipboardManager.setText(AnnotatedString(message.content))
+                                                Toast
+                                                    .makeText(context, copyMsg, Toast.LENGTH_SHORT)
+                                                    .show()
                                             },
-                                        text = message.content
+                                        text = message.content,
+                                        style = MaterialTheme.typography.bodyMedium
                                     )
                                 }
                             }
@@ -306,16 +316,16 @@ fun ChatStateLess(
             modifier = Modifier
                 .background(
                     MaterialTheme.colorScheme.background,
-                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp) //TODO PREMIUM CANT SEE IT
                 )
         ) {
-            Row(
-                modifier = Modifier
-                    .scale(0.8f)
-                    .padding(start = 16.dp, top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (!isPremium) {
+            if (!isPremium) {
+                Row(
+                    modifier = Modifier
+                        .scale(0.8f)
+                        .padding(start = 16.dp, top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(text = "-1")
                     TokenIcon()
                     Spacer(modifier = Modifier.width(4.dp))
@@ -331,7 +341,26 @@ fun ChatStateLess(
             ) {
                 OutlinedTextField(
                     value = text.value,
-                    onValueChange = { text.value = it },
+                    onValueChange = {
+                        if (isPremium) {
+                            if (it.length <= CHAT_LIMIT_PREMIUM) {
+                                text.value = it
+                            }
+                        } else {
+                            if (it.length <= CHAT_LIMIT_DEFAULT) {
+                                text.value = it
+                            }
+                        }
+                    },
+                    trailingIcon = {
+                        Text(
+                            "${text.value.length}/" +
+                                    if (isPremium) CHAT_LIMIT_PREMIUM else CHAT_LIMIT_DEFAULT,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                    },
+
                     modifier = Modifier
                         .weight(1f)
                         .imePadding(),
@@ -348,7 +377,8 @@ fun ChatStateLess(
                         unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                     ),
                     maxLines = Int.MAX_VALUE,
-                )
+
+                    )
                 IconButton(
                     onClick = {
                         scope.launch {
@@ -367,6 +397,8 @@ fun ChatStateLess(
                         Icons.Default.Send,
                         contentDescription = "Send",
                         modifier = Modifier.size(24.dp),
+                        tint =
+                        if (text.value.isEmpty()) Color.Gray else Color.White
                     )
                 }
             }

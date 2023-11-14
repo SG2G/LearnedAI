@@ -30,7 +30,7 @@ fun GoogleSignInButton(
         modifier = Modifier
             .fillMaxWidth(0.8f),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Icon(

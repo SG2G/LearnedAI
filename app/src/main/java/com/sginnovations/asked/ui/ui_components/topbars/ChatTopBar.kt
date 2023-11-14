@@ -32,32 +32,24 @@ import com.sginnovations.asked.viewmodel.TokenViewModel
 fun ChatTopBar(
     vmTokens: TokenViewModel,
     vmChat: ChatViewModel,
-    currentScreenTitle: String,
 
     navigateUp: () -> Unit,
 ) {
     val tokens = vmTokens.tokens.collectAsState()
 
-    val id = vmChat.idConversation.intValue - 1
-    val conversations = vmChat.conversations.value
-
-    Log.i("ChatTopBar", "ChatTopBar: $conversations $id")
     TopAppBar(
         title = {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                //TODO NAME OF CONVERSATION
-                    Text(
-                        text = "",
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = TextStyle(
-                            fontSize = 20.sp
-                        ),
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
+                Text(
+                    text = "Chat",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         },
         navigationIcon = {
             IconButton(onClick = navigateUp) {

@@ -108,7 +108,8 @@ fun ReferralCodeStateLess(
         ) {
             Text(
                 text = stringResource(R.string.share_invite),
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 

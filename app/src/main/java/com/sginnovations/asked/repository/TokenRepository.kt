@@ -61,7 +61,7 @@ class TokenRepository @Inject constructor(
         if (!checkIsPremium()) incrementTokens(num)
     }
 
-    fun giveInvitorReward(inviteUserId: String) {
+    fun giveInvitorReward(inviteUserId: String) { // TODO USE CASE
         val firestore = FirebaseFirestore.getInstance()
         val plusTokens = remoteConfigRepository.getInviteRewardTokens().toInt()
 

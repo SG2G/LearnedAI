@@ -14,8 +14,9 @@ class RefCodeRewardUseCase @Inject constructor(
         Log.i(TAG, "Ref Code reward")
         if (isActualDeviceNewAccountUseCase()) {
             if (isActualDeviceEligibleForRewardUseCase(inviteUserId)) {
+                Log.d(TAG, "invoke: Eligible")
                 // Tokens for local user
-                tokenRepository.giveRefCodeReward()
+                tokenRepository.giveRefCodeReward() //TODO UNIT TEST
                 // Give user who invited Tokens
                 tokenRepository.giveInvitorReward(inviteUserId)
             }

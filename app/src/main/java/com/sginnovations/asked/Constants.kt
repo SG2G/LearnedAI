@@ -14,8 +14,6 @@ class Constants {
         // Chat Roles
         const val ROLE_USER = "user"
         const val ROLE_ASSISTANT = "assistant"
-        // Categories
-        const val CATEGORY_MATH = "math"
         // Chat
         const val AI_NAME = "Asked"
         // Tokens
@@ -35,6 +33,9 @@ class Constants {
 
         const val IS_PREMIUM = "isPremium"
 
+        // CHAT LIMIT - FEATURE
+        const val CHAT_LIMIT_DEFAULT = 500
+        const val CHAT_LIMIT_PREMIUM = 4000
 
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
 

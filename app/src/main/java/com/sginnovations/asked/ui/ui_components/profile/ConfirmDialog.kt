@@ -20,19 +20,34 @@ fun ConfirmActionDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = title, color = MaterialTheme.colorScheme.onBackground) },
+        title = {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
         text = { Text(text = text) },
         confirmButton = {
             Button(
                 onClick = onConfirm,
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error)
             ) {
-                Text(text = confirmText)
+                Text(
+                    text = confirmText,
+                    color = MaterialTheme.colorScheme.onError,
+                    style = MaterialTheme.typography.titleSmall
+                )
             }
         },
         dismissButton = {
-            Button(onClick = onDismiss) {
-                Text(text = dismissText)
+            Button(onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primaryContainer)) {
+                Text(
+                    text = dismissText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.titleSmall
+                )
             }
         }
     )
