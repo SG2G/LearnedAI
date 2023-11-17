@@ -34,8 +34,14 @@ class AdsViewModel @Inject constructor(
 
     fun loadInterstitialAd(context: Context) {
         viewModelScope.launch {
-            if (!checkIsPremium()) {
-                adManagerRepository.loadInterstitialAd(context)
+            try {
+                if (remoteConfigRepository.isAdsAllowed().toBoolean()) {
+                    if (!checkIsPremium()) {
+                        adManagerRepository.loadInterstitialAd(context)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

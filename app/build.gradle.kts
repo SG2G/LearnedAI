@@ -15,8 +15,8 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 23
         targetSdk = 33
-        versionCode = 9
-        versionName = "1.0.1"
+        versionCode = 10
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
         vectorDrawables {

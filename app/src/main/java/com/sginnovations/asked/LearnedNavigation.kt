@@ -207,9 +207,20 @@ fun LearnedNavigation(
                 CropStateFul(
                     vmCamera = vmCamera,
                     vmChat = vmChat,
+                    vmAds = vmAds,
                     vmToken = vmToken,
 
                     navController = navController,
+
+                    onNavigateChat= {
+                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
+                            // This ensures that the previous screen is removed from the backstack
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                        navController.navigate(Chat.route)
+                    }
                 )
             }
             /**

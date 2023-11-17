@@ -20,6 +20,6 @@ object CheckMinVersion {
         }
 
         Log.i(TAG, "ControllerVersionCheck: actual version: $versionCode, minVersion: $minVersion")
-        return versionCode.toString() < minVersion
+        return versionCode.toInt() < minVersion.toInt()
     }
 }

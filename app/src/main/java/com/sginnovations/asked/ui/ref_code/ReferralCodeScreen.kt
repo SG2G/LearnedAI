@@ -12,10 +12,14 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -34,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.AuthViewModel
 
 private const val TAG = "ReferralCodeStateFul"
@@ -73,11 +78,22 @@ fun ReferralCodeStateLess(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = stringResource(R.string.share_invite_friends),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleLarge
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TokenIcon()
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(R.string.share_invite_friends),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleLarge
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            TokenIcon()
+        }
+
         Text(
             text = stringResource(R.string.share_for_you_and_your_friend),
             color = MaterialTheme.colorScheme.onBackground,
@@ -126,6 +142,7 @@ fun ReferralCodeStateLess(
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium
             )
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(R.string.share_share_the_invitation_link_by_clicking_invite_when_your_friend_creates_an_account_both_of_you_will_receive_the_reward_as_simple_as_that),
                 color = MaterialTheme.colorScheme.onBackground,

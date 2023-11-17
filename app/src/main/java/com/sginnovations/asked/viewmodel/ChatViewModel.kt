@@ -35,6 +35,7 @@ class ChatViewModel @Inject constructor(
     private val tokensRepository: TokenRepository,
 
     private val remoteConfigRepository: RemoteConfigRepository,
+
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
@@ -127,13 +128,12 @@ class ChatViewModel @Inject constructor(
         //Get Key
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
 
-        prefixPrompt.value = when (category.value) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
-            Text.getName(context) -> "Resolve step by step "
-            Math.getName(context) -> "Resolve step by step "
-            else -> {
-                ""
+        prefixPrompt.value =
+            when (category.value) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
+                Text.getName(context) -> ""
+                Math.getName(context) -> "Resolve step by step"
+                else -> ""
             }
-        }
 
         val userMessage = Message(role = User.role, content = prompt)
 

@@ -42,7 +42,7 @@
     <string name="profile_email_us">Envianos un Email!</string>
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
     <string name="share_invite_friends">Invita Amigos!</string>
-    <string name="share_for_you_and_your_friend">Para tu amigo y para ti!</string>
+    <string name="share_for_you_and_your_friend">Tokens para tu amigo y para ti!</string>
     <string name="share_earn_10_tokens_immediately">Gana 10 Tokens en el momento!</string>
     <string name="share_are_you_going_to_run_out_of_your_tokens">¿Te vas a quedar sin tus tokens?</string>
     <string name="share_invite">Invitar</string>
@@ -84,9 +84,13 @@
     <string name="sign_in_title_sign_in">Inicia sesión en Asked</string>
     <string name="newchat_placeholder_enter_your_text">Introduce tu texto, pregunta a Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked puede cometer errores. Verifica información importante.</string>
-    <string name="camera_examples_example_of_text_based_problems">Ejemplos de problemas basados en Texto.</string>
-    <string name="camera_examples_example_of_math_problems">Ejemplos de problemas Matematicos.</string>
+    <string name="camera_examples_example_of_text_based_problems">Ejemplos de problemas de texto que podrían escanearse.</string>
+    <string name="camera_examples_example_of_math_problems">Ejemplos de problemas matemáticos que podrían escanearse</string>
     <string name="copy_copied">Copiado!</string>
     <string name="topbar_crop">Recortar</string>
     <string name="topbar_new_chat">Nuevo Chat</string>
+    <string name="camera_math_examples">Ejemplos de mate</string>
+    <string name="camera_tip_take_a_photo_of_a_text_based_problem">Fotos de problemas basados en texto</string>
+    <string name="camera_tip_take_a_photo_of_math_problems">Fotos de Problemas de Matemáticas</string>
+    <string name="crop_fast_crop">Insta-Recorte</string>
 </resources>

@@ -46,7 +46,7 @@
     <string name="profile_email_us">Email us</string>
     <string name="earn_token_earn_more_tokens">Earn more Tokens!</string>
     <string name="share_invite_friends">Invite Friends!</string>
-    <string name="share_for_you_and_your_friend">For you and your friend!</string>
+    <string name="share_for_you_and_your_friend">Tokens for you and your friend!</string>
     <string name="share_earn_10_tokens_immediately">Earn 10 Tokens immediately!</string>
     <string name="share_are_you_going_to_run_out_of_your_tokens">Are you going to run out of your tokens?</string>
     <string name="share_invite">Invite</string>
@@ -88,10 +88,14 @@
     <string name="sign_in_title_sign_in">Log in to Asked</string>
     <string name="newchat_placeholder_enter_your_text">Enter your text, ask Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked can make mistakes. Verify important information.</string>
-    <string name="camera_examples_example_of_text_based_problems">Example of Text Based problems.</string>
-    <string name="camera_examples_example_of_math_problems">Example of math problems.</string>
+    <string name="camera_examples_example_of_text_based_problems">Examples of text problems that could be scanned</string>
+    <string name="camera_examples_example_of_math_problems">Examples of math problems that could be scanned</string>
     <string name="copy_copied">Copied!</string>
     <string name="topbar_crop">Crop</string>
     <string name="topbar_new_chat">New Chat</string>
+    <string name="camera_math_examples">Math Examples</string>
+    <string name="camera_tip_take_a_photo_of_a_text_based_problem">Photos of Text Based problem</string>
+    <string name="camera_tip_take_a_photo_of_math_problems">Photos of Math problems</string>
+    <string name="crop_fast_crop">Fast-Crop</string>
 
 </resources>

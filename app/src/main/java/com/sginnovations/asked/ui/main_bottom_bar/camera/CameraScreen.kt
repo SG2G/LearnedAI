@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.PictureAsPdf
@@ -28,10 +30,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
@@ -146,8 +152,9 @@ fun CameraStateLess(
             Text(
                 text = when (cameraOCRCategory.value) {
                     Text.root -> "" // TODO TRANSLATE
-                    Math.root -> "Math Examples"
-                    else -> {""}
+                    Math.root -> stringResource(R.string.camera_math_examples)
+                    else -> ""
+
                 },
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
@@ -159,45 +166,72 @@ fun CameraStateLess(
             TokenDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .background(Color.Black.copy(alpha = 0.5f))
-                .padding(bottom = 0.dp, start = 16.dp, end = 16.dp, top = 8.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
         ) {
-            IconButton(onClick = { onGetPhotoGallery() }) {
-                Icon(
-                    imageVector = Icons.Outlined.PhotoLibrary,
-                    contentDescription = "PhotoLibrary",
-                    modifier = Modifier.size(38.dp)
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp)),
+                ) {
+                    Text(
+                        text =
+                        when (cameraOCRCategory.value) {
+                            Text.root -> stringResource(R.string.camera_tip_take_a_photo_of_a_text_based_problem)
+                            Math.root -> stringResource(R.string.camera_tip_take_a_photo_of_math_problems)
+                            else -> ""
+                        },
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            CameraCarousel(
+            Row(
                 modifier = Modifier
-                    .height(148.dp)
-                    .width(200.dp),
-                vmToken = vmToken,
-                controller = controller,
+                    .fillMaxWidth()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .padding(bottom = 0.dp, start = 16.dp, end = 16.dp, top = 8.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { onGetPhotoGallery() }) {
+                    Icon(
+                        imageVector = Icons.Outlined.PhotoLibrary,
+                        contentDescription = "PhotoLibrary",
+                        modifier = Modifier.size(38.dp)
+                    )
+                }
 
-                onChangeCategory = { onChangeCategory(it) }
-            ) { onPhotoTaken(it) }
+                Spacer(modifier = Modifier.width(16.dp))
 
-            Spacer(modifier = Modifier.width(16.dp))
+                CameraCarousel(
+                    modifier = Modifier
+                        .height(148.dp)
+                        .width(200.dp),
+                    vmToken = vmToken,
+                    controller = controller,
 
-            IconButton(onClick = { /*onLoadPDF()*/ }) { //TODO DELETED
-                Icon(
-                    imageVector = Icons.Outlined.PictureAsPdf,
-                    contentDescription = "PictureAsPdf",
-                    modifier = Modifier.size(38.dp),
-                    tint = Color.Transparent
-                )
+                    onChangeCategory = { onChangeCategory(it) }
+                ) { onPhotoTaken(it) }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                IconButton(onClick = { /*onLoadPDF()*/ }) { //TODO DELETED
+                    Icon(
+                        imageVector = Icons.Outlined.PictureAsPdf,
+                        contentDescription = "PictureAsPdf",
+                        modifier = Modifier.size(38.dp),
+                        tint = Color.Transparent
+                    )
+                }
             }
         }
+
     }
 }
