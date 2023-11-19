@@ -217,7 +217,7 @@ fun SubscriptionStateLess(
         modifier = Modifier
             .fillMaxSize()
             .scrollable(rememberScrollState(), Orientation.Vertical),
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Center
     ) {
         Box {
             Image(

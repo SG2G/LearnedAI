@@ -84,7 +84,7 @@
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">There are critical updates avaliable. Please update the app to apply these changes.</string>
     <string name="update_btn_update">Update</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Hmm, it seems like there\'s nothing here.</string>
-    <string name="chat_thinking">Thinking...</string>
+    <string name="chat_thinking">Thinking…</string>
     <string name="sign_in_title_sign_in">Log in to Asked</string>
     <string name="newchat_placeholder_enter_your_text">Enter your text, ask Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked can make mistakes. Verify important information.</string>
@@ -94,8 +94,8 @@
     <string name="topbar_crop">Crop</string>
     <string name="topbar_new_chat">New Chat</string>
     <string name="camera_math_examples">Math Examples</string>
-    <string name="camera_tip_take_a_photo_of_a_text_based_problem">Photos of Text Based problem</string>
-    <string name="camera_tip_take_a_photo_of_math_problems">Photos of Math problems</string>
+    <string name="camera_tip_take_a_photo_of_a_text_based_problem">Take photos of Text Based problems</string>
+    <string name="camera_tip_take_a_photo_of_math_problems">Take photos of Math problems</string>
     <string name="crop_fast_crop">Fast-Crop</string>
 
 </resources>

@@ -151,22 +151,10 @@ fun CropStateLess(
 
     navController: NavController,
 ) {
-    val aspectRatio = remember { mutableStateOf<AspectRatio?>(AspectRatio(16, 9)) }
-
-    val cropifyOptions = remember {
-        mutableStateOf(
-            CropifyOption(
-                //backgroundColor = MaterialTheme.colorScheme.background,
-                gridColor = Color.Transparent,
-                frameAspectRatio = aspectRatio.value
-            )
-        )
-    }
-
-    LaunchedEffect(Unit) { //TODO DO NOT WORK
-        delay(500)
-        aspectRatio.value = null
-    }
+    val cropifyOptions = CropifyOption(
+        backgroundColor = MaterialTheme.colorScheme.background,
+        gridColor = Color.Transparent,
+    )
 
     val cropifyState = rememberCropifyState()
     val scope = rememberCoroutineScope()
@@ -193,7 +181,7 @@ fun CropStateLess(
     Cropify(
         bitmap = photoImageBitmap.value,
         state = cropifyState,
-        option = cropifyOption.value,
+        option = cropifyOption,
         onImageCropped = {
             scope.launch {
                 cropImage(it)
@@ -241,23 +229,22 @@ fun CropStateLess(
                 style = MaterialTheme.typography.headlineMedium
             )
         }
-        Button(
-            onClick = {
-                instantCrop.value = true
-                cropifyState.crop()
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.crop_fast_crop), modifier = Modifier.padding(4.dp),
-                style = MaterialTheme.typography.headlineMedium
-            )
-        }
-
+//        Button(
+//            onClick = {
+//                instantCrop.value = true
+//                cropifyState.crop()
+//            },
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+//            ),
+//            shape = RoundedCornerShape(10.dp)
+//        ) {
+//            Text(
+//                text = stringResource(R.string.crop_fast_crop), modifier = Modifier.padding(4.dp),
+//                style = MaterialTheme.typography.headlineMedium
+//            )
+//        }
 
     }
 }

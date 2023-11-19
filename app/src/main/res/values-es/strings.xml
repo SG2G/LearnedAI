@@ -80,7 +80,7 @@
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">Hay actualizaciones críticas disponibles. Actualice la aplicación para aplicar estos cambios.</string>
     <string name="update_btn_update">Actualizar</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Mhmm, parece que no hay nada aquí.</string>
-    <string name="chat_thinking">Pensando...</string>
+    <string name="chat_thinking">Pensando…</string>
     <string name="sign_in_title_sign_in">Inicia sesión en Asked</string>
     <string name="newchat_placeholder_enter_your_text">Introduce tu texto, pregunta a Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked puede cometer errores. Verifica información importante.</string>
@@ -90,7 +90,7 @@
     <string name="topbar_crop">Recortar</string>
     <string name="topbar_new_chat">Nuevo Chat</string>
     <string name="camera_math_examples">Ejemplos de mate</string>
-    <string name="camera_tip_take_a_photo_of_a_text_based_problem">Fotos de problemas basados en texto</string>
-    <string name="camera_tip_take_a_photo_of_math_problems">Fotos de Problemas de Matemáticas</string>
+    <string name="camera_tip_take_a_photo_of_a_text_based_problem">Toma fotos de problemas basados en texto</string>
+    <string name="camera_tip_take_a_photo_of_math_problems">Toma fotos de Problemas de Matemáticas</string>
     <string name="crop_fast_crop">Insta-Recorte</string>
 </resources>

@@ -56,6 +56,8 @@ android {
 
 dependencies {
 
+    // EU THING //
+    implementation("com.google.android.ump:user-messaging-platform:2.1.0")
     // Payments //
     implementation("com.android.billingclient:billing-ktx:6.0.1")
     /// Firebase ///
