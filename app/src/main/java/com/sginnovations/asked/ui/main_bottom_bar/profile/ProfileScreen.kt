@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -146,6 +148,10 @@ fun StateLessProfile(
                     painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
                     onClick = { vmToken.switchPointsVisibility() }
                 )
+                Divider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = Color.DarkGray
+                )
                 ProfileButton(
                     text = stringResource(R.string.profile_invite_friends),
                     painterResource = painterResource(id = R.drawable.share_fill0_wght400_grad0_opsz48),
@@ -168,7 +174,10 @@ fun StateLessProfile(
                     imageVector = Icons.Filled.StarRate,
                     onClick = { onRateUs() }
                 )
-
+                Divider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = Color.DarkGray
+                )
                 ProfileButton(
                     text = stringResource(R.string.profile_email_us),
                     imageVector = Icons.Filled.Email,
@@ -187,7 +196,8 @@ fun StateLessProfile(
                 text = "uid: ${userAuth.value?.userId}",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.surfaceVariant
             )
         }
 

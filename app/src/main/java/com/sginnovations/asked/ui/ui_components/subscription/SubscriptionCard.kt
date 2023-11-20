@@ -52,15 +52,16 @@ fun SubscriptionCard(
 ) {
     val isSelected = userOption.name == subscriptionOption.name
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray, label = "",
+        targetValue = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray, label = "",
         animationSpec = tween(250)
     )
+    val circleColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray
 
     Box(modifier = Modifier.padding(8.dp)) {
         OutlinedCard(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxWidth()
+                .padding(8.dp, top = 16.dp, end = 14.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = {
@@ -131,7 +132,7 @@ fun SubscriptionCard(
                     modifier = Modifier
                         .size(20.dp)
                         .clip(CircleShape)
-                        .background(if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray),
+                        .background(circleColor),
                     contentAlignment = Alignment.Center
                 ) {
                     if (isSelected) {

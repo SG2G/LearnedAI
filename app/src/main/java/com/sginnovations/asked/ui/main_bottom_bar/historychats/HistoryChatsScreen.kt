@@ -49,6 +49,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
@@ -214,10 +215,7 @@ fun StateLessHistoryChats(
             itemContent = { index, conversation ->
                 AnimatedVisibility(
                     modifier = Modifier.animateItemPlacement(
-                        animationSpec = spring(
-                            dampingRatio = 0.8f,
-                            stiffness = 200f
-                        )
+                        animationSpec = tween()
                     ),
                     visible = conversation.visible,
                     exit = shrinkHorizontally(
@@ -272,7 +270,7 @@ fun StateLessHistoryChats(
                                         .weight(1f),
                                     text = conversation.name,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleSmall
                                 )
                                 Row(
                                     modifier = Modifier.width(64.dp)
@@ -288,11 +286,11 @@ fun StateLessHistoryChats(
                                         text = conversation.category,
                                         color =
                                         when (conversation.category) {
-                                            Text.root -> Color.Yellow
-                                            Math.root -> Color.Cyan
+                                            Text.root -> Color(0xFFd4c468)
+                                            Math.root -> Color(0xFF7694db)
                                             else -> MaterialTheme.colorScheme.onBackground
                                         },
-                                        style = MaterialTheme.typography.bodySmall,
+                                        style = MaterialTheme.typography.labelLarge,
                                         modifier = Modifier.padding(8.dp)
                                     )
                                 }

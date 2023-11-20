@@ -135,7 +135,7 @@ fun EarnPointsStateLess(
                 num = stringResource(R.string.infinite),
                 text = stringResource(R.string.earn_token_unlimited_points),
                 buttonText = stringResource(R.string.earn_token_see_more),
-                borderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                borderColor = MaterialTheme.colorScheme.primary,
                 buttonColor = MaterialTheme.colorScheme.background,
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onNavigateSubscriptions() }

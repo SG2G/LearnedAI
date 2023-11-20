@@ -111,7 +111,8 @@ fun GalleryStateFull(
             Text(
                 text = stringResource(R.string.gallery_select_the_ocr_you_want_to_use),
                 color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
             )
             /**
              * Process whit Text
@@ -127,6 +128,7 @@ fun GalleryStateFull(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(148.dp)
                         .padding(16.dp)
                         .weight(1f),
                     shape = RoundedCornerShape(10.dp),
@@ -139,13 +141,17 @@ fun GalleryStateFull(
                             text = stringResource(R.string.gallery_process_text_based_problem),
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleSmall,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f)
                         )
                         Image(
                             painter = painterResource(id = R.drawable.gallery_book),
                             contentDescription = null,
                             alignment = Alignment.Center,
-                            modifier = Modifier.fillMaxWidth().size(48.dp).padding(4.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(48.dp)
+                                .padding(4.dp)
                         )
                     }
 
@@ -160,6 +166,7 @@ fun GalleryStateFull(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(148.dp)
                         .padding(16.dp)
                         .weight(1f),
                     shape = RoundedCornerShape(10.dp),
@@ -172,14 +179,17 @@ fun GalleryStateFull(
                             text = stringResource(R.string.gallery_process_math_problem),
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleSmall,
-                            textAlign = TextAlign.Center
-
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f)
                         )
                         Image(
                             painter = painterResource(id = R.drawable.gallery_calculator),
                             contentDescription = null,
                             alignment = Alignment.Center,
-                            modifier = Modifier.fillMaxWidth().size(48.dp).padding(4.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(48.dp)
+                                .padding(4.dp)
                         )
                     }
                 }

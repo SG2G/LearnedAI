@@ -84,7 +84,7 @@ fun ProfileButton(
                 contentDescription = "ProfileButton",
                 modifier = Modifier
                     .padding(end = 8.dp)
-                    .size(32.dp)
+                    .size(28.dp)
             )
             Text(
                 text = text,

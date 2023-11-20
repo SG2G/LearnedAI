@@ -15,14 +15,14 @@
     <string name="earn_token_see_more">See more</string>
     <string name="profile_get_more_tokens">Get more Tokens</string>
     <string name="profile_invite_friends">Invite Friends</string>
-    <string name="subscription_lifetime">/ Lifetime</string>
+    <string name="subscription_lifetime"> / Lifetime</string>
     <string name="infinite" translatable="false">∞</string>
     <string name="asked_email" translatable="false">askedaihelp@gmail.com</string>
     <string name="subscription_unlimited">Unlimited</string>
     <string name="subscription_exclusive_functions">Exclusive Functions</string>
     <string name="subscription_higher_word_limit">Higher Word Limit</string>
     <string name="subscription_no_ads">No ads</string>
-    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-day FREE TRIAL, Cancel anytime,\nAuto renewable</string>
+    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-day FREE TRIAL, cancel anytime, auto renewable</string>
     <string name="subscription_billed_once">Billed once</string>
     <string name="subscription_start_free_trial_plan"><![CDATA[Start Free Trial & Plan]]></string>
     <string name="subscription_unlock_asked_ai_pro">Unlock Asked AI Pro</string>
@@ -37,7 +37,7 @@
     <string name="category_text">Text</string>
     <string name="category_all">All</string>
     <string name="perms_name_gallery">Gallery</string>
-    <string name="pdf_title_work_in_progress">Work in Progress...</string>
+    <string name="pdf_title_work_in_progress">Work in Progress…</string>
     <string name="pdf_subtitle_pdf_reader_feature_for_premium_users">PDF reader feature for premium users.</string>
     <string name="pdf_button_cool">Cool!</string>
     <string name="historychats_new_chat">New Chat</string>
@@ -58,12 +58,12 @@
     <string name="log_out_button_log_out">Log out</string>
     <string name="log_out_button_cancel">Cancel</string>
     <string name="bottom_bar_label_camera">Camera</string>
-    <string name="profile_base_plan">" - Base Plan"</string>
-    <string name="profile_2_plan">" Plan"</string>
-    <string name="profile_1_premium">" - Premium"</string>
+    <string name="profile_base_plan">Base Plan</string>
+    <string name="profile_2_plan">Plan</string>
+    <string name="profile_1_premium">Premium</string>
     <string name="topbar_subscription">Subscriptions</string>
     <string name="topbar_share">Share</string>
-    <string name="topbar_chats_history">Chats History</string>
+    <string name="topbar_chats_history">Chats</string>
     <string name="topbar_profile">Profile</string>
     <string name="new_conversation_resolve">Resolve</string>
     <string name="new_conversation_take_photos_of_your_text_or_mathematical_problems_and_learn_by_talking_to_the_chat">Take photos of your text or mathematical problems and learn by talking to the chat.</string>
@@ -97,5 +97,6 @@
     <string name="camera_tip_take_a_photo_of_a_text_based_problem">Take photos of Text Based problems</string>
     <string name="camera_tip_take_a_photo_of_math_problems">Take photos of Math problems</string>
     <string name="crop_fast_crop">Fast-Crop</string>
+    <string name="topbar_gallery">Gallery</string>
 
 </resources>

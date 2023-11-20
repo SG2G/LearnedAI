@@ -171,12 +171,15 @@ fun CameraStateLess(
             verticalArrangement = Arrangement.Bottom
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 Box(
                     modifier = Modifier
-                        .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp)),
+                        .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
+                        .padding(horizontal = 4.dp),
                 ) {
                     Text(
                         text =
@@ -186,8 +189,9 @@ fun CameraStateLess(
                             else -> ""
                         },
                         color = MaterialTheme.colorScheme.surfaceVariant,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(4.dp)
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier
+                            .padding(4.dp)
                     )
                 }
             }

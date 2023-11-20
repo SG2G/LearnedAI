@@ -130,6 +130,7 @@ fun CameraCarousel(
                     Text(
                         text = tokenCost,
                         style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     TokenIcon()

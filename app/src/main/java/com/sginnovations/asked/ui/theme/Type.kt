@@ -79,6 +79,7 @@ val Typography = Typography(
     ),
     labelLarge = TextStyle(
         fontFamily = monaSansFontFamily,
+        fontWeight = FontWeight.Bold
     ),
     labelMedium = TextStyle(
         fontFamily = monaSansFontFamily,

@@ -31,6 +31,8 @@ import androidx.compose.material.icons.outlined.Token
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -82,7 +84,10 @@ fun SubscriptionStateFull(
     val priceInApp = remember { mutableStateOf<String?>(null) }
     val priceSub = remember { mutableStateOf<String?>(null) }
 
-    Log.d(TAG, "productLifetime-> ${productLifetime.value.toString()} productWeekly-> ${productWeekly.value.toString()} ")
+    Log.d(
+        TAG,
+        "productLifetime-> ${productLifetime.value.toString()} productWeekly-> ${productWeekly.value.toString()} "
+    )
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -94,12 +99,13 @@ fun SubscriptionStateFull(
             else -> null
         }
     }
+
     val activity = context.getActivity()
 
     LaunchedEffect(Unit) {
         var attempts = 0
-        while (priceInApp.value == null && priceSub.value == null && attempts < 20) { // try up to 5 times
-            delay(250)
+        while (priceInApp.value == null && priceSub.value == null && attempts < 20) { // try up to 20 times
+            delay(200)
             priceInApp.value = productLifetime.value?.oneTimePurchaseOfferDetails?.formattedPrice
 
             priceSub.value =
@@ -205,6 +211,7 @@ fun SubscriptionStateLess(
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
     val selectedPlan = remember { mutableStateOf(productWeekly) }
+    val cardAlpha = 0.8f
 
     when (userOption.value) {
         Option.OptionWeekly -> selectedPlan.value = productWeekly
@@ -219,7 +226,9 @@ fun SubscriptionStateLess(
             .scrollable(rememberScrollState(), Orientation.Vertical),
         verticalArrangement = Arrangement.Center
     ) {
-        Box {
+        Box(
+            contentAlignment = Alignment.TopCenter
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.subscription_background_school),
                 contentDescription = "subscription_background_school",
@@ -227,7 +236,10 @@ fun SubscriptionStateLess(
                     .fillMaxWidth()
                     .alpha(0.1f)
             )
-            Column {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -247,9 +259,12 @@ fun SubscriptionStateLess(
                     IconButton(onClick = { }) {}
                 }
                 Column(
-                    modifier = Modifier.padding(horizontal = 64.dp, vertical = 16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     Row(
+                        modifier = Modifier.padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
@@ -260,22 +275,46 @@ fun SubscriptionStateLess(
                         TokenIcon()
                     }
 
-                    TitleBenefit(
-                        painterResource = painterResource(id = R.drawable.subscription_star),
-                        text = stringResource(R.string.subscription_exclusive_functions)
-                    )
-                    SubTitleBenefit(text = stringResource(R.string.subscription_subtitle_load_pdf_gpt_4_turbo))
-                    TitleBenefit(
-                        painterResource = painterResource(id = R.drawable.subscription_morechat),
-                        text = stringResource(R.string.subscription_higher_word_limit)
-                    )
-                    TitleBenefit(
-                        painterResource = painterResource(id = R.drawable.subscription_noad),
-                        text = stringResource(R.string.subscription_no_ads)
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.subscription_morechat),
+                            text = stringResource(R.string.subscription_higher_word_limit)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.subscription_noad),
+                            text = stringResource(R.string.subscription_no_ads)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            TitleBenefit(
+                                painterResource = painterResource(id = R.drawable.subscription_star),
+                                text = stringResource(R.string.subscription_exclusive_functions)
+                            )
+                            SubTitleBenefit(text = stringResource(R.string.subscription_subtitle_load_pdf_gpt_4_turbo))
+                        }
+                    }
                 }
             }
         }
+
 
         /**
          * Products
@@ -310,7 +349,7 @@ fun SubscriptionStateLess(
             Button(
                 onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } }, //TODO AD
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -321,7 +360,7 @@ fun SubscriptionStateLess(
                 if (userOption.value == Option.OptionWeekly) {
                     Text(
                         text = stringResource(R.string.subscription_start_free_trial_plan),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
@@ -330,7 +369,7 @@ fun SubscriptionStateLess(
                 } else {
                     Text(
                         text = stringResource(R.string.subscription_unlock_asked_ai_pro),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
@@ -364,7 +403,7 @@ fun SubscriptionStateLess(
                     Icon(
                         imageVector = Icons.Filled.Shield,
                         contentDescription = "Shield",
-                        tint = Color.Green
+                        tint = Color(0xFF8dad63)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -390,9 +429,9 @@ fun SubscriptionStateLess(
  *
  */
 @Composable
-fun TitleBenefit(painterResource: Painter, text: String) {
+fun TitleBenefit(modifier: Modifier = Modifier, painterResource: Painter, text: String) {
     Row(
-        modifier = Modifier.padding(vertical = 8.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -412,7 +451,7 @@ fun TitleBenefit(painterResource: Painter, text: String) {
 @Composable
 fun SubTitleBenefit(text: String) {
     Text(
-        modifier = Modifier.padding(vertical = 8.dp, horizontal = 44.dp),
+        modifier = Modifier.padding(),
         text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.titleSmall
     )

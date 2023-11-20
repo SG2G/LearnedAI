@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -44,7 +45,7 @@ fun TokensCard(
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .border(1.dp, borderColor, RoundedCornerShape(10.dp)),
+            .border(2.dp, borderColor, RoundedCornerShape(10.dp)),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = cardContainerColor
@@ -60,14 +61,12 @@ fun TokensCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = num, modifier = Modifier.width(36.dp),
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     text = text, modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Justify
                 )
                 Button(
                     onClick = { onClick() },

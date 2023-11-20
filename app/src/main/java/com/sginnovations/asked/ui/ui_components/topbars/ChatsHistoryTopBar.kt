@@ -46,7 +46,7 @@ fun ChatsHistoryTopBar(
                 modifier = Modifier
                     .padding(end = 16.dp)
                     .background(
-                        MaterialTheme.colorScheme.primaryContainer,
+                        MaterialTheme.colorScheme.primary,
                         RoundedCornerShape(5.dp)
                     )
                     .pointerInput(Unit) {
@@ -56,9 +56,9 @@ fun ChatsHistoryTopBar(
                     }
             ) {
                 Text(
-                    text = "PRO", color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    text = "PRO", color = MaterialTheme.colorScheme.primaryContainer,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)
                 )
             }
         },

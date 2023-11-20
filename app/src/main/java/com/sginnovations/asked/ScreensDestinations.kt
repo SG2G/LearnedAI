@@ -84,7 +84,7 @@ object Subscription : ScreensDestinations {
 }
 object Gallery : ScreensDestinations {
     override val route = "Gallery"
-    override fun getName(context: Context) = "Gallery"
+    override fun getName(context: Context) = context.getString(R.string.topbar_gallery)
     override val icon: ImageVector? = null
     override val selectedIcon: ImageVector? = null
 }

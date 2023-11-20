@@ -83,6 +83,7 @@ fun LearnedNavigation(
             NewConversation.route -> NewConversation
             Chat.route -> Chat
 
+            Gallery.route -> Gallery
             Subscription.route -> Subscription
             RefCode.route -> RefCode
             else -> null

@@ -18,7 +18,7 @@
     <string name="subscription_exclusive_functions">Funciones Exclusivas</string>
     <string name="subscription_higher_word_limit">Limite de palabras mas alto</string>
     <string name="subscription_no_ads">Sin anuncios</string>
-    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-dias DE PRUEBA GRATIS, Cancela cuando quieras, Auto renovable</string>
+    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-días DE PRUEBA GRATIS, cancela cuando quieras, auto renovable</string>
     <string name="subscription_billed_once">Paga una vez</string>
     <string name="subscription_start_free_trial_plan"><![CDATA[Empezar Prueba y Plan]]></string>
     <string name="subscription_unlock_asked_ai_pro">Desbloquea Asked AI Pro</string>
@@ -33,7 +33,7 @@
     <string name="category_text">Texto</string>
     <string name="category_all">Todo</string>
     <string name="perms_name_gallery">Galeria</string>
-    <string name="pdf_title_work_in_progress">En proceso...</string>
+    <string name="pdf_title_work_in_progress">En proceso…</string>
     <string name="pdf_subtitle_pdf_reader_feature_for_premium_users">Función de lectura de PDF para usuarios premium.</string>
     <string name="pdf_button_cool">Perfecto!</string>
     <string name="historychats_new_chat">"Nuevo Chat "</string>
@@ -53,10 +53,10 @@
     <string name="log_out_button_are_you_sure_you_want_to_log_out">¿Estás seguro de que quieres cerrar sesión?</string>
     <string name="log_out_button_log_out">Cerrar sesión</string>
     <string name="log_out_button_cancel">Cancelar</string>
-    <string name="bottom_bar_label_camera">Camara</string>
-    <string name="profile_base_plan">- Plan Base</string>
+    <string name="bottom_bar_label_camera">Cámara</string>
+    <string name="profile_base_plan">Plan Base</string>
     <string name="profile_2_plan">Premium</string>
-    <string name="profile_1_premium">- Plan</string>
+    <string name="profile_1_premium">Plan</string>
     <string name="topbar_subscription">Subscripciones</string>
     <string name="topbar_share">Compartir</string>
     <string name="topbar_chats_history">Chats</string>
@@ -93,4 +93,5 @@
     <string name="camera_tip_take_a_photo_of_a_text_based_problem">Toma fotos de problemas basados en texto</string>
     <string name="camera_tip_take_a_photo_of_math_problems">Toma fotos de Problemas de Matemáticas</string>
     <string name="crop_fast_crop">Insta-Recorte</string>
+    <string name="topbar_gallery">Galeria</string>
 </resources>
