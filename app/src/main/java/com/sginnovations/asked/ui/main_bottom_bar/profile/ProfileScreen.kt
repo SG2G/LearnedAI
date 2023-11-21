@@ -3,13 +3,17 @@ package com.sginnovations.asked.ui.main_bottom_bar.profile
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.StarRate
@@ -75,6 +79,7 @@ fun StateFulProfile(
                 onNavigateUserNotLogged()
             }
         },
+
         onSendEmail = { sendEmail(context, userAuth) },
         onRateUs = { rateUs(context) },
 
@@ -98,7 +103,14 @@ fun StateLessProfile(
 ) {
     val tokens = vmToken.tokens.collectAsStateWithLifecycle()
 
-    Column {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -126,7 +138,8 @@ fun StateLessProfile(
                     )
                 ) {
                     Text(
-                        text = stringResource(R.string.profile_upgrade), color = MaterialTheme.colorScheme.onPrimary,
+                        text = stringResource(R.string.profile_upgrade),
+                        color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
@@ -187,7 +200,9 @@ fun StateLessProfile(
             }
         }
         LogOutButton(onClick = { onSignOut() })
-
+        /**
+         * Static
+         */
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter

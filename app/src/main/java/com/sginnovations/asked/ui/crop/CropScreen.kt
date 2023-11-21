@@ -209,8 +209,10 @@ fun CropStateLess(
             shape = RoundedCornerShape(10.dp),
         ) {
             Text(
-                text = stringResource(R.string.crop_retake), modifier = Modifier.padding(4.dp),
-                style = MaterialTheme.typography.headlineMedium
+                text = stringResource(R.string.crop_retake),
+                modifier = Modifier.padding(4.dp),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
         Button(
@@ -225,8 +227,10 @@ fun CropStateLess(
             shape = RoundedCornerShape(10.dp)
         ) {
             Text(
-                text = stringResource(R.string.crop_crop), modifier = Modifier.padding(4.dp),
-                style = MaterialTheme.typography.headlineMedium
+                text = stringResource(R.string.crop_crop),
+                modifier = Modifier.padding(4.dp),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 //        Button(

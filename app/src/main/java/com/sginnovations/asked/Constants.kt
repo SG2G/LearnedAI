@@ -8,6 +8,8 @@ import javax.inject.Inject
 class Constants {
 
     companion object {
+        // Learned Navigation
+        val START_DESTINATION = Auth.route
         // Room names
         const val MESSAGE_TABLE_NAME = "message_table"
         const val CONVERSATION_TABLE_NAME = "conversation_table"

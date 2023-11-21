@@ -195,7 +195,7 @@ fun StateLessHistoryChats(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.thinking),
+                        painter = painterResource(id = R.drawable.thinking2),
                         contentDescription = "thinking",
                         modifier = Modifier.fillMaxWidth(0.6f)
                     )

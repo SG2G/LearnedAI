@@ -138,11 +138,11 @@ fun GalleryStateFull(
                 ) {
                     Column {
                         Text(
+                            modifier = Modifier.fillMaxWidth().weight(1f),
                             text = stringResource(R.string.gallery_process_text_based_problem),
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleSmall,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.weight(1f)
                         )
                         Image(
                             painter = painterResource(id = R.drawable.gallery_book),
@@ -176,11 +176,11 @@ fun GalleryStateFull(
                 ) {
                     Column {
                         Text(
+                            modifier = Modifier.fillMaxWidth().weight(1f),
                             text = stringResource(R.string.gallery_process_math_problem),
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleSmall,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.weight(1f)
+                            textAlign = TextAlign.Center
                         )
                         Image(
                             painter = painterResource(id = R.drawable.gallery_calculator),

@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Components
- *
  */
 @Composable
 fun TitleBenefit(painterResource: Painter, text: String) {

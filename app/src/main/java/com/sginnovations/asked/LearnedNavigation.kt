@@ -27,6 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.sginnovations.asked.Constants.Companion.START_DESTINATION
 import com.sginnovations.asked.ui.chat.ChatStateFul
 import com.sginnovations.asked.ui.crop.CropStateFul
 import com.sginnovations.asked.ui.earn_points.EarnPoints
@@ -116,7 +117,7 @@ fun LearnedNavigation(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Auth.route,
+            startDestination = START_DESTINATION,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = Auth.route) {

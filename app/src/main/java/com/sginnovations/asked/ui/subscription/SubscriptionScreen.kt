@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,6 +59,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
+import com.sginnovations.asked.ui.subscription.components.TitleBenefit
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.BillingViewModel
@@ -258,6 +261,9 @@ fun SubscriptionStateLess(
                     )
                     IconButton(onClick = { }) {}
                 }
+                /**
+                 * Benfits
+                 */
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
@@ -268,7 +274,7 @@ fun SubscriptionStateLess(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_infinity),
+                            painterResource = painterResource(id = R.drawable.subscription_infinite2),
                             text = stringResource(R.string.subscription_unlimited)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -282,7 +288,7 @@ fun SubscriptionStateLess(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_morechat),
+                            painterResource = painterResource(id = R.drawable.subscription_chat2),
                             text = stringResource(R.string.subscription_higher_word_limit)
                         )
                     }
@@ -293,7 +299,7 @@ fun SubscriptionStateLess(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_noad),
+                            painterResource = painterResource(id = R.drawable.subscription_ad2),
                             text = stringResource(R.string.subscription_no_ads)
                         )
                     }
@@ -305,7 +311,7 @@ fun SubscriptionStateLess(
                     ) {
                         Column {
                             TitleBenefit(
-                                painterResource = painterResource(id = R.drawable.subscription_star),
+                                painterResource = painterResource(id = R.drawable.subscription_star2),
                                 text = stringResource(R.string.subscription_exclusive_functions)
                             )
                             SubTitleBenefit(text = stringResource(R.string.subscription_subtitle_load_pdf_gpt_4_turbo))
@@ -383,12 +389,16 @@ fun SubscriptionStateLess(
                 }
             }
         }
+        /**
+         * Small Letter
+         */
+        val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
         if (userOption.value == Option.OptionWeekly) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(28.dp)
-                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp),
+                    .padding(smallLetterPadding),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box {
@@ -418,42 +428,25 @@ fun SubscriptionStateLess(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(28.dp)
-                    .padding(bottom = 8.dp, end = 16.dp),
-            ) {}
+                    .padding(smallLetterPadding),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box {
+                    Text(
+                        text = stringResource(R.string.subscription_cancel_anytime),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Row {
+                    Text(
+                        text = "",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
         }
     }
 }
-
-/**
- * Components
- *
- */
-@Composable
-fun TitleBenefit(modifier: Modifier = Modifier, painterResource: Painter, text: String) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource,
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier.size(38.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = text, color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium
-        )
-    }
-}
-
-@Composable
-fun SubTitleBenefit(text: String) {
-    Text(
-        modifier = Modifier.padding(),
-        text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
-        style = MaterialTheme.typography.titleSmall
-    )
-}
-
