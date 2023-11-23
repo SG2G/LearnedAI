@@ -98,5 +98,10 @@
     <string name="camera_tip_take_a_photo_of_math_problems">Take photos of Math problems</string>
     <string name="crop_fast_crop">Fast-Crop</string>
     <string name="topbar_gallery">Gallery</string>
+    <string name="loading_phrase_1">Hang tight, we\'re crunching the numbers!</string>
+    <string name="loading_phrase_2">Hold on, our math gnomes are hard at work!</string>
+    <string name="loading_phrase_3">Just a moment, we\'re bending the laws of physics for you!</string>
+    <string name="loading_phrase_4">Wait a sec, we\'re teaching the robots to do your math!</string>
+    <string name="loading_phrase_5">Sit tight, we\'re turning coffee into solutions!</string>
 
 </resources>

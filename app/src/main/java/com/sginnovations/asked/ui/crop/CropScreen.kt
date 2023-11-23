@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +42,7 @@ import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.NewConversation
+import com.sginnovations.asked.ui.crop.components.RotatingText
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
@@ -99,7 +101,15 @@ fun CropStateFul(
                 .zIndex(10f),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            Column(
+                modifier = Modifier.padding(64.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+                RotatingText()
+            }
+
         }
     }
 
@@ -184,9 +194,8 @@ fun CropStateLess(
         croppedImage = imageCropped
 
         Log.d(TAG, "cropImage, starting loop until not null")
-        while (croppedImage == null) {
-            delay(250)
-        }
+        while (croppedImage == null) { delay(250) }
+
         Log.d(TAG, "cropImage ->> $croppedImage")
 
         try {

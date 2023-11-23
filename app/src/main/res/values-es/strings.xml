@@ -94,4 +94,9 @@
     <string name="camera_tip_take_a_photo_of_math_problems">Toma fotos de Problemas de Matemáticas</string>
     <string name="crop_fast_crop">Insta-Recorte</string>
     <string name="topbar_gallery">Galeria</string>
+    <string name="loading_phrase_1">¡Espera un momento, estamos haciendo los cálculos!</string>
+    <string name="loading_phrase_2">¡Espera, nuestros gnomos matemáticos están trabajando duro!</string>
+    <string name="loading_phrase_3">Solo un momento, ¡estamos doblando las leyes de la física para ti!</string>
+    <string name="loading_phrase_4">Espera un segundo, ¡estamos enseñándole a los robots a hacer tus matemáticas!</string>
+    <string name="loading_phrase_5">Mantente tranquilo, ¡estamos convirtiendo el café en soluciones!</string>
 </resources>
