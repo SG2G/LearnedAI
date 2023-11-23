@@ -9,12 +9,17 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
-    fun provideOkHttpClient(): OkHttpClient { return OkHttpClient.Builder().build() }
+    fun provideOkHttpClient(): OkHttpClient { return OkHttpClient.Builder()
+        .connectTimeout(40, TimeUnit.SECONDS)  // Increase the connection timeout
+        .readTimeout(40, TimeUnit.SECONDS)     // Increase the read timeout
+        .writeTimeout(40, TimeUnit.SECONDS)    // Increase the write timeout
+        .build() }
     /**
      * Open AI API
      */

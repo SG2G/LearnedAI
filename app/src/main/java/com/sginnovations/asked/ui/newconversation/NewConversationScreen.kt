@@ -78,7 +78,6 @@ fun NewConversationStateFul(
     text.value = vmCamera.imageToText.value
 
     val idConversation = vmChat.idConversation.intValue
-    val prefixPrompt = vmChat.prefixPrompt.value
     val isLoading = vmCamera.isLoading
 
     val newConversationCostToken = vmChat.newConversationCostTokens()
@@ -120,7 +119,6 @@ fun NewConversationStateFul(
                 context,
                 activity,
                 processText,
-                prefixPrompt,
                 idConversation,
                 vmCamera,
                 vmAds,
@@ -286,12 +284,11 @@ fun NewConversationStateLess(
     }
 }
 
-fun sendNewMessage(
+fun sendNewMessage( //TODO REPEAT CROP
     scope: CoroutineScope,
     context: Context,
     activity: Activity?,
     text: String,
-    prefixPrompt: String,
     idConversation: Int,
     vmCamera: CameraViewModel,
     vmAds: AdsViewModel,
@@ -308,10 +305,8 @@ fun sendNewMessage(
                 vmAds.showInterstitialAd(activity)
             }
 
-            Log.d(TAG, "invoke: text-> $text prefixPrompt-> $prefixPrompt")
             // GPT call
-            val deferred =
-                async { vmChat.sendMessageToOpenaiApi("$prefixPrompt $text") }
+            val deferred = async { vmChat.sendMessageToOpenaiApi(text)}
             deferred.await()
 
             Log.i(TAG, "Continuing the code, Sending $idConversation")

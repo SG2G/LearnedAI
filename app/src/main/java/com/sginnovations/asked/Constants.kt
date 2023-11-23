@@ -10,6 +10,9 @@ class Constants {
     companion object {
         // Learned Navigation
         val START_DESTINATION = Auth.route
+        // Billing ViewModel
+        const val MAX_RECONNECTION_ATTEMPTS = 25 // Maximum number of reconnection attempts
+        const val RECONNECTION_DELAY_MILLIS = 250L // Delay between reconnection attempts in milliseconds
         // Room names
         const val MESSAGE_TABLE_NAME = "message_table"
         const val CONVERSATION_TABLE_NAME = "conversation_table"
@@ -17,7 +20,8 @@ class Constants {
         const val ROLE_USER = "user"
         const val ROLE_ASSISTANT = "assistant"
         // Chat
-        const val AI_NAME = "Asked"
+        const val MATH_PREFIX_PROMPT = "Resolve step by step, print Math expressions in Markdown syntax."
+        const val TEXT_PREFIX_PROMPT = ""
         // Tokens
         const val TOKENS_NAME = "tokens"
         const val USERS_NAME = "users"

@@ -30,7 +30,6 @@ class CameraViewModel @Inject constructor(
     val imageToText = mutableStateOf("")
 
     val isLoading = mutableStateOf(false)
-    val instantCrop = mutableStateOf(false)
 
     val cameraOCRCategory = mutableStateOf(Text.root)
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))

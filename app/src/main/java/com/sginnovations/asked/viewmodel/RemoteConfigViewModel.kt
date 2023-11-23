@@ -2,6 +2,7 @@ package com.sginnovations.asked.viewmodel
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,9 +35,15 @@ class RemoteConfigViewModel @Inject constructor(
 
     private fun setUp() {
         viewModelScope.launch {
-            remoteConfigRepository.remoteConfigFetchAndActivate().await()
-            val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
-            needToUpdate.value = checkMinVersion(context, minVersion)
+            try {
+                remoteConfigRepository.remoteConfigFetchAndActivate().await()
+                val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
+                needToUpdate.value = checkMinVersion(context, minVersion)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Handle the exception here, e.g., log it or take appropriate action
+                // This catch block will catch any exception that occurs during remoteConfigFetchAndActivate
+            }
         }
 
         remoteConfigRepository.addUpdateListener(object : ConfigUpdateListener {
@@ -74,15 +81,3 @@ class RemoteConfigViewModel @Inject constructor(
         return remoteConfigRepository.getInviteRewardTokens()
     }
 }
-//viewModelScope.launch {
-//    val updated = remoteConfigRepository.remoteConfigFetchAndActivate().await()
-//    if (updated) {
-//        Log.d(TAG, "setUp: updated")
-//        val minVersion = remoteConfigRepository.getValue(RC_MIN_VERSION)
-//        val defaultTokens = remoteConfigRepository.getValue(RC_DEFAULT_TOKENS)
-//
-//        needToUpdate.value = checkMinVersion(context, minVersion)
-//
-//        Log.d(TAG, "setUp: minVersion $minVersion, defaultTokens $defaultTokens")
-//    }
-//}

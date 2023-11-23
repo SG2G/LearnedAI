@@ -197,7 +197,7 @@ fun ChatStateLess(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 104.dp)
+            .padding(bottom = 116.dp)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -241,18 +241,26 @@ fun ChatStateLess(
                                     }
                                 } else {
                                     // Message static last AI msg
-                                    Text(
-                                        modifier = Modifier
-                                            .padding(CHAT_MSG_PADDING)
-                                            .clickable {
-                                                clipboardManager.setText(AnnotatedString(message.content))
-                                                Toast
-                                                    .makeText(context, copyMsg, Toast.LENGTH_SHORT)
-                                                    .show()
-                                            },
-                                        text = message.content,
-                                        style = MaterialTheme.typography.bodyMedium
+                                    ChatAiMessage(
+                                        message.content,
+                                        haveIcon = false,
+
+                                        onSetClip = { text ->
+                                            clipboardManager.setText(AnnotatedString(text))
+                                        }
                                     )
+//                                    Text(
+//                                        modifier = Modifier
+//                                            .padding(CHAT_MSG_PADDING)
+//                                            .clickable {
+//                                                clipboardManager.setText(AnnotatedString(message.content))
+//                                                Toast
+//                                                    .makeText(context, copyMsg, Toast.LENGTH_SHORT)
+//                                                    .show()
+//                                            },
+//                                        text = message.content,
+//                                        style = MaterialTheme.typography.bodyMedium
+//                                    )
                                 }
                             }
                         }

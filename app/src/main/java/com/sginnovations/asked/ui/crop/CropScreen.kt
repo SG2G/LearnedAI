@@ -68,18 +68,16 @@ fun CropStateFul(
 
     onNavigateChat: () -> Unit,
 ) {
-    val photoImageBitmap = vmCamera.photoImageBitmap
-    val cameraOption = vmCamera.cameraOCRCategory
-
-    // too much
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val text = remember { mutableStateOf("") }
-    text.value = vmCamera.imageToText.value
+    val photoImageBitmap = vmCamera.photoImageBitmap
+    val cameraCategory = vmCamera.cameraOCRCategory
+    val isLoading = vmCamera.isLoading
 
     val prefixPrompt = vmChat.prefixPrompt.value
-    val isLoading = vmCamera.isLoading
+    val text = remember { mutableStateOf("") }
+    text.value = vmCamera.imageToText.value
 
     val instantCrop = remember { mutableStateOf(false) }
 
@@ -105,27 +103,53 @@ fun CropStateFul(
         }
     }
 
+    LaunchedEffect(cameraCategory.value) {
+        when (cameraCategory.value) {
+            Text.root -> instantCrop.value = false
+            Math.root -> instantCrop.value = true
+
+            else -> instantCrop.value = false
+        }
+    }
+
+    /**
+     *
+     */
     CropStateLess(
+        photoImageBitmap = photoImageBitmap,
+        navController = navController,
+
         onImageCropped = { croppedImage ->
+            // Delete the text
+            vmCamera.imageToText.value = ""
+            text.value = ""
+
+            Log.d(TAG, "CropStateFul start: ${text.value}")
+
             getTextFromCroppedImage(
                 vmCamera,
                 vmChat,
                 vmToken,
                 croppedImage,
-                instantCrop.value,
-                navController,
-                cameraOption
+                cameraCategory,
+
+                onNavigateConversation = {
+                    if (!instantCrop.value) {
+                        navigateNewConversation(navController)
+                    }
+                }
             )
 
             if (instantCrop.value) {
                 scope.launch {
-                    while (text.value == "") delay(250)
+                    Log.d(TAG, "CropStateFul 1: ${text.value}")
+                    while (text.value == "") delay (200)
+                    Log.d(TAG, "CropStateFul 2: ${text.value}")
                     sendNewMessage(
                         scope,
                         context,
                         activity,
                         text.value,
-                        prefixPrompt,
                         vmCamera,
                         vmAds,
                         vmChat
@@ -135,21 +159,15 @@ fun CropStateFul(
                 }
             }
         },
-        instantCrop = instantCrop,
-        photoImageBitmap = photoImageBitmap,
-
-        navController = navController,
     )
 }
 
 @Composable
 fun CropStateLess(
-    onImageCropped: (ImageBitmap) -> Unit,
-
-    instantCrop: MutableState<Boolean>,
     photoImageBitmap: MutableState<ImageBitmap>,
-
     navController: NavController,
+
+    onImageCropped: (ImageBitmap) -> Unit,
 ) {
     val cropifyOptions = CropifyOption(
         backgroundColor = MaterialTheme.colorScheme.background,
@@ -216,10 +234,7 @@ fun CropStateLess(
             )
         }
         Button(
-            onClick = {
-                instantCrop.value = false
-                cropifyState.crop()
-            },
+            onClick = { cropifyState.crop() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -233,35 +248,17 @@ fun CropStateLess(
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
-//        Button(
-//            onClick = {
-//                instantCrop.value = true
-//                cropifyState.crop()
-//            },
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-//            ),
-//            shape = RoundedCornerShape(10.dp)
-//        ) {
-//            Text(
-//                text = stringResource(R.string.crop_fast_crop), modifier = Modifier.padding(4.dp),
-//                style = MaterialTheme.typography.headlineMedium
-//            )
-//        }
-
     }
 }
 
 /**
  * CAFDWBAHIUF
  */
-fun sendNewMessage(
+fun sendNewMessage( //TODO REPEAT NEWCONVER
     scope: CoroutineScope,
     context: Context,
     activity: Activity?,
     text: String,
-    prefixPrompt: String,
     vmCamera: CameraViewModel,
     vmAds: AdsViewModel,
     vmChat: ChatViewModel,
@@ -277,10 +274,8 @@ fun sendNewMessage(
                 vmAds.showInterstitialAd(activity)
             }
 
-            Log.d(TAG, "invoke: text-> $text prefixPrompt-> $prefixPrompt")
             // GPT call
-            val deferred =
-                async { vmChat.sendMessageToOpenaiApi("$prefixPrompt $text") }
+            val deferred = async { vmChat.sendMessageToOpenaiApi(text) }
             deferred.await()
 
             // Token cost of the call
@@ -306,13 +301,11 @@ fun getTextFromCroppedImage(
     vmToken: TokenViewModel,
 
     croppedImage: ImageBitmap,
-    instantCrop: Boolean,
+    cameraCategory: MutableState<String>,
 
-    navController: NavController,
-    cameraOption: MutableState<String>,
+    onNavigateConversation: () -> Unit,
 ) {
-
-    when (cameraOption.value) {
+    when (cameraCategory.value) {
         CAMERA_TEXT -> {
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
@@ -322,9 +315,7 @@ fun getTextFromCroppedImage(
 
             vmCamera.getTextFromImage(croppedImage)
 
-            if (!instantCrop) {
-                navigateNewConversation(navController)
-            }
+            onNavigateConversation()
         }
 
         CAMERA_MATH -> {
@@ -343,9 +334,7 @@ fun getTextFromCroppedImage(
                 e.printStackTrace()
             }
 
-            if (!instantCrop) {
-                navigateNewConversation(navController)
-            }
+            onNavigateConversation()
         }
     }
 }

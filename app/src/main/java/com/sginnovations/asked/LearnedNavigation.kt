@@ -136,9 +136,9 @@ fun LearnedNavigation(
                         vmAds.loadInterstitialAd(context)
                         vmBilling.connectToGooglePlay()
 
-                        if (!checkIsPremium()) {
-                            navController.navigate(route = Subscription.route)
-                        }
+//                        if (!checkIsPremium()) {
+//                            navController.navigate(route = Subscription.route)
+//                        }
                     }
                 }
             }
@@ -327,9 +327,9 @@ fun LearnedNavigation(
 
                 checkIsPremium()
 
-                if (!checkIsPremium()) {
-                    navController.navigate(route = Subscription.route)
-                }
+//                if (!checkIsPremium()) {
+//                    navController.navigate(route = Subscription.route)
+//                }
             }
         }
     }

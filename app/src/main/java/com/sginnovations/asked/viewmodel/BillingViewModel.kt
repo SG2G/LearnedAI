@@ -3,6 +3,7 @@ package com.sginnovations.asked.viewmodel
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,8 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.google.common.collect.ImmutableList
+import com.sginnovations.asked.Constants.Companion.MAX_RECONNECTION_ATTEMPTS
+import com.sginnovations.asked.Constants.Companion.RECONNECTION_DELAY_MILLIS
 import com.sginnovations.asked.domain.firebase.setters.SetPremiumUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -41,6 +44,8 @@ class BillingViewModel @Inject constructor(
     val productWeekly = mutableStateOf<ProductDetails?>(null)
 
     val billingResponseCode = MutableLiveData<Int>()
+
+    private var reconnectionAttempts = 0 // Counter for tracking reconnection attempts
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
         viewModelScope.launch {
@@ -78,12 +83,19 @@ class BillingViewModel @Inject constructor(
             }
 
             override fun onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                billingResponseCode.value = BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
-                Log.i(TAG, "onBillingServiceDisconnected: Trying to reconnect")
-                viewModelScope.launch {
-                    connectToGooglePlay()
+                if (reconnectionAttempts < MAX_RECONNECTION_ATTEMPTS) {
+                    // Try to restart the connection on the next request to Google Play by calling the startConnection() method.
+                    billingResponseCode.value = BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
+                    Log.i(TAG, "onBillingServiceDisconnected: Trying to reconnect")
+                    viewModelScope.launch {
+                        delay(RECONNECTION_DELAY_MILLIS)
+                        reconnectionAttempts++
+                        connectToGooglePlay()
+                    }
+                } else {
+                    // Handle the case where the maximum number of reconnection attempts is reached.
+                    //TODO CRASH COME
+                    connectionDeferred.complete(false)
                 }
             }
         })
@@ -164,6 +176,7 @@ class BillingViewModel @Inject constructor(
                     delay(20000) // 5 min
                 }
             } else {
+                //is not connected to google play
                 Log.d(TAG, "Failed to connect to Google Play")
             }
         }

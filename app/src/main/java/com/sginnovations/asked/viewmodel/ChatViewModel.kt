@@ -7,6 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sginnovations.asked.Constants.Companion.MATH_PREFIX_PROMPT
+import com.sginnovations.asked.Constants.Companion.TEXT_PREFIX_PROMPT
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
@@ -56,7 +58,7 @@ class ChatViewModel @Inject constructor(
         mutableListOf(
             Message(
                 role = "system",
-                content = "You are a helpful assistant. Respond on language: ${Locale.current.language}"
+                content = "You are a helpful assistant. Respond on language:${Locale.current.language}"
             )
         )
 
@@ -130,12 +132,14 @@ class ChatViewModel @Inject constructor(
 
         prefixPrompt.value =
             when (category.value) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
-                Text.getName(context) -> ""
-                Math.getName(context) -> "Resolve step by step"
+                Text.root -> TEXT_PREFIX_PROMPT
+                Math.root -> MATH_PREFIX_PROMPT
                 else -> ""
             }
 
-        val userMessage = Message(role = User.role, content = prompt)
+        Log.d(TAG, "sendMessageToOpenaiApi: prefixPrompt -> ${prefixPrompt.value}")
+
+        val userMessage = Message(role = User.role, content = prefixPrompt.value + prompt)
 
         // Create conversation if needed
         if (idConversation.intValue == 0) {
