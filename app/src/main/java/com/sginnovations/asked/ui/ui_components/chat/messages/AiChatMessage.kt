@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -27,6 +29,7 @@ import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 import java.util.regex.Pattern
 
 private const val TAG = "ChatAiMessage"
+
 @Composable
 fun ChatAiMessage(
     assistantMessage: String,
@@ -50,7 +53,7 @@ fun ChatAiMessage(
             .build()
     }
 
-    val backgroundColor = MaterialTheme.colorScheme.primaryContainer
+    val backgroundColor = MaterialTheme.colorScheme.background
 
     Row(
         verticalAlignment = Alignment.Top,
@@ -65,26 +68,34 @@ fun ChatAiMessage(
         Log.d(TAG, "message: $assistantMessage")
         val markdownText = replaceMathOneBackslashSymbols(assistantMessage)
 
-        AndroidView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(CHAT_MSG_PADDING),
-            factory = { ctx ->
-                TextView(ctx).apply {
-                    setBackgroundColor(Color.TRANSPARENT)
-                    setTextColor(Color.WHITE)
-                    textSize = 14f
-                    typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
-                    movementMethod = LinkMovementMethod.getInstance()
+        ElevatedCard(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            )
+        ) {
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(CHAT_MSG_PADDING),
+                factory = { ctx ->
+                    TextView(ctx).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        setTextColor(Color.WHITE)
+                        textSize = 14f
+                        typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
+                        movementMethod = LinkMovementMethod.getInstance()
+                    }
+                },
+                update = { view ->
+                    val node = markwon.parse(markdownText)
+                    val renderedMarkdown = markwon.render(node)
+                    markwon.setParsedMarkdown(view, renderedMarkdown)
                 }
-            },
-            update = { view ->
-                val node = markwon.parse(markdownText)
-                val renderedMarkdown = markwon.render(node)
-                markwon.setParsedMarkdown(view, renderedMarkdown)
-            }
-        )
+            )
+        }
     }
+
 }
 
 /**

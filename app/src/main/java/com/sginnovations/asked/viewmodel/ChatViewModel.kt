@@ -86,13 +86,13 @@ class ChatViewModel @Inject constructor(
 
     suspend fun getAllConversations() {
         viewModelScope.launch {
-            conversations.value = roomRepository.getAllConversations()
+            conversations.value = roomRepository.getAllConversations().asReversed()
         }
     }
 
     suspend fun getConversationsFromCategory(category: String) {
         viewModelScope.launch {
-            conversations.value = roomRepository.getConversationsFromCategory(category)
+            conversations.value = roomRepository.getConversationsFromCategory(category).asReversed()
         }
     }
 

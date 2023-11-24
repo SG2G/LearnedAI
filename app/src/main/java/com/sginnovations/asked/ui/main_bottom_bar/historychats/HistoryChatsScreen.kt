@@ -12,7 +12,7 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +21,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -40,17 +42,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.Math
@@ -58,6 +64,7 @@ import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 private const val TAG = "HistoryChats"
 
@@ -78,6 +85,7 @@ fun StateFulHistoryChats(
     }
 
     LaunchedEffect(Unit) {
+        Log.d(TAG, "StateFulHistoryChats: getAllConversations")
         vmChat.getAllConversations()
     }
 
@@ -120,6 +128,7 @@ fun StateFulHistoryChats(
     }
 }
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StateLessHistoryChats(
@@ -131,6 +140,26 @@ fun StateLessHistoryChats(
     onNavigateMessages: (Int) -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
+    val showMenu = remember { mutableStateOf(false) }
+    val boxPosition = remember { mutableStateOf(Offset(0f, 0f)) }
+
+
+    if (showMenu.value) {
+        Box(
+            modifier = Modifier
+                .zIndex(10f)
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.5f)) // Semi-transparent overlay
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        showMenu.value = false
+                    }
+                }
+        )
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -211,19 +240,19 @@ fun StateLessHistoryChats(
          * History of Chats
          */
         itemsIndexed(
-            items = conversations.value.asReversed(),
+            items = conversations.value,
             itemContent = { index, conversation ->
                 AnimatedVisibility(
                     modifier = Modifier.animateItemPlacement(
-                        animationSpec = tween()
+                        animationSpec = tween(300)
                     ),
                     visible = conversation.visible,
                     exit = shrinkHorizontally(
-                        animationSpec = tween(600),
+                        animationSpec = tween(300),
                         targetWidth = { 0 }
                     ) + slideOutHorizontally(
                         targetOffsetX = { -it },
-                        animationSpec = tween(600)
+                        animationSpec = tween(300)
                     )
                 ) {
                     val smallestId = 0
@@ -243,6 +272,13 @@ fun StateLessHistoryChats(
                                                 "idConversation: ${conversation.idConversation}"
                                             )
                                             onNavigateMessages(conversation.idConversation ?: 0)
+                                        },
+                                        onLongPress = { offset ->
+                                            scope.launch {
+                                                Log.d(TAG, "expanded.value = true")
+
+                                                showMenu.value = true
+                                            }
                                         }
                                     )
                                 },
@@ -260,51 +296,86 @@ fun StateLessHistoryChats(
                                 }
                             }
                         ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .weight(1f),
-                                    text = conversation.name,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
+                            /**
+                             * Conversation
+                             */
+                            Box {
                                 Row(
-                                    modifier = Modifier.width(64.dp)
-                                        .border(
-                                            1.dp,
-                                            MaterialTheme.colorScheme.surfaceVariant,
-                                            RoundedCornerShape(10.dp)
-                                        ),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = conversation.category,
-                                        color =
-                                        when (conversation.category) {
-                                            Text.root -> Color(0xFFd4c468)
-                                            Math.root -> Color(0xFF7694db)
-                                            else -> MaterialTheme.colorScheme.onBackground
-                                        },
-                                        style = MaterialTheme.typography.labelLarge,
-                                        modifier = Modifier.padding(8.dp)
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .weight(1f),
+                                        text = conversation.name,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        style = MaterialTheme.typography.titleSmall
                                     )
+                                    Row(
+                                        modifier = Modifier
+                                            .width(64.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center,
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(28.dp),
+                                            painter = when (conversation.category) {
+                                                Text.root -> painterResource(id = R.drawable.text_category)
+                                                Math.root -> painterResource(id = R.drawable.math_category)
+                                                else -> painterResource(id = R.drawable.text_category)
+                                            },
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                    IconButton(
+                                        onClick = { onDeleteConversation(conversation.idConversation) },
+                                    ) {
+                                        Icon(Icons.Outlined.Delete, null)
+                                    }
                                 }
-                                IconButton(
-                                    onClick = { onDeleteConversation(conversation.idConversation) },
-                                ) {
-                                    Icon(Icons.Outlined.Delete, null)
+                            }
+                        }
+
+                        /**
+                         * Menu
+                         */
+                        if (showMenu.value) {
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        MaterialTheme.colorScheme.background,
+                                        shape = RoundedCornerShape(20.dp)
+                                    )
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Column {
+                                    Text(
+                                        "Option 1",
+                                        modifier = Modifier.pointerInput(Unit) {
+                                            detectTapGestures {
+                                                // Handle action 1
+                                                showMenu.value = false
+                                            }
+                                        })
+                                    Text(
+                                        "Option 2",
+                                        modifier = Modifier.pointerInput(Unit) {
+                                            detectTapGestures {
+                                                // Handle action 2
+                                                showMenu.value = false
+                                            }
+                                        })
                                 }
                             }
                         }
                     }
                 } // Animated visibility
-
             }
         )
     }
 }
+
+

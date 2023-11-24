@@ -7,7 +7,6 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -19,20 +18,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Circle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.sginnovations.asked.R
+import com.sginnovations.asked.data.Category
+import com.sginnovations.asked.data.Math
+import com.sginnovations.asked.data.Text
 
 @Composable
 fun PhotoButton(
     modifier: Modifier = Modifier,
-    context: Context,
+    category: Category,
     controller: LifecycleCameraController,
 
     isSelected: Boolean,
@@ -41,6 +48,8 @@ fun PhotoButton(
 
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
+    val context = LocalContext.current
+
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(if (isPressed && isSelected) 0.90f else 1f)
@@ -72,13 +81,29 @@ fun PhotoButton(
             },
             interactionSource = interactionSource
         ) {
-            Icon(
-                imageVector = Icons.Sharp.Circle,
-                contentDescription = "Take photo",
-                modifier = Modifier
-                    .size(65.dp)
-                    .alpha(if (!isSelected) 0.6f else 1f)
-            )
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Sharp.Circle,
+                    contentDescription = "Outer Icon",
+                    modifier = Modifier
+                        .size(65.dp)
+                        .alpha(if (!isSelected) 0.6f else 1f)
+                )
+                Icon(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .alpha(if (!isSelected) 0.8f else 1f),
+                    painter = when (category.root) {
+                        Text.root -> painterResource(id = R.drawable.text_camera)
+                        Math.root -> painterResource(id = R.drawable.math_camera)
+                        else -> painterResource(id = R.drawable.text_camera)
+                    },
+                    contentDescription = "Inner Icon",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     }
 

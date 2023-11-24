@@ -43,7 +43,7 @@ class Constants {
         const val CHAT_LIMIT_DEFAULT = 500
         const val CHAT_LIMIT_PREMIUM = 4000
 
-        val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+        val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
 
     }
 }

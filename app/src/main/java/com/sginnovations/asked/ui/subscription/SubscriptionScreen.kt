@@ -433,7 +433,7 @@ fun SubscriptionStateLess(
             ) {
                 Box {
                     Text(
-                        text = stringResource(R.string.subscription_cancel_anytime),
+                        text = "",
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodySmall
                     )
