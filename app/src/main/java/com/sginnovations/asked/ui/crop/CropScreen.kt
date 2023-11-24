@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -93,7 +95,7 @@ fun CropStateFul(
 
     val activity = context.getActivity()
 
-    if (isLoading.value) {
+    if (!isLoading.value) {
         Log.d(TAG, "CircularProgressIndicator")
         Box(
             modifier = Modifier
@@ -102,12 +104,25 @@ fun CropStateFul(
             contentAlignment = Alignment.Center
         ) {
             Column(
-                modifier = Modifier.padding(64.dp),
+                modifier = Modifier.padding(72.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CircularProgressIndicator()
-                RotatingText()
+                Box {
+                    Box(modifier = Modifier
+                        .matchParentSize()
+                        .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
+                    )
+                    Column(
+                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                        RotatingText()
+                    }
+                }
+
             }
 
         }

@@ -50,7 +50,7 @@ class MathpixRepository @Inject constructor(
                 if (response.isSuccessful) {
                     Log.d(TAG, "onResponse: ${response.body().toString()}")
                     try {
-                        val mathText = response.body()!!.data.firstOrNull()?.value.toString()
+                        val mathText = response.body()!!.text
                         Log.d(TAG, "getMathFromImage: ${response.body()!!.data}")
                         continuation.resume(mathText)
                     } catch (e: Exception) {
