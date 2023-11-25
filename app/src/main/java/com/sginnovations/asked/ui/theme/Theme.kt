@@ -31,7 +31,7 @@ val DarkColorScheme = darkColorScheme(
     background = Background,
     onBackground = OnBackground,
 
-
+    error = error,
 )
 
 private val LightColorScheme = lightColorScheme(

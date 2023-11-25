@@ -15,3 +15,5 @@ val surface = Color(0xFF0D0D0E)
 val onSurfaceVariant = Color(0xFF939095)
 val Background = Color(0xFF161718)
 val OnBackground = Color(0xFFF7F7F7)
+
+val error = Color(0xFFAA4842)

@@ -105,6 +105,7 @@ class ChatViewModel @Inject constructor(
 
     suspend fun hideConversation(id: Int) {
         viewModelScope.launch {
+            Log.d(TAG, "hideConversation: id -> $id")
             roomRepository.hideConversation(id)
             getAllConversations()
             delay(2000)
