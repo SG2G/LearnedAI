@@ -25,6 +25,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -200,8 +202,8 @@ fun ChatStateLess(
     ) {
         LazyColumn(
             modifier = Modifier
-                .weight(1f)
-                .imePadding(),
+                .weight(1f),
+                //.imePadding(),
             state = listState,
         ) {
             itemsIndexed(
@@ -232,11 +234,18 @@ fun ChatStateLess(
                                             message.content,
                                         ) { chatAnimation.value = false }
                                     } else {
-                                        Text(
-                                            modifier = Modifier.padding(CHAT_MSG_PADDING),
-                                            text = message.content,
-                                            style = MaterialTheme.typography.bodyMedium
-                                        )
+                                        ElevatedCard(
+                                            modifier = Modifier.padding(horizontal = 16.dp),
+                                            colors = CardDefaults.elevatedCardColors(
+                                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                                            )
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.padding(CHAT_MSG_PADDING),
+                                                text = message.content,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        }
                                     }
                                 } else {
                                     // Message static last AI msg

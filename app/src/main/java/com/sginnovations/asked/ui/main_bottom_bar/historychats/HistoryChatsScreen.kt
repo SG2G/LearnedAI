@@ -7,19 +7,13 @@ import android.os.Build
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,10 +30,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,24 +48,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
 import com.sginnovations.asked.data.database.entities.ConversationEntity
+import com.sginnovations.asked.ui.main_bottom_bar.historychats.components.OptionMenu
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 
@@ -347,168 +334,22 @@ fun StateLessHistoryChats(
                                     label = ""
                                 )
 
-                                val menuWidth = 112.dp
-                                val menuRounded = 8.dp
-
                                 if (showMenu.value && index == indexMenu.value) {
-                                    Popup(
-                                        alignment = Alignment.TopEnd,
-                                        offset = IntOffset(0, 56),
-                                        onDismissRequest = {
-                                            showMenu.value = false
-                                            indexMenu.value = null
-                                        },
-                                    ) {
-                                        Box(
-                                            modifier = Modifier.scale(scale)
-                                                .width(menuWidth)
-                                                .clip(RoundedCornerShape(menuRounded))
-                                                .blur(15.dp)
-                                                .background(
-                                                    MaterialTheme.colorScheme.primaryContainer,
-                                                    RoundedCornerShape(menuRounded)
-                                                )
-                                                .border(1.dp, Color.DarkGray, RoundedCornerShape(menuRounded))
-                                        ) {
-                                            Column {
-                                                Row(
-                                                    modifier = Modifier
-                                                        .width(menuWidth)
-                                                        .clip(
-                                                            RoundedCornerShape(
-                                                                topStart = menuRounded,
-                                                                topEnd = menuRounded
-                                                            )
-                                                        )
-                                                        .clickable {
-                                                            onDeleteConversation(conversation.idConversation)
-                                                            showMenu.value = false
-                                                            indexMenu.value = null
-                                                        }
-                                                        .padding(8.dp),
-                                                    horizontalArrangement = Arrangement.Center,
-                                                    verticalAlignment = Alignment.CenterVertically
-                                                ) {
-                                                    Text(
-                                                        "Delete",
-                                                        color = Color.Transparent,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        modifier = Modifier
-                                                            .weight(1f),
-                                                    )
-                                                    Icon(
-                                                        imageVector = Icons.Filled.Delete,
-                                                        contentDescription = null,
-                                                        tint = Color.Transparent,
-                                                        modifier = Modifier
-                                                            .size(20.dp),
-                                                    )
-                                                }
-                                                Divider(modifier = Modifier.width(menuWidth), color = Color.Transparent)
-                                                Row(
-                                                    modifier = Modifier
-                                                        .width(menuWidth)
-                                                        .clip(
-                                                            RoundedCornerShape(
-                                                                bottomStart = menuRounded,
-                                                                bottomEnd = menuRounded
-                                                            )
-                                                        )
-                                                        .clickable {
-                                                            showMenu.value = false
-                                                            indexMenu.value = null
-                                                            //onClick()
-                                                        }
-                                                        .padding(8.dp),
-                                                    horizontalArrangement = Arrangement.Center,
-                                                    verticalAlignment = Alignment.CenterVertically,
-                                                ) {
-                                                    Text(
-                                                        "Opción 2",
-                                                        color = Color.Transparent,
-                                                        style = MaterialTheme.typography.bodyMedium,
-                                                        modifier = Modifier.weight(1f)
-                                                    )
-                                                }
-                                            }
-                                        }
-                                        /**
-                                         * Real
-                                         */
-                                        Box(
-                                            modifier = Modifier.scale(scale)
-                                        ) {
-                                            Column {
-                                                Row(
-                                                    modifier = Modifier
-                                                        .width(menuWidth)
-                                                        .clip(
-                                                            RoundedCornerShape(
-                                                                topStart = menuRounded,
-                                                                topEnd = menuRounded
-                                                            )
-                                                        )
-                                                        .clickable {
-                                                            onDeleteConversation(conversation.idConversation)
-                                                            showMenu.value = false
-                                                            indexMenu.value = null
-                                                        }
-                                                        .padding(8.dp),
-                                                    horizontalArrangement = Arrangement.Center,
-                                                    verticalAlignment = Alignment.CenterVertically
-                                                ) {
-                                                    Text(
-                                                        "Delete",
-                                                        color = MaterialTheme.colorScheme.error,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        modifier = Modifier
-                                                            .weight(1f),
-                                                    )
-                                                    Icon(
-                                                        imageVector = Icons.Filled.Delete,
-                                                        contentDescription = null,
-                                                        tint = MaterialTheme.colorScheme.error,
-                                                        modifier = Modifier
-                                                            .size(20.dp),
-                                                    )
-                                                }
-                                                Divider(modifier = Modifier.width(menuWidth), color = Color.DarkGray)
-                                                Row(
-                                                    modifier = Modifier
-                                                        .width(menuWidth)
-                                                        .clip(
-                                                            RoundedCornerShape(
-                                                                bottomStart = menuRounded,
-                                                                bottomEnd = menuRounded
-                                                            )
-                                                        )
-                                                        .clickable {
-                                                            showMenu.value = false
-                                                            indexMenu.value = null
-                                                            //onClick()
-                                                        }
-                                                        .padding(8.dp),
-                                                    horizontalArrangement = Arrangement.Center,
-                                                    verticalAlignment = Alignment.CenterVertically,
-                                                ) {
-                                                    Text(
-                                                        "Opción 2",
-                                                        color = MaterialTheme.colorScheme.onBackground,
-                                                        style = MaterialTheme.typography.bodyMedium,
-                                                        modifier = Modifier.weight(1f)
-                                                    )
-                                                }
-                                            }
-                                        }
+                                    conversation.idConversation?.let {
+                                        OptionMenu(
+                                            showMenu = showMenu,
+                                            indexMenu = indexMenu,
+
+                                            scale = scale,
+
+                                            conversationId = it,
+
+                                            onDeleteConversation = { id ->
+                                                onDeleteConversation(id)
+                                            },
+                                        ) {}
                                     }
                                 }
-//                                OptionMenu(
-//                                    showMenu = showMenu,
-//                                    index = index,
-//                                    indexMenu = indexMenu,
-//
-//                                    onDelete = {},
-//                                ) {}
                             }
                         }
                     }

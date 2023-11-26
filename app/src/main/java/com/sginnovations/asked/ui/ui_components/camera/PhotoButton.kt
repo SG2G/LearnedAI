@@ -101,7 +101,8 @@ fun PhotoButton(
                         else -> painterResource(id = R.drawable.text_camera)
                     },
                     contentDescription = "Inner Icon",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = Color.LightGray
+
                 )
             }
         }

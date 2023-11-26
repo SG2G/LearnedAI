@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -85,20 +86,18 @@ fun TokenDisplay(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (showPlus) {
-                Box(
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .background(Color.LightGray, RoundedCornerShape(5.dp))
-                        .size(16.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
+//                Box(
+//                    modifier = Modifier
+//                        .padding(end = 4.dp)
+//                        .background(Color.LightGray, RoundedCornerShape(5.dp))
+//                        .size(16.dp),
+//                    contentAlignment = Alignment.Center,
+//                ) {
                     Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Filled.Add,
+                        modifier = Modifier.size(24.dp).padding(end = 4.dp),
+                        painter = painterResource(id = R.drawable.add_square_svgrepo_com),
                         contentDescription = "Add Icon",
-                        tint = Color.DarkGray
                     )
-                }
             }
 
             Text(
