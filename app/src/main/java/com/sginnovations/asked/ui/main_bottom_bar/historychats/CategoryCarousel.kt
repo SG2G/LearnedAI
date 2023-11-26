@@ -8,7 +8,10 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -27,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -46,20 +50,28 @@ fun CategoryCarousel(
 
     val sliderList = listOf(All, Text, Math)
     var actualOption by remember { mutableStateOf(sliderList[0]) }
+    val scale = remember { Animatable(1f) }
 
     val cardsWidth = 72.dp
 
-    LazyRow(
-        modifier = Modifier.padding(bottom = 8.dp)
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        shape = RoundedCornerShape(15.dp)
     ) {
-        items(sliderList) { item ->
-            val isSelected = actualOption == item
-            Log.d(TAG, "isSelected -> $isSelected / actualOption -> $actualOption / item -> $item")
+        LazyRow {
+            items(sliderList) { item ->
+                val isSelected = actualOption == item
+                Log.d(
+                    TAG,
+                    "isSelected -> $isSelected / actualOption -> $actualOption / item -> $item"
+                )
 
-            onChangeCategory(actualOption.root)
-
-            if (isSelected) {
-                val scale = remember { Animatable(1f) }
+                onChangeCategory(actualOption.root)
 
                 LaunchedEffect(isSelected) {
                     scale.animateTo(
@@ -75,66 +87,67 @@ fun CategoryCarousel(
                     )
                 }
 
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    ),
-                    modifier = Modifier
-                        .scale(scale.value)
-                        .padding(6.dp)
-                        .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
-                        .padding(2.dp)
-                        .width(cardsWidth),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Box(
+                if (isSelected) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        ),
+                        modifier = Modifier
+                            .scale(scale.value)
+                            .padding(8.dp)
+                            .width(cardsWidth),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .width(cardsWidth),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = item.getName(context),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
+                    }
+                } else {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.Transparent
+                        ),
                         modifier = Modifier
                             .padding(8.dp)
                             .width(cardsWidth),
-                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = item.getName(context),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                    }
-                }
-            } else {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    ),
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .width(cardsWidth)
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onTap = {
-                                    actualOption = item
-                                    Log.d(TAG, "CategoryCarousel: Click")
+                        Row(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onTap = {
+                                            actualOption = item
+                                            Log.d(TAG, "CategoryCarousel: Click")
+                                        }
+                                    )
                                 }
+                                .width(cardsWidth),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = item.getName(context),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold
+                                )
                             )
-                        },
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .width(cardsWidth),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = item.getName(context),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
+                        }
                     }
                 }
+
             }
         }
     }

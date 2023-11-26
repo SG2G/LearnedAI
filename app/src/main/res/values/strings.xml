@@ -103,5 +103,6 @@
     <string name="loading_phrase_3">Just a moment, we\'re bending the laws of physics for you!</string>
     <string name="loading_phrase_4">Wait a sec, we\'re teaching the robots to do your math!</string>
     <string name="loading_phrase_5">Sit tight, we\'re turning coffee into solutions!</string>
+    <string name="asked_subject_your_custom_subject_my_uid">Your Custom Subject. My uid: %1$s</string>
 
 </resources>

@@ -47,6 +47,7 @@ import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
+import com.sginnovations.asked.viewmodel.IntentViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
@@ -62,6 +63,7 @@ fun LearnedNavigation(
     vmAds: AdsViewModel = hiltViewModel(),
     vmReferral: ReferralViewModel = hiltViewModel(),
     vmBilling: BillingViewModel = hiltViewModel(),
+    vmIntent: IntentViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -192,6 +194,7 @@ fun LearnedNavigation(
                 StateFulProfile(
                     vmToken = vmToken,
                     vmAuth = vmAuth,
+                    vmIntent = vmIntent,
 
                     onNavigateUserNotLogged = {
                         navController.popBackStack(Profile.route, true)

@@ -99,4 +99,5 @@
     <string name="loading_phrase_3">Solo un momento, ¡estamos doblando las leyes de la física para ti!</string>
     <string name="loading_phrase_4">Espera un segundo, ¡estamos enseñándole a los robots a hacer tus matemáticas!</string>
     <string name="loading_phrase_5">Mantente tranquilo, ¡estamos convirtiendo el café en soluciones!</string>
+    <string name="asked_subject_your_custom_subject_my_uid">Tu asunto personalizado. Mi UID: %1$s</string>
 </resources>
