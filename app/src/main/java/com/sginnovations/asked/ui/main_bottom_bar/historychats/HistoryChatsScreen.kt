@@ -302,7 +302,7 @@ fun StateLessHistoryChats(
                                     modifier = Modifier
                                         .width(64.dp),
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center,
+                                    horizontalArrangement = Arrangement.End,
                                 ) {
                                     Icon(
                                         modifier = Modifier.size(28.dp),

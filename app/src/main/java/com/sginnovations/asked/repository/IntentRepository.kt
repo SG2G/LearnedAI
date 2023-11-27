@@ -11,7 +11,6 @@ import javax.inject.Inject
 class IntentRepository @Inject constructor() {
 
     fun sendEmail(context: Context, userAuth: State<UserData?>) {
-        //TODO TRANSLATE
         val email = context.getString(R.string.asked_email)
         val subject = context.getString(
             R.string.asked_subject_your_custom_subject_my_uid,

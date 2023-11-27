@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,6 +49,7 @@ import com.sginnovations.asked.viewmodel.BillingViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.IntentViewModel
+import com.sginnovations.asked.viewmodel.NavigatorViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
@@ -64,6 +66,7 @@ fun LearnedNavigation(
     vmReferral: ReferralViewModel = hiltViewModel(),
     vmBilling: BillingViewModel = hiltViewModel(),
     vmIntent: IntentViewModel = hiltViewModel(),
+    vmNavigator: NavigatorViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -125,10 +128,8 @@ fun LearnedNavigation(
             composable(route = Auth.route) {
                 LearnedAuth(
                     vmAuth = vmAuth,
-
-                    ) {
-                    navController.popBackStack(navController.graph.startDestinationId, true)
-                    navController.navigate(route = Camera.route)
+                ) {
+                    vmNavigator.navigateAuthToCamera(navController)
 
                     scope.launch {
                         Log.i(TAG, "Calling SetUp when sign in")
@@ -159,15 +160,6 @@ fun LearnedNavigation(
 
                     onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
                     onCropNavigation = { navController.navigate(route = Crop.route) },
-//                    onNavigateNewConversation = {
-//                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
-//                            // This ensures that the previous screen is removed from the backstack
-//                            popUpTo(navController.graph.id) {
-//                                inclusive = true
-//                            }
-//                        }
-//                        navController.navigate(NewConversation.route)
-//                    }
                 )
                 EarnPoints(vmToken, vmAds, navController)
             }
@@ -197,7 +189,7 @@ fun LearnedNavigation(
                     vmIntent = vmIntent,
 
                     onNavigateUserNotLogged = {
-                        navController.popBackStack(Profile.route, true)
+                        navController.popBackStack(route = Profile.route, true)
                         navController.navigate(route = Auth.route)
                     },
                     onNavigateRefCode = { navController.navigate(route = RefCode.route) },
@@ -217,15 +209,8 @@ fun LearnedNavigation(
 
                     navController = navController,
 
-                    onNavigateChat= {
-                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
-                            // This ensures that the previous screen is removed from the backstack
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
-                            }
-                        }
-                        navController.navigate(Chat.route)
-                    }
+                    onNavigateChat = { vmNavigator.navigateChat(navController) },
+                    onNavigateNewChat = { vmNavigator.navigateNewChat(navController) }
                 )
             }
             /**
@@ -237,26 +222,7 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     vmAds = vmAds,
 
-                    onNavigateChat = {
-                        navController.navigate(ChatsHistory.route) { //TODO NAVIGATOR CLASS NOW
-                            // This ensures that the previous screen is removed from the backstack
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
-                            }
-                        }
-                        navController.navigate(Chat.route)
-                        // This is where you handle navigation
-//                        navController.navigate(ChatsHistory.route) {
-//                            // This ensures that the previous screen is removed from the backstack
-//                            popUpTo(navController.currentDestination?.route ?: "") {
-//                                inclusive = true
-//                                saveState = true
-//                            }
-//                            launchSingleTop = true
-//                            restoreState = true
-//                        }
-//                        navController.navigate(Chat.route)
-                    }
+                    onNavigateChat = { vmNavigator.navigateChat(navController) }
                 )
             }
             /**
@@ -313,13 +279,7 @@ fun LearnedNavigation(
         LaunchedEffect(Unit) {
             if (vmAuth.userAuth.value != null) {
                 // User its logged - set up
-                try {
-                    navController.popBackStack(navController.graph.startDestinationId, true)
-                    navController.navigate(route = Camera.route)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
+                vmNavigator.navigateAuthToCamera(navController)
 
                 Log.i(TAG, "Calling SetUp")
                 vmAuth.userJustLogged()

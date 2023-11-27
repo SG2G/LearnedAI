@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -42,22 +40,21 @@ import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Math
 import com.sginnovations.asked.data.Text
-import com.sginnovations.asked.ChatsHistory
-import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ui.crop.components.RotatingText
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
-import io.moyuru.cropify.AspectRatio
 import io.moyuru.cropify.Cropify
 import io.moyuru.cropify.CropifyOption
 import io.moyuru.cropify.rememberCropifyState
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 private const val TAG = "CropStateFul"
 
@@ -71,6 +68,7 @@ fun CropStateFul(
     navController: NavController,
 
     onNavigateChat: () -> Unit,
+    onNavigateNewChat: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -79,7 +77,6 @@ fun CropStateFul(
     val cameraCategory = vmCamera.cameraOCRCategory
     val isLoading = vmCamera.isLoading
 
-    val prefixPrompt = vmChat.prefixPrompt.value
     val text = remember { mutableStateOf("") }
     text.value = vmCamera.imageToText.value
 
@@ -95,7 +92,7 @@ fun CropStateFul(
 
     val activity = context.getActivity()
 
-    if (!isLoading.value) {
+    if (isLoading.value) {
         Log.d(TAG, "CircularProgressIndicator")
         Box(
             modifier = Modifier
@@ -109,9 +106,13 @@ fun CropStateFul(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box {
-                    Box(modifier = Modifier
-                        .matchParentSize()
-                        .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .background(
+                                Color.DarkGray.copy(alpha = 0.4f),
+                                RoundedCornerShape(15.dp)
+                            )
                     )
                     Column(
                         modifier = Modifier.padding(8.dp),
@@ -144,7 +145,7 @@ fun CropStateFul(
         photoImageBitmap = photoImageBitmap,
         navController = navController,
 
-        onImageCropped = { croppedImage ->
+        onImageCropped = { croppedImage -> //TODO CROP VIEWMODEL
             // Delete the text
             vmCamera.imageToText.value = ""
             text.value = ""
@@ -160,7 +161,7 @@ fun CropStateFul(
 
                 onNavigateConversation = {
                     if (!instantCrop.value) {
-                        navigateNewConversation(navController)
+                        onNavigateNewChat()
                     }
                 }
             )
@@ -168,10 +169,9 @@ fun CropStateFul(
             if (instantCrop.value) {
                 scope.launch {
                     Log.d(TAG, "CropStateFul 1: ${text.value}")
-                    while (text.value == "") delay (200)
+                    while (text.value == "") delay(200)
                     Log.d(TAG, "CropStateFul 2: ${text.value}")
                     sendNewMessage(
-                        scope,
                         context,
                         activity,
                         text.value,
@@ -194,44 +194,59 @@ fun CropStateLess(
 
     onImageCropped: (ImageBitmap) -> Unit,
 ) {
-    val cropifyOptions = CropifyOption(
-        backgroundColor = MaterialTheme.colorScheme.background,
-        gridColor = Color.Transparent,
-    )
-
     val cropifyState = rememberCropifyState()
     val scope = rememberCoroutineScope()
+
+    val cropifyOptions = CropifyOption(
+        backgroundColor = Color(0xFF191c22),
+        maskColor = Color(0xFF191c22),
+        gridColor = Color.Transparent,
+        frameColor = MaterialTheme.colorScheme.primary,
+        frameAlpha = 0f,
+        frameWidth = 6.dp
+    )
 
     val cropifyOption by remember { mutableStateOf(cropifyOptions) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    suspend fun cropImage(imageCropped: ImageBitmap?) {
-        croppedImage = imageCropped
-
+    suspend fun cropImage() {
         Log.d(TAG, "cropImage, starting loop until not null")
-        while (croppedImage == null) { delay(250) }
 
-        Log.d(TAG, "cropImage ->> $croppedImage")
+        runBlocking {
+            val croppedImageDeferred = async {
+                while (croppedImage == null) {
+                    delay(200)
+                }
+                croppedImage!!
+            }
 
-        try {
-            onImageCropped(croppedImage!!)
-        } catch (e: Exception) {
-            e.printStackTrace()
+            try {
+                onImageCropped(croppedImageDeferred.await())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
+    /**
+     * Crop
+     */
     Cropify(
         bitmap = photoImageBitmap.value,
         state = cropifyState,
         option = cropifyOption,
         onImageCropped = {
             scope.launch {
-                cropImage(it)
+                croppedImage = it
+                cropImage()
             }
         },
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     )
+
+    /**
+     * UI Layout
+     */
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -248,7 +263,7 @@ fun CropStateLess(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(25.dp),
         ) {
             Text(
                 text = stringResource(R.string.crop_retake),
@@ -257,13 +272,14 @@ fun CropStateLess(
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
+
         Button(
             onClick = { cropifyState.crop() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(25.dp)
         ) {
             Text(
                 text = stringResource(R.string.crop_crop),
@@ -278,8 +294,7 @@ fun CropStateLess(
 /**
  * CAFDWBAHIUF
  */
-fun sendNewMessage( //TODO REPEAT NEWCONVER
-    scope: CoroutineScope,
+suspend fun sendNewMessage(
     context: Context,
     activity: Activity?,
     text: String,
@@ -289,7 +304,7 @@ fun sendNewMessage( //TODO REPEAT NEWCONVER
 
     onNavigateChat: () -> Unit,
 ) {
-    scope.launch {
+    withContext(Dispatchers.IO) {
         // New Message
         if (NetworkUtils.isOnline(context)) {
             vmCamera.isLoading.value = true
@@ -363,16 +378,3 @@ fun getTextFromCroppedImage(
     }
 }
 
-fun navigateNewConversation(navController: NavController) {
-    if (navController.currentDestination?.route != NewConversation.route) {
-        Log.i(TAG, "Starting nav")
-
-        navController.navigate(ChatsHistory.route) {
-            // This ensures that the previous screen is removed from the backstack
-            popUpTo(navController.graph.id) {
-                inclusive = true
-            }
-        }
-        navController.navigate(NewConversation.route)
-    }
-}
