@@ -35,8 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CheckPermissions
 import com.sginnovations.asked.viewmodel.CameraViewModel
 
@@ -123,7 +123,7 @@ fun GalleryStateFull(
             ) {
                 Button(
                     onClick = {
-                        vmCamera.cameraOCRCategory.value = Text.root
+                        vmCamera.cameraCategoryOCR.value = TextCategoryOCR
                         launcher.launch("image/*")
                     },
                     modifier = Modifier
@@ -161,7 +161,7 @@ fun GalleryStateFull(
                  */
                 Button(
                     onClick = {
-                        vmCamera.cameraOCRCategory.value = Math.getName(context)
+                        vmCamera.cameraCategoryOCR.value = MathCategoryOCR
                         launcher.launch("image/*")
                     },
                     modifier = Modifier

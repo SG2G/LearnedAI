@@ -57,8 +57,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.components.OptionMenu
 import com.sginnovations.asked.viewmodel.ChatViewModel
@@ -307,8 +307,8 @@ fun StateLessHistoryChats(
                                     Icon(
                                         modifier = Modifier.size(28.dp),
                                         painter = when (conversation.category) {
-                                            Text.root -> painterResource(id = R.drawable.text_category)
-                                            Math.root -> painterResource(id = R.drawable.math_category)
+                                            TextCategoryOCR.root -> painterResource(id = R.drawable.text_category)
+                                            MathCategoryOCR.root -> painterResource(id = R.drawable.math_category)
                                             else -> painterResource(id = R.drawable.text_category)
                                         },
                                         contentDescription = null,

@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.sginnovations.asked.Constants.Companion.CONVERSATION_TABLE_NAME
 import com.sginnovations.asked.Constants.Companion.MESSAGE_TABLE_NAME
-import com.sginnovations.asked.data.Category
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.data.database.entities.MessageEntity
 

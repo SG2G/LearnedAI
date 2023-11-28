@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,11 +36,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
-import com.sginnovations.asked.Constants.Companion.CAMERA_MATH
-import com.sginnovations.asked.Constants.Companion.CAMERA_TEXT
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.GrammarCategoryOCR
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.SummaryCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.crop.components.RotatingText
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AdsViewModel
@@ -74,7 +77,7 @@ fun CropStateFul(
     val scope = rememberCoroutineScope()
 
     val photoImageBitmap = vmCamera.photoImageBitmap
-    val cameraCategory = vmCamera.cameraOCRCategory
+    val cameraCategoryOCR = vmCamera.cameraCategoryOCR
     val isLoading = vmCamera.isLoading
 
     val text = remember { mutableStateOf("") }
@@ -92,47 +95,17 @@ fun CropStateFul(
 
     val activity = context.getActivity()
 
-    if (isLoading.value) {
-        Log.d(TAG, "CircularProgressIndicator")
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(10f),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier.padding(72.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Box {
-                    Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            .background(
-                                Color.DarkGray.copy(alpha = 0.4f),
-                                RoundedCornerShape(15.dp)
-                            )
-                    )
-                    Column(
-                        modifier = Modifier.padding(8.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                        RotatingText()
-                    }
-                }
+    if (isLoading.value) IsLoadingCrop()
 
-            }
+    LaunchedEffect(cameraCategoryOCR.value) {
+        Log.d(TAG, "cameraCategoryOCR: ${cameraCategoryOCR.value}")
+        when (cameraCategoryOCR.value.prefix) {
+            TextCategoryOCR.prefix -> instantCrop.value = false
+            MathCategoryOCR.prefix -> instantCrop.value = true
 
-        }
-    }
-
-    LaunchedEffect(cameraCategory.value) {
-        when (cameraCategory.value) {
-            Text.root -> instantCrop.value = false
-            Math.root -> instantCrop.value = true
+            GrammarCategoryOCR.prefix -> instantCrop.value = true
+            SummaryCategoryOCR.prefix -> instantCrop.value = true
+            TranslateCategoryOCR.prefix -> instantCrop.value = true
 
             else -> instantCrop.value = false
         }
@@ -152,39 +125,84 @@ fun CropStateFul(
 
             Log.d(TAG, "CropStateFul start: ${text.value}")
 
+            /**
+             * GET text OCR
+             */
             getTextFromCroppedImage(
                 vmCamera,
                 vmChat,
                 vmToken,
+
                 croppedImage,
-                cameraCategory,
+                cameraCategoryOCR,
 
                 onNavigateConversation = {
+                    Log.d(TAG, "onNavigateConversation. instantCrop -> $instantCrop")
                     if (!instantCrop.value) {
                         onNavigateNewChat()
+                    } else {
+                        scope.launch {
+                            while (text.value == "") delay(200)
+
+                            /**
+                             * Send message instant crop
+                             */
+                            sendNewMessage(
+                                context,
+                                activity,
+
+                                vmCamera,
+                                vmAds,
+                                vmChat,
+
+                                cameraCategoryOCR,
+                                text.value,
+                            ) {
+                                onNavigateChat()
+                            }
+                        }
                     }
                 }
             )
+        }
+    )
+}
 
-            if (instantCrop.value) {
-                scope.launch {
-                    Log.d(TAG, "CropStateFul 1: ${text.value}")
-                    while (text.value == "") delay(200)
-                    Log.d(TAG, "CropStateFul 2: ${text.value}")
-                    sendNewMessage(
-                        context,
-                        activity,
-                        text.value,
-                        vmCamera,
-                        vmAds,
-                        vmChat
-                    ) {
-                        onNavigateChat()
-                    }
+@Composable
+private fun IsLoadingCrop() {
+    Log.d(TAG, "CircularProgressIndicator")
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(10f),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(72.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(
+                            Color.DarkGray.copy(alpha = 0.4f),
+                            RoundedCornerShape(15.dp)
+                        )
+                )
+                Column(
+                    modifier = Modifier.padding(8.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                    RotatingText()
                 }
             }
-        },
-    )
+
+        }
+    }
 }
 
 @Composable
@@ -264,6 +282,7 @@ fun CropStateLess(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary)
         ) {
             Text(
                 text = stringResource(R.string.crop_retake),
@@ -279,7 +298,8 @@ fun CropStateLess(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
-            shape = RoundedCornerShape(25.dp)
+            shape = RoundedCornerShape(25.dp),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)
         ) {
             Text(
                 text = stringResource(R.string.crop_crop),
@@ -297,13 +317,17 @@ fun CropStateLess(
 suspend fun sendNewMessage(
     context: Context,
     activity: Activity?,
-    text: String,
+
     vmCamera: CameraViewModel,
     vmAds: AdsViewModel,
     vmChat: ChatViewModel,
 
+    cameraCategoryOCR: MutableState<CategoryOCR>,
+    text: String,
+
     onNavigateChat: () -> Unit,
 ) {
+
     withContext(Dispatchers.IO) {
         // New Message
         if (NetworkUtils.isOnline(context)) {
@@ -313,8 +337,15 @@ suspend fun sendNewMessage(
                 vmAds.showInterstitialAd(activity)
             }
 
+            val prefix = when (cameraCategoryOCR.value.prefix) {
+                TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context)
+                SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getPrefix(context)
+                GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getPrefix(context)
+                else -> {"else"}
+            }
+            Log.d(TAG, "sendNewMessage: cameraCategoryOCR -> ${cameraCategoryOCR.value.prefix} prefix-> $prefix")
             // GPT call
-            val deferred = async { vmChat.sendMessageToOpenaiApi(text) }
+            val deferred = async { vmChat.sendMessageToOpenaiApi(prefix + text) }
             deferred.await()
 
             // Token cost of the call
@@ -340,29 +371,29 @@ fun getTextFromCroppedImage(
     vmToken: TokenViewModel,
 
     croppedImage: ImageBitmap,
-    cameraCategory: MutableState<String>,
+    cameraCategoryOCR: MutableState<CategoryOCR>,
 
     onNavigateConversation: () -> Unit,
 ) {
-    when (cameraCategory.value) {
-        CAMERA_TEXT -> {
+    when (cameraCategoryOCR.value.root) {
+        TextCategoryOCR.root -> {
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraOCRCategory.value = Text.root //TODO LIADA CATEDRALICIA
-            vmChat.category.value = Text.root
+            vmCamera.cameraCategoryOCR.value = cameraCategoryOCR.value //TODO LIADA CATEDRALICIA
+            vmChat.categoryOCR.value = cameraCategoryOCR.value
 
             vmCamera.getTextFromImage(croppedImage)
 
             onNavigateConversation()
         }
 
-        CAMERA_MATH -> {
+        MathCategoryOCR.root -> {
             Log.d(TAG, "CropStateLess: CAMERA_MATH")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraOCRCategory.value = Math.root //TODO LIADA CATEDRALICIA PARTE 2
-            vmChat.category.value = Math.root
+            vmCamera.cameraCategoryOCR.value = cameraCategoryOCR.value//TODO LIADA CATEDRALICIA PARTE 2
+            vmChat.categoryOCR.value = cameraCategoryOCR.value
 
             vmCamera.getMathFromImage(croppedImage)
 

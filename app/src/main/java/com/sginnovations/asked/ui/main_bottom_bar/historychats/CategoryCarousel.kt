@@ -6,7 +6,6 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,8 +36,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.data.All
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
 
 private const val TAG = "CategoryCarousel"
 
@@ -48,7 +47,7 @@ fun CategoryCarousel(
 ) {
     val context = LocalContext.current
 
-    val sliderList = listOf(All, Text, Math)
+    val sliderList = listOf(All, TextCategoryOCR, MathCategoryOCR)
     var actualOption by remember { mutableStateOf(sliderList[0]) }
     val scale = remember { Animatable(1f) }
 

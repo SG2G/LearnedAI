@@ -177,7 +177,7 @@ fun ChatStateLess(
 
     fun chatButtonClicked(text: MutableState<String>) {
         if (NetworkUtils.isOnline(context)) {
-            if (vmToken.tokens.value > 0) {
+            if (vmToken.tokens.value >= 0) {
                 onClick(text.value)
 
                 userPlaceHolder = text.value
@@ -254,6 +254,7 @@ fun ChatStateLess(
                                         haveIcon = false,
 
                                         onSetClip = { text ->
+                                            Log.d(TAG, "clipboardManager: text-> $text ")
                                             clipboardManager.setText(AnnotatedString(text))
                                         }
                                     )

@@ -33,9 +33,6 @@ class Constants {
 
         const val INTERSTITIAL_AD_UNIT_DEBUG = "ca-app-pub-3940256099942544/1033173712"
         const val INTERSTITIAL_AD_UNIT_RELEASE = "ca-app-pub-8452230076174340/1738896617"
-        //
-        const val CAMERA_TEXT = "Text"
-        const val CAMERA_MATH = "Math"
 
         const val IS_PREMIUM = "isPremium"
 

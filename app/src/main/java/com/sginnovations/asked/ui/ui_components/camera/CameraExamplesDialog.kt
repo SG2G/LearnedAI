@@ -23,7 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
 
 val mathImageList = listOf(
     R.drawable.math_example_1, R.drawable.math_example_2,
@@ -44,12 +45,12 @@ val textImageList = listOf(
 fun CameraExamplesDialog(
     onDismissRequest: () -> Unit,
 
-    cameraOCRCategory: MutableState<String>,
+    cameraCategoryOCR: MutableState<CategoryOCR>,
 ) {
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
     ) {
-        if (cameraOCRCategory.value == Text.root) {
+        if (cameraCategoryOCR.value.root == TextCategoryOCR.root) {
             // Text
             ElevatedCard(
                 shape = RoundedCornerShape(15.dp),

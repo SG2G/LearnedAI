@@ -9,8 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.asked.Constants.Companion.MATH_PREFIX_PROMPT
 import com.sginnovations.asked.Constants.Companion.TEXT_PREFIX_PROMPT
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
 import com.sginnovations.asked.data.api_gpt.Message
 import com.sginnovations.asked.data.database.entities.ConversationEntity
@@ -41,8 +42,9 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
-    val category = mutableStateOf(Text.root)
-    val prefixPrompt = mutableStateOf("")
+    val categoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
+
+    private val prefixPrompt = mutableStateOf("")
     private val timestamp = System.currentTimeMillis()
 
     // Response of OPENAI API
@@ -132,9 +134,9 @@ class ChatViewModel @Inject constructor(
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
 
         prefixPrompt.value =
-            when (category.value) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
-                Text.root -> TEXT_PREFIX_PROMPT
-                Math.root -> MATH_PREFIX_PROMPT
+            when (categoryOCR.value.root) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
+                TextCategoryOCR.root -> TEXT_PREFIX_PROMPT
+                MathCategoryOCR.root -> MATH_PREFIX_PROMPT
                 else -> ""
             }
 
@@ -147,7 +149,7 @@ class ChatViewModel @Inject constructor(
             idConversation.intValue = roomRepository.createConversation(
                 ConversationEntity(
                     name = shortenString(prompt),
-                    category = category.value,
+                    category = categoryOCR.value.root,
                     visible = true
                 )
             ).toInt()

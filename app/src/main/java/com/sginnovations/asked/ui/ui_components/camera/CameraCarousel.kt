@@ -3,6 +3,7 @@
 package com.sginnovations.asked.ui.ui_components.camera
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -35,12 +36,17 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.GrammarCategoryOCR
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.SummaryCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
+private const val TAG = "sliderList"
 @Composable
 fun CameraCarousel(
     modifier: Modifier = Modifier,
@@ -48,15 +54,15 @@ fun CameraCarousel(
     vmToken: TokenViewModel,
     controller: LifecycleCameraController,
 
-    onChangeCategory: (String) -> Unit,
+    onChangeCategory: (CategoryOCR) -> Unit,
 
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val pagerState = rememberPagerState(initialPage = 0)
+    val pagerState = rememberPagerState(initialPage = 3)
 
-    val sliderList = listOf(Text, Math)
+    val sliderList = listOf(GrammarCategoryOCR,SummaryCategoryOCR,TranslateCategoryOCR, TextCategoryOCR, MathCategoryOCR)
 
     HorizontalPager(
         count = sliderList.size,
@@ -70,19 +76,21 @@ fun CameraCarousel(
         val alpha by animateFloatAsState(targetAlpha)
         val scale by animateFloatAsState(targetScale)
 
-        onChangeCategory(sliderList[pagerState.currentPage].root)
+        Log.d(TAG, "sliderList: ${sliderList[pagerState.currentPage]}")
+        onChangeCategory(sliderList[pagerState.currentPage])
 
         val mathCostToken = vmToken.getCameraMathTokens()
 
         // Tokens Cost Subtitle
         val tokenCost = when (sliderList[item].root) {
-            Text.root -> "Free"
-            Math.root ->
+            TextCategoryOCR.root -> "Free"
+            MathCategoryOCR.root ->
                 if (mathCostToken == "0") {
                     "Free"
                 } else {
                     mathCostToken
                 }
+
             else -> {
                 "Free"
             }
@@ -106,7 +114,7 @@ fun CameraCarousel(
                         this.scaleX = scale
                         this.scaleY = scale
                     },
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleSmall
             )
             AnimatedVisibility(
                 visible = isSelected,
@@ -132,7 +140,7 @@ fun CameraCarousel(
 
             PhotoButton(
                 modifier = Modifier.scale(if (isSelected) 1f else 0.8f),
-                category = sliderList[item],
+                categoryOCR = sliderList[item],
                 controller = controller,
 
                 isSelected = isSelected,

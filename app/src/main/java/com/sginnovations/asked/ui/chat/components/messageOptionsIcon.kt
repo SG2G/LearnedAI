@@ -37,7 +37,7 @@ fun messageOptionsIcon(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.copy_svgrepo_com),
-            contentDescription = "Copiar texto",
+            contentDescription = "Copy text",
             tint = iconColor,
             modifier = Modifier
                 .size(20.dp)
@@ -48,12 +48,14 @@ fun messageOptionsIcon(
                                 targetColor = activeIconColor
                                 delay(200)
                                 targetColor = noActiveIconColor
+                                onSetClip()
                             }
                         },
                         onPress = {
                             targetColor = activeIconColor
                             tryAwaitRelease()
                             targetColor = noActiveIconColor
+                            onSetClip()
                         }
                     )
                 }

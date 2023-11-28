@@ -1,6 +1,7 @@
 package com.sginnovations.asked.ui.main_bottom_bar.camera
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.background
@@ -18,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,8 +30,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,8 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
 import com.sginnovations.asked.ui.ui_components.camera.CameraExamplesDialog
 import com.sginnovations.asked.ui.ui_components.camera.CameraPreview
@@ -69,14 +68,14 @@ fun CameraStateFul(
         }
     )
 
-    val cameraOCRCategory = vmCamera.cameraOCRCategory
+    val cameraCategoryOCR = vmCamera.cameraCategoryOCR
     val showPDFWorkingOn = remember { mutableStateOf(false) }
     val showCategoryExamples = remember { mutableStateOf(false) }
 
     if (cameraPermissionGranted.value) {
         CameraStateLess(
             vmToken = vmToken,
-            cameraOCRCategory = cameraOCRCategory,
+            cameraCategoryOCR = cameraCategoryOCR,
 
             onGetPhotoGallery = { onGetPhotoGallery() },
             onPhotoTaken = { bitmap ->
@@ -91,8 +90,9 @@ fun CameraStateFul(
                 showCategoryExamples.value = true
             },
 
-            ) { category ->
-            vmCamera.cameraOCRCategory.value = category
+            ) { categoryOCR ->
+            Log.d(TAG, "categoryOCR prefix: $categoryOCR")
+            vmCamera.cameraCategoryOCR.value = categoryOCR
         }
         /**
          * Shows
@@ -104,7 +104,7 @@ fun CameraStateFul(
             CameraExamplesDialog(
                 onDismissRequest = { showCategoryExamples.value = false },
 
-                cameraOCRCategory = cameraOCRCategory,
+                cameraCategoryOCR = cameraCategoryOCR,
             )
         }
     }
@@ -113,7 +113,7 @@ fun CameraStateFul(
 @Composable
 fun CameraStateLess(
     vmToken: TokenViewModel,
-    cameraOCRCategory: MutableState<String>,
+    cameraCategoryOCR: MutableState<CategoryOCR>,
 
     onGetPhotoGallery: () -> Unit,
     onPhotoTaken: (Bitmap) -> Unit,
@@ -121,7 +121,7 @@ fun CameraStateLess(
 
     onShowCategoryExamples: () -> Unit,
 
-    onChangeCategory: (String) -> Unit,
+    onChangeCategory: (CategoryOCR) -> Unit,
 ) {
     val context = LocalContext.current
     val tokens = vmToken.tokens.collectAsStateWithLifecycle()
@@ -151,9 +151,9 @@ fun CameraStateLess(
             verticalAlignment = Alignment.Top,
         ) {
             Text(
-                text = when (cameraOCRCategory.value) {
-                    Text.root -> "" // TODO TRANSLATE
-                    Math.root -> stringResource(R.string.camera_math_examples)
+                text = when (cameraCategoryOCR.value?.root) {
+                    TextCategoryOCR.root -> ""
+                    MathCategoryOCR.root -> stringResource(R.string.camera_math_examples)
                     else -> ""
 
                 },
@@ -184,9 +184,9 @@ fun CameraStateLess(
                 ) {
                     Text(
                         text =
-                        when (cameraOCRCategory.value) {
-                            Text.root -> stringResource(R.string.camera_tip_take_a_photo_of_a_text_based_problem)
-                            Math.root -> stringResource(R.string.camera_tip_take_a_photo_of_math_problems)
+                        when (cameraCategoryOCR.value?.root) {
+                            TextCategoryOCR.root -> stringResource(R.string.camera_tip_take_a_photo_of_a_text_based_problem)
+                            MathCategoryOCR.root -> stringResource(R.string.camera_tip_take_a_photo_of_math_problems)
                             else -> ""
                         },
                         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -215,6 +215,9 @@ fun CameraStateLess(
 
                 Spacer(modifier = Modifier.width(16.dp))
 
+                /**
+                 * Choose OCR Camera
+                 */
                 CameraCarousel(
                     modifier = Modifier
                         .height(148.dp)
@@ -222,7 +225,7 @@ fun CameraStateLess(
                     vmToken = vmToken,
                     controller = controller,
 
-                    onChangeCategory = { onChangeCategory(it) }
+                    onChangeCategory = { categoryOCR -> onChangeCategory(categoryOCR) }
                 ) { onPhotoTaken(it) }
 
                 Spacer(modifier = Modifier.width(16.dp))

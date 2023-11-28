@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Circle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,14 +31,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.Category
-import com.sginnovations.asked.data.Math
-import com.sginnovations.asked.data.Text
+import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.GrammarCategoryOCR
+import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.SummaryCategoryOCR
+import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 
 @Composable
 fun PhotoButton(
     modifier: Modifier = Modifier,
-    category: Category,
+    categoryOCR: CategoryOCR,
     controller: LifecycleCameraController,
 
     isSelected: Boolean,
@@ -95,13 +97,27 @@ fun PhotoButton(
                     modifier = Modifier
                         .size(28.dp)
                         .alpha(if (!isSelected) 0.8f else 1f),
-                    painter = when (category.root) {
-                        Text.root -> painterResource(id = R.drawable.text_camera)
-                        Math.root -> painterResource(id = R.drawable.math_camera)
+                    painter = when (categoryOCR.prefix) {
+                        TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
+                        MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
+
+                        TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.translate_camera)
+                        SummaryCategoryOCR.prefix -> painterResource(id = R.drawable.summary_camera)
+                        GrammarCategoryOCR.prefix -> painterResource(id = R.drawable.grammar_camera)
+
                         else -> painterResource(id = R.drawable.text_camera)
                     },
                     contentDescription = "Inner Icon",
-                    tint = Color.LightGray
+                    tint = when (categoryOCR.prefix) {
+                        TextCategoryOCR.prefix -> Color.Yellow
+                        MathCategoryOCR.prefix -> Color.Blue
+
+                        TranslateCategoryOCR.prefix -> Color.Red
+                        SummaryCategoryOCR.prefix -> Color.Blue
+                        GrammarCategoryOCR.prefix -> Color.Yellow
+
+                        else -> Color.Blue
+                    },
 
                 )
             }

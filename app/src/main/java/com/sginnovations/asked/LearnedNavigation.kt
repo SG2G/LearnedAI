@@ -129,9 +129,8 @@ fun LearnedNavigation(
                 LearnedAuth(
                     vmAuth = vmAuth,
                 ) {
-                    vmNavigator.navigateAuthToCamera(navController)
-
                     scope.launch {
+                        vmNavigator.navigateAuthToCamera(navController)
                         Log.i(TAG, "Calling SetUp when sign in")
                         vmAuth.userJustLogged()
                         vmToken.startTokenListener()
@@ -209,8 +208,8 @@ fun LearnedNavigation(
 
                     navController = navController,
 
-                    onNavigateChat = { vmNavigator.navigateChat(navController) },
-                    onNavigateNewChat = { vmNavigator.navigateNewChat(navController) }
+                    onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
+                    onNavigateNewChat = { scope.launch { vmNavigator.navigateNewChat(navController) } }
                 )
             }
             /**
@@ -222,7 +221,7 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     vmAds = vmAds,
 
-                    onNavigateChat = { vmNavigator.navigateChat(navController) }
+                    onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } }
                 )
             }
             /**
