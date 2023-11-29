@@ -6,17 +6,13 @@ import android.content.ContextWrapper
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +30,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.CategoryOCR
@@ -43,7 +38,7 @@ import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
-import com.sginnovations.asked.ui.crop.components.RotatingText
+import com.sginnovations.asked.ui.crop.components.IsLoadingCrop
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
@@ -169,43 +164,6 @@ fun CropStateFul(
 }
 
 @Composable
-private fun IsLoadingCrop() {
-    Log.d(TAG, "CircularProgressIndicator")
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .zIndex(10f),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.padding(72.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box {
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(
-                            Color.DarkGray.copy(alpha = 0.4f),
-                            RoundedCornerShape(15.dp)
-                        )
-                )
-                Column(
-                    modifier = Modifier.padding(8.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator()
-                    RotatingText()
-                }
-            }
-
-        }
-    }
-}
-
-@Composable
 fun CropStateLess(
     photoImageBitmap: MutableState<ImageBitmap>,
     navController: NavController,
@@ -323,7 +281,7 @@ suspend fun sendNewMessage(
     vmChat: ChatViewModel,
 
     cameraCategoryOCR: MutableState<CategoryOCR>,
-    text: String,
+    text: String?,
 
     onNavigateChat: () -> Unit,
 ) {
@@ -341,7 +299,7 @@ suspend fun sendNewMessage(
                 TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context)
                 SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getPrefix(context)
                 GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getPrefix(context)
-                else -> {"else"}
+                else -> {""}
             }
             Log.d(TAG, "sendNewMessage: cameraCategoryOCR -> ${cameraCategoryOCR.value.prefix} prefix-> $prefix")
             // GPT call

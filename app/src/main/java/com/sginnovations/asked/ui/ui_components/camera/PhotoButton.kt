@@ -109,12 +109,12 @@ fun PhotoButton(
                     },
                     contentDescription = "Inner Icon",
                     tint = when (categoryOCR.prefix) {
-                        TextCategoryOCR.prefix -> Color.Yellow
-                        MathCategoryOCR.prefix -> Color.Blue
+                        TextCategoryOCR.prefix -> Color(0xFFffda9e)
+                        MathCategoryOCR.prefix -> Color(0xFFb0c2f2)
 
-                        TranslateCategoryOCR.prefix -> Color.Red
-                        SummaryCategoryOCR.prefix -> Color.Blue
-                        GrammarCategoryOCR.prefix -> Color.Yellow
+                        TranslateCategoryOCR.prefix -> Color(0xFFff6961)
+                        SummaryCategoryOCR.prefix -> Color(0xFFA2C8CC)
+                        GrammarCategoryOCR.prefix -> Color(0xFFb0f2c2)
 
                         else -> Color.Blue
                     },

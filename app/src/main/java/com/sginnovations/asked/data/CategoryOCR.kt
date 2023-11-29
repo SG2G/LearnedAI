@@ -1,7 +1,7 @@
 package com.sginnovations.asked.data
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
+import androidx.compose.ui.text.intl.Locale
 import com.sginnovations.asked.R
 
 interface CategoryOCR {
@@ -32,18 +32,21 @@ object TextCategoryOCR : CategoryOCR {
 object TranslateCategoryOCR : CategoryOCR {
     override val root = "Text"
     override val prefix = "Translate"
-    override fun getName(context: Context) = "Translate"
-    override fun getPrefix(context: Context) = "Translate this text: "
+    override fun getName(context: Context) = context.getString(R.string.category_translate)
+    override fun getPrefix(context: Context) =
+        context.getString(R.string.category_prefix_translate_to_this_text, Locale.current.language)
 }
 object SummaryCategoryOCR : CategoryOCR {
     override val root = "Text"
     override val prefix = "Summary"
-    override fun getName(context: Context) = "Summary"
-    override fun getPrefix(context: Context) = "Summary this text: "
+    override fun getName(context: Context) = context.getString(R.string.category_summary)
+    override fun getPrefix(context: Context) =
+        context.getString(R.string.category_prefix_summary_this_text)
 }
 object GrammarCategoryOCR : CategoryOCR {
     override val root = "Text"
     override val prefix = "Grammar"
-    override fun getName(context: Context) = "Grammar"
-    override fun getPrefix(context: Context) = "Correct the grammar: "
+    override fun getName(context: Context) = context.getString(R.string.category_grammar)
+    override fun getPrefix(context: Context) =
+        context.getString(R.string.category_prefix_correct_the_grammar)
 }

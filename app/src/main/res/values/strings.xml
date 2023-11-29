@@ -81,7 +81,7 @@
     <string name="gallery_process_math_problem">Math based problem</string>
     <string name="subscription_subtitle_load_pdf_gpt_4_turbo">GPT 4 Turbo</string>
     <string name="update_critical_updates_required">Critical Updates Required</string>
-    <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">There are critical updates avaliable. Please update the app to apply these changes.</string>
+    <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">There are critical updates available. Please update the app to apply these changes.</string>
     <string name="update_btn_update">Update</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Hmm, it seems like there\'s nothing here.</string>
     <string name="chat_thinking">Thinking…</string>
@@ -104,5 +104,14 @@
     <string name="loading_phrase_4">Wait a sec, we\'re teaching the robots to do your math!</string>
     <string name="loading_phrase_5">Sit tight, we\'re turning coffee into solutions!</string>
     <string name="asked_subject_your_custom_subject_my_uid">Your Custom Subject. My uid: %1$s</string>
+    <string name="category_prefix_translate_to_this_text">"Translate to %1$s this text: "</string>
+    <string name="category_prefix_summary_this_text">"Summary this text: "</string>
+    <string name="category_prefix_correct_the_grammar">"Correct the grammar: "</string>
+    <string name="category_translate">Translate</string>
+    <string name="category_summary">Summary</string>
+    <string name="category_grammar">Correct</string>
+    <string name="camera_tip_take_photos_to_translate_the_text">Take photos to translate the text</string>
+    <string name="camera_tip_take_photos_to_correct">Take photos to correct the text</string>
+    <string name="camera_tip_take_photos_to_make_a_summary">Take photos to make a summary</string>
 
 </resources>

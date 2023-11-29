@@ -38,8 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.CategoryOCR
+import com.sginnovations.asked.data.GrammarCategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
 import com.sginnovations.asked.ui.ui_components.camera.CameraExamplesDialog
 import com.sginnovations.asked.ui.ui_components.camera.CameraPreview
@@ -151,7 +154,7 @@ fun CameraStateLess(
             verticalAlignment = Alignment.Top,
         ) {
             Text(
-                text = when (cameraCategoryOCR.value?.root) {
+                text = when (cameraCategoryOCR.value.root) {
                     TextCategoryOCR.root -> ""
                     MathCategoryOCR.root -> stringResource(R.string.camera_math_examples)
                     else -> ""
@@ -184,12 +187,15 @@ fun CameraStateLess(
                 ) {
                     Text(
                         text =
-                        when (cameraCategoryOCR.value?.root) {
-                            TextCategoryOCR.root -> stringResource(R.string.camera_tip_take_a_photo_of_a_text_based_problem)
-                            MathCategoryOCR.root -> stringResource(R.string.camera_tip_take_a_photo_of_math_problems)
+                        when (cameraCategoryOCR.value.prefix) {
+                            TextCategoryOCR.prefix -> stringResource(R.string.camera_tip_take_a_photo_of_a_text_based_problem)
+                            MathCategoryOCR.prefix -> stringResource(R.string.camera_tip_take_a_photo_of_math_problems)
+                            TranslateCategoryOCR.prefix -> stringResource(R.string.camera_tip_take_photos_to_translate_the_text)
+                            SummaryCategoryOCR.prefix -> stringResource(R.string.camera_tip_take_photos_to_make_a_summary)
+                            GrammarCategoryOCR.prefix -> stringResource(R.string.camera_tip_take_photos_to_correct)
                             else -> ""
                         },
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = Color.White,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier
                             .padding(4.dp)

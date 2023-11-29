@@ -100,4 +100,13 @@
     <string name="loading_phrase_4">Espera un segundo, ¡estamos enseñándole a los robots a hacer tus matemáticas!</string>
     <string name="loading_phrase_5">Mantente tranquilo, ¡estamos convirtiendo el café en soluciones!</string>
     <string name="asked_subject_your_custom_subject_my_uid">Tu asunto personalizado. Mi UID: %1$s</string>
+    <string name="category_prefix_translate_to_this_text">"Traduce al %1$s este texto:  "</string>
+    <string name="category_prefix_summary_this_text">"Resume este texto: "</string>
+    <string name="category_prefix_correct_the_grammar">"Corrige la gramatica: "</string>
+    <string name="category_translate">Traducir</string>
+    <string name="category_summary">Resumir</string>
+    <string name="category_grammar">Corregir</string>
+    <string name="camera_tip_take_photos_to_translate_the_text">Tomar fotos para traducir el texto</string>
+    <string name="camera_tip_take_photos_to_make_a_summary">Toma fotos para hacer un resumen</string>
+    <string name="camera_tip_take_photos_to_correct">Toma fotos para corregir el texto.</string>
 </resources>
