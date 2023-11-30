@@ -18,7 +18,11 @@ fun RotatingText() {
         stringResource(R.string.loading_phrase_2),
         stringResource(R.string.loading_phrase_3),
         stringResource(R.string.loading_phrase_4),
-        stringResource(R.string.loading_phrase_5)
+        stringResource(R.string.loading_phrase_5),
+        stringResource(R.string.loading_phrase_6),
+        stringResource(R.string.loading_phrase_7),
+        stringResource(R.string.loading_phrase_8),
+        stringResource(R.string.loading_phrase_9),
     )
 
     val index = remember { mutableIntStateOf(0) }

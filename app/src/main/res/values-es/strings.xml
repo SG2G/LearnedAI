@@ -109,4 +109,8 @@
     <string name="camera_tip_take_photos_to_translate_the_text">Tomar fotos para traducir el texto</string>
     <string name="camera_tip_take_photos_to_make_a_summary">Toma fotos para hacer un resumen</string>
     <string name="camera_tip_take_photos_to_correct">Toma fotos para corregir el texto.</string>
+    <string name="loading_phrase_6">" Procesando... ¡como el café del lunes por la mañana! Pero más rápido, lo prometemos"</string>
+    <string name="loading_phrase_7">¡Estamos cazando palabras esquivas y comas rebeldes! Se paciente, estarán en orden pronto</string>
+    <string name="loading_phrase_8">¡Esperar! Estamos enseñando a nuestros algoritmos a comprender los emojis. Pronto podrás traducir tus documentos a un lenguaje completamente emoji</string>
+    <string name="loading_phrase_9">¡Espera un momento! Estamos desenredando los cables de red, casi listos para revelar el texto.</string>
 </resources>

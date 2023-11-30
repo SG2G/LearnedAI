@@ -137,8 +137,6 @@ fun CropStateFul(
                         onNavigateNewChat()
                     } else {
                         scope.launch {
-                            while (text.value == "") delay(200)
-
                             /**
                              * Send message instant crop
                              */
@@ -152,9 +150,10 @@ fun CropStateFul(
 
                                 cameraCategoryOCR,
                                 text.value,
-                            ) {
-                                onNavigateChat()
-                            }
+
+                                onNavigateChat = { onNavigateChat() },
+                                onNavigateNewChat = { onNavigateNewChat() }
+                            )
                         }
                     }
                 }
@@ -284,41 +283,50 @@ suspend fun sendNewMessage(
     text: String?,
 
     onNavigateChat: () -> Unit,
+    onNavigateNewChat: () -> Unit,
 ) {
+    if (text == "null" || text == "") {
+        Log.d(TAG, "sendNewMessage: text == \"null\"")
+        onNavigateNewChat()
+    } else {
+        Log.d(TAG, "sendNewMessage: text not null")
+        withContext(Dispatchers.IO) {
+            // New Message
+            if (NetworkUtils.isOnline(context)) {
+                vmCamera.isLoading.value = true
+                // Show ad
+                if (activity != null) {
+                    vmAds.showInterstitialAd(activity)
+                }
 
-    withContext(Dispatchers.IO) {
-        // New Message
-        if (NetworkUtils.isOnline(context)) {
-            vmCamera.isLoading.value = true
-            // Show ad
-            if (activity != null) {
-                vmAds.showInterstitialAd(activity)
+                val prefix = when (cameraCategoryOCR.value.prefix) {
+                    TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context)
+                    SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getPrefix(context)
+                    GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getPrefix(context)
+                    else -> ""
+                }
+                Log.d(
+                    TAG,
+                    "sendNewMessage: cameraCategoryOCR -> ${cameraCategoryOCR.value.prefix} prefix-> $prefix"
+                )
+                // GPT call
+                val deferred = async { vmChat.sendMessageToOpenaiApi(prefix + text) }
+                deferred.await()
+
+                // Token cost of the call
+                try {
+                    vmChat.lessTokenNewConversationCheckPremium()
+                } catch (e: Exception) {
+                    // NewConversation tokens cost failed
+                    e.printStackTrace()
+                }
+
+                vmCamera.isLoading.value = false
+
+                onNavigateChat()
+            } else {
+                Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
             }
-
-            val prefix = when (cameraCategoryOCR.value.prefix) {
-                TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context)
-                SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getPrefix(context)
-                GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getPrefix(context)
-                else -> {""}
-            }
-            Log.d(TAG, "sendNewMessage: cameraCategoryOCR -> ${cameraCategoryOCR.value.prefix} prefix-> $prefix")
-            // GPT call
-            val deferred = async { vmChat.sendMessageToOpenaiApi(prefix + text) }
-            deferred.await()
-
-            // Token cost of the call
-            try {
-                vmChat.lessTokenNewConversationCheckPremium()
-            } catch (e: Exception) {
-                // NewConversation tokens cost failed
-                e.printStackTrace()
-            }
-
-            vmCamera.isLoading.value = false
-
-            onNavigateChat()
-        } else {
-            Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
         }
     }
 }

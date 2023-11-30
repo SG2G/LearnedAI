@@ -20,12 +20,13 @@ class InputImageToText @Inject constructor() {
                 .addOnSuccessListener { visionText ->
 
                     resultText = visionText.text
+                    if (resultText.isEmpty()) resultText = "null"
                     Log.i(TAG,"getTextFromImage: Image to TEXT process SUCCESSFUL. $resultText")
                     continuation.resume(resultText)
                 }
                 .addOnFailureListener { e ->
 
-                    resultText = "The process to RECOGNIZE the TEXT on IMAGE FAILED. :("
+                    resultText = "Something Failed"
                     Log.i(TAG,"getTextFromImage: The process to RECOGNIZE the TEXT on IMAGE FAILED. :(")
 
                     e.printStackTrace()
