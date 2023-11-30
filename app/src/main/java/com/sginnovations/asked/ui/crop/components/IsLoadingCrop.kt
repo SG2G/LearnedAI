@@ -35,7 +35,7 @@ fun IsLoadingCrop() {
                     modifier = Modifier
                         .matchParentSize()
                         .background(
-                            Color.DarkGray.copy(alpha = 0.4f),
+                            Color.DarkGray.copy(alpha = 0.8f),
                             RoundedCornerShape(15.dp)
                         )
                 )
