@@ -6,7 +6,9 @@ import android.content.ContextWrapper
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -80,6 +82,9 @@ fun CropStateFul(
 
     val instantCrop = remember { mutableStateOf(false) }
 
+//    val retakeBtnEnabled = remember { mutableStateOf(true) }
+//    val cropBtnEnabled = remember { mutableStateOf(true) }
+
     fun Context.getActivity(): Activity? {
         return when (this) {
             is Activity -> this
@@ -89,8 +94,6 @@ fun CropStateFul(
     }
 
     val activity = context.getActivity()
-
-    if (isLoading.value) IsLoadingCrop()
 
     LaunchedEffect(cameraCategoryOCR.value) {
         Log.d(TAG, "cameraCategoryOCR: ${cameraCategoryOCR.value}")
@@ -107,19 +110,24 @@ fun CropStateFul(
     }
 
     /**
-     *
+     * CropStateLess
      */
     CropStateLess(
         photoImageBitmap = photoImageBitmap,
         navController = navController,
 
-        onImageCropped = { croppedImage -> //TODO CROP VIEWMODEL
-            // Delete the text
-            vmCamera.imageToText.value = ""
-            text.value = ""
+        cameraCategoryOCR = cameraCategoryOCR,
 
-            Log.d(TAG, "CropStateFul start: ${text.value}")
+        isLoading = isLoading,
 
+        ) { croppedImage -> //TODO CROP VIEWMODEL
+        // Delete the text
+        vmCamera.imageToText.value = ""
+        text.value = ""
+
+        Log.d(TAG, "CropStateFul start: ${text.value}")
+
+        scope.launch {
             /**
              * GET text OCR
              */
@@ -149,7 +157,7 @@ fun CropStateFul(
                                 vmChat,
 
                                 cameraCategoryOCR,
-                                text.value,
+                                text,
 
                                 onNavigateChat = { onNavigateChat() },
                                 onNavigateNewChat = { onNavigateNewChat() }
@@ -159,13 +167,21 @@ fun CropStateFul(
                 }
             )
         }
-    )
+    }
+    /**
+     * IsLoading
+     */
+    if (isLoading.value) IsLoadingCrop()
 }
 
 @Composable
 fun CropStateLess(
     photoImageBitmap: MutableState<ImageBitmap>,
     navController: NavController,
+
+    cameraCategoryOCR: MutableState<CategoryOCR>,
+
+    isLoading: MutableState<Boolean>,
 
     onImageCropped: (ImageBitmap) -> Unit,
 ) {
@@ -183,6 +199,7 @@ fun CropStateLess(
 
     val cropifyOption by remember { mutableStateOf(cropifyOptions) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
+
 
     suspend fun cropImage() {
         Log.d(TAG, "cropImage, starting loop until not null")
@@ -220,6 +237,35 @@ fun CropStateLess(
     )
 
     /**
+     * Message
+     */
+    if (cameraCategoryOCR.value == MathCategoryOCR || cameraCategoryOCR.value == TextCategoryOCR) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
+                    .padding(horizontal = 4.dp),
+            ) {
+                Text(
+                    text = when (cameraCategoryOCR.value) {
+                        MathCategoryOCR -> stringResource(R.string.try_to_crop_just_one_problem)
+                        else -> stringResource(R.string.try_to_crop_just_one_problem)
+                    },
+                    color = Color.White,
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .padding(4.dp)
+                )
+            }
+        }
+    }
+    /**
      * UI Layout
      */
     Row(
@@ -239,7 +285,8 @@ fun CropStateLess(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary)
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary),
+            enabled = !isLoading.value
         ) {
             Text(
                 text = stringResource(R.string.crop_retake),
@@ -250,13 +297,16 @@ fun CropStateLess(
         }
 
         Button(
-            onClick = { cropifyState.crop() },
+            onClick = {
+                cropifyState.crop()
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
+            enabled = !isLoading.value
         ) {
             Text(
                 text = stringResource(R.string.crop_crop),
@@ -267,6 +317,7 @@ fun CropStateLess(
         }
     }
 }
+
 
 /**
  * CAFDWBAHIUF
@@ -280,13 +331,15 @@ suspend fun sendNewMessage(
     vmChat: ChatViewModel,
 
     cameraCategoryOCR: MutableState<CategoryOCR>,
-    text: String?,
+    text: MutableState<String>,
 
     onNavigateChat: () -> Unit,
     onNavigateNewChat: () -> Unit,
 ) {
-    if (text == "null" || text == "") {
-        Log.d(TAG, "sendNewMessage: text == \"null\"")
+    while (!vmCamera.textReady.value) delay(200)
+
+    if (text.value == "null" || text.value == "") {
+        Log.d(TAG, "sendNewMessage: text == ${text.value}")
         onNavigateNewChat()
     } else {
         Log.d(TAG, "sendNewMessage: text not null")
@@ -310,7 +363,7 @@ suspend fun sendNewMessage(
                     "sendNewMessage: cameraCategoryOCR -> ${cameraCategoryOCR.value.prefix} prefix-> $prefix"
                 )
                 // GPT call
-                val deferred = async { vmChat.sendMessageToOpenaiApi(prefix + text) }
+                val deferred = async { vmChat.sendMessageToOpenaiApi(prefix + text.value) }
                 deferred.await()
 
                 // Token cost of the call
@@ -331,7 +384,7 @@ suspend fun sendNewMessage(
     }
 }
 
-fun getTextFromCroppedImage(
+suspend fun getTextFromCroppedImage(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
     vmToken: TokenViewModel,
@@ -358,7 +411,8 @@ fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_MATH")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraCategoryOCR.value = cameraCategoryOCR.value//TODO LIADA CATEDRALICIA PARTE 2
+            vmCamera.cameraCategoryOCR.value =
+                cameraCategoryOCR.value//TODO LIADA CATEDRALICIA PARTE 2
             vmChat.categoryOCR.value = cameraCategoryOCR.value
 
             vmCamera.getMathFromImage(croppedImage)

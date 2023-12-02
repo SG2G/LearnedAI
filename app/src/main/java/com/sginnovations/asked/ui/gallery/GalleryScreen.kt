@@ -29,14 +29,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
+import com.sginnovations.asked.data.GrammarCategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.Soon
+import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CheckPermissions
 import com.sginnovations.asked.viewmodel.CameraViewModel
 
@@ -114,83 +120,70 @@ fun GalleryStateFull(
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center
             )
-            /**
-             * Process whit Text
-             */
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = {
-                        vmCamera.cameraCategoryOCR.value = TextCategoryOCR
-                        launcher.launch("image/*")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(148.dp)
-                        .padding(16.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
-                ) {
-                    Column {
-                        Text(
-                            modifier = Modifier.fillMaxWidth().weight(1f),
-                            text = stringResource(R.string.gallery_process_text_based_problem),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleSmall,
-                            textAlign = TextAlign.Center,
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.gallery_book),
-                            contentDescription = null,
-                            alignment = Alignment.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .size(48.dp)
-                                .padding(4.dp)
-                        )
-                    }
 
-                }
-                /**
-                 * Process whit Math
-                 */
-                Button(
-                    onClick = {
-                        vmCamera.cameraCategoryOCR.value = MathCategoryOCR
-                        launcher.launch("image/*")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(148.dp)
-                        .padding(16.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
+            // List of OCR categories
+            val ocrCategories = listOf(
+                TextCategoryOCR to R.drawable.text_camera,
+                MathCategoryOCR to R.drawable.math_camera,
+                TranslateCategoryOCR to R.drawable.translate_camera,
+                SummaryCategoryOCR to R.drawable.summary_camera,
+                GrammarCategoryOCR to R.drawable.grammar_camera,
+                Soon to R.drawable.asked30,
+                // Add more categories if needed
+            )
+
+            // Create rows with two items each
+            ocrCategories.chunked(2).forEach { rowItems ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column {
-                        Text(
-                            modifier = Modifier.fillMaxWidth().weight(1f),
-                            text = stringResource(R.string.gallery_process_math_problem),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleSmall,
-                            textAlign = TextAlign.Center
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.gallery_calculator),
-                            contentDescription = null,
-                            alignment = Alignment.Center,
+                    rowItems.forEach { (category, iconResId) ->
+                        Button(
+                            onClick = {
+                                vmCamera.cameraCategoryOCR.value = category
+                                launcher.launch("image/*")
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .size(48.dp)
-                                .padding(4.dp)
-                        )
+                                .height(148.dp)
+                                .padding(16.dp)
+                                .weight(1f),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                            )
+                        ) {
+                            Column {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f),
+                                    text = when (category) {
+                                        TextCategoryOCR -> stringResource(R.string.gallery_process_text_based_problem)
+                                        MathCategoryOCR -> stringResource(R.string.gallery_process_math_problem)
+                                        TranslateCategoryOCR -> "Translate a text"
+                                        SummaryCategoryOCR -> "Summary a text"
+                                        GrammarCategoryOCR -> "Correct the grammar"
+                                        // Add more category-specific text if needed
+                                        else -> {"Soon..."}
+                                    },
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    textAlign = TextAlign.Center,
+                                )
+                                Image(
+                                    painter = painterResource(id = iconResId),
+                                    contentDescription = null,
+                                    alignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .size(48.dp)
+                                        .padding(4.dp),
+                                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                                )
+                            }
+                        }
                     }
                 }
             }

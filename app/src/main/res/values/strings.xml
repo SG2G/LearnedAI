@@ -117,5 +117,6 @@
     <string name="loading_phrase_7">We\'re hunting elusive words and rebellious commas! Be patient; they\'ll be in order soon</string>
     <string name="loading_phrase_8">Hold on! We\'re teaching our algorithms to understand emojis. Soon, you\'ll be able to translate your documents into a completely emoji language</string>
     <string name="loading_phrase_9">Wait a moment! We\'re untangling the network cables, almost ready to reveal the text</string>
+    <string name="try_to_crop_just_one_problem">Try to crop just one problem</string>
 
 </resources>

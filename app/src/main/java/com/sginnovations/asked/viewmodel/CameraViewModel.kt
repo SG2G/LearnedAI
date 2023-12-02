@@ -3,6 +3,7 @@ package com.sginnovations.asked.viewmodel
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
@@ -16,6 +17,7 @@ import com.sginnovations.asked.repository.MathpixRepository
 import com.sginnovations.asked.repository.MlkitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,8 +31,10 @@ class CameraViewModel @Inject constructor(
 ) : ViewModel() {
 
     val imageToText = mutableStateOf("")
+    val imageConfidence = mutableDoubleStateOf(0.0)
 
     val isLoading = mutableStateOf(false)
+    val textReady = mutableStateOf(false)
 
     val cameraCategoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
@@ -42,16 +46,22 @@ class CameraViewModel @Inject constructor(
     fun getTextFromImage(imageBitmap: ImageBitmap) {
         Log.d(TAG, "getTextFromImage")
         isLoading.value = true
+        textReady.value = false
         viewModelScope.launch {
             imageToText.value = mlkitRepository.getTextFromImage(imageBitmap)
+            textReady.value = true
             isLoading.value = false
         }
     }
-    fun getMathFromImage(imageBitmap: ImageBitmap) {
+    suspend fun getMathFromImage(imageBitmap: ImageBitmap) {
         Log.d(TAG, "getMathFromImage")
         isLoading.value = true
+        textReady.value = false
         viewModelScope.launch {
-            imageToText.value = mathpixRepository.getMathFromImage(imageBitmap)
+            val mathResponse = mathpixRepository.getMathFromImage(imageBitmap)
+            imageToText.value = mathResponse.text
+            imageConfidence.value = mathResponse.confidence
+            textReady.value = true
             isLoading.value = false
         }
     }
