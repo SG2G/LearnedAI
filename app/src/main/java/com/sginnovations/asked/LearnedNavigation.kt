@@ -249,6 +249,7 @@ fun LearnedNavigation(
                 },
             ) {
                 ChatStateFul(
+                    vmCamera = vmCamera,
                     vmChat = vmChat,
                     vmToken = vmToken,
                     vmAuth = vmAuth,

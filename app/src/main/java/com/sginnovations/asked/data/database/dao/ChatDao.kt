@@ -34,6 +34,7 @@ interface ChatDao {
 
     @Query("UPDATE $CONVERSATION_TABLE_NAME SET visible = 0 WHERE idConversation = :idConversation")
     suspend fun hideConversation(idConversation: Int)
+
     @Query("DELETE FROM $CONVERSATION_TABLE_NAME WHERE idConversation = :idConversation")
     suspend fun deleteConversation(idConversation: Int)
 

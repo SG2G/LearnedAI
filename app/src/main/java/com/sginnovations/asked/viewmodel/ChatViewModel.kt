@@ -110,8 +110,6 @@ class ChatViewModel @Inject constructor(
             Log.d(TAG, "hideConversation: id -> $id")
             roomRepository.hideConversation(id)
             getAllConversations()
-            delay(2000)
-            roomRepository.deleteConversation(id)
         }
     }
 

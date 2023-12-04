@@ -55,14 +55,12 @@ android {
 }
 
 dependencies {
-    //implementation ("com.github.jeziellago:compose-markdown:0.3.6")
-    //implementation("org.jetbrains:markdown:0.5.0")
-    //implementation("com.mikepenz:multiplatform-markdown-renderer-android:0.9.0")
+
+    // Markwon //
     implementation ("io.noties.markwon:core:4.6.2")
     implementation ("io.noties.markwon:ext-latex:4.6.2")
 
-
-    // EU THING //
+    // EU LAW //
     implementation("com.google.android.ump:user-messaging-platform:2.1.0")
     // Payments //
     implementation("com.android.billingclient:billing-ktx:6.0.1")

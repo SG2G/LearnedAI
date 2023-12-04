@@ -113,4 +113,5 @@
     <string name="loading_phrase_7">¡Estamos cazando palabras esquivas y comas rebeldes! Se paciente, estarán en orden pronto</string>
     <string name="loading_phrase_8">¡Esperar! Estamos enseñando a nuestros algoritmos a comprender los emojis. Pronto podrás traducir tus documentos a un lenguaje completamente emoji</string>
     <string name="loading_phrase_9">¡Espera un momento! Estamos desenredando los cables de red, casi listos para revelar el texto.</string>
+    <string name="try_to_crop_just_one_problem">Intente recortar solo un problema</string>
 </resources>

@@ -336,7 +336,7 @@ suspend fun sendNewMessage(
     onNavigateChat: () -> Unit,
     onNavigateNewChat: () -> Unit,
 ) {
-    while (!vmCamera.textReady.value) delay(200)
+    while (vmCamera.isLoading.value) delay(200)
 
     if (text.value == "null" || text.value == "") {
         Log.d(TAG, "sendNewMessage: text == ${text.value}")

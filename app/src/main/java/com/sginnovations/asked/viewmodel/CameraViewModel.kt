@@ -1,5 +1,6 @@
 package com.sginnovations.asked.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
@@ -31,10 +32,9 @@ class CameraViewModel @Inject constructor(
 ) : ViewModel() {
 
     val imageToText = mutableStateOf("")
-    val imageConfidence = mutableDoubleStateOf(0.0)
+    val textConfidence = mutableDoubleStateOf(1.0)
 
     val isLoading = mutableStateOf(false)
-    val textReady = mutableStateOf(false)
 
     val cameraCategoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
@@ -46,22 +46,18 @@ class CameraViewModel @Inject constructor(
     fun getTextFromImage(imageBitmap: ImageBitmap) {
         Log.d(TAG, "getTextFromImage")
         isLoading.value = true
-        textReady.value = false
         viewModelScope.launch {
             imageToText.value = mlkitRepository.getTextFromImage(imageBitmap)
-            textReady.value = true
             isLoading.value = false
         }
     }
     suspend fun getMathFromImage(imageBitmap: ImageBitmap) {
         Log.d(TAG, "getMathFromImage")
         isLoading.value = true
-        textReady.value = false
         viewModelScope.launch {
             val mathResponse = mathpixRepository.getMathFromImage(imageBitmap)
             imageToText.value = mathResponse.text
-            imageConfidence.value = mathResponse.confidence
-            textReady.value = true
+            textConfidence.doubleValue = mathResponse.confidence
             isLoading.value = false
         }
     }
