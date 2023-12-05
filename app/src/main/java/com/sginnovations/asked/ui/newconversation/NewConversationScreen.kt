@@ -58,7 +58,6 @@ import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "NewConversationStateFul"
@@ -74,7 +73,7 @@ fun NewConversationStateFul(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val text = remember { mutableStateOf("") }
+    val text = remember { mutableStateOf<String?>("") }
     text.value = vmCamera.imageToText.value
 
     val idConversation = vmChat.idConversation.intValue
@@ -107,13 +106,14 @@ fun NewConversationStateFul(
 
         newConversationCostToken = newConversationCostToken,
 
-        isLoading = isLoading,
+        isLoading = isLoading
 
-        onSendNewMessage = {
-            val processText = text.value
-            text.value = ""
-            vmCamera.imageToText.value = ""
+    ) {
+        val processText = text.value
+        text.value = ""
+        vmCamera.imageToText.value = ""
 
+        if (processText != null) {
             sendNewMessage(
                 scope,
                 context,
@@ -127,12 +127,12 @@ fun NewConversationStateFul(
                 onNavigateChat()
             }
         }
-    )
+    }
 }
 
 @Composable
 fun NewConversationStateLess(
-    text: MutableState<String>,
+    text: MutableState<String?>,
 
     newConversationCostToken: String,
 
@@ -249,7 +249,7 @@ fun NewConversationStateLess(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedTextField(
-                    value = text.value,
+                    value = text.value.toString(),
                     onValueChange = { text.value = it },
                     modifier = Modifier
                         .weight(1f)

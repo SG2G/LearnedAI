@@ -3,6 +3,7 @@ package com.sginnovations.asked.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sginnovations.asked.Constants.Companion.ONE_LESS_TOKEN
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,8 @@ class TokenViewModel @Inject constructor(
             }
         }
     }
+
+    fun oneLessToken() = lessTokenCheckPremium(ONE_LESS_TOKEN)
 
     fun lessTokenCheckPremium(num: Int) {
         viewModelScope.launch {

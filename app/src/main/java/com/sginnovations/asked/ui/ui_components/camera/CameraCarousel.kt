@@ -114,7 +114,7 @@ fun CameraCarousel(
                         this.scaleX = scale
                         this.scaleY = scale
                     },
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.headlineMedium
             )
             AnimatedVisibility(
                 visible = isSelected,
@@ -130,7 +130,7 @@ fun CameraCarousel(
                 ) {
                     Text(
                         text = tokenCost,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(4.dp))

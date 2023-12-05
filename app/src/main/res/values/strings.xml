@@ -76,7 +76,7 @@
     <string name="message">message</string>
     <string name="enter_your_text">Send a message.</string>
     <string name="sign_in_button_sign_in_with_google">Sign in with Google</string>
-    <string name="gallery_select_the_ocr_you_want_to_use">Select the type you want to use:</string>
+    <string name="gallery_select_the_ocr_you_want_to_use">Pick your task type</string>
     <string name="gallery_process_text_based_problem">Text based problem</string>
     <string name="gallery_process_math_problem">Math based problem</string>
     <string name="subscription_subtitle_load_pdf_gpt_4_turbo">GPT 4 Turbo</string>
@@ -113,10 +113,32 @@
     <string name="camera_tip_take_photos_to_translate_the_text">Take photos to translate the text</string>
     <string name="camera_tip_take_photos_to_correct">Take photos to correct the text</string>
     <string name="camera_tip_take_photos_to_make_a_summary">Take photos to make a summary</string>
-    <string name="loading_phrase_6">Processing... like Monday morning coffee! But faster, we promise</string>
+    <string name="loading_phrase_6">Processing… like Monday morning coffee! But faster, we promise</string>
     <string name="loading_phrase_7">We\'re hunting elusive words and rebellious commas! Be patient; they\'ll be in order soon</string>
     <string name="loading_phrase_8">Hold on! We\'re teaching our algorithms to understand emojis. Soon, you\'ll be able to translate your documents into a completely emoji language</string>
     <string name="loading_phrase_9">Wait a moment! We\'re untangling the network cables, almost ready to reveal the text</string>
-    <string name="try_to_crop_just_one_problem">Try to crop just one problem</string>
+    <string name="try_to_crop_just_one_problem">Crop just one problem</string>
+    <string name="gallery_translate_a_text">Translate a text</string>
+    <string name="gallery_summary_a_text">Make a summary</string>
+    <string name="gallery_correct_the_grammar">Correct the grammar</string>
+    <string name="gallery_soon">Soon…</string>
+    <string name="snackbar_insufficient_tokens">Insufficient Tokens</string>
+    <string name="snackbar_no_internet_connection">No Internet Connection</string>
+    <string name="snackbar_ok">Ok</string>
+    <string name="snackbar_be_careful_the_message_may_contain_errors_confidence_level">"Be careful, the message may contain errors. Confidence level: "</string>
+    <string name="snackbar_why">Why</string>
+    <string name="confidence_dialog_title">Enhance Your Results</string>
+    <string name="confidence_dialog_text">"Hey there! It seems like the photo quality might affect our accuracy. Follow these tips for better results: "</string>
+    <string name="confidence_dialog_tip1">1. Make sure the image is clear and well-lit</string>
+    <string name="confidence_dialog_tip2">2. Capture an image of a single problem</string>
+    <string name="trollmessage_1">Function not available</string>
+    <string name="trollmessage_2">Hmm, still not available</string>
+    <string name="trollmessage_3">You again? Still nothing</string>
+    <string name="trollmessage_4">What do you expect to happen?</string>
+    <string name="trollmessage_5">No, there\'s nothing more</string>
+    <string name="trollmessage_6">Hey, can you leave already?</string>
+    <string name="trollmessage_7">This is the last message</string>
+    <string name="trollmessage_8">STOP</string>
+    <string name="trollmessage_9">Seriously, go study</string>
 
 </resources>

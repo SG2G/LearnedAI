@@ -3,9 +3,13 @@
 package com.sginnovations.asked.ui.chat
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +19,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,10 +29,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cabin
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.WarningAmber
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -62,19 +70,24 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 import androidx.compose.ui.zIndex
 import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_DEFAULT
 import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_PREMIUM
 import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
+import com.sginnovations.asked.Constants.Companion.CONFIDENCE_RATE_LIMIT
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
+import com.sginnovations.asked.ui.chat.components.ConfidenceDialog
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
@@ -100,25 +113,25 @@ fun ChatStateFul(
     vmToken: TokenViewModel,
     vmAuth: AuthViewModel,
 ) {
-    val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
-    val chatAnimation = remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
+
     val messages = vmChat.messages
+    val chatAnimation = remember { mutableStateOf(false) }
 
-    val userAuth = vmAuth.userAuth.collectAsState()
+    val userAuth = vmAuth.userAuth.collectAsState() //TODO IMPROVE IT
     val userName = userAuth.value?.userName
     val userProfileUrl = userAuth.value?.profilePictureUrl
 
     val tokens = vmToken.tokens
+
     val textConfidence = vmCamera.textConfidence
+    val showConfidenceDialog = remember { mutableStateOf(false) }
+
     // Change navigator bar color
-    SideEffect {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb()
-        }
-    }
+    SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb() }
 
     LaunchedEffect(messages.value.size) {
         vmChat.setUpMessageHistory()
@@ -135,23 +148,24 @@ fun ChatStateFul(
         listState = listState,
 
         textConfidence = textConfidence,
-        resetTextConfidence = {
-            scope.launch {
-                delay(15000)
-                textConfidence.doubleValue = 1.0
-            }
-        },
+        resetTextConfidence = { scope.launch { vmCamera.resetTextConfidence() } },
 
         tokens = tokens,
 
         userName = userName,
         userProfileUrl = userProfileUrl,
 
-        ) { prompt ->
-        scope.launch {
-            vmChat.sendMessageToOpenaiApi(prompt)
-            vmToken.lessTokenCheckPremium(-1)
-        }
+        onShowConfidenceDialog = { showConfidenceDialog.value = true },
+
+        sendMessageToChatbot = { message ->
+            scope.launch {
+                vmChat.sendMessageToOpenaiApi(message)
+                vmToken.oneLessToken()
+            }
+        },
+    )
+    if (showConfidenceDialog.value) {
+        ConfidenceDialog(onDismiss = { showConfidenceDialog.value = false })
     }
 }
 
@@ -169,7 +183,8 @@ fun ChatStateLess(
     userName: String?,
     userProfileUrl: String?,
 
-    onClick: (String) -> Unit,
+    onShowConfidenceDialog: () -> Unit,
+    sendMessageToChatbot: (String) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -186,10 +201,50 @@ fun ChatStateLess(
     var userPlaceHolder by remember { mutableStateOf("") }
     val assistantPlaceHolder = stringResource(R.string.chat_thinking)
 
-    val backgroundColor = MaterialTheme.colorScheme.background
-
     var isPremium by remember { mutableStateOf(false) }
 
+    val snackbarOffset = remember { Animatable(0f) }
+
+    val backgroundColor = MaterialTheme.colorScheme.background
+
+    /**
+     * SnackBarAnimation
+     */
+    LaunchedEffect(snackbarHostState.currentSnackbarData) {
+        if (snackbarHostState.currentSnackbarData != null) {
+            // Animate snackbar in
+            snackbarOffset.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = LinearOutSlowInEasing
+                )
+            )
+        } else {
+            // Animate snackbar out
+            snackbarOffset.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = FastOutLinearInEasing
+                )
+            )
+        }
+    }
+
+    /**
+     * TextConfidence snackbar
+     */
+    LaunchedEffect(textConfidence.doubleValue) {
+        if (textConfidence.doubleValue < CONFIDENCE_RATE_LIMIT) {
+            textConfidenceWarning(context, snackbarHostState, textConfidence, resetTextConfidence)
+            resetTextConfidence()
+        }
+    }
+
+    /**
+     * Screen follow the chatbot writing going down
+     */
     LaunchedEffect(messages.value.size) {
         isPremium = scope.async { checkIsPremium() }.await()
         if (messages.value.isNotEmpty()) {
@@ -201,34 +256,32 @@ fun ChatStateLess(
         }
     }
 
-    LaunchedEffect(textConfidence.value) {
-        if (textConfidence.value < 0.7) {
-            snackbarHostState.showSnackbar(
-                message = "Be careful, the message may contain errors. Confidence level: " +
-                        "${"%.2f".format(textConfidence.doubleValue).toDouble()}",
-                actionLabel = "Ok",
-                duration = SnackbarDuration.Short
-            )
-        }
-        resetTextConfidence()
-    }
-
-    fun chatButtonClicked(text: MutableState<String>) {
+    fun sendMessage(message: MutableState<String>) {
         if (NetworkUtils.isOnline(context)) {
             if (tokens.value > 0) {
-                onClick(text.value)
+                sendMessageToChatbot(message.value)
 
-                userPlaceHolder = text.value
+                userPlaceHolder = message.value
                 chatAnimation.value = true
                 chatPlaceHolder = true
 
-                text.value = ""
+                message.value = ""
             } else {
-                Toast.makeText(context, "Insufficient Tokens", Toast.LENGTH_SHORT)
-                    .show() //TODO SCALFOL
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = context.getString(R.string.snackbar_insufficient_tokens),
+                        actionLabel = context.getString(R.string.snackbar_ok),
+                        duration = SnackbarDuration.Short
+                    )
+                }
             }
         } else {
-            Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.snackbar_no_internet_connection),
+                    duration = SnackbarDuration.Short
+                )
+            }
         }
     }
 
@@ -239,8 +292,7 @@ fun ChatStateLess(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .zIndex(13f)
-                .padding(bottom = 84.dp),
+                .zIndex(13f),
             contentAlignment = Alignment.BottomCenter
         ) {
             SnackbarHost(
@@ -248,7 +300,8 @@ fun ChatStateLess(
                 modifier = Modifier
                     .background(Color.Transparent)
                     .padding(padding)
-                    .zIndex(14f),
+                    .zIndex(14f)
+                    .offset(y = snackbarOffset.value * (-75).dp),
                 snackbar = { data ->
                     Snackbar(
                         modifier = Modifier
@@ -260,8 +313,10 @@ fun ChatStateLess(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                imageVector = Icons.Filled.WarningAmber,
-                                contentDescription = "WarningAmber"
+                                painter = painterResource(id = R.drawable.warning_svgrepo_com),
+                                contentDescription = "WarningAmber",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(24.dp)
                             )
                             Spacer(Modifier.width(8.dp))
                             Text(
@@ -269,17 +324,26 @@ fun ChatStateLess(
                                 color = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.weight(1f)
                             )
-                            IconButton(onClick = { data.dismiss() }) {
-                                data.visuals.actionLabel?.let {
+                            data.visuals.actionLabel?.let { actionLabel ->
+                                IconButton(onClick = {
+                                    when (actionLabel) {
+                                        context.getString(R.string.snackbar_why) -> {
+                                            onShowConfidenceDialog()
+                                        }
+
+                                        else -> {
+                                            data.dismiss()
+                                        }
+                                    }
+                                }) {
                                     Text(
-                                        text = it,
+                                        text = actionLabel,
                                         color = MaterialTheme.colorScheme.primary,
                                         style = MaterialTheme.typography.titleSmall
                                     )
                                 }
                             }
                         }
-
                     }
                 }
             )
@@ -418,9 +482,9 @@ fun ChatStateLess(
                         ) //TODO PREMIUM CANT SEE IT
                     )
             ) {
-                Button(onClick = { textConfidence.doubleValue = 0.6435678 }) {
-                    Text(text = "Testing")
-                }
+//                Button(onClick = { textConfidence.doubleValue = 0.3435678 }) { //TODO DELETE
+//                    Text(text = "Testing")
+//                }
                 if (!isPremium) {
                     Row(
                         modifier = Modifier
@@ -489,7 +553,7 @@ fun ChatStateLess(
                                     /**
                                      * Send message
                                      */
-                                    chatButtonClicked(text)
+                                    sendMessage(text)
 
                                 }
                             }
@@ -520,4 +584,19 @@ fun ChatStateLess(
         } // Column Free msg + Textfield
     }
 
+}
+
+private suspend fun textConfidenceWarning(
+    context: Context,
+    snackbarHostState: SnackbarHostState,
+    textConfidence: MutableDoubleState,
+    resetTextConfidence: () -> Unit,
+) {
+    snackbarHostState.showSnackbar(
+        message = context.getString(R.string.snackbar_be_careful_the_message_may_contain_errors_confidence_level) +
+                "${"%.2f".format(textConfidence.doubleValue).toDouble()}",
+        actionLabel = context.getString(R.string.snackbar_why),
+        duration = SnackbarDuration.Long
+    )
+    resetTextConfidence()
 }

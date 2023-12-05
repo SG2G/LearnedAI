@@ -15,6 +15,7 @@ import com.sginnovations.asked.ui.ui_components.topbars.CameraTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.DefaultTopBar
+import com.sginnovations.asked.ui.ui_components.topbars.GalleryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ProfileTopBar
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
@@ -51,6 +52,10 @@ fun LearnedTopBar(
         Chat.route -> ChatTopBar(
             vmTokens,
             vmChat,
+            navigateUp
+        )
+
+        Gallery.route -> GalleryTopBar(
             navigateUp
         )
 

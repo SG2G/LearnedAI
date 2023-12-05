@@ -20,6 +20,8 @@ class Constants {
         const val ROLE_USER = "user"
         const val ROLE_ASSISTANT = "assistant"
         // Chat
+        const val ONE_LESS_TOKEN = -1
+        const val CONFIDENCE_RATE_LIMIT = 0.5
         const val MATH_PREFIX_PROMPT = "Resolve step by step, print Math expressions in Markdown syntax."
         const val TEXT_PREFIX_PROMPT = ""
         // Tokens

@@ -72,7 +72,7 @@
     <string name="message">mensaje</string>
     <string name="enter_your_text">Envia un mensaje.</string>
     <string name="sign_in_button_sign_in_with_google">Inicia sesión con Google</string>
-    <string name="gallery_select_the_ocr_you_want_to_use">Seleccione el tipo que desea utilizar:</string>
+    <string name="gallery_select_the_ocr_you_want_to_use">Elige el tipo de tarea</string>
     <string name="gallery_process_text_based_problem">Problema basado en texto</string>
     <string name="gallery_process_math_problem">Problema basado en matemática</string>
     <string name="subscription_subtitle_load_pdf_gpt_4_turbo">GPT 4 Turbo</string>
@@ -113,5 +113,27 @@
     <string name="loading_phrase_7">¡Estamos cazando palabras esquivas y comas rebeldes! Se paciente, estarán en orden pronto</string>
     <string name="loading_phrase_8">¡Esperar! Estamos enseñando a nuestros algoritmos a comprender los emojis. Pronto podrás traducir tus documentos a un lenguaje completamente emoji</string>
     <string name="loading_phrase_9">¡Espera un momento! Estamos desenredando los cables de red, casi listos para revelar el texto.</string>
-    <string name="try_to_crop_just_one_problem">Intente recortar solo un problema</string>
+    <string name="try_to_crop_just_one_problem">Recorte solo un problema</string>
+    <string name="gallery_translate_a_text">Traduce un texto</string>
+    <string name="gallery_summary_a_text">Hacer un resumen</string>
+    <string name="gallery_correct_the_grammar">Corregir la gramática</string>
+    <string name="gallery_soon">Pronto...</string>
+    <string name="snackbar_insufficient_tokens">Tokens insuficientes</string>
+    <string name="snackbar_no_internet_connection">Sin conexión a Internet</string>
+    <string name="snackbar_ok">Ok</string>
+    <string name="snackbar_be_careful_the_message_may_contain_errors_confidence_level">Ten cuidado, el mensaje puede contener errores. Nivel de confianza</string>
+    <string name="snackbar_why">Por qué</string>
+    <string name="confidence_dialog_title">Mejora tus resultados</string>
+    <string name="confidence_dialog_text">Hey! Parece que la calidad de la foto podría afectar nuestra precisión. Sigue estos consejos para obtener mejores resultados:</string>
+    <string name="confidence_dialog_tip1">1. Asegúrate de que la imagen esté clara y bien iluminada</string>
+    <string name="confidence_dialog_tip2">2. Toma una foto de un solo problema</string>
+    <string name="trollmessage_1">Función no disponible</string>
+    <string name="trollmessage_2">Mmm, todavía no está disponible</string>
+    <string name="trollmessage_3">¿Tú otra vez? Todavía no hay nada</string>
+    <string name="trollmessage_4">¿Qué esperas que suceda?</string>
+    <string name="trollmessage_5">No, no hay nada más</string>
+    <string name="trollmessage_6">Oye, ¿puedes irte ya?</string>
+    <string name="trollmessage_7">Este es el último mensaje</string>
+    <string name="trollmessage_8">PARA</string>
+    <string name="trollmessage_9">En serio, ponte a estudiar</string>
 </resources>

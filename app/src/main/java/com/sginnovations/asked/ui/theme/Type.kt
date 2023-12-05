@@ -42,6 +42,8 @@ val Typography = Typography(
     ),
     headlineMedium = TextStyle(
         fontFamily = monaSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
     ),
     headlineSmall = TextStyle(
         fontFamily = monaSansFontFamily,
@@ -62,7 +64,8 @@ val Typography = Typography(
     ),
     titleSmall = TextStyle(
         fontFamily = monaSansFontFamily,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = monaSansFontFamily,

@@ -1,12 +1,14 @@
 package com.sginnovations.asked.ui.gallery
 
 import android.Manifest
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -25,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -82,6 +85,8 @@ fun GalleryStateFull(
         val hasExecuted = remember { mutableStateOf(false) }
         hasExecuted.value = false
 
+        val tryClickSoon = remember { mutableIntStateOf(0) }
+
         val launcher =
             rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
                 imageUri.value = uri
@@ -114,12 +119,6 @@ fun GalleryStateFull(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = stringResource(R.string.gallery_select_the_ocr_you_want_to_use),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center
-            )
 
             // List of OCR categories
             val ocrCategories = listOf(
@@ -128,7 +127,7 @@ fun GalleryStateFull(
                 TranslateCategoryOCR to R.drawable.translate_camera,
                 SummaryCategoryOCR to R.drawable.summary_camera,
                 GrammarCategoryOCR to R.drawable.grammar_camera,
-                Soon to R.drawable.asked30,
+                Soon to R.drawable.sign_caution_svgrepo_com,
                 // Add more categories if needed
             )
 
@@ -140,9 +139,25 @@ fun GalleryStateFull(
                 ) {
                     rowItems.forEach { (category, iconResId) ->
                         Button(
-                            onClick = {
+                            onClick = { if (category != Soon) {
+                                Log.d(TAG, "category: $category Soon $Soon ")
                                 vmCamera.cameraCategoryOCR.value = category
                                 launcher.launch("image/*")
+                            } else {
+                                when (tryClickSoon.intValue) {
+                                    0 -> showToast(context, context.getString(R.string.trollmessage_1))
+                                    1 -> showToast(context, context.getString(R.string.trollmessage_2))
+                                    2 -> showToast(context, context.getString(R.string.trollmessage_3))
+                                    3 -> showToast(context, context.getString(R.string.trollmessage_4))
+                                    4 -> showToast(context, context.getString(R.string.trollmessage_5))
+                                    5 -> showToast(context, context.getString(R.string.trollmessage_6))
+                                    6 -> showToast(context, context.getString(R.string.trollmessage_7))
+                                    7 -> showToast(context, context.getString(R.string.trollmessage_8))
+                                    else -> showToast(context,
+                                        context.getString(R.string.trollmessage_9))
+                                }
+                                tryClickSoon.intValue ++
+                            }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -162,14 +177,16 @@ fun GalleryStateFull(
                                     text = when (category) {
                                         TextCategoryOCR -> stringResource(R.string.gallery_process_text_based_problem)
                                         MathCategoryOCR -> stringResource(R.string.gallery_process_math_problem)
-                                        TranslateCategoryOCR -> "Translate a text"
-                                        SummaryCategoryOCR -> "Summary a text"
-                                        GrammarCategoryOCR -> "Correct the grammar"
+                                        TranslateCategoryOCR -> stringResource(R.string.gallery_translate_a_text)
+                                        SummaryCategoryOCR -> stringResource(R.string.gallery_summary_a_text)
+                                        GrammarCategoryOCR -> stringResource(R.string.gallery_correct_the_grammar)
                                         // Add more category-specific text if needed
-                                        else -> {"Soon..."}
+                                        else -> {
+                                            stringResource(R.string.gallery_soon)
+                                        }
                                     },
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = MaterialTheme.typography.titleSmall,
                                     textAlign = TextAlign.Center,
                                 )
                                 Image(
@@ -190,4 +207,7 @@ fun GalleryStateFull(
 
         }
     }
+}
+fun showToast(context: Context, text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }

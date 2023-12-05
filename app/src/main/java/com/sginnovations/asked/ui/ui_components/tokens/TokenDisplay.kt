@@ -94,7 +94,7 @@ fun TokenDisplay(
 //                    contentAlignment = Alignment.Center,
 //                ) {
                     Icon(
-                        modifier = Modifier.size(24.dp).padding(end = 4.dp),
+                        modifier = Modifier.size(24.dp).padding(end = 6.dp),
                         painter = painterResource(id = R.drawable.add_square_svgrepo_com),
                         contentDescription = "Add Icon",
                     )

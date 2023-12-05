@@ -78,7 +78,7 @@ fun CropStateFul(
     val isLoading = vmCamera.isLoading
 
     val text = remember { mutableStateOf("") }
-    text.value = vmCamera.imageToText.value
+    text.value = vmCamera.imageToText.value ?: ""
 
     val instantCrop = remember { mutableStateOf(false) }
 
@@ -185,8 +185,10 @@ fun CropStateLess(
 
     onImageCropped: (ImageBitmap) -> Unit,
 ) {
-    val cropifyState = rememberCropifyState()
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val cropifyState = rememberCropifyState()
 
     val cropifyOptions = CropifyOption(
         backgroundColor = Color(0xFF191c22),
@@ -200,6 +202,19 @@ fun CropStateLess(
     val cropifyOption by remember { mutableStateOf(cropifyOptions) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
+    val enabled = remember { mutableStateOf(true) }
+
+    /**
+     * Enabled btn delay
+     */
+    LaunchedEffect(isLoading.value) {
+        if (!isLoading.value) {
+            delay(1000)
+            enabled.value = true
+        } else {
+            enabled.value  = false
+        }
+    }
 
     suspend fun cropImage() {
         Log.d(TAG, "cropImage, starting loop until not null")
@@ -237,34 +252,33 @@ fun CropStateLess(
     )
 
     /**
-     * Message
+     * Top Message
      */
-    if (cameraCategoryOCR.value == MathCategoryOCR || cameraCategoryOCR.value == TextCategoryOCR) {
-        Row(
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.Center
+                .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
+                .padding(horizontal = 4.dp),
         ) {
-            Box(
+            Text(
+                text = when (cameraCategoryOCR.value) {
+                    MathCategoryOCR -> stringResource(R.string.try_to_crop_just_one_problem)
+                    else -> "Crop the text you want to " + cameraCategoryOCR.value.getName(context)
+                },
+                color = Color.White,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
-                    .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
-                    .padding(horizontal = 4.dp),
-            ) {
-                Text(
-                    text = when (cameraCategoryOCR.value) {
-                        MathCategoryOCR -> stringResource(R.string.try_to_crop_just_one_problem)
-                        else -> stringResource(R.string.try_to_crop_just_one_problem)
-                    },
-                    color = Color.White,
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier
-                        .padding(4.dp)
-                )
-            }
+                    .padding(4.dp)
+            )
         }
     }
+
     /**
      * UI Layout
      */
@@ -280,13 +294,15 @@ fun CropStateLess(
          */
         Button(
             onClick = { navController.navigateUp() },
+
+
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary),
-            enabled = !isLoading.value
+            enabled = enabled.value
         ) {
             Text(
                 text = stringResource(R.string.crop_retake),
@@ -297,16 +313,16 @@ fun CropStateLess(
         }
 
         Button(
-            onClick = {
-                cropifyState.crop()
-            },
+            onClick = { cropifyState.crop() },
+
+
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
-            enabled = !isLoading.value
+            enabled = enabled.value
         ) {
             Text(
                 text = stringResource(R.string.crop_crop),
@@ -338,7 +354,11 @@ suspend fun sendNewMessage(
 ) {
     while (vmCamera.isLoading.value) delay(200)
 
-    if (text.value == "null" || text.value == "") {
+    Log.d(TAG, "text 1: ${text.value}")
+//    delay(5000)
+//    Log.d(TAG, "text 2: ${text.value}")
+
+    if (text.value.isNullOrEmpty() || text.value == "null") {
         Log.d(TAG, "sendNewMessage: text == ${text.value}")
         onNavigateNewChat()
     } else {
