@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -115,7 +116,7 @@ fun GalleryStateFull(
          * StateLess
          */
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -161,7 +162,7 @@ fun GalleryStateFull(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(148.dp)
+                                .requiredHeight(148.dp)
                                 .padding(16.dp)
                                 .weight(1f),
                             shape = RoundedCornerShape(10.dp),
@@ -172,15 +173,13 @@ fun GalleryStateFull(
                             Column {
                                 Text(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .weight(1f),
+                                        .fillMaxWidth(),
                                     text = when (category) {
                                         TextCategoryOCR -> stringResource(R.string.gallery_process_text_based_problem)
                                         MathCategoryOCR -> stringResource(R.string.gallery_process_math_problem)
                                         TranslateCategoryOCR -> stringResource(R.string.gallery_translate_a_text)
                                         SummaryCategoryOCR -> stringResource(R.string.gallery_summary_a_text)
                                         GrammarCategoryOCR -> stringResource(R.string.gallery_correct_the_grammar)
-                                        // Add more category-specific text if needed
                                         else -> {
                                             stringResource(R.string.gallery_soon)
                                         }

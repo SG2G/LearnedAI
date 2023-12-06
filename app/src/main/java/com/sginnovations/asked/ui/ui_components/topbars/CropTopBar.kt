@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.sginnovations.asked.ui.ui_components.topbars
 
 import androidx.compose.foundation.layout.Arrangement
@@ -7,37 +5,52 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
-import com.sginnovations.asked.viewmodel.TokenViewModel
+import com.sginnovations.asked.viewmodel.CameraViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CameraTopBar(
-    vmTokens: TokenViewModel,
+fun CropTopBar(
+    vmCamera: CameraViewModel,
+
+    navigateUp: () -> Unit,
 ) {
-    val tokens = vmTokens.tokens.collectAsState()
+    val context = LocalContext.current
 
     TopAppBar(
-        title = {},
-        navigationIcon = {},
-        actions = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
+        title = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
-                TokenDisplay(tokens = tokens, showPlus = true) { vmTokens.switchPointsVisibility() }
+                Text(
+                    text = vmCamera.cameraCategoryOCR.value.getName(context),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = navigateUp) {
+                Icon(
+                    imageVector = Icons.Filled.KeyboardArrowLeft,
+                    contentDescription = "ArrowBack"
+                )
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(

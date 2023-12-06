@@ -140,7 +140,6 @@ fun StateLessHistoryChats(
     onNavigateMessages: (Int) -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val showMenu = remember { mutableStateOf(false) }

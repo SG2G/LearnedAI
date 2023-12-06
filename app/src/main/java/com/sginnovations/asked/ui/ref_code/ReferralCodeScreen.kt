@@ -35,11 +35,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.AuthViewModel
+import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
 
 private const val TAG = "ReferralCodeStateFul"
 
@@ -69,6 +71,8 @@ fun ReferralCodeStateFul(
 
 @Composable
 fun ReferralCodeStateLess(
+    vmRemoteConfig: RemoteConfigViewModel = hiltViewModel(), //TODO REMOTE VIEWMODEL
+
     onInviteFriend: () -> Unit,
 ) {
     val scroll = rememberScrollState()
@@ -106,7 +110,9 @@ fun ReferralCodeStateLess(
             contentScale = ContentScale.Fit
         )
         Text(
-            text = stringResource(R.string.share_earn_10_tokens_immediately),
+            text = stringResource(R.string.referral_earn) + vmRemoteConfig.getInviteRewardTokens() + stringResource(
+                R.string.referral_tokens_immediately
+            ),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleLarge
         )

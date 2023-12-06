@@ -43,7 +43,6 @@
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
     <string name="share_invite_friends">Invita Amigos!</string>
     <string name="share_for_you_and_your_friend">Tokens para tu amigo y para ti!</string>
-    <string name="share_earn_10_tokens_immediately">Gana 10 Tokens en el momento!</string>
     <string name="share_are_you_going_to_run_out_of_your_tokens">¿Te vas a quedar sin tus tokens?</string>
     <string name="share_invite">Invitar</string>
     <string name="share_how_to_earn_the_rewards">¿Cómo puedo ganar las recompensas?</string>
@@ -136,4 +135,7 @@
     <string name="trollmessage_7">Este es el último mensaje</string>
     <string name="trollmessage_8">PARA</string>
     <string name="trollmessage_9">En serio, ponte a estudiar</string>
+    <string name="referral_earn">"Gana "</string>
+    <string name="referral_tokens_immediately">" Tokens inmediatamente!"</string>
+    <string name="crop_crop_the_text_you_want_to">Consejo: Recorta solo lo que necesites, así conseguirás mejores resultados</string>
 </resources>

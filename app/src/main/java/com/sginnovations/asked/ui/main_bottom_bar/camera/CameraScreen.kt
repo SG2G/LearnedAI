@@ -72,6 +72,7 @@ fun CameraStateFul(
     )
 
     val cameraCategoryOCR = vmCamera.cameraCategoryOCR
+
     val showPDFWorkingOn = remember { mutableStateOf(false) }
     val showCategoryExamples = remember { mutableStateOf(false) }
 

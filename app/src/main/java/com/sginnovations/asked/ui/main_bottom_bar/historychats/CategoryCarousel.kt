@@ -53,6 +53,7 @@ fun CategoryCarousel(
 
     val cardsWidth = 72.dp
 
+    //TODO ANIMATE ALL CLICK
     Card(
         modifier = Modifier
             .fillMaxWidth()

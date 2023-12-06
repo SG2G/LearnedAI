@@ -2,6 +2,7 @@ package com.sginnovations.asked.ui.sign_in
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -16,14 +17,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -37,28 +35,27 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.data.SignInState
 import com.sginnovations.asked.ui.ui_components.sign_in.GoogleSignInButton
-import com.sginnovations.asked.utils.test_tags.TestTags
 import com.sginnovations.asked.utils.test_tags.TestTags.EMAIL_TEXT_FIELD
 import com.sginnovations.asked.utils.test_tags.TestTags.PASSWORD_TEXT_FIELD
 import com.sginnovations.asked.utils.test_tags.TestTags.SIGN_IN_BUTTON
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
+
+private const val TAG = "AskedSignIn"
 
 @Composable
 fun LearnedAuth(
@@ -71,20 +68,17 @@ fun LearnedAuth(
 
     val state by vmAuth.state.collectAsStateWithLifecycle()
 
-    val auth: FirebaseAuth = Firebase.auth
+    val auth = remember { mutableStateOf<FirebaseAuth?>(null) }
     val userName = remember { mutableStateOf("") }
     val userPassword = remember { mutableStateOf("") }
 
     val googleAuthUiClient = vmAuth.getGoogleAuthUiClient()
 
-    LaunchedEffect(state.isSignInSuccessful) {
-        if (state.isSignInSuccessful) {
-            Toast.makeText(
-                context,
-                "Sign in successful",
-                Toast.LENGTH_LONG
-            ).show()
+    LaunchedEffect(Unit) { auth.value = vmAuth.getAuth() }
 
+    LaunchedEffect(state.isSignInSuccessful) {
+        Log.d(TAG, "LearnedAuth: isSignInSuccessful")
+        if (state.isSignInSuccessful) {
             onNavigationUserAlreadySigned()
         }
     }
@@ -97,39 +91,44 @@ fun LearnedAuth(
                     val signInResult = googleAuthUiClient.signInWithIntent(
                         intent = result.data ?: return@launch
                     )
+                    Log.d(TAG, "LearnedAuth: launcher")
                     vmAuth.onSignInResult(signInResult)
                 }
             }
         }
     )
 
-    LearnedAuthStateLess(
-        state = state,
-        context = context,
+    Log.d(TAG, "showSignInScreen: ${vmAuth.showSignInScreen}")
+    if (vmAuth.showSignInScreen.value) {
+        LearnedAuthStateLess(
+            state = state,
+            context = context,
 
-        userName = userName,
-        userPassword = userPassword,
+            userName = userName,
+            userPassword = userPassword,
 
-        onManualSignIn = {
-            auth.signInWithEmailAndPassword(userName.value, userPassword.value)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        user?.let { vmAuth.setDefaultTokens(it) }
-                        onNavigationUserAlreadySigned()
-                    } else {
-                        // sign in failed
+            onManualSignIn = {
+                auth.value!!.signInWithEmailAndPassword(userName.value, userPassword.value)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "LearnedAuth: task.isSuccessful")
+                            val user = auth.value!!.currentUser
+                            user?.let { vmAuth.setDefaultTokens(it) }
+                            onNavigationUserAlreadySigned()
+                        } else {
+                            // sign in failed
+                        }
                     }
-                }
-        }
-    ) {
-        scope.launch {
-            val signInIntentSender = googleAuthUiClient.signIn()
-            launcher.launch(
-                IntentSenderRequest.Builder(
-                    signInIntentSender ?: return@launch
-                ).build()
-            )
+            }
+        ) { // onSignInClick =
+            scope.launch {
+                val signInIntentSender = googleAuthUiClient.signIn()
+                launcher.launch(
+                    IntentSenderRequest.Builder(
+                        signInIntentSender ?: return@launch
+                    ).build()
+                )
+            }
         }
     }
 
@@ -172,7 +171,8 @@ fun LearnedAuthStateLess(
         )
         Image(
             modifier = Modifier
-                .clip(CircleShape).size(64.dp),
+                .clip(CircleShape)
+                .size(64.dp),
             painter = painterResource(id = R.drawable.asked30),
             contentDescription = "asked_logo",
         )

@@ -18,8 +18,6 @@ import com.sginnovations.asked.utils.test_tags.TestTags
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sginnovations.asked.R
@@ -81,9 +83,6 @@ fun CropStateFul(
     text.value = vmCamera.imageToText.value ?: ""
 
     val instantCrop = remember { mutableStateOf(false) }
-
-//    val retakeBtnEnabled = remember { mutableStateOf(true) }
-//    val cropBtnEnabled = remember { mutableStateOf(true) }
 
     fun Context.getActivity(): Activity? {
         return when (this) {
@@ -190,6 +189,8 @@ fun CropStateLess(
 
     val cropifyState = rememberCropifyState()
 
+    val backgroundColor = MaterialTheme.colorScheme.background
+
     val cropifyOptions = CropifyOption(
         backgroundColor = Color(0xFF191c22),
         maskColor = Color(0xFF191c22),
@@ -256,25 +257,23 @@ fun CropStateLess(
      */
     Row(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Center
     ) {
         Box(
             modifier = Modifier
-                .background(Color.DarkGray.copy(alpha = 0.4f), RoundedCornerShape(15.dp))
-                .padding(horizontal = 4.dp),
+                .background(backgroundColor.copy(alpha = 0.6f), RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)),
         ) {
             Text(
                 text = when (cameraCategoryOCR.value) {
-                    MathCategoryOCR -> stringResource(R.string.try_to_crop_just_one_problem)
-                    else -> "Crop the text you want to " + cameraCategoryOCR.value.getName(context)
+                    else -> stringResource(R.string.crop_crop_the_text_you_want_to)
                 },
                 color = Color.White,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp, top = 0.dp),
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -292,7 +291,7 @@ fun CropStateLess(
         /**
          * Buttons
          */
-        Button(
+        ElevatedButton(
             onClick = { navController.navigateUp() },
 
 
@@ -301,7 +300,6 @@ fun CropStateLess(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary),
             enabled = enabled.value
         ) {
             Text(
@@ -312,7 +310,7 @@ fun CropStateLess(
             )
         }
 
-        Button(
+        ElevatedButton(
             onClick = { cropifyState.crop() },
 
 
@@ -321,7 +319,6 @@ fun CropStateLess(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
             enabled = enabled.value
         ) {
             Text(

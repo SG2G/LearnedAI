@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -70,10 +69,28 @@ fun LearnedNavigation(
 
     navController: NavHostController = rememberNavController(),
 ) {
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val intent = remember { (context as Activity).intent }
+
+    LaunchedEffect(Unit) {
+        if (vmAuth.userAuth.value != null) {
+            // User its logged - set up
+            vmNavigator.navigateAuthToCamera(navController)
+
+            Log.i(TAG, "Calling SetUp")
+            vmAuth.userJustLogged()
+            vmToken.startTokenListener()
+            vmReferral.handleDynamicLink(intent)
+            vmAds.loadInterstitialAd(context)
+            vmBilling.connectToGooglePlay()
+
+            checkIsPremium()
+        }
+    }
+
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
@@ -100,6 +117,7 @@ fun LearnedNavigation(
         topBar = {
             LearnedTopBar(
                 vmTokens = vmToken,
+                vmCamera = vmCamera,
                 vmChat = vmChat,
 
                 currentScreen = currentScreen,
@@ -135,7 +153,7 @@ fun LearnedNavigation(
                         vmAuth.userJustLogged()
                         vmToken.startTokenListener()
                         vmReferral.handleDynamicLink(intent)
-                        vmAds.loadInterstitialAd(context)
+                        vmAds.loadInterstitialAd(context) //TODO ?
                         vmBilling.connectToGooglePlay()
 
 //                        if (!checkIsPremium()) {
@@ -273,26 +291,6 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
-            }
-        }
-
-        LaunchedEffect(Unit) {
-            if (vmAuth.userAuth.value != null) {
-                // User its logged - set up
-                vmNavigator.navigateAuthToCamera(navController)
-
-                Log.i(TAG, "Calling SetUp")
-                vmAuth.userJustLogged()
-                vmToken.startTokenListener()
-                vmReferral.handleDynamicLink(intent)
-                vmAds.loadInterstitialAd(context)
-                vmBilling.connectToGooglePlay()
-
-                checkIsPremium()
-
-//                if (!checkIsPremium()) {
-//                    navController.navigate(route = Subscription.route)
-//                }
             }
         }
     }

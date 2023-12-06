@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -26,8 +27,10 @@ import kotlinx.coroutines.tasks.await
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-private const val TAG = "AuthViewModel"
+private const val TAG = "AskedSignIn"
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -42,6 +45,9 @@ class AuthViewModel @Inject constructor(
     val userAuth = _userAuth.asStateFlow()
 
     private val firestore = Firebase.firestore
+
+    val showSignInScreen = mutableStateOf(false)
+
     init {
         viewModelScope.launch {
             userJustLogged()
@@ -50,16 +56,36 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    suspend fun getAuth(): FirebaseAuth? {
+        val auth: FirebaseAuth = Firebase.auth
+
+        return suspendCoroutine { continuation ->
+            auth.signInAnonymously()
+                .addOnCompleteListener { task ->
+                    Log.d(TAG, "getAuth: $auth")
+                    if (task.isSuccessful) {
+                        // Sign in success
+                        Log.d(TAG, "isSuccessful: $auth")
+                        continuation.resume(auth)
+                        showSignInScreen.value = false
+                    } else {
+                        Log.d(TAG, "else: $auth")
+                        // Sign in fails
+                        continuation.resume(null)
+                        showSignInScreen.value = true
+                    }
+                }
+        }
+    }
+
 
     fun userJustLogged() {
         _userAuth.value = googleAuthUiClient.getSignedInUser()
 
-        Log.i(TAG, "userJustLogged: $userAuth")
+        Log.i(TAG, "userJustLogged: ${userAuth.value}")
     }
 
-    fun getGoogleAuthUiClient(): GoogleAuthUiClient {
-        return googleAuthUiClient
-    }
+    fun getGoogleAuthUiClient() = googleAuthUiClient
 
     /**
      * Testing ? :(
@@ -71,6 +97,7 @@ class AuthViewModel @Inject constructor(
      * Old shit
      */
     fun onSignInResult(result: SignInResult) {
+        Log.d(TAG, "onSignInResult: result -> ${result.data}")
         _state.update {
             it.copy(
                 isSignInSuccessful = result.data != null,

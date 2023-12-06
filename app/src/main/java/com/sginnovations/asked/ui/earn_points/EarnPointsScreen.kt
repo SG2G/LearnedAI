@@ -88,7 +88,7 @@ fun EarnPointsStateFul(
 
 @Composable
 fun EarnPointsStateLess(
-    vmRemoteConfig: RemoteConfigViewModel = hiltViewModel(),
+    vmRemoteConfig: RemoteConfigViewModel = hiltViewModel(), //TODO REMOTE CONFIG VM
 
     tokens: State<Long>,
 
