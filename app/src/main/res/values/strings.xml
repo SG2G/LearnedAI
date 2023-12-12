@@ -142,5 +142,8 @@
     <string name="referral_earn">"Earn "</string>
     <string name="referral_tokens_immediately">" Tokens immediately!"</string>
     <string name="crop_crop_the_text_you_want_to">Tip: Crop only what you need, that way you\'ll achieve better results.</string>
+    <string name="subscription_monthly">" / Monthly"</string>
+    <string name="subscription2_cancel_anytime">Cancel anytime</string>
+    <string name="subscription_save_50">Save 50%</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,22 +17,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Shield
-import androidx.compose.material.icons.outlined.ChatBubble
-import androidx.compose.material.icons.outlined.FiberDvr
-import androidx.compose.material.icons.outlined.Token
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,8 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -66,11 +55,10 @@ import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.collections.firstOrNull
 
 private const val TAG = "SubscriptionStateFull"
 
-enum class Option { OptionWeekly, OptionLifetime }
+enum class Option { OptionWeekly, OptionMonthly }
 
 @Composable
 fun SubscriptionStateFull(
@@ -81,15 +69,15 @@ fun SubscriptionStateFull(
     val userOption = remember { mutableStateOf(Option.OptionWeekly) }
     val showComposable = remember { mutableStateOf(false) }
 
-    val productLifetime = vmBilling.productLifetime
+    val productMonthly = vmBilling.productMonthly
     val productWeekly = vmBilling.productWeekly
 
-    val priceInApp = remember { mutableStateOf<String?>(null) }
-    val priceSub = remember { mutableStateOf<String?>(null) }
+    val priceSubMonthly = remember { mutableStateOf<String?>(null) }
+    val priceSubWeekly = remember { mutableStateOf<String?>(null) }
 
     Log.d(
         TAG,
-        "productLifetime-> ${productLifetime.value.toString()} productWeekly-> ${productWeekly.value.toString()} "
+        "productMonthly-> ${productMonthly.value.toString()} productWeekly-> ${productWeekly.value.toString()} "
     )
 
     val context = LocalContext.current
@@ -105,35 +93,39 @@ fun SubscriptionStateFull(
 
     val activity = context.getActivity()
 
+    /**
+     * No prices? No screen
+     */
     LaunchedEffect(Unit) {
         var attempts = 0
-        while (priceInApp.value == null && priceSub.value == null && attempts < 20) { // try up to 20 times
+        while (priceSubMonthly.value == null && priceSubWeekly.value == null && attempts < 20) { // try up to 20 times
             delay(200)
-            priceInApp.value = productLifetime.value?.oneTimePurchaseOfferDetails?.formattedPrice
+            priceSubMonthly.value =
+                productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
 
-            priceSub.value =
+            priceSubWeekly.value =
                 productWeekly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
                     ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
 
-            delay(25)
-            Log.i(TAG, "$attempts $priceSub / $priceInApp")
+            Log.i(TAG, "$attempts $priceSubWeekly / $priceSubMonthly")
 
             attempts++
         }
 
         // Check if priceInApp is not null before setting showComposable to true
-        if (priceInApp.value != null && priceSub.value != null) {
+        if (priceSubMonthly.value != null && priceSubWeekly.value != null) {
             showComposable.value = true
         }
     }
 
     if (showComposable.value) {
         SubscriptionStateLess(
-            productLifetime,
+            productMonthly,
             productWeekly,
 
-            priceInApp,
-            priceSub,
+            priceSubMonthly,
+            priceSubWeekly,
 
             userOption,
 
@@ -152,8 +144,8 @@ fun SubscriptionStateFull(
                                 productDetails,
                             )
 
-                        Option.OptionLifetime ->
-                            vmBilling.launchBillingFlowInApp(
+                        Option.OptionMonthly ->
+                            vmBilling.launchBillingFlowSubs(
                                 activity,
                                 productDetails,
                             )
@@ -204,8 +196,8 @@ fun SubscriptionStateLess(
     productLifetime: MutableState<ProductDetails?>,
     productWeekly: MutableState<ProductDetails?>,
 
-    priceInApp: MutableState<String?>,
-    priceSub: MutableState<String?>,
+    priceSubMonthly: MutableState<String?>,
+    priceSubWeekly: MutableState<String?>,
 
     userOption: MutableState<Option>,
 
@@ -218,10 +210,10 @@ fun SubscriptionStateLess(
 
     when (userOption.value) {
         Option.OptionWeekly -> selectedPlan.value = productWeekly
-        Option.OptionLifetime -> selectedPlan.value = productLifetime
+        Option.OptionMonthly -> selectedPlan.value = productLifetime
     }
 
-    Log.i(TAG, "SubscriptionStateLess - $priceSub / $priceInApp")
+    Log.i(TAG, "SubscriptionStateLess - $priceSubWeekly / $priceSubMonthly")
 
     Column(
         modifier = Modifier
@@ -326,7 +318,7 @@ fun SubscriptionStateLess(
          * Products
          */
         // Product 1 - Weekly
-        priceSub.value?.let {
+        priceSubWeekly.value?.let {
             SubscriptionCard(
                 durationTime = stringResource(R.string.subscription_week),
                 smallText = stringResource(R.string.subscription_3_day_free_trial_cancel_anytime_auto_renewable),
@@ -337,14 +329,14 @@ fun SubscriptionStateLess(
         }
 
         // Product 2 - LifeTime
-        priceInApp.value?.let {
+        priceSubMonthly.value?.let {
             SubscriptionCard(
-                durationTime = stringResource(R.string.subscription_lifetime),
-                smallText = stringResource(R.string.subscription_billed_once),
+                durationTime = stringResource(R.string.subscription_monthly),
+                smallText = stringResource(R.string.subscription2_cancel_anytime),
                 allPrice = it,
-                subscriptionOption = Option.OptionLifetime,
+                subscriptionOption = Option.OptionMonthly,
                 userOption = userOption.value
-            ) { userOption.value = Option.OptionLifetime }
+            ) { userOption.value = Option.OptionMonthly }
         }
 
         Row(
@@ -433,7 +425,7 @@ fun SubscriptionStateLess(
             ) {
                 Box {
                     Text(
-                        text = "",
+                        text = stringResource(R.string.subscription_cancel_anytime),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodySmall
                     )

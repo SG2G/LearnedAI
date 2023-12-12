@@ -1,6 +1,10 @@
 package com.sginnovations.asked.ui.ui_components.subscription
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -19,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -26,10 +31,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -52,10 +60,27 @@ fun SubscriptionCard(
 ) {
     val isSelected = userOption.name == subscriptionOption.name
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray, label = "",
+        targetValue = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray,
+        label = "",
         animationSpec = tween(250)
     )
     val circleColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray
+
+    val scale = remember { Animatable(1f) }
+
+    LaunchedEffect(isSelected) {
+        scale.animateTo(
+            targetValue = if (isSelected) 0.9f else 1f,
+            animationSpec = tween(100, easing = LinearEasing)
+        )
+        scale.animateTo(
+            targetValue = 1f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
+        )
+    }
 
     Box(modifier = Modifier.padding(8.dp)) {
         OutlinedCard(
@@ -98,26 +123,30 @@ fun SubscriptionCard(
                         )
                     )
                 }
-//                Column(
-//                    modifier = Modifier.weight(1f),
-//                    verticalArrangement = Arrangement.spacedBy(8.dp),
-//                    horizontalAlignment = Alignment.End
-//                ) {
-//                    Text(
-//                        text = "",
-//                        color = MaterialTheme.colorScheme.onBackground,
-//                        style = TextStyle(
-//                            fontWeight = FontWeight.Bold,
-//                        )
-//                    )
-//                    Text(
-//                        text = "",
-//                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-//                        style = TextStyle(
-//                            fontSize = 12.sp
-//                        ),
-//                    )
-//                }
+                if (subscriptionOption.name == Option.OptionMonthly.name) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                MaterialTheme.colorScheme.secondaryContainer
+                            ),
+                            shape = RoundedCornerShape(15.dp),
+                            modifier = Modifier.scale(scale.value)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.subscription_save_50),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
         Box(modifier = Modifier.padding(start = 32.dp, top = 4.dp)) {

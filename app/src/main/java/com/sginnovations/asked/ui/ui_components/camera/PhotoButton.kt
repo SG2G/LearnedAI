@@ -64,7 +64,7 @@ fun PhotoButton(
             modifier = modifier
                 .padding(bottom = 16.dp)
                 .size(70.dp)
-                .border(4.dp, Color.White, CircleShape)
+                .border(4.dp, if (!isSelected) Color.Gray else Color.White, CircleShape)
                 .graphicsLayer {
                     shape = CircleShape
                     clip = true

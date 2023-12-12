@@ -76,11 +76,7 @@ fun StateFulHistoryChats(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    SideEffect {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            (context as Activity).window.navigationBarColor = Color(0xFF191c22).toArgb()
-        }
-    }
+    SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF191c22).toArgb() }
 
     LaunchedEffect(Unit) {
         Log.d(TAG, "StateFulHistoryChats: getAllConversations")
@@ -304,14 +300,18 @@ fun StateLessHistoryChats(
                                     horizontalArrangement = Arrangement.End,
                                 ) {
                                     Icon(
-                                        modifier = Modifier.size(28.dp),
+                                        modifier = Modifier.size(20.dp),
                                         painter = when (conversation.category) {
-                                            TextCategoryOCR.root -> painterResource(id = R.drawable.text_category)
-                                            MathCategoryOCR.root -> painterResource(id = R.drawable.math_category)
-                                            else -> painterResource(id = R.drawable.text_category)
+                                            TextCategoryOCR.root -> painterResource(id = R.drawable.text_camera)
+                                            MathCategoryOCR.root -> painterResource(id = R.drawable.math_camera)
+                                            else -> painterResource(id = R.drawable.text_camera)
                                         },
                                         contentDescription = null,
-                                        tint = Color.Unspecified
+                                        tint = when (conversation.category) {
+                                            TextCategoryOCR.root -> Color(0xFFCAB006)
+                                            MathCategoryOCR.root -> Color(0xFF1475D8)
+                                            else -> Color(0xFFCAB006)
+                                        },
                                     )
                                 }
 

@@ -3,7 +3,6 @@ package com.sginnovations.asked.viewmodel
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,7 +39,7 @@ class BillingViewModel @Inject constructor(
     private val setPremiumUseCase: SetPremiumUseCase,
 ) : ViewModel() {
 
-    val productLifetime = mutableStateOf<ProductDetails?>(null)
+    val productMonthly = mutableStateOf<ProductDetails?>(null)
     val productWeekly = mutableStateOf<ProductDetails?>(null)
 
     val billingResponseCode = MutableLiveData<Int>()
@@ -109,6 +108,10 @@ class BillingViewModel @Inject constructor(
             QueryProductDetailsParams.Product.newBuilder()
                 .setProductId("asked_subscription_weekly")
                 .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId("asked_subscription_monthly")
+                .setProductType(BillingClient.ProductType.SUBS)
                 .build()
         )
 
@@ -117,23 +120,22 @@ class BillingViewModel @Inject constructor(
             .build()
 
         // Query in-app products
-        val inAppProductList = ImmutableList.of(
-            QueryProductDetailsParams.Product.newBuilder()
-                .setProductId("asked_product_lifetime")
-                .setProductType(BillingClient.ProductType.INAPP)
-                .build()
-        )
+//        val inAppProductList = ImmutableList.of(
+//            QueryProductDetailsParams.Product.newBuilder()
+//                .setProductId("asked_product_lifetime")
+//                .setProductType(BillingClient.ProductType.INAPP)
+//                .build()
+//        )
+//
+//        val inAppProductQueryParams = QueryProductDetailsParams.newBuilder()
+//            .setProductList(inAppProductList)
+//            .build()
 
-        val inAppProductQueryParams = QueryProductDetailsParams.newBuilder()
-            .setProductList(inAppProductList)
-            .build()
-
-        createProductList(subscriptionQueryParams, inAppProductQueryParams)
+        createProductList(subscriptionQueryParams)
     }
 
     private suspend fun createProductList(
         queryProductDetailsParams: QueryProductDetailsParams,
-        inAppProductQueryParams: QueryProductDetailsParams,
     ) {
         Log.i(TAG, "createProductList 1")
         billingClient.queryProductDetailsAsync(queryProductDetailsParams) {
@@ -143,18 +145,8 @@ class BillingViewModel @Inject constructor(
             // check billingResult
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
-                productWeekly.value = productDetailsList[0]
-            }
-        }
-        Log.i(TAG, "createProductList 2")
-        billingClient.queryProductDetailsAsync(inAppProductQueryParams) {
-                billingResult,
-                productDetailsList,
-            ->
-            // check billingResult
-            // process returned productDetailsList
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
-                productLifetime.value = productDetailsList[0]
+                productMonthly.value = productDetailsList[0]
+                productWeekly.value = productDetailsList[1]
             }
         }
     }
@@ -187,7 +179,7 @@ class BillingViewModel @Inject constructor(
         viewModelScope.launch {
             val params = QueryPurchasesParams.newBuilder()
                 .setProductType(BillingClient.ProductType.SUBS)
-                .setProductType(BillingClient.ProductType.INAPP)
+//                .setProductType(BillingClient.ProductType.INAPP)
                 .build()
 
             billingClient.queryPurchasesAsync(params) { _, purchases ->
@@ -281,24 +273,24 @@ class BillingViewModel @Inject constructor(
         }
     }
 
-    suspend fun launchBillingFlowInApp(activity: Activity, productDetails: ProductDetails) {
-        val productDetailsParams = BillingFlowParams.ProductDetailsParams.newBuilder()
-            .setProductDetails(productDetails)
-            .build()
-
-        val billingFlowParams = BillingFlowParams.newBuilder()
-            .setProductDetailsParamsList(listOf(productDetailsParams))
-            .build()
-
-        // Launch the billing flow
-        val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
-
-        // Check the result
-        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            Log.i(TAG, "Billing flow launched successfully")
-        } else {
-            Log.e(TAG, "Failed to launch billing flow: ${billingResult.debugMessage}")
-        }
-    }
+//    suspend fun launchBillingFlowInApp(activity: Activity, productDetails: ProductDetails) {
+//        val productDetailsParams = BillingFlowParams.ProductDetailsParams.newBuilder()
+//            .setProductDetails(productDetails)
+//            .build()
+//
+//        val billingFlowParams = BillingFlowParams.newBuilder()
+//            .setProductDetailsParamsList(listOf(productDetailsParams))
+//            .build()
+//
+//        // Launch the billing flow
+//        val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
+//
+//        // Check the result
+//        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+//            Log.i(TAG, "Billing flow launched successfully")
+//        } else {
+//            Log.e(TAG, "Failed to launch billing flow: ${billingResult.debugMessage}")
+//        }
+//    }
 
 }

@@ -142,16 +142,6 @@ fun EarnPointsStateLess(
             )
             Spacer(modifier = Modifier.height(16.dp))
             TokensCard(
-                num = "+" + vmRemoteConfig.getAdRewardTokens(),
-                text = stringResource(R.string.earn_token_watch_ad),
-                buttonText = stringResource(R.string.earn_token_watch),
-                borderColor = Color.Transparent,
-                buttonColor = MaterialTheme.colorScheme.background,
-                cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { onShowAd() }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            TokensCard(
                 num = "+" + vmRemoteConfig.getInviteRewardTokens(),
                 text = stringResource(R.string.earn_token_invite_friends),
                 buttonText = stringResource(R.string.earn_token_button_invite),
@@ -160,6 +150,17 @@ fun EarnPointsStateLess(
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onNavigateRefCode() }
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            TokensCard(
+                num = "+" + vmRemoteConfig.getAdRewardTokens(),
+                text = stringResource(R.string.earn_token_watch_ad),
+                buttonText = stringResource(R.string.earn_token_watch),
+                borderColor = Color.Transparent,
+                buttonColor = MaterialTheme.colorScheme.background,
+                cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                onClick = { onShowAd() }
+            )
+
         }
     } // ModalBottom
 }

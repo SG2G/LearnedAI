@@ -103,6 +103,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 private const val TAG = "Chat"
 
@@ -592,11 +593,17 @@ private suspend fun textConfidenceWarning(
     textConfidence: MutableDoubleState,
     resetTextConfidence: () -> Unit,
 ) {
-    snackbarHostState.showSnackbar(
-        message = context.getString(R.string.snackbar_be_careful_the_message_may_contain_errors_confidence_level) +
-                "${"%.2f".format(textConfidence.doubleValue).toDouble()}",
-        actionLabel = context.getString(R.string.snackbar_why),
-        duration = SnackbarDuration.Long
-    )
+    try {
+        val confidenceLevel = "%.2f".format(Locale.US, textConfidence.doubleValue).toDouble()
+        val message = context.getString(R.string.snackbar_be_careful_the_message_may_contain_errors_confidence_level) + confidenceLevel
+        snackbarHostState.showSnackbar(
+            message = message,
+            actionLabel = context.getString(R.string.snackbar_why),
+            duration = SnackbarDuration.Long
+        )
+    } catch (e: NumberFormatException) {
+        // Handle the parsing error
+    }
     resetTextConfidence()
 }
+
