@@ -593,6 +593,7 @@ private suspend fun textConfidenceWarning(
     textConfidence: MutableDoubleState,
     resetTextConfidence: () -> Unit,
 ) {
+
     try {
         val confidenceLevel = "%.2f".format(Locale.US, textConfidence.doubleValue).toDouble()
         val message = context.getString(R.string.snackbar_be_careful_the_message_may_contain_errors_confidence_level) + confidenceLevel
