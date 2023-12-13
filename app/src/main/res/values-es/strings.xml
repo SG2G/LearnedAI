@@ -120,7 +120,7 @@
     <string name="snackbar_insufficient_tokens">Tokens insuficientes</string>
     <string name="snackbar_no_internet_connection">Sin conexión a Internet</string>
     <string name="snackbar_ok">Ok</string>
-    <string name="snackbar_be_careful_the_message_may_contain_errors_confidence_level">Ten cuidado, el mensaje puede contener errores. Nivel de confianza</string>
+    <string name="snackbar_be_careful_the_message_may_contain_errors_confidence_level">"Ten cuidado, el mensaje puede contener errores. Nivel de confianza: "</string>
     <string name="snackbar_why">Por qué</string>
     <string name="confidence_dialog_title">Mejora tus resultados</string>
     <string name="confidence_dialog_text">Hey! Parece que la calidad de la foto podría afectar nuestra precisión. Sigue estos consejos para obtener mejores resultados:</string>
@@ -138,4 +138,7 @@
     <string name="referral_earn">"Gana "</string>
     <string name="referral_tokens_immediately">" Tokens inmediatamente!"</string>
     <string name="crop_crop_the_text_you_want_to">Consejo: Recorta solo lo que necesites, así conseguirás mejores resultados</string>
+    <string name="subscription_monthly">" / Mes"</string>
+    <string name="subscription2_cancel_anytime">Cancela en cualquier momento</string>
+    <string name="subscription_save_50">Ahorra 50%</string>
 </resources>
