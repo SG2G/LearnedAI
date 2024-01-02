@@ -5,7 +5,6 @@ package com.sginnovations.asked.ui.earn_points
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,52 +32,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
-import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.ui.ui_components.tokens.TokensCard
-import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
-import kotlinx.coroutines.launch
 
 private const val TAG = "EarnPointsStateFul"
 
 @Composable
 fun EarnPointsStateFul(
     vmToken: TokenViewModel,
-    vmAds: AdsViewModel,
 
     onNavigateSubscriptions: () -> Unit,
     onNavigateRefCode: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    fun Context.getActivity(): Activity? {
-        return when (this) {
-            is Activity -> this
-            is ContextWrapper -> baseContext.getActivity()
-            else -> null
-        }
-    }
-
-    val activity = context.getActivity()
-
     val tokens = vmToken.tokens.collectAsState()
-
-    LaunchedEffect(Unit) {
-        Log.i(TAG, "Loading Ad in LauncherEffect")
-        vmAds.loadRewardedAd(context)
-    }
 
     EarnPointsStateLess(
         tokens = tokens,
 
-        onShowAd = {
-            if (activity != null) {
-                scope.launch {
-                    vmAds.showRewardedAd(activity)
-                }
-            }
-        },
         onNavigateSubscriptions = { onNavigateSubscriptions() },
         onNavigateRefCode = { onNavigateRefCode() },
         onSwitchVisibility = { vmToken.switchPointsVisibility() },
@@ -94,7 +64,6 @@ fun EarnPointsStateLess(
 
     onNavigateSubscriptions: () -> Unit,
     onNavigateRefCode: () -> Unit,
-    onShowAd: () -> Unit,
 
     onSwitchVisibility: () -> Unit,
 ) {
@@ -149,16 +118,6 @@ fun EarnPointsStateLess(
                 buttonColor = MaterialTheme.colorScheme.background,
                 cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onNavigateRefCode() }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            TokensCard(
-                num = "+" + vmRemoteConfig.getAdRewardTokens(),
-                text = stringResource(R.string.earn_token_watch_ad),
-                buttonText = stringResource(R.string.earn_token_watch),
-                borderColor = Color.Transparent,
-                buttonColor = MaterialTheme.colorScheme.background,
-                cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { onShowAd() }
             )
 
         }

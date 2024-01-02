@@ -1,11 +1,8 @@
 package com.sginnovations.asked.ui.crop
 
-import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +40,6 @@ import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.crop.components.IsLoadingCrop
 import com.sginnovations.asked.utils.NetworkUtils
-import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
@@ -64,7 +59,6 @@ private const val TAG = "CropStateFul"
 fun CropStateFul(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
-    vmAds: AdsViewModel,
     vmToken: TokenViewModel,
 
     navController: NavController,
@@ -84,27 +78,17 @@ fun CropStateFul(
 
     val instantCrop = remember { mutableStateOf(false) }
 
-    fun Context.getActivity(): Activity? {
-        return when (this) {
-            is Activity -> this
-            is ContextWrapper -> baseContext.getActivity()
-            else -> null
-        }
-    }
-
-    val activity = context.getActivity()
-
     LaunchedEffect(cameraCategoryOCR.value) {
         Log.d(TAG, "cameraCategoryOCR: ${cameraCategoryOCR.value}")
         when (cameraCategoryOCR.value.prefix) {
-            TextCategoryOCR.prefix -> instantCrop.value = false
+            TextCategoryOCR.prefix -> instantCrop.value = true
             MathCategoryOCR.prefix -> instantCrop.value = true
 
             GrammarCategoryOCR.prefix -> instantCrop.value = true
             SummaryCategoryOCR.prefix -> instantCrop.value = true
             TranslateCategoryOCR.prefix -> instantCrop.value = true
 
-            else -> instantCrop.value = false
+            else -> instantCrop.value = true
         }
     }
 
@@ -149,10 +133,8 @@ fun CropStateFul(
                              */
                             sendNewMessage(
                                 context,
-                                activity,
 
                                 vmCamera,
-                                vmAds,
                                 vmChat,
 
                                 cameraCategoryOCR,
@@ -184,7 +166,6 @@ fun CropStateLess(
 
     onImageCropped: (ImageBitmap) -> Unit,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val cropifyState = rememberCropifyState()
@@ -337,10 +318,8 @@ fun CropStateLess(
  */
 suspend fun sendNewMessage(
     context: Context,
-    activity: Activity?,
 
     vmCamera: CameraViewModel,
-    vmAds: AdsViewModel,
     vmChat: ChatViewModel,
 
     cameraCategoryOCR: MutableState<CategoryOCR>,
@@ -364,10 +343,6 @@ suspend fun sendNewMessage(
             // New Message
             if (NetworkUtils.isOnline(context)) {
                 vmCamera.isLoading.value = true
-                // Show ad
-                if (activity != null) {
-                    vmAds.showInterstitialAd(activity)
-                }
 
                 val prefix = when (cameraCategoryOCR.value.prefix) {
                     TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context)
@@ -421,6 +396,13 @@ suspend fun getTextFromCroppedImage(
 
             vmCamera.getTextFromImage(croppedImage)
 
+            try {
+                val cameraTextCostTokens = vmToken.getCameraTextTokens()
+                vmToken.lessTokenCheckPremium(cameraTextCostTokens.toInt())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
             onNavigateConversation()
         }
 
@@ -435,8 +417,8 @@ suspend fun getTextFromCroppedImage(
             vmCamera.getMathFromImage(croppedImage)
 
             try {
-                val cameraCostTokens = vmToken.getCameraMathTokens()
-                vmToken.lessTokenCheckPremium(cameraCostTokens.toInt())
+                val cameraMathCostTokens = vmToken.getCameraMathTokens()
+                vmToken.lessTokenCheckPremium(cameraMathCostTokens.toInt())
             } catch (e: Exception) {
                 e.printStackTrace()
             }

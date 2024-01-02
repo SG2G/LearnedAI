@@ -31,7 +31,6 @@ import com.sginnovations.asked.viewmodel.TokenViewModel
 @Composable
 fun ChatTopBar(
     vmTokens: TokenViewModel,
-    vmChat: ChatViewModel,
 
     navigateUp: () -> Unit,
 ) {

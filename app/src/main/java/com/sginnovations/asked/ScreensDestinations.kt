@@ -38,6 +38,12 @@ object ChatsHistory : ScreensDestinations {
     override val icon: Int = R.drawable.chat_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.chat_svgrepo_filled
 }
+object ParentalGuidance : ScreensDestinations {
+    override val route = "Parental Guidance"
+    override fun getName(context: Context) = "Parental Guidance"
+    override val icon: Int = R.drawable.book_bookmark_svgrepo_outlined
+    override val selectedIcon: Int = R.drawable.book_bookmark_svgrepo_filled
+}
 
 object Profile : ScreensDestinations {
     override val route = "Profile"

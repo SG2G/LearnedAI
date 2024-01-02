@@ -156,7 +156,7 @@ class ChatViewModel @Inject constructor(
         messageHistory.add(userMessage)
 
         val chatCompletionRequest = ChatCompletionRequest(
-            model = "gpt-3.5-turbo",
+            model = "gpt-3.5-turbo-1106",
             messages = messageHistory
         )
 

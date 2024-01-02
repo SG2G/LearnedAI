@@ -48,6 +48,10 @@ class TokenViewModel @Inject constructor(
         Log.i(TAG, "getCameraMathTokens")
         return remoteConfigRepository.getCameraMathTokens()
     }
+    fun getCameraTextTokens(): String {
+        Log.i(TAG, "getCameraMathTokens")
+        return remoteConfigRepository.getCameraTextTokens()
+    }
 
     fun switchPointsVisibility() {
         Log.i(TAG, "switchPointsVisibility")

@@ -21,7 +21,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,19 +35,21 @@ import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
 import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
 import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
+import com.sginnovations.asked.ui.onboarding.onBoarding
+import com.sginnovations.asked.ui.parental_guidance.StateFulParentalGuidance
 import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
 import com.sginnovations.asked.ui.sign_in.LearnedAuth
 import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
 import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.ui.top_bottom_bar.topbar.LearnedTopBar
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
-import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.IntentViewModel
 import com.sginnovations.asked.viewmodel.NavigatorViewModel
+import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
@@ -61,19 +62,20 @@ fun LearnedNavigation(
     vmCamera: CameraViewModel = hiltViewModel(),
     vmAuth: AuthViewModel = hiltViewModel(),
     vmToken: TokenViewModel = hiltViewModel(),
-    vmAds: AdsViewModel = hiltViewModel(),
     vmReferral: ReferralViewModel = hiltViewModel(),
     vmBilling: BillingViewModel = hiltViewModel(),
     vmIntent: IntentViewModel = hiltViewModel(),
     vmNavigator: NavigatorViewModel = hiltViewModel(),
+    vmPreferences: PreferencesViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
-
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val intent = remember { (context as Activity).intent }
+
+    val firsTimeLaunch = vmPreferences.firstTimeLaunch
 
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
@@ -84,7 +86,6 @@ fun LearnedNavigation(
             vmAuth.userJustLogged()
             vmToken.startTokenListener()
             vmReferral.handleDynamicLink(intent)
-            vmAds.loadInterstitialAd(context)
             vmBilling.connectToGooglePlay()
 
             checkIsPremium()
@@ -101,6 +102,7 @@ fun LearnedNavigation(
             Crop.route -> Crop
 
             ChatsHistory.route -> ChatsHistory
+            ParentalGuidance.route -> ParentalGuidance
             Profile.route -> Profile
 
             NewConversation.route -> NewConversation
@@ -129,12 +131,14 @@ fun LearnedNavigation(
         },
 
         bottomBar = {
-            LearnedBottomBar(
-                navController = navController,
-                currentScreen = currentScreen,
-                canNavigateBack = navController.previousBackStackEntry != null,
-                backStackEntry = backStackEntry
-            )
+            if (!firsTimeLaunch.value) {
+                LearnedBottomBar(
+                    navController = navController,
+                    currentScreen = currentScreen,
+                    canNavigateBack = navController.previousBackStackEntry != null,
+                    backStackEntry = backStackEntry,
+                )
+            }
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
@@ -153,7 +157,6 @@ fun LearnedNavigation(
                         vmAuth.userJustLogged()
                         vmToken.startTokenListener()
                         vmReferral.handleDynamicLink(intent)
-                        vmAds.loadInterstitialAd(context) //TODO ?
                         vmBilling.connectToGooglePlay()
 
 //                        if (!checkIsPremium()) {
@@ -171,14 +174,23 @@ fun LearnedNavigation(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                CameraStateFul(
-                    vmCamera = vmCamera,
-                    vmToken = vmToken,
 
-                    onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
-                    onCropNavigation = { navController.navigate(route = Crop.route) },
-                )
-                EarnPoints(vmToken, vmAds, navController)
+                if (firsTimeLaunch.value) {
+                    Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
+                    onBoarding(
+                        onFinish = { scope.launch { vmPreferences.setNotFirstTime() } },
+                        onSkip = { scope.launch { vmPreferences.setNotFirstTime() } },
+                    )
+                } else {
+                    CameraStateFul(
+                        vmCamera = vmCamera,
+                        vmToken = vmToken,
+
+                        onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
+                        onCropNavigation = { navController.navigate(route = Crop.route) },
+                    )
+                    EarnPoints(vmToken, navController)
+                }
             }
 
             composable(
@@ -195,6 +207,15 @@ fun LearnedNavigation(
                     }
                 )
             }
+
+            composable(
+                route = ParentalGuidance.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                StateFulParentalGuidance()
+            }
+
             composable(
                 route = Profile.route,
                 enterTransition = { EnterTransition.None },
@@ -212,7 +233,7 @@ fun LearnedNavigation(
                     onNavigateRefCode = { navController.navigate(route = RefCode.route) },
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) }
                 )
-                EarnPoints(vmToken, vmAds, navController)
+                EarnPoints(vmToken, navController)
             }
             /**
              * Camera Crop
@@ -221,7 +242,6 @@ fun LearnedNavigation(
                 CropStateFul(
                     vmCamera = vmCamera,
                     vmChat = vmChat,
-                    vmAds = vmAds,
                     vmToken = vmToken,
 
                     navController = navController,
@@ -237,7 +257,6 @@ fun LearnedNavigation(
                 NewConversationStateFul(
                     vmChat = vmChat,
                     vmCamera = vmCamera,
-                    vmAds = vmAds,
 
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } }
                 )
@@ -272,7 +291,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
                     vmAuth = vmAuth,
                 )
-                EarnPoints(vmToken, vmAds, navController)
+                EarnPoints(vmToken, navController)
             }
             composable(route = RefCode.route) {
                 ReferralCodeStateFul(

@@ -2,8 +2,6 @@ package com.sginnovations.asked.ui.newconversation
 
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -31,7 +29,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +50,6 @@ import com.sginnovations.asked.ui.newconversation.components.SubTitleChatUseExam
 import com.sginnovations.asked.ui.newconversation.components.TitleChatUseExample
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
-import com.sginnovations.asked.viewmodel.AdsViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -66,7 +62,6 @@ private const val TAG = "NewConversationStateFul"
 fun NewConversationStateFul(
     vmChat: ChatViewModel,
     vmCamera: CameraViewModel,
-    vmAds: AdsViewModel,
 
     onNavigateChat: () -> Unit,
 ) {
@@ -81,25 +76,7 @@ fun NewConversationStateFul(
 
     val newConversationCostToken = vmChat.newConversationCostTokens()
 
-    fun Context.getActivity(): Activity? {
-        return when (this) {
-            is Activity -> this
-            is ContextWrapper -> baseContext.getActivity()
-            else -> null
-        }
-    }
-
-    val activity = context.getActivity()
-
-    SideEffect {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb()
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        vmAds.loadInterstitialAd(context) //TODO MAYBE TOO MUCH WE NEED TO CLEAR CACHE
-    }
+    SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb() }
 
     NewConversationStateLess(
         text = text,
@@ -117,11 +94,11 @@ fun NewConversationStateFul(
             sendNewMessage(
                 scope,
                 context,
-                activity,
+
                 processText,
                 idConversation,
+
                 vmCamera,
-                vmAds,
                 vmChat
             ) {
                 onNavigateChat()
@@ -287,11 +264,9 @@ fun NewConversationStateLess(
 fun sendNewMessage( //TODO REPEAT CROP
     scope: CoroutineScope,
     context: Context,
-    activity: Activity?,
     text: String,
     idConversation: Int,
     vmCamera: CameraViewModel,
-    vmAds: AdsViewModel,
     vmChat: ChatViewModel,
 
     onNavigateChat: () -> Unit,
@@ -300,10 +275,6 @@ fun sendNewMessage( //TODO REPEAT CROP
         // New Message
         if (NetworkUtils.isOnline(context)) {
             vmCamera.isLoading.value = true
-            // Show ad
-            if (activity != null) {
-                vmAds.showInterstitialAd(activity)
-            }
 
             // GPT call
             val deferred = async { vmChat.sendMessageToOpenaiApi(text)}

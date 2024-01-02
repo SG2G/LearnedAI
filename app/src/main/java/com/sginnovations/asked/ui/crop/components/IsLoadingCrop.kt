@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,29 +27,14 @@ fun IsLoadingCrop() {
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.padding(72.dp),
+            modifier = Modifier.fillMaxSize().background(
+                MaterialTheme.colorScheme.background.copy(alpha = 0.6f),
+            ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box {
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(
-                            Color.DarkGray.copy(alpha = 0.8f),
-                            RoundedCornerShape(15.dp)
-                        )
-                )
-                Column(
-                    modifier = Modifier.padding(8.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator()
-                    RotatingText()
-                }
-            }
-
+            CircularProgressIndicator()
+            RotatingText()
         }
     }
 }

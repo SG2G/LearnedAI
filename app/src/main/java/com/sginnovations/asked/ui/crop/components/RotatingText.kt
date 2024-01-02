@@ -1,13 +1,16 @@
 package com.sginnovations.asked.ui.crop.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import kotlinx.coroutines.delay
 
@@ -30,12 +33,13 @@ fun RotatingText() {
     LaunchedEffect(Unit) {
         while (true) {
             delay(3000L)
-            index.value = (index.value + 1) % phrases.size
+            index.intValue = (index.intValue + 1) % phrases.size
         }
     }
 
     Text(
-        text = phrases[index.value],
+        modifier = Modifier.padding(horizontal = 16.dp),
+        text = phrases[index.intValue],
         color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.titleMedium,
         textAlign = TextAlign.Center
