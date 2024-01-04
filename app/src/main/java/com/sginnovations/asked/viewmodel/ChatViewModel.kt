@@ -132,9 +132,9 @@ class ChatViewModel @Inject constructor(
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
 
         prefixPrompt.value =
-            when (categoryOCR.value.root) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
-                TextCategoryOCR.root -> TEXT_PREFIX_PROMPT
-                MathCategoryOCR.root -> MATH_PREFIX_PROMPT
+            when (categoryOCR.value.prefix) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
+                TextCategoryOCR.prefix -> TEXT_PREFIX_PROMPT
+                MathCategoryOCR.prefix -> MATH_PREFIX_PROMPT
                 else -> ""
             }
 
@@ -147,7 +147,7 @@ class ChatViewModel @Inject constructor(
             idConversation.intValue = roomRepository.createConversation(
                 ConversationEntity(
                     name = shortenString(prompt),
-                    category = categoryOCR.value.root,
+                    category = categoryOCR.value.prefix,
                     visible = true
                 )
             ).toInt()
@@ -211,7 +211,7 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun shortenString(input: String): String {
-        val maxLength = 30
+        val maxLength = 35
         return if (input.length > maxLength) {
             input.substring(0, maxLength) + "..."
         } else {

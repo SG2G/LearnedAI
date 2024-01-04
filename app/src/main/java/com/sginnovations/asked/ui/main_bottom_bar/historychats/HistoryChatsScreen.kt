@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -57,8 +58,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
+import com.sginnovations.asked.data.GrammarCategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.components.OptionMenu
 import com.sginnovations.asked.viewmodel.ChatViewModel
@@ -136,6 +140,7 @@ fun StateLessHistoryChats(
     onNavigateMessages: (Int) -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val showMenu = remember { mutableStateOf(false) }
@@ -206,7 +211,7 @@ fun StateLessHistoryChats(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.thinking2),
-                        contentDescription = "thinking",
+                        contentDescription = "thinking head",
                         modifier = Modifier.fillMaxWidth(0.6f)
                     )
                     Text(
@@ -285,35 +290,50 @@ fun StateLessHistoryChats(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
+                                Column(
                                     modifier = Modifier
                                         .padding(16.dp)
-                                        .weight(1f),
-                                    text = conversation.name,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                                Row(
-                                    modifier = Modifier
-                                        .width(64.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.End,
+                                        .weight(1f)
                                 ) {
-                                    Icon(
-                                        modifier = Modifier.size(20.dp),
-                                        painter = when (conversation.category) {
-                                            TextCategoryOCR.root -> painterResource(id = R.drawable.text_camera)
-                                            MathCategoryOCR.root -> painterResource(id = R.drawable.math_camera)
-                                            else -> painterResource(id = R.drawable.text_camera)
-                                        },
-                                        contentDescription = null,
-                                        tint = when (conversation.category) {
-                                            TextCategoryOCR.root -> Color(0xFFCAB006)
-                                            MathCategoryOCR.root -> Color(0xFF1475D8)
-                                            else -> Color(0xFFCAB006)
-                                        },
+                                    Text(
+                                        text = conversation.name,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        style = MaterialTheme.typography.titleMedium
                                     )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Start,
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.historychats_category) +
+                                                    when (conversation.category) {
+                                                        TextCategoryOCR.prefix -> TextCategoryOCR.getName(context)
+                                                        MathCategoryOCR.prefix -> MathCategoryOCR.getName(context)
+                                                        GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getName(context)
+                                                        TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getName(context)
+                                                        SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getName(context)
+                                                        else -> TextCategoryOCR.getName(context)
+                                                    },
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            style = MaterialTheme.typography.labelSmall
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Icon(
+                                            modifier = Modifier.size(14.dp),
+                                            painter = when (conversation.category) {
+                                                TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
+                                                MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
+                                                TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.translate_camera)
+                                                else -> painterResource(id = R.drawable.text_camera)
+                                            },
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
+
+
 
                                 IconButton(onClick = {
                                     showMenu.value = true
@@ -329,7 +349,10 @@ fun StateLessHistoryChats(
                                  */
                                 val scale by animateFloatAsState(
                                     targetValue = if (showMenu.value) 1f else 0.9f,
-                                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing),
+                                    animationSpec = tween(
+                                        durationMillis = 300,
+                                        easing = FastOutSlowInEasing
+                                    ),
                                     label = ""
                                 )
 

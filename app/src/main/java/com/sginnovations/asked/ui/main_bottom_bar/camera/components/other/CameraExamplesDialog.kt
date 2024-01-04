@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.sginnovations.asked.ui.ui_components.camera
+package com.sginnovations.asked.ui.main_bottom_bar.camera.components.other
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

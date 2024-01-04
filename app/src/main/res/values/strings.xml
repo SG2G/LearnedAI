@@ -103,7 +103,7 @@
     <string name="loading_phrase_4">Wait a sec, we\'re teaching the robots to do your math!</string>
     <string name="loading_phrase_5">Sit tight, we\'re turning coffee into solutions!</string>
     <string name="asked_subject_your_custom_subject_my_uid">Your Custom Subject. My uid: %1$s</string>
-    <string name="category_prefix_translate_to_this_text">"Translate to %1$s this text: "</string>
+    <string name="category_prefix_translate_to_this_text">"Translate this text to "</string>
     <string name="category_prefix_summary_this_text">"Summary this text: "</string>
     <string name="category_prefix_correct_the_grammar">"Correct the grammar: "</string>
     <string name="category_translate">Translate</string>
@@ -145,5 +145,17 @@
     <string name="subscription_monthly">" / Monthly"</string>
     <string name="subscription2_cancel_anytime">Cancel anytime</string>
     <string name="subscription_save_50">Save 50%</string>
+    <string name="topbar_settings">Settings</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_french">French</string>
+    <string name="language_other">Other</string>
+    <string name="language_alert_language">Language</string>
+    <string name="language_alert_enter_language">Enter Language</string>
+    <string name="language_alert_ok">Ok</string>
+    <string name="language_alert_cancel">Cancel</string>
+    <string name="language_translate_to">Translate to: </string>
+    <string name="historychats_category">"Category - "</string>
+    <string name="error_error_taking_the_photo_if_the_issue_persists_please_send_us_an_email">Error taking the photo. If the issue persists, please send us an email.</string>
 
 </resources>

@@ -36,8 +36,9 @@ import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryCh
 import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
 import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
 import com.sginnovations.asked.ui.onboarding.onBoarding
-import com.sginnovations.asked.ui.parental_guidance.StateFulParentalGuidance
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.StateFulParentalGuidance
 import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
+import com.sginnovations.asked.ui.settings.SettingsStateFul
 import com.sginnovations.asked.ui.sign_in.LearnedAuth
 import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
 import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
@@ -58,6 +59,8 @@ private const val TAG = "LearnedNavigation"
 
 @Composable
 fun LearnedNavigation(
+    vmPreferences: PreferencesViewModel,
+
     vmChat: ChatViewModel = hiltViewModel(),
     vmCamera: CameraViewModel = hiltViewModel(),
     vmAuth: AuthViewModel = hiltViewModel(),
@@ -66,7 +69,6 @@ fun LearnedNavigation(
     vmBilling: BillingViewModel = hiltViewModel(),
     vmIntent: IntentViewModel = hiltViewModel(),
     vmNavigator: NavigatorViewModel = hiltViewModel(),
-    vmPreferences: PreferencesViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -111,6 +113,8 @@ fun LearnedNavigation(
             Gallery.route -> Gallery
             Subscription.route -> Subscription
             RefCode.route -> RefCode
+            Settings.route -> Settings
+
             else -> null
         }
 
@@ -310,6 +314,9 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
+            }
+            composable(route = Settings.route) {
+                SettingsStateFul(vmPreferences = vmPreferences)
             }
         }
     }

@@ -19,7 +19,7 @@ object All : CategoryOCR {
 }
 object MathCategoryOCR : CategoryOCR {
     override val root = "Math"
-    override val prefix = ""
+    override val prefix = "Math"
     override fun getName(context: Context) = context.getString(R.string.category_math)
     override fun getPrefix(context: Context) = ""
 }
@@ -34,7 +34,7 @@ object TranslateCategoryOCR : CategoryOCR {
     override val prefix = "Translate"
     override fun getName(context: Context) = context.getString(R.string.category_translate)
     override fun getPrefix(context: Context) =
-        context.getString(R.string.category_prefix_translate_to_this_text, Locale.current.language)
+        context.getString(R.string.category_prefix_translate_to_this_text)
 }
 object SummaryCategoryOCR : CategoryOCR {
     override val root = "Text"

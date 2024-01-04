@@ -45,18 +45,18 @@ fun LearnedTopBar(
             vmTokens,
         )
 
-        Crop.route -> CropTopBar(
-            vmCamera,
-
-            navigateUp
-        )
-
         ChatsHistory.route -> ChatsHistoryTopBar(
             ChatsHistory.getName(context)
         ) { onNavigate(it) }
 
         Profile.route -> ProfileTopBar(
-            Profile.getName(context)
+            Profile.getName(context),
+
+        ) { onNavigate(it) }
+
+        Crop.route -> CropTopBar(
+            vmCamera,
+            navigateUp
         )
 
         Chat.route -> ChatTopBar(

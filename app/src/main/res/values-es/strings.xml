@@ -99,7 +99,7 @@
     <string name="loading_phrase_4">Espera un segundo, ¡estamos enseñándole a los robots a hacer tus matemáticas!</string>
     <string name="loading_phrase_5">Mantente tranquilo, ¡estamos convirtiendo el café en soluciones!</string>
     <string name="asked_subject_your_custom_subject_my_uid">Tu asunto personalizado. Mi UID: %1$s</string>
-    <string name="category_prefix_translate_to_this_text">"Traduce al %1$s este texto:  "</string>
+    <string name="category_prefix_translate_to_this_text">"Traduce este texto al "</string>
     <string name="category_prefix_summary_this_text">"Resume este texto: "</string>
     <string name="category_prefix_correct_the_grammar">"Corrige la gramatica: "</string>
     <string name="category_translate">Traducir</string>
@@ -141,4 +141,15 @@
     <string name="subscription_monthly">" / Mes"</string>
     <string name="subscription2_cancel_anytime">Cancela en cualquier momento</string>
     <string name="subscription_save_50">Ahorra 50%</string>
+    <string name="topbar_settings">Ajustes</string>
+    <string name="language_english">Inglés</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Francés</string>
+    <string name="language_other">Otro</string>
+    <string name="language_alert_language">Idioma</string>
+    <string name="language_alert_enter_language">Ingresar idioma</string>
+    <string name="language_alert_ok">Ok</string>
+    <string name="language_alert_cancel">Cancelar</string>
+    <string name="language_translate_to">"Traducir al: "</string>
+    <string name="historychats_category">"Categoría - "</string>
 </resources>

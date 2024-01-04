@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.parental_guidance
+package com.sginnovations.asked.ui.main_bottom_bar.parental_guidance
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

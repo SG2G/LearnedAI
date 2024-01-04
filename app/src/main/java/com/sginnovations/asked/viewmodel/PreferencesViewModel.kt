@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.asked.Constants.Companion.KEY_FIRST_TIME
+import com.sginnovations.asked.Constants.Companion.KEY_THEME
 import com.sginnovations.asked.data.preferences.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -18,10 +19,25 @@ class PreferencesViewModel @Inject constructor(
 ) : ViewModel() {
 
     val firstTimeLaunch = mutableStateOf(false)
+    val theme = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
             getIfIsFirstTime()
+            getTheme()
+        }
+    }
+
+    /**
+     * Theme
+     */
+    private suspend fun getTheme() {
+        theme.value = preferences.getTheme(KEY_THEME)
+    }
+
+    suspend fun setTheme(value: Boolean) {
+        viewModelScope.launch {
+            preferences.setTheme(KEY_THEME, value)
         }
     }
 

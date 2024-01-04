@@ -17,3 +17,12 @@ val Background = Color(0xFF161718)
 val OnBackground = Color(0xFFF7F7F7)
 
 val error = Color(0xFFAA4842)
+
+val PrimaryL = Color(0xFF006FEB)
+val OnPrimaryL = Color(0xFFffffff)
+val PrimaryContainerL = Color(0xFFE5EBFF)
+val OnPrimaryContainerL = Color(0xFF000E22)
+
+val PrimarySurfaceL = Color(0xFFfefbff)
+val SecondarySurfaceL = Color(0xF1DEDFE9)
+val BackgroundL = Color(0xFFFEFEFE)

@@ -1,26 +1,16 @@
 @file:OptIn(ExperimentalPagerApi::class)
 
-package com.sginnovations.asked.ui.ui_components.camera
+package com.sginnovations.asked.ui.main_bottom_bar.camera.components.carousel
 
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.camera.view.LifecycleCameraController
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,11 +32,11 @@ import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
-import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "sliderList"
+
 @Composable
 fun CameraCarousel(
     modifier: Modifier = Modifier,
@@ -62,7 +52,13 @@ fun CameraCarousel(
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = 3)
 
-    val sliderList = listOf(GrammarCategoryOCR,SummaryCategoryOCR,TranslateCategoryOCR, TextCategoryOCR, MathCategoryOCR)
+    val sliderList = listOf(
+        GrammarCategoryOCR,
+        SummaryCategoryOCR,
+        TranslateCategoryOCR,
+        TextCategoryOCR,
+        MathCategoryOCR
+    )
 
     HorizontalPager(
         count = sliderList.size,
@@ -73,28 +69,28 @@ fun CameraCarousel(
         val isSelected = pagerState.currentPage == item
         val targetAlpha = if (isSelected) 1f else 0.5f
         val targetScale = if (isSelected) 1f else 0.8f
-        val alpha by animateFloatAsState(targetAlpha)
-        val scale by animateFloatAsState(targetScale)
 
         Log.d(TAG, "sliderList: ${sliderList[pagerState.currentPage]}")
         onChangeCategory(sliderList[pagerState.currentPage])
 
-        val mathCostToken = vmToken.getCameraMathTokens()
+//        val mathCostToken = vmToken.getCameraMathTokens()
 
         // Tokens Cost Subtitle
-        val tokenCost = when (sliderList[item].root) {
-            TextCategoryOCR.root -> "Free"
-            MathCategoryOCR.root ->
-                if (mathCostToken == "0") {
-                    "Free"
-                } else {
-                    mathCostToken
-                }
+//        val tokenCost = when (sliderList[item].root) { //TODO COMMENTED
+//            TextCategoryOCR.root -> "Free"
+//            MathCategoryOCR.root ->
+//                if (mathCostToken == "0") {
+//                    "Free"
+//                } else {
+//                    mathCostToken
+//                }
+//
+//            else -> {
+//                "Free"
+//            }
+//        }
 
-            else -> {
-                "Free"
-            }
-        }
+        val verticalOffset = if (isSelected) 0.dp else 18.dp
 
         Column(
             modifier = Modifier.pointerInput(Unit) {
@@ -104,40 +100,17 @@ fun CameraCarousel(
                     }
                 )
             },
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = sliderList[item].getName(context),
                 modifier = Modifier
-                    .graphicsLayer {
-                        this.alpha = alpha
-                        this.scaleX = scale
-                        this.scaleY = scale
-                    },
-                style = MaterialTheme.typography.headlineMedium
+                    .offset(y = verticalOffset)
+                    .padding(vertical = 8.dp),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.background
             )
-            AnimatedVisibility(
-                visible = isSelected,
-                enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(
-                    initialAlpha = 0.3f
-                ),
-                exit = slideOutVertically(targetOffsetY = { -40 }) + shrinkVertically() + fadeOut(),
-                modifier = Modifier.padding(bottom = 2.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = tokenCost,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    TokenIcon()
-                }
-            }
-
+            // ref 1
             PhotoButton(
                 modifier = Modifier.scale(if (isSelected) 1f else 0.8f),
                 categoryOCR = sliderList[item],
@@ -146,7 +119,7 @@ fun CameraCarousel(
                 isSelected = isSelected,
 
                 onChangeIcon = { scope.launch { pagerState.animateScrollToPage(item) } },
-                ) {
+            ) {
                 if (isSelected) {
                     onPhotoTaken(it)
                 }
@@ -155,3 +128,26 @@ fun CameraCarousel(
         }
     }
 }
+
+//ref 1
+//            AnimatedVisibility(
+//                visible = isSelected,
+//                enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(
+//                    initialAlpha = 0.3f
+//                ),
+//                exit = slideOutVertically(targetOffsetY = { -40 }) + shrinkVertically() + fadeOut(),
+//                modifier = Modifier.padding(bottom = 2.dp)
+//            ) {
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.Center
+//                ) {
+//                    Text(
+//                        text = tokenCost,
+//                        style = MaterialTheme.typography.labelMedium,
+//                        color = MaterialTheme.colorScheme.primary
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    TokenIcon()
+//                }
+//            }

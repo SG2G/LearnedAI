@@ -34,21 +34,17 @@ val DarkColorScheme = darkColorScheme(
     error = error,
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = primary,
-    onPrimary = onPrimary,
+val LightColorScheme = lightColorScheme(
+    primary = PrimaryL,
+    onPrimary = OnPrimaryL,
+    primaryContainer = PrimaryContainerL,
+    onPrimaryContainer = OnPrimaryContainerL,
 
-    primaryContainer = primaryContainer,
-    secondaryContainer = secondaryContainer,
-    onPrimaryContainer = onPrimaryContainer,
-    onSecondaryContainer = onSecondaryContainer,
-
-    surface = surface,
-    onSurfaceVariant = onSurfaceVariant,
-
-    background = Background,
-    onBackground = OnBackground,
+    surface = PrimarySurfaceL,
+    secondaryContainer = SecondarySurfaceL,
+    background = BackgroundL,
 )
+
 
 @Composable
 fun LearnedAITheme(
@@ -68,12 +64,11 @@ fun LearnedAITheme(
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
-
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.background.toArgb()
             window.navigationBarColor = Color(0xFF191c22).toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.ui_components.camera
+package com.sginnovations.asked.ui.main_bottom_bar.camera.components.carousel
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -92,7 +92,8 @@ fun PhotoButton(
                     contentDescription = "Outer Icon",
                     modifier = Modifier
                         .size(65.dp)
-                        .alpha(if (!isSelected) 0.6f else 1f)
+                        .alpha(if (!isSelected) 0.6f else 1f),
+                    tint = Color.White
                 )
                 Icon(
                     modifier = Modifier
@@ -184,9 +185,7 @@ private fun takePhoto(
                         matrix,
                         true
                     )
-
                     onPhotoTaken(rotatedBitmap)
-
 
                 }
             }
@@ -195,7 +194,7 @@ private fun takePhoto(
         e.printStackTrace()
         Toast.makeText(
             context,
-            "Error taking the photo. If the issue persists, please send us an email.",
+            context.getString(R.string.error_error_taking_the_photo_if_the_issue_persists_please_send_us_an_email),
             Toast.LENGTH_SHORT
         ).show()
     }

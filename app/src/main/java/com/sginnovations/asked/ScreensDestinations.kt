@@ -85,3 +85,8 @@ object Gallery : ScreensDestinations {
     override val route = "Gallery"
     override fun getName(context: Context) = context.getString(R.string.topbar_gallery)
 }
+
+object Settings : ScreensDestinations {
+    override val route = "Settings"
+    override fun getName(context: Context) = context.getString(R.string.topbar_settings)
+}

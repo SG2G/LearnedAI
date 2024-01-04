@@ -10,12 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.asked.data.CategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.repository.MathpixRepository
 import com.sginnovations.asked.repository.MlkitRepository
+import com.sginnovations.asked.utils.LanguageName.languageName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -38,6 +40,8 @@ class CameraViewModel @Inject constructor(
 
     val cameraCategoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
     val photoImageBitmap = mutableStateOf(createBlackImageBitmap(100, 100))
+
+    val translateLanguage = mutableStateOf(languageName(context,Locale.current.language))
 
     fun onTakePhoto(bitmap: Bitmap) {
         photoImageBitmap.value = convertBitmapToImageBitmap(bitmap)

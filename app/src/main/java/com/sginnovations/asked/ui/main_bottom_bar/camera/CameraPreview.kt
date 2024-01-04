@@ -1,7 +1,5 @@
-package com.sginnovations.asked.ui.ui_components.camera
+package com.sginnovations.asked.ui.main_bottom_bar.camera
 
-import android.util.Size
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxSize

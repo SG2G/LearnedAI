@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,10 +42,11 @@ import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
-import com.sginnovations.asked.ui.ui_components.camera.CameraCarousel
-import com.sginnovations.asked.ui.ui_components.camera.CameraExamplesDialog
-import com.sginnovations.asked.ui.ui_components.camera.CameraPreview
-import com.sginnovations.asked.ui.ui_components.camera.PDFAlertDialog
+import com.sginnovations.asked.ui.main_bottom_bar.camera.components.top.MathExamples
+import com.sginnovations.asked.ui.main_bottom_bar.camera.components.top.TranslateSelector
+import com.sginnovations.asked.ui.main_bottom_bar.camera.components.carousel.CameraCarousel
+import com.sginnovations.asked.ui.main_bottom_bar.camera.components.other.CameraExamplesDialog
+import com.sginnovations.asked.ui.main_bottom_bar.camera.components.other.PDFAlertDialog
 import com.sginnovations.asked.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
@@ -72,6 +72,7 @@ fun CameraStateFul(
     )
 
     val cameraCategoryOCR = vmCamera.cameraCategoryOCR
+    val translateLanguage = vmCamera.translateLanguage
 
     val showPDFWorkingOn = remember { mutableStateOf(false) }
     val showCategoryExamples = remember { mutableStateOf(false) }
@@ -80,6 +81,7 @@ fun CameraStateFul(
         CameraStateLess(
             vmToken = vmToken,
             cameraCategoryOCR = cameraCategoryOCR,
+            translateLanguage = translateLanguage,
 
             onGetPhotoGallery = { onGetPhotoGallery() },
             onPhotoTaken = { bitmap ->
@@ -93,6 +95,10 @@ fun CameraStateFul(
             onShowCategoryExamples = {
                 showCategoryExamples.value = true
             },
+
+            onChangeTranslateLanguage = { language ->
+                vmCamera.translateLanguage.value = language
+            }
 
             ) { categoryOCR ->
             Log.d(TAG, "categoryOCR prefix: $categoryOCR")
@@ -118,6 +124,7 @@ fun CameraStateFul(
 fun CameraStateLess(
     vmToken: TokenViewModel,
     cameraCategoryOCR: MutableState<CategoryOCR>,
+    translateLanguage: MutableState<String>,
 
     onGetPhotoGallery: () -> Unit,
     onPhotoTaken: (Bitmap) -> Unit,
@@ -125,6 +132,7 @@ fun CameraStateLess(
 
     onShowCategoryExamples: () -> Unit,
 
+    onChangeTranslateLanguage: (String) -> Unit,
     onChangeCategory: (CategoryOCR) -> Unit,
 ) {
     val context = LocalContext.current
@@ -138,7 +146,6 @@ fun CameraStateLess(
         }
     }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -149,29 +156,33 @@ fun CameraStateLess(
             modifier = Modifier
                 .fillMaxWidth()
         )
+        /**
+         * Camera Top Row
+         */
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 16.dp, start = 16.dp),
             verticalAlignment = Alignment.Top,
         ) {
-            Text(
-                text = when (cameraCategoryOCR.value.root) {
-                    TextCategoryOCR.root -> ""
-                    MathCategoryOCR.root -> stringResource(R.string.camera_math_examples)
-                    else -> ""
-
-                },
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.clickable {
-                    onShowCategoryExamples()
+            when (cameraCategoryOCR.value.prefix) {
+                TranslateCategoryOCR.prefix -> TranslateSelector(
+                    translateLanguage = translateLanguage
+                ) {
+                    Log.d(TAG, "Translating to: $it")
+                    onChangeTranslateLanguage(it)
                 }
-            )
+
+                MathCategoryOCR.prefix -> MathExamples(onShowCategoryExamples)
+            }
+
             Spacer(modifier = Modifier.weight(1f))
             TokenDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
         }
 
+        /**
+         * Camera Bottom Row
+         */
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
@@ -205,6 +216,9 @@ fun CameraStateLess(
                 }
             }
 
+            /**
+             * Selector, etc..
+             */
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -217,7 +231,8 @@ fun CameraStateLess(
                     Icon(
                         painter = painterResource(id = R.drawable.gallery_wide_svgrepo_com),
                         contentDescription = "PhotoLibrary",
-                        modifier = Modifier.size(38.dp)
+                        modifier = Modifier.size(38.dp),
+                        tint = MaterialTheme.colorScheme.background
                     )
                 }
 
@@ -228,7 +243,7 @@ fun CameraStateLess(
                  */
                 CameraCarousel(
                     modifier = Modifier
-                        .height(148.dp)
+                        .height(124.dp)
                         .width(200.dp),
                     vmToken = vmToken,
                     controller = controller,

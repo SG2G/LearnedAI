@@ -330,6 +330,11 @@ suspend fun sendNewMessage(
 ) {
     while (vmCamera.isLoading.value) delay(200)
 
+    // 5 seconds waiting for some number
+    val startTime = System.currentTimeMillis()
+    val timeoutMillis: Long = 5000
+    while (text.value.isEmpty() && System.currentTimeMillis() - startTime < timeoutMillis) { delay(100) }
+
     Log.d(TAG, "text 1: ${text.value}")
 //    delay(5000)
 //    Log.d(TAG, "text 2: ${text.value}")
@@ -344,12 +349,15 @@ suspend fun sendNewMessage(
             if (NetworkUtils.isOnline(context)) {
                 vmCamera.isLoading.value = true
 
+                val languageTranslate = vmCamera.translateLanguage.value
+
                 val prefix = when (cameraCategoryOCR.value.prefix) {
-                    TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context)
+                    TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context) + languageTranslate+": "
                     SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getPrefix(context)
                     GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getPrefix(context)
                     else -> ""
                 }
+
                 Log.d(
                     TAG,
                     "sendNewMessage: cameraCategoryOCR -> ${cameraCategoryOCR.value.prefix} prefix-> $prefix"

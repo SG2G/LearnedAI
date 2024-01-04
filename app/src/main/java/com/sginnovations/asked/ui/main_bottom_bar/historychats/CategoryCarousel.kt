@@ -36,8 +36,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.data.All
+import com.sginnovations.asked.data.GrammarCategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
+import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
+import com.sginnovations.asked.data.TranslateCategoryOCR
 
 private const val TAG = "CategoryCarousel"
 
@@ -47,17 +50,16 @@ fun CategoryCarousel(
 ) {
     val context = LocalContext.current
 
-    val sliderList = listOf(All, TextCategoryOCR, MathCategoryOCR)
+    val sliderList = listOf(All, TextCategoryOCR, MathCategoryOCR, TranslateCategoryOCR, SummaryCategoryOCR, GrammarCategoryOCR)
     var actualOption by remember { mutableStateOf(sliderList[0]) }
     val scale = remember { Animatable(1f) }
 
-    val cardsWidth = 72.dp
+    val cardsWidth = 68.dp
 
     //TODO ANIMATE ALL CLICK
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 4.dp),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -66,12 +68,9 @@ fun CategoryCarousel(
         LazyRow {
             items(sliderList) { item ->
                 val isSelected = actualOption == item
-                Log.d(
-                    TAG,
-                    "isSelected -> $isSelected / actualOption -> $actualOption / item -> $item"
-                )
+                Log.d(TAG,"isSelected -> $isSelected / actualOption -> $actualOption / item -> $item")
 
-                onChangeCategory(actualOption.root)
+                onChangeCategory(actualOption.prefix)
 
                 LaunchedEffect(isSelected) {
                     scale.animateTo(

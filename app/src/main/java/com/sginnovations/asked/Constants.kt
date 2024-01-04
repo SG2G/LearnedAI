@@ -39,6 +39,7 @@ class Constants {
         const val IS_PREMIUM = "isPremium"
 
         const val KEY_FIRST_TIME = "firstTime"
+        const val KEY_THEME = "theme"
 
         // CHAT LIMIT - FEATURE
         const val CHAT_LIMIT_DEFAULT = 500

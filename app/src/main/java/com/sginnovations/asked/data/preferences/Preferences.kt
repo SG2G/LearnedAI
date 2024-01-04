@@ -31,4 +31,18 @@ class Preferences @Inject constructor(
         Log.d(PREFERENCES_NAME, "getIfIsFirstTime: $firsTime")
         return firsTime
     }
+
+    /**
+     * Theme
+     */
+    suspend fun setTheme(key: String, value: Boolean) {
+        val preferenceKey = booleanPreferencesKey(key)
+        context.dataStore.edit { preferences ->
+            preferences[preferenceKey] = value
+        }
+    }
+    suspend fun getTheme(key: String): Boolean {
+        val preferenceKey = booleanPreferencesKey(key)
+        return context.dataStore.data.first()[preferenceKey] ?: false
+    }
 }
