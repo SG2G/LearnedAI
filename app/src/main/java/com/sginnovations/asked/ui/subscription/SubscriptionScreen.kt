@@ -224,13 +224,13 @@ fun SubscriptionStateLess(
         Box(
             contentAlignment = Alignment.TopCenter
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.subscription_background_school),
-                contentDescription = "subscription_background_school",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .alpha(0.1f)
-            )
+//            Image(
+//                painter = painterResource(id = R.drawable.subscription_background_school),
+//                contentDescription = "subscription_background_school",
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .alpha(0.1f)
+//            )
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

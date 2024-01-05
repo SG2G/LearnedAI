@@ -80,8 +80,6 @@ fun StateFulHistoryChats(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF191c22).toArgb() }
-
     LaunchedEffect(Unit) {
         Log.d(TAG, "StateFulHistoryChats: getAllConversations")
         vmChat.getAllConversations()
@@ -324,7 +322,7 @@ fun StateLessHistoryChats(
                                             painter = when (conversation.category) {
                                                 TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
                                                 MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
-                                                TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.translate_camera)
+                                                TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
                                                 else -> painterResource(id = R.drawable.text_camera)
                                             },
                                             contentDescription = null,

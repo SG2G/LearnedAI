@@ -44,7 +44,7 @@ fun ChatUserMessage(
     val copyMsg = stringResource(R.string.copy_copied)
 
     // Color
-    val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+    val textColor = MaterialTheme.colorScheme.onSecondaryContainer.toArgb()
     val backgroundColor = Color.Transparent.toArgb()
 
     val markwon = remember {
@@ -82,7 +82,7 @@ fun ChatUserMessage(
         ElevatedCard(
             modifier = Modifier.padding(start = 32.dp),
             colors = CardDefaults.elevatedCardColors(
-                containerColor = Color(0xFF4081E4)
+                containerColor = MaterialTheme.colorScheme.secondaryContainer
             )
         ) {
             AndroidView(

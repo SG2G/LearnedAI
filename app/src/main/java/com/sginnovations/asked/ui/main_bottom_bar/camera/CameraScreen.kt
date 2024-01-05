@@ -232,7 +232,7 @@ fun CameraStateLess(
                         painter = painterResource(id = R.drawable.gallery_wide_svgrepo_com),
                         contentDescription = "PhotoLibrary",
                         modifier = Modifier.size(38.dp),
-                        tint = MaterialTheme.colorScheme.background
+                        tint = Color.White
                     )
                 }
 
@@ -243,8 +243,8 @@ fun CameraStateLess(
                  */
                 CameraCarousel(
                     modifier = Modifier
-                        .height(124.dp)
-                        .width(200.dp),
+                        .height(132.dp)
+                        .width(212.dp),
                     vmToken = vmToken,
                     controller = controller,
 

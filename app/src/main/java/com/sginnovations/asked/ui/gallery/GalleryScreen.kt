@@ -125,7 +125,7 @@ fun GalleryStateFull(
             val ocrCategories = listOf(
                 TextCategoryOCR to R.drawable.text_camera,
                 MathCategoryOCR to R.drawable.math_camera,
-                TranslateCategoryOCR to R.drawable.translate_camera,
+                TranslateCategoryOCR to R.drawable.language_camera,
                 SummaryCategoryOCR to R.drawable.summary_camera,
                 GrammarCategoryOCR to R.drawable.grammar_camera,
                 Soon to R.drawable.sign_caution_svgrepo_com,

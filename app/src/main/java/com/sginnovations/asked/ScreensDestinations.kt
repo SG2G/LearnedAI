@@ -40,7 +40,7 @@ object ChatsHistory : ScreensDestinations {
 }
 object ParentalGuidance : ScreensDestinations {
     override val route = "Parental Guidance"
-    override fun getName(context: Context) = "Parental Guidance"
+    override fun getName(context: Context) = "Parental Guidance" //TODO TRANSLATE
     override val icon: Int = R.drawable.book_bookmark_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.book_bookmark_svgrepo_filled
 }

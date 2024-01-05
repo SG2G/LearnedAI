@@ -40,6 +40,11 @@ class Constants {
 
         const val KEY_FIRST_TIME = "firstTime"
         const val KEY_THEME = "theme"
+        const val KEY_FONT_SIZE_MULTIPLIER =  "fontMultiplier"
+
+        const val TEXT_SIZE_NORMAL = 1f
+        const val TEXT_SIZE_BIG = 1.25f
+        const val TEXT_SIZE_BIGGER = 1.5f
 
         // CHAT LIMIT - FEATURE
         const val CHAT_LIMIT_DEFAULT = 500

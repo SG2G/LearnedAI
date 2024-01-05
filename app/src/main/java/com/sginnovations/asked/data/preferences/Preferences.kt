@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -15,6 +16,20 @@ private val Context.dataStore by preferencesDataStore(name = PREFERENCES_NAME)
 class Preferences @Inject constructor(
     private val context: Context,
 ) {
+
+    /**
+     * Text Size
+     */
+    suspend fun setFontSizeMultiplier(key: String, multiplier: Float) {
+        val preferenceKey = floatPreferencesKey(key)
+        context.dataStore.edit { preferences ->
+            preferences[preferenceKey] = multiplier
+        }
+    }
+    suspend fun getFontSizeMultiplier(key: String): Float {
+        val preferenceKey = floatPreferencesKey(key)
+        return context.dataStore.data.first()[preferenceKey] ?: 1f
+    }
 
     /**
      * OnBoarding
@@ -45,4 +60,5 @@ class Preferences @Inject constructor(
         val preferenceKey = booleanPreferencesKey(key)
         return context.dataStore.data.first()[preferenceKey] ?: false
     }
+
 }

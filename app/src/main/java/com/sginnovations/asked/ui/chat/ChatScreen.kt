@@ -391,7 +391,8 @@ fun ChatStateLess(
                                                 Text(
                                                     modifier = Modifier.padding(CHAT_MSG_PADDING),
                                                     text = message.content,
-                                                    style = MaterialTheme.typography.bodyMedium
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = MaterialTheme.colorScheme.onPrimaryContainer
                                                 )
                                             }
                                         }
@@ -558,7 +559,7 @@ fun ChatStateLess(
                             contentDescription = "Send",
                             modifier = Modifier.size(24.dp),
                             tint =
-                            if (text.value.isEmpty()) Color.Gray else Color.White
+                            if (text.value.isEmpty()) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -569,7 +570,7 @@ fun ChatStateLess(
                 ) {
                     Text(
                         text = stringResource(R.string.chat_supported_asked_can_make_mistakes_consider_checking_important_information),
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.labelSmall
                     )
                 }

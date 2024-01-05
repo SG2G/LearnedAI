@@ -1,14 +1,14 @@
 package com.sginnovations.asked.viewmodel
 
-import android.util.Log
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.asked.Constants.Companion.KEY_FIRST_TIME
+import com.sginnovations.asked.Constants.Companion.KEY_FONT_SIZE_MULTIPLIER
 import com.sginnovations.asked.Constants.Companion.KEY_THEME
 import com.sginnovations.asked.data.preferences.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,12 +20,26 @@ class PreferencesViewModel @Inject constructor(
 
     val firstTimeLaunch = mutableStateOf(false)
     val theme = mutableStateOf(false)
+    val fontSizeMultiplier = mutableFloatStateOf(1f)
 
     init {
         viewModelScope.launch {
             getIfIsFirstTime()
             getTheme()
+            getFontSizeMultiplier()
         }
+    }
+
+    /**
+     * Text Size
+     */
+    private suspend fun getFontSizeMultiplier() {
+        fontSizeMultiplier.floatValue = preferences.getFontSizeMultiplier(KEY_FONT_SIZE_MULTIPLIER)
+    }
+
+    suspend fun setFontSizeMultiplier(multiplier: Float) {
+        preferences.setFontSizeMultiplier(KEY_FONT_SIZE_MULTIPLIER, multiplier)
+        getFontSizeMultiplier()
     }
 
     /**

@@ -9,6 +9,7 @@ import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
 import com.sginnovations.asked.Gallery
 import com.sginnovations.asked.NewConversation
+import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Subscription
@@ -18,6 +19,7 @@ import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.CropTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.DefaultTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.GalleryTopBar
+import com.sginnovations.asked.ui.ui_components.topbars.ParentalGuidanceTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ProfileTopBar
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
@@ -41,6 +43,9 @@ fun LearnedTopBar(
     Log.i(TAG, "LearnedTopBar: ${currentScreen.toString()}")
 
     when (currentScreen?.route) {
+        /**
+         * 4
+         */
         Camera.route -> CameraTopBar(
             vmTokens,
         )
@@ -49,11 +54,17 @@ fun LearnedTopBar(
             ChatsHistory.getName(context)
         ) { onNavigate(it) }
 
+        ParentalGuidance.route -> ParentalGuidanceTopBar(
+            ParentalGuidance.getName(context),
+        )
+
         Profile.route -> ProfileTopBar(
             Profile.getName(context),
-
         ) { onNavigate(it) }
 
+        /**
+         * Other
+         */
         Crop.route -> CropTopBar(
             vmCamera,
             navigateUp

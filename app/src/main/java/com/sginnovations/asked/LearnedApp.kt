@@ -1,11 +1,9 @@
 package com.sginnovations.asked
 
 import android.util.Log
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sginnovations.asked.ui.theme.LearnedAITheme
 import com.sginnovations.asked.ui.utils.UpdateScreen
@@ -18,12 +16,15 @@ fun LearnedApp(
     vmPreferences: PreferencesViewModel = hiltViewModel(),
 ) {
     val needToUpdate = vmRemoteConfig.needToUpdate
-    Log.d("LearnedApp", "needToUpdate: ${needToUpdate.value} ")
-
     val theme = vmPreferences.theme
+    val fontSizeMultiplier = vmPreferences.fontSizeMultiplier
+
+    Log.d("LearnedApp", "fontSizeMultiplier: ${fontSizeMultiplier.floatValue} ")
 
     LearnedAITheme(
-        darkTheme = theme.value
+        darkTheme = theme.value,
+
+        fontSizeMultiplier = fontSizeMultiplier,
     ) {
             if (needToUpdate.value) {
                 UpdateScreen()

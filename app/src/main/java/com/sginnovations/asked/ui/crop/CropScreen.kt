@@ -278,7 +278,6 @@ fun CropStateLess(
 
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
             enabled = enabled.value
@@ -294,10 +293,8 @@ fun CropStateLess(
         ElevatedButton(
             onClick = { cropifyState.crop() },
 
-
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(25.dp),
             enabled = enabled.value
@@ -306,7 +303,7 @@ fun CropStateLess(
                 text = stringResource(R.string.crop_crop),
                 modifier = Modifier.padding(4.dp),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
     }

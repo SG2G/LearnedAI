@@ -54,8 +54,6 @@ fun CategoryCarousel(
     var actualOption by remember { mutableStateOf(sliderList[0]) }
     val scale = remember { Animatable(1f) }
 
-    val cardsWidth = 68.dp
-
     //TODO ANIMATE ALL CLICK
     Card(
         modifier = Modifier
@@ -93,22 +91,18 @@ fun CategoryCarousel(
                         ),
                         modifier = Modifier
                             .scale(scale.value)
-                            .padding(8.dp)
-                            .width(cardsWidth),
+                            .padding(8.dp),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .padding(8.dp)
-                                .width(cardsWidth),
+                                .padding(8.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = item.getName(context),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold
-                                )
+                                style = MaterialTheme.typography.labelLarge
                             )
                         }
                     }
@@ -118,8 +112,7 @@ fun CategoryCarousel(
                             containerColor = Color.Transparent
                         ),
                         modifier = Modifier
-                            .padding(8.dp)
-                            .width(cardsWidth),
+                            .padding(8.dp),
                     ) {
                         Row(
                             modifier = Modifier
@@ -131,17 +124,14 @@ fun CategoryCarousel(
                                             Log.d(TAG, "CategoryCarousel: Click")
                                         }
                                     )
-                                }
-                                .width(cardsWidth),
+                                },
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Text(
                                 text = item.getName(context),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold
-                                )
+                                style = MaterialTheme.typography.labelLarge
                             )
                         }
                     }

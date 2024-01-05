@@ -94,9 +94,10 @@ fun TokenDisplay(
 //                    contentAlignment = Alignment.Center,
 //                ) {
                     Icon(
-                        modifier = Modifier.size(24.dp).padding(end = 6.dp),
+                        modifier = Modifier.size(MaterialTheme.typography.titleMedium.fontSize.value.dp*3/2).padding(end = 6.dp),
                         painter = painterResource(id = R.drawable.add_square_svgrepo_com),
                         contentDescription = "Add Icon",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
             }
 
@@ -105,10 +106,7 @@ fun TokenDisplay(
                 modifier = Modifier
                     .padding(bottom = if (isPremium) 4.dp else 0.dp),
                 color = MaterialTheme.colorScheme.primary,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                ),
+                style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.width(2.dp))
             TokenIcon()

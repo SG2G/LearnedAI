@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -68,6 +69,8 @@ fun ChatAiMessage(
         Log.d(TAG, "message: $assistantMessage")
         val markdownText = replaceMathOneBackslashSymbols(assistantMessage)
 
+        val textColor = MaterialTheme.colorScheme.onPrimaryContainer.toArgb()
+
         Column {
             ElevatedCard(
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -81,7 +84,7 @@ fun ChatAiMessage(
                     factory = { ctx ->
                         TextView(ctx).apply {
                             setBackgroundColor(Color.TRANSPARENT)
-                            setTextColor(Color.WHITE)
+                            setTextColor(textColor)
                             textSize = 14f
                             typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
                             movementMethod = LinkMovementMethod.getInstance()

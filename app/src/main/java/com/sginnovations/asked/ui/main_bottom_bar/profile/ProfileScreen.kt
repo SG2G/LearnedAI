@@ -133,12 +133,12 @@ fun StateLessProfile(
                     onClick = { onNavigateSubscriptions() },
                     shape = RoundedCornerShape(5.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
                     )
                 ) {
                     Text(
                         text = stringResource(R.string.profile_upgrade),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.titleSmall
                     )
                 }

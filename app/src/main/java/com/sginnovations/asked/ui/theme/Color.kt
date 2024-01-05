@@ -2,7 +2,10 @@ package com.sginnovations.asked.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primary = Color(0xFFa2c9ff)
+/**
+ * Dark Theme
+ */
+val primary = Color(0xFF027AFF)
 val onPrimary = Color(0xFF002e69)
 
 val primaryContainer = Color(0xFF2C2C2E)
@@ -12,17 +15,27 @@ val secondaryContainer = Color(0xFF93C0FF)
 val onSecondaryContainer = Color(0xFF002452)
 
 val surface = Color(0xFF0D0D0E)
-val onSurfaceVariant = Color(0xFF939095)
-val Background = Color(0xFF161718)
-val OnBackground = Color(0xFFF7F7F7)
+val onSurfaceVariant = Color(0xFF8F8D91)
+val background = Color(0xFF161718)
+val onBackground = Color(0xFFF7F7F7)
 
 val error = Color(0xFFAA4842)
 
-val PrimaryL = Color(0xFF006FEB)
-val OnPrimaryL = Color(0xFFffffff)
-val PrimaryContainerL = Color(0xFFE5EBFF)
-val OnPrimaryContainerL = Color(0xFF000E22)
+/**
+ * Light Theme
+ */
+val primaryL = Color(0xFF027AFF)
+val onPrimaryL = Color(0xFFffffff)
 
-val PrimarySurfaceL = Color(0xFFfefbff)
-val SecondarySurfaceL = Color(0xF1DEDFE9)
-val BackgroundL = Color(0xFFFEFEFE)
+val primaryContainerL = Color(0xFFFEFEFE)
+val onPrimaryContainerL = Color(0xFF000E22)
+
+val secondaryContainerL = Color(0xFF93C0FF)
+val onSecondaryContainerL = Color(0xFF002452)
+
+val surfaceL = Color(0xFFfefbff)
+val onSurfaceVariantL = Color(0xFF393D42)
+val backgroundL = Color(0xFFF2F1F6)
+val onBackgroundL = Color(0xFF1A1C1E)
+
+val errorL = Color(0xFFBA1A1A)

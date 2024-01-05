@@ -157,5 +157,8 @@
     <string name="language_translate_to">Translate to: </string>
     <string name="historychats_category">"Category - "</string>
     <string name="error_error_taking_the_photo_if_the_issue_persists_please_send_us_an_email">Error taking the photo. If the issue persists, please send us an email.</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_text_size">Text Size</string>
+    <string name="settings_theme">Theme</string>
 
 </resources>

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Circle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -103,23 +104,24 @@ fun PhotoButton(
                         TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
                         MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
 
-                        TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.translate_camera)
+                        TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
                         SummaryCategoryOCR.prefix -> painterResource(id = R.drawable.summary_camera)
                         GrammarCategoryOCR.prefix -> painterResource(id = R.drawable.grammar_camera)
 
                         else -> painterResource(id = R.drawable.text_camera)
                     },
                     contentDescription = "Inner Icon",
-                    tint = when (categoryOCR.prefix) {
-                        TextCategoryOCR.prefix -> Color(0xFF887603)
-                        MathCategoryOCR.prefix -> Color(0xFF052C53)
-
-                        TranslateCategoryOCR.prefix -> Color(0xFF90091D)
-                        SummaryCategoryOCR.prefix -> Color(0xFF5D2417)
-                        GrammarCategoryOCR.prefix -> Color(0xFF058D4D)
-
-                        else -> Color.Blue
-                    },
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+//                    when (categoryOCR.prefix) {
+//                        TextCategoryOCR.prefix -> Color(0xFF887603)
+//                        MathCategoryOCR.prefix -> Color(0xFF052C53)
+//
+//                        TranslateCategoryOCR.prefix -> Color(0xFF90091D)
+//                        SummaryCategoryOCR.prefix -> Color(0xFF5D2417)
+//                        GrammarCategoryOCR.prefix -> Color(0xFF058D4D)
+//
+//                        else -> Color.Blue
+//                    },
 
                 )
             }

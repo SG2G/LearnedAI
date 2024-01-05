@@ -33,10 +33,10 @@ import com.sginnovations.asked.ui.earn_points.EarnPoints
 import com.sginnovations.asked.ui.gallery.GalleryStateFull
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
 import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
 import com.sginnovations.asked.ui.onboarding.onBoarding
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.StateFulParentalGuidance
 import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
 import com.sginnovations.asked.ui.settings.SettingsStateFul
 import com.sginnovations.asked.ui.sign_in.LearnedAuth
@@ -217,7 +217,9 @@ fun LearnedNavigation(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                StateFulParentalGuidance()
+                ParentalGuidanceStateFul(
+                    onNavigate = {}
+                )
             }
 
             composable(

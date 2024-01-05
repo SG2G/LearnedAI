@@ -35,7 +35,7 @@ fun ChatsHistoryTopBar(
             ) {
                 Text(
                     text = currentScreenTitle, color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp)
                 )
             }
