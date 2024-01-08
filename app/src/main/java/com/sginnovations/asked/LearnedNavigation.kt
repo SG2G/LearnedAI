@@ -33,7 +33,9 @@ import com.sginnovations.asked.ui.earn_points.EarnPoints
 import com.sginnovations.asked.ui.gallery.GalleryStateFull
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.LessonStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.TranscriptStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
 import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
 import com.sginnovations.asked.ui.onboarding.onBoarding
@@ -49,6 +51,7 @@ import com.sginnovations.asked.viewmodel.BillingViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.IntentViewModel
+import com.sginnovations.asked.viewmodel.LessonViewModel
 import com.sginnovations.asked.viewmodel.NavigatorViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
@@ -69,6 +72,7 @@ fun LearnedNavigation(
     vmBilling: BillingViewModel = hiltViewModel(),
     vmIntent: IntentViewModel = hiltViewModel(),
     vmNavigator: NavigatorViewModel = hiltViewModel(),
+    vmLesson: LessonViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -114,6 +118,9 @@ fun LearnedNavigation(
             Subscription.route -> Subscription
             RefCode.route -> RefCode
             Settings.route -> Settings
+
+            Lesson.route -> Lesson
+            Transcript.route -> Transcript
 
             else -> null
         }
@@ -218,7 +225,10 @@ fun LearnedNavigation(
                 exitTransition = { ExitTransition.None }
             ) {
                 ParentalGuidanceStateFul(
-                    onNavigate = {}
+                    vmLesson = vmLesson,
+                    vmPreferences = vmPreferences,
+
+                    onNavigateLesson = { navController.navigate(route = Lesson.route) }
                 )
             }
 
@@ -299,6 +309,29 @@ fun LearnedNavigation(
                 )
                 EarnPoints(vmToken, navController)
             }
+
+            composable(
+                route = Lesson.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                LessonStateFul(
+                    vmLesson = vmLesson,
+                    vmPreferences = vmPreferences,
+
+                    onOpenTranscript = { navController.navigate(route = Transcript.route) }
+                )
+            }
+            composable(
+                route = Transcript.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                TranscriptStateFul(
+                    vmLesson = vmLesson,
+                )
+            }
+
             composable(route = RefCode.route) {
                 ReferralCodeStateFul(
                     vmAuth = vmAuth
@@ -318,7 +351,9 @@ fun LearnedNavigation(
                 )
             }
             composable(route = Settings.route) {
-                SettingsStateFul(vmPreferences = vmPreferences)
+                SettingsStateFul(
+                    vmPreferences = vmPreferences
+                )
             }
         }
     }

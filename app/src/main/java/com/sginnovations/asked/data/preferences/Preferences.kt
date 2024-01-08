@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -17,6 +18,29 @@ class Preferences @Inject constructor(
     private val context: Context,
 ) {
 
+    /**
+     * Reads
+     */
+    private val READ_LESSONS_KEY = stringPreferencesKey("read_lessons")
+
+    suspend fun getReadLessons(): Set<Int> {
+        val preferences = context.dataStore.data.first()
+        val lessonsString = preferences[READ_LESSONS_KEY] ?: ""
+        return if (lessonsString.isEmpty()) emptySet() else lessonsString.split(",").map { it.toInt() }.toSet()
+    }
+
+    suspend fun markLessonAsRead(lessonId: Int) {
+        val currentLessons = getReadLessons().toMutableSet()
+        currentLessons.add(lessonId)
+        setReadLessons(currentLessons)
+    }
+
+    private suspend fun setReadLessons(lessons: Set<Int>) {
+        val lessonsString = lessons.joinToString(separator = ",")
+        context.dataStore.edit { preferences ->
+            preferences[READ_LESSONS_KEY] = lessonsString
+        }
+    }
     /**
      * Text Size
      */

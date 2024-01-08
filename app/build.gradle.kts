@@ -56,6 +56,10 @@ android {
 
 dependencies {
 
+    // Preferences //
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    // Youtube open source API //
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     // Markwon //
     implementation ("io.noties.markwon:core:4.6.2")
     implementation ("io.noties.markwon:ext-latex:4.6.2")

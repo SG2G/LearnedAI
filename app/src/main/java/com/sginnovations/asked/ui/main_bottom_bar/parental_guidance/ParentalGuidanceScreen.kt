@@ -1,38 +1,58 @@
 package com.sginnovations.asked.ui.main_bottom_bar.parental_guidance
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.CustomCard
+import com.sginnovations.asked.data.parental_guidance.LessonDataClass
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.LessonCard
+import com.sginnovations.asked.viewmodel.LessonViewModel
+import com.sginnovations.asked.viewmodel.PreferencesViewModel
 
+private const val TAG = "ParentalGuidanceStateFul"
 @Composable
 fun ParentalGuidanceStateFul(
+    vmLesson: LessonViewModel,
+    vmPreferences: PreferencesViewModel,
 
-    onNavigate: (String) -> Unit,
+    onNavigateLesson: () -> Unit,
 ) {
+    val lessons = vmLesson.getAllLessons()
 
     ParentalGuidanceStateLess(
-        onNavigate = { destination ->
-            onNavigate(destination)
-        }
-    )
+        vmPreferences = vmPreferences,
+
+        lessons = lessons
+
+    ) { id ->
+        Log.d(TAG, "id: $id")
+        vmLesson.lessonId.intValue = id
+        onNavigateLesson()
+    }
 }
 @Composable
 fun ParentalGuidanceStateLess(
+    vmPreferences: PreferencesViewModel,
 
-    onNavigate: (String) -> Unit,
+    lessons: List<LessonDataClass>,
+
+    onNavigate: (Int) -> Unit,
 ) {
 
     Column(modifier = Modifier.fillMaxSize()
     ) {
-        CustomCard(
-            title = "Como estudiar",
-            subtitle = "12 lecciones",
-            description = "Aqui te enseñare mucha cosa",
-            imageUrl = "https://img.freepik.com/foto-gratis/primer-plano-lindo-burro-pastando-prado-generado-ia_188544-14334.jpg?w=1380&t=st=1704470903~exp=1704471503~hmac=8a5d95f79d6a8d36ac995ee5b29aead3a1cb33d97a2d0b14cf461d6dedfd0cfb",
+        lessons.forEach { lesson ->
 
-            onClick = {  }
-        )
+            LessonCard(
+                vmPreferences = vmPreferences,
+
+                lesson = lesson,
+
+                onClick = { onNavigate(lesson.id) }
+            )
+
+        }
     }
 }
+

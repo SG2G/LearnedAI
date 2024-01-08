@@ -22,12 +22,31 @@ class PreferencesViewModel @Inject constructor(
     val theme = mutableStateOf(false)
     val fontSizeMultiplier = mutableFloatStateOf(1f)
 
+    val readLessons = mutableStateOf<Set<Int>>(setOf())
+
     init {
         viewModelScope.launch {
             getIfIsFirstTime()
             getTheme()
             getFontSizeMultiplier()
+
+            readLessons.value = preferences.getReadLessons()
         }
+    }
+
+    /**
+     * Reads
+     */
+
+    fun markLessonAsRead(lessonId: Int) {
+        viewModelScope.launch {
+            preferences.markLessonAsRead(lessonId)
+            readLessons.value = preferences.getReadLessons()
+        }
+    }
+
+    fun isLessonRead(lessonId: Int): Boolean {
+        return readLessons.value.contains(lessonId)
     }
 
     /**
