@@ -17,14 +17,14 @@ fun LearnedApp(
 ) {
     val needToUpdate = vmRemoteConfig.needToUpdate
     val theme = vmPreferences.theme
-    val fontSizeMultiplier = vmPreferences.fontSizeMultiplier
+    val fontSizeIncrease = vmPreferences.fontSizeIncrease
 
-    Log.d("LearnedApp", "fontSizeMultiplier: ${fontSizeMultiplier.floatValue} ")
+    Log.d("LearnedApp", "fontSizeMultiplier: ${fontSizeIncrease.floatValue} ")
 
     LearnedAITheme(
         darkTheme = theme.value,
 
-        fontSizeMultiplier = fontSizeMultiplier,
+        fontSizeIncrease = fontSizeIncrease,
     ) {
             if (needToUpdate.value) {
                 UpdateScreen()

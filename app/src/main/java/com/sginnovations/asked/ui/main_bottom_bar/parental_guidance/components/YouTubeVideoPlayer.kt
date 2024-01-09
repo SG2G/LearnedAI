@@ -25,7 +25,6 @@ fun ComposeYouTubePlayer(videoId: String) {
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Transparent, RoundedCornerShape(15.dp))
-            .padding(horizontal = 16.dp)
     ) {
         AndroidView(
             factory = { context ->

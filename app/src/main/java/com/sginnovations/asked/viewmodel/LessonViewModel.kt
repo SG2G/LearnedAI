@@ -1,9 +1,13 @@
 package com.sginnovations.asked.viewmodel
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
-import com.sginnovations.asked.data.parental_guidance.LessonDataClass
-import com.sginnovations.asked.data.parental_guidance.LessonDataSource
+import com.sginnovations.asked.data.lessons.LessonDataClass
+import com.sginnovations.asked.data.lessons.LessonDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -21,5 +25,4 @@ class LessonViewModel @Inject constructor(
         return lessonDataSource.getAllLessons()
     }
 
-    // Other ViewModel logic...
 }

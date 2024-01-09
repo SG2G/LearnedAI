@@ -1,7 +1,7 @@
 package com.sginnovations.asked.di
 
 import android.content.Context
-import com.sginnovations.asked.data.parental_guidance.LessonDataSource
+import com.sginnovations.asked.data.lessons.LessonDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -20,15 +20,15 @@ class PreferencesViewModel @Inject constructor(
 
     val firstTimeLaunch = mutableStateOf(false)
     val theme = mutableStateOf(false)
-    val fontSizeMultiplier = mutableFloatStateOf(1f)
+    val fontSizeIncrease = mutableFloatStateOf(1f)
 
-    val readLessons = mutableStateOf<Set<Int>>(setOf())
+    private val readLessons = mutableStateOf<Set<Int>>(setOf())
 
     init {
         viewModelScope.launch {
             getIfIsFirstTime()
             getTheme()
-            getFontSizeMultiplier()
+            getFontSizeIncrease()
 
             readLessons.value = preferences.getReadLessons()
         }
@@ -52,13 +52,13 @@ class PreferencesViewModel @Inject constructor(
     /**
      * Text Size
      */
-    private suspend fun getFontSizeMultiplier() {
-        fontSizeMultiplier.floatValue = preferences.getFontSizeMultiplier(KEY_FONT_SIZE_MULTIPLIER)
+    private suspend fun getFontSizeIncrease() {
+        fontSizeIncrease.floatValue = preferences.getFontSizeIncrease(KEY_FONT_SIZE_MULTIPLIER)
     }
 
-    suspend fun setFontSizeMultiplier(multiplier: Float) {
-        preferences.setFontSizeMultiplier(KEY_FONT_SIZE_MULTIPLIER, multiplier)
-        getFontSizeMultiplier()
+    suspend fun setFontSizeIncrease(increase: Float) {
+        preferences.setFontSizeIncrease(KEY_FONT_SIZE_MULTIPLIER, increase)
+        getFontSizeIncrease()
     }
 
     /**

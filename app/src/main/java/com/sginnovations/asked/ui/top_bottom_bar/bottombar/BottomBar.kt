@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -36,6 +37,7 @@ import androidx.navigation.NavController
 import com.sginnovations.asked.Auth
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.ParentalChat
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
@@ -54,7 +56,7 @@ fun LearnedBottomBar(
         Log.i(TAG, "currentScreenTitle: $currentScreen")
 
         if (currentScreen?.route != Auth.route) {
-            val items = listOf(Camera, ChatsHistory, ParentalGuidance, Profile)
+            val items = listOf(Camera, ChatsHistory, ParentalGuidance, ParentalChat, Profile)
             NavigationBar(
                 modifier = Modifier.height(64.dp),
             ) {
@@ -78,8 +80,10 @@ fun LearnedBottomBar(
                             }
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Color.White,
-                            indicatorColor = Color(0xFF191c22)
+                            selectedIconColor = MaterialTheme.colorScheme.onSurface,
+                            indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
+
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
                 }
@@ -103,7 +107,7 @@ fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
             modifier = Modifier
                 .width(lineWidth)
                 .height(2.dp)
-                .background(Color.White, RoundedCornerShape(percent = 50))
+                .background(MaterialTheme.colorScheme.onSurface, RoundedCornerShape(percent = 50))
         )
     }
 }

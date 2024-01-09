@@ -12,7 +12,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -62,7 +61,7 @@ fun LearnedAITheme(
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
 
-    fontSizeMultiplier: MutableFloatState,
+    fontSizeIncrease: MutableFloatState,
 
     content: @Composable () -> Unit
 ) {
@@ -90,11 +89,11 @@ fun LearnedAITheme(
         }
     }
 
-    Log.d("LearnedApp", "fontSizeMultiplier2: ${fontSizeMultiplier.floatValue} ")
+    Log.d("LearnedApp", "fontSizeMultiplier2: ${fontSizeIncrease.floatValue} ")
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = getTypography(fontSizeMultiplier = fontSizeMultiplier.floatValue),
+        typography = getTypography(fontSizeIncrease = fontSizeIncrease.floatValue),
         content = content
     )
 }

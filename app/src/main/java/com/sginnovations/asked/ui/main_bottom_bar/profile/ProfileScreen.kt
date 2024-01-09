@@ -1,8 +1,5 @@
 package com.sginnovations.asked.ui.main_bottom_bar.profile
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -110,37 +107,47 @@ fun StateLessProfile(
             .verticalScroll(scrollState)
     ) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(1f)
+        ElevatedCard(
+            modifier = Modifier.padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            ),
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 4.dp
+            )
         ) {
-            TextButton(
-                onClick = { /*nNavigateSettings()*/ },
-                shape = RoundedCornerShape(10),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(1f)
             ) {
-                ProfilePicture(userAuthPhotoUrl = userAuth.value?.profilePictureUrl) //TODO ?
-                Column(
-                    modifier = Modifier.weight(1f)
+                TextButton(
+                    onClick = { /*nNavigateSettings()*/ },
+                    shape = RoundedCornerShape(10),
                 ) {
-                    ProfileName(userAuth.value?.userName.toString())
-                    TokenDisplay(
-                        modifier = Modifier.scale(0.8f),
-                        tokens = tokens,
-                        showPlus = false
-                    ) { vmToken.switchPointsVisibility() }
-                }
-                Button(
-                    onClick = { onNavigateSubscriptions() },
-                    shape = RoundedCornerShape(5.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer
-                    )
-                ) {
-                    Text(
-                        text = stringResource(R.string.profile_upgrade),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        style = MaterialTheme.typography.titleSmall
-                    )
+                    ProfilePicture(userAuthPhotoUrl = userAuth.value?.profilePictureUrl) //TODO ?
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        ProfileName(userAuth.value?.userName.toString())
+                        TokenDisplay(
+                            modifier = Modifier.scale(0.8f),
+                            tokens = tokens,
+                            showPlus = false
+                        ) { vmToken.switchPointsVisibility() }
+                    }
+                    Button(
+                        onClick = { onNavigateSubscriptions() },
+                        shape = RoundedCornerShape(5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(R.string.profile_upgrade),
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
                 }
             }
         }
@@ -151,7 +158,7 @@ fun StateLessProfile(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             ),
             elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 8.dp
+                defaultElevation = 4.dp
             )
         ) {
             Column {
@@ -177,7 +184,7 @@ fun StateLessProfile(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             ),
             elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 8.dp
+                defaultElevation = 4.dp
             )
         ) {
             Column {
@@ -214,6 +221,5 @@ fun StateLessProfile(
                 color = MaterialTheme.colorScheme.surfaceVariant
             )
         }
-
     }
 }

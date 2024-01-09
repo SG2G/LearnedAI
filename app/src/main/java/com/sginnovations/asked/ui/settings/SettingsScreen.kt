@@ -3,19 +3,17 @@ package com.sginnovations.asked.ui.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +36,7 @@ fun SettingsStateFul(
     val scope = rememberCoroutineScope()
 
     val themeValue = vmPreferences.theme.value
-    val textSize = vmPreferences.fontSizeMultiplier.floatValue
+    val textSize = vmPreferences.fontSizeIncrease
 
     SettingsStateLess(
         themeValue = themeValue,
@@ -50,18 +48,17 @@ fun SettingsStateFul(
                 vmPreferences.setTheme(vmPreferences.theme.value)
             }
         },
-        onChangeTextSize = { multiplier ->
-            scope.launch {
-                vmPreferences.setFontSizeMultiplier(multiplier)
-            }
-        },
-    )
+    ) { increase ->
+        scope.launch {
+            vmPreferences.setFontSizeIncrease(increase)
+        }
+    }
 }
 
 @Composable
 fun SettingsStateLess(
     themeValue: Boolean,
-    textSize: Float,
+    textSize: MutableFloatState,
 
     onSwitchTheme: () -> Unit,
     onChangeTextSize: (Float) -> Unit,
@@ -125,7 +122,7 @@ fun SettingsStateLess(
                 TextButton(
                     onClick = { onChangeTextSize(TEXT_SIZE_NORMAL) },
                     colors = ButtonDefaults.textButtonColors(
-                        if (textSize == TEXT_SIZE_NORMAL) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                        if (textSize.floatValue == TEXT_SIZE_NORMAL) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
                     )
                 ) {
                     Text(
@@ -137,7 +134,7 @@ fun SettingsStateLess(
                 TextButton(
                     onClick = { onChangeTextSize(TEXT_SIZE_BIG) },
                     colors = ButtonDefaults.textButtonColors(
-                        if (textSize == TEXT_SIZE_BIG) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                        if (textSize.floatValue == TEXT_SIZE_BIG) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
                     )
                 ) {
                     Text(
@@ -149,7 +146,7 @@ fun SettingsStateLess(
                 TextButton(
                     onClick = { onChangeTextSize(TEXT_SIZE_BIGGER) },
                     colors = ButtonDefaults.textButtonColors(
-                        if (textSize == TEXT_SIZE_BIGGER) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                        if (textSize.floatValue == TEXT_SIZE_BIGGER) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
                     )
                 ) {
                     Text(

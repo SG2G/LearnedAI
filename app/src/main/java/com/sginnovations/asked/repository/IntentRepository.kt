@@ -1,5 +1,6 @@
 package com.sginnovations.asked.repository
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +10,24 @@ import com.sginnovations.asked.auth.sign_in.data.UserData
 import javax.inject.Inject
 
 class IntentRepository @Inject constructor() {
+
+    fun openYouTubeVideo(context: Context, videoId: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$videoId"))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        // Fallback URL in case the YouTube app isn't installed
+        val webIntent = Intent(Intent.ACTION_VIEW,
+            Uri.parse("http://www.youtube.com/watch?v=$videoId"))
+        webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        try {
+            // Try to use the YouTube app first
+            context.startActivity(intent)
+        } catch (ex: ActivityNotFoundException) {
+            // If YouTube app is not installed, use the web browser
+            context.startActivity(webIntent)
+        }
+    }
 
     fun sendEmail(context: Context, userAuth: State<UserData?>) {
         val email = context.getString(R.string.asked_email)

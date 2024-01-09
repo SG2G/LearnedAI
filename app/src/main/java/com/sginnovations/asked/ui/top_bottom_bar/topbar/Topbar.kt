@@ -9,6 +9,7 @@ import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
 import com.sginnovations.asked.Gallery
 import com.sginnovations.asked.NewConversation
+import com.sginnovations.asked.ParentalChat
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
@@ -54,9 +55,16 @@ fun LearnedTopBar(
             ChatsHistory.getName(context)
         ) { onNavigate(it) }
 
+        /**
+         * Same
+         */
         ParentalGuidance.route -> ParentalGuidanceTopBar(
             ParentalGuidance.getName(context),
         )
+        ParentalChat.route -> ParentalGuidanceTopBar(
+            ParentalChat.getName(context),
+        )
+
 
         Profile.route -> ProfileTopBar(
             Profile.getName(context),

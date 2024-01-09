@@ -17,7 +17,6 @@ fun ProfilePicture(userAuthPhotoUrl: String?) {
     Box(
         modifier = Modifier
             .size(width = 65.dp, height = 65.dp)
-            .background(MaterialTheme.colorScheme.background)
     ) {
         AsyncImage(
             model = userAuthPhotoUrl,

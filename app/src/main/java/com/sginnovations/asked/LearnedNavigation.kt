@@ -33,6 +33,7 @@ import com.sginnovations.asked.ui.earn_points.EarnPoints
 import com.sginnovations.asked.ui.gallery.GalleryStateFull
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
+import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.ParentalChatStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.LessonStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.TranscriptStateFul
@@ -109,6 +110,7 @@ fun LearnedNavigation(
 
             ChatsHistory.route -> ChatsHistory
             ParentalGuidance.route -> ParentalGuidance
+            ParentalChat.route -> ParentalChat
             Profile.route -> Profile
 
             NewConversation.route -> NewConversation
@@ -231,6 +233,13 @@ fun LearnedNavigation(
                     onNavigateLesson = { navController.navigate(route = Lesson.route) }
                 )
             }
+            composable(
+                route = ParentalChat.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                ParentalChatStateFul()
+            }
 
             composable(
                 route = Profile.route,
@@ -317,6 +326,7 @@ fun LearnedNavigation(
             ) {
                 LessonStateFul(
                     vmLesson = vmLesson,
+                    vmIntent = vmIntent,
                     vmPreferences = vmPreferences,
 
                     onOpenTranscript = { navController.navigate(route = Transcript.route) }

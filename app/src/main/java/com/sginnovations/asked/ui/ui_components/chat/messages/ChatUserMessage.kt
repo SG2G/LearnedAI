@@ -45,6 +45,7 @@ fun ChatUserMessage(
 
     // Color
     val textColor = MaterialTheme.colorScheme.onSecondaryContainer.toArgb()
+    val textSizee = MaterialTheme.typography.bodyLarge.fontSize.value
     val backgroundColor = Color.Transparent.toArgb()
 
     val markwon = remember {
@@ -91,7 +92,7 @@ fun ChatUserMessage(
                     TextView(ctx).apply {
                         setBackgroundColor(backgroundColor)
                         setTextColor(textColor)
-                        textSize = 14f
+                        textSize = textSizee
                         typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
                         movementMethod = LinkMovementMethod.getInstance()
                     }

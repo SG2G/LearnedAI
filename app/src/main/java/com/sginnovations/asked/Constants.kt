@@ -43,9 +43,9 @@ class Constants {
         const val KEY_FONT_SIZE_MULTIPLIER =  "fontMultiplier"
         const val KEY_READ_LESSONS =  "readLessons"
 
-        const val TEXT_SIZE_NORMAL = 1f
-        const val TEXT_SIZE_BIG = 1.2f
-        const val TEXT_SIZE_BIGGER = 1.3f
+        const val TEXT_SIZE_NORMAL = 0f
+        const val TEXT_SIZE_BIG = 2f
+        const val TEXT_SIZE_BIGGER = 4f
 
         // CHAT LIMIT - FEATURE
         const val CHAT_LIMIT_DEFAULT = 500

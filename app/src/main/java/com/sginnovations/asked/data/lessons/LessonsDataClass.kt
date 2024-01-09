@@ -1,7 +1,4 @@
-package com.sginnovations.asked.data.parental_guidance
-
-import android.content.Context
-import com.sginnovations.asked.R
+package com.sginnovations.asked.data.lessons
 
 data class LessonDataClass(
     val id: Int,

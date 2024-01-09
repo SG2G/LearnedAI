@@ -44,13 +44,13 @@ class Preferences @Inject constructor(
     /**
      * Text Size
      */
-    suspend fun setFontSizeMultiplier(key: String, multiplier: Float) {
+    suspend fun setFontSizeIncrease(key: String, increase: Float) {
         val preferenceKey = floatPreferencesKey(key)
         context.dataStore.edit { preferences ->
-            preferences[preferenceKey] = multiplier
+            preferences[preferenceKey] = increase
         }
     }
-    suspend fun getFontSizeMultiplier(key: String): Float {
+    suspend fun getFontSizeIncrease(key: String): Float {
         val preferenceKey = floatPreferencesKey(key)
         return context.dataStore.data.first()[preferenceKey] ?: 1f
     }

@@ -35,7 +35,7 @@ val onSecondaryContainerL = Color(0xFF002452)
 
 val surfaceL = Color(0xFFfefbff)
 val onSurfaceVariantL = Color(0xFF393D42)
-val backgroundL = Color(0xFFF2F1F6)
+val backgroundL = Color(0xFFE9E8EC)
 val onBackgroundL = Color(0xFF1A1C1E)
 
 val errorL = Color(0xFFBA1A1A)
