@@ -50,6 +50,12 @@ object GrammarCategoryOCR : CategoryOCR {
     override fun getPrefix(context: Context) =
         context.getString(R.string.category_prefix_correct_the_grammar)
 }
+object Assistant : CategoryOCR {
+    override val root = "Text"
+    override val prefix = "Assistant"
+    override fun getName(context: Context) = "Assistant"
+    override fun getPrefix(context: Context) = "Assistant"
+}
 object Soon : CategoryOCR {
     override val root = "Text"
     override val prefix = "Grammar"

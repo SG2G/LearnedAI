@@ -45,7 +45,7 @@ fun ChatUserMessage(
 
     // Color
     val textColor = MaterialTheme.colorScheme.onSecondaryContainer.toArgb()
-    val textSizee = MaterialTheme.typography.bodyLarge.fontSize.value
+    val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
     val backgroundColor = Color.Transparent.toArgb()
 
     val markwon = remember {

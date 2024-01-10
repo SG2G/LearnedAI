@@ -20,8 +20,8 @@ class RoomRepository @Inject constructor(
     suspend fun getAllMessages(id: Int): List<MessageEntity> {
         return chatDao.getConversationMessages(id)
     }
-    suspend fun getAllConversations(): List<ConversationEntity> {
-        return chatDao.getAllConversations()
+    suspend fun getAllConversationsExceptAssistant(): List<ConversationEntity> {
+        return chatDao.getAllConversationsExceptAssistant()
     }
     suspend fun getConversationsFromCategory(category: String): List<ConversationEntity> {
         return chatDao.getCategoryConversations(category)

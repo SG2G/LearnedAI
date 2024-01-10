@@ -38,9 +38,9 @@ object ChatsHistory : ScreensDestinations {
     override val icon: Int = R.drawable.chat_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.chat_svgrepo_filled
 }
-object ParentalChat : ScreensDestinations {
-    override val route = "ParentalChat"
-    override fun getName(context: Context) = context.getString(R.string.topbar_parentalchat)
+object ParentalAssist : ScreensDestinations {
+    override val route = "ParentalAssist"
+    override fun getName(context: Context) = context.getString(R.string.topbar_parentalassist)
     override val icon: Int = R.drawable.sofa_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.sofa_svgrepo_filled
 }
@@ -103,4 +103,12 @@ object Gallery : ScreensDestinations {
 object Settings : ScreensDestinations {
     override val route = "Settings"
     override fun getName(context: Context) = context.getString(R.string.topbar_settings)
+}
+object AssistantNewConversation : ScreensDestinations {
+    override val route = "AssistantNewConversation"
+    override fun getName(context: Context) = "New Chat"
+}
+object AssistantChat : ScreensDestinations {
+    override val route = "AssistantChat"
+    override fun getName(context: Context) = "Assistant Chat"
 }

@@ -70,7 +70,7 @@ fun ChatAiMessage(
         val markdownText = replaceMathOneBackslashSymbols(assistantMessage)
 
         val textColor = MaterialTheme.colorScheme.onPrimaryContainer.toArgb()
-        val textSizee = MaterialTheme.typography.bodyLarge.fontSize.value
+        val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
 
         Column {
             ElevatedCard(

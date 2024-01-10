@@ -21,8 +21,9 @@ interface ChatDao {
     /**
      * Conversations
      */
-    @Query("SELECT * FROM $CONVERSATION_TABLE_NAME")
-    suspend fun getAllConversations(): List<ConversationEntity>
+    @Query("SELECT * FROM $CONVERSATION_TABLE_NAME WHERE category <> 'Assistant'")
+    suspend fun getAllConversationsExceptAssistant(): List<ConversationEntity>
+
     @Query("SELECT * FROM $CONVERSATION_TABLE_NAME WHERE category = :category")
     suspend fun getCategoryConversations(category: String): List<ConversationEntity>
 

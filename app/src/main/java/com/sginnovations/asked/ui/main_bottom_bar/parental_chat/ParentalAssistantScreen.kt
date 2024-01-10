@@ -1,18 +1,14 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
-package com.sginnovations.asked.ui.main_bottom_bar.historychats
+package com.sginnovations.asked.ui.main_bottom_bar.parental_chat
 
 import android.app.Activity
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,14 +25,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,13 +49,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.All
-import com.sginnovations.asked.data.GrammarCategoryOCR
+import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.data.MathCategoryOCR
-import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
@@ -69,15 +62,15 @@ import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private const val TAG = "HistoryChats"
+private const val TAG = "ParentalChatStateFul"
 
 @Composable
-fun StateFulHistoryChats(
+fun ParentalAssistantStateFul(
     vmChat: ChatViewModel,
     vmPreferences: PreferencesViewModel,
 
+    onNavigateNewMessage: () -> Unit,
     onNavigateMessages: () -> Unit,
-    onNavigateNewConversation: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -95,33 +88,19 @@ fun StateFulHistoryChats(
     LaunchedEffect(Unit) {
         Log.d(TAG, "StateFulHistoryChats: getAllConversations")
         delay(100)
-        vmChat.getAllConversationsExceptAssistant()
+        vmChat.getConversationsFromCategory(Assistant.prefix)
     }
 
     val conversations = vmChat.conversations
 
-    StateLessHistoryChats(
+    ParentalChatStateLess(
         conversations = conversations,
 
-        onDeleteConversation = { id ->
+        onNavigateNewMessage = {
             scope.launch {
-                if (id != null) {
-                    Log.d(TAG, "onDeleteConversation. id -> $id")
-                    vmChat.hideConversation(id)
-                }
+                onNavigateNewMessage()
             }
         },
-        onChangeCategory = { category ->
-            scope.launch {
-                Log.d(TAG, "onChangeCategory")
-                if (category == All.root) {
-                    vmChat.getAllConversationsExceptAssistant()
-                } else {
-                    vmChat.getConversationsFromCategory(category)
-                }
-            }
-        },
-
         onNavigateMessages = { idConversation ->
             scope.launch {
                 Log.i(TAG, "Searching messages whit id: $idConversation")
@@ -130,26 +109,31 @@ fun StateFulHistoryChats(
             }
             Log.d(TAG, "StateFulHistoryChats: Navigating to messages")
             onNavigateMessages()
-        }
-    ) {
-        scope.launch {
-            vmChat.setUpNewConversation()
-            onNavigateNewConversation()
-        }
-    }
-}
+        },
 
+        onDeleteConversation = { id ->
+            scope.launch {
+                if (id != null) {
+                    Log.d(
+                        TAG,
+                        "onDeleteConversation. id -> $id"
+                    )
+                    vmChat.hideConversationsAssist(id)
+                }
+            }
+        },
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StateLessHistoryChats(
+fun ParentalChatStateLess(
     conversations: MutableState<List<ConversationEntity>>,
 
-    onDeleteConversation: (Int?) -> Unit,
-    onChangeCategory: (String) -> Unit,
-
+    onNavigateNewMessage: () -> Unit,
     onNavigateMessages: (Int) -> Unit,
-    onNavigateNewConversation: () -> Unit,
+
+    onDeleteConversation: (Int?) -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -158,85 +142,31 @@ fun StateLessHistoryChats(
     val indexMenu = remember { mutableStateOf<Int?>(null) }
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
         item {
-            CategoryCarousel(onChangeCategory = { onChangeCategory(it) })
-        }
-        /**
-         * New Chat
-         */
-        item {
-            Box(
+            ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = {
-                                onNavigateNewConversation()
-                            }
-                        )
-                    }
-                    .animateItemPlacement(
-                        animationSpec = spring(
-                            dampingRatio = 0.8f,
-                            stiffness = 200f
-                        )
-                    )
+                    .padding(8.dp)
             ) {
-                OutlinedCard(
+                Text(text = "Assistant")
+                Button(
+                    onClick = { onNavigateNewMessage() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
-                    colors = CardDefaults.outlinedCardColors(
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        containerColor = Color.Transparent
+                        .padding(horizontal = 32.dp)
+                        .height(48.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        MaterialTheme.colorScheme.secondaryContainer
                     )
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Add Icon"
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(R.string.historychats_new_chat),
-                        )
-                    }
-                }
-            }
-        }
-        if (conversations.value.isEmpty()) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 64.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.thinking2),
-                        contentDescription = "thinking head",
-                        modifier = Modifier.fillMaxWidth(0.6f)
-                    )
-                    Text(
-                        text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Text(text = "Write")
                 }
             }
         }
 
-        /**
-         * History of Chats
-         */
         itemsIndexed(
             items = conversations.value
         ) { index, conversation ->
@@ -256,7 +186,10 @@ fun StateLessHistoryChats(
                 val smallestId = 0
                 val largestId = conversations.value.size - 1
 
-                Log.d(TAG, "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId")
+                Log.d(
+                    TAG,
+                    "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId"
+                )
                 Column {
                     ElevatedCard(
                         modifier = Modifier
@@ -318,15 +251,7 @@ fun StateLessHistoryChats(
                                         horizontalArrangement = Arrangement.Start,
                                     ) {
                                         Text(
-                                            text = stringResource(R.string.historychats_category) +
-                                                    when (conversation.category) {
-                                                        TextCategoryOCR.prefix -> TextCategoryOCR.getName(context)
-                                                        MathCategoryOCR.prefix -> MathCategoryOCR.getName(context)
-                                                        GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getName(context)
-                                                        TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getName(context)
-                                                        SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getName(context)
-                                                        else -> TextCategoryOCR.getName(context)
-                                                    },
+                                            text = "Que es esto",
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             style = MaterialTheme.typography.labelSmall
                                         )
@@ -359,6 +284,7 @@ fun StateLessHistoryChats(
                                 /**
                                  * Menu
                                  */
+
                                 val scale by animateFloatAsState(
                                     targetValue = if (showMenu.value) 1f else 0.9f,
                                     animationSpec = tween(
@@ -393,5 +319,3 @@ fun StateLessHistoryChats(
         }
     }
 }
-
-

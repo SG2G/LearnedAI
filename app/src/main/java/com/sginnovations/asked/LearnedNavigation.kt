@@ -33,7 +33,9 @@ import com.sginnovations.asked.ui.earn_points.EarnPoints
 import com.sginnovations.asked.ui.gallery.GalleryStateFull
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
-import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.ParentalChatStateFul
+import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.AssistantChatStateFul
+import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.AssistantNewConversationStateFul
+import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.ParentalAssistantStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.LessonStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.TranscriptStateFul
@@ -47,6 +49,7 @@ import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
 import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.ui.top_bottom_bar.topbar.LearnedTopBar
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
+import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
@@ -74,6 +77,7 @@ fun LearnedNavigation(
     vmIntent: IntentViewModel = hiltViewModel(),
     vmNavigator: NavigatorViewModel = hiltViewModel(),
     vmLesson: LessonViewModel = hiltViewModel(),
+    vmAssistant: AssistantViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -110,7 +114,7 @@ fun LearnedNavigation(
 
             ChatsHistory.route -> ChatsHistory
             ParentalGuidance.route -> ParentalGuidance
-            ParentalChat.route -> ParentalChat
+            ParentalAssist.route -> ParentalAssist
             Profile.route -> Profile
 
             NewConversation.route -> NewConversation
@@ -123,6 +127,7 @@ fun LearnedNavigation(
 
             Lesson.route -> Lesson
             Transcript.route -> Transcript
+            AssistantChat.route -> AssistantChat
 
             else -> null
         }
@@ -213,6 +218,7 @@ fun LearnedNavigation(
             ) {
                 StateFulHistoryChats(
                     vmChat = vmChat,
+                    vmPreferences = vmPreferences,
 
                     onNavigateMessages = { navController.navigate(route = Chat.route) },
                     onNavigateNewConversation = {
@@ -234,11 +240,17 @@ fun LearnedNavigation(
                 )
             }
             composable(
-                route = ParentalChat.route,
+                route = ParentalAssist.route,
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                ParentalChatStateFul()
+                ParentalAssistantStateFul(
+                    vmChat = vmChat,
+                    vmPreferences = vmPreferences,
+
+                    onNavigateNewMessage = { navController.navigate(route = AssistantNewConversation.route) },
+                    onNavigateMessages = { navController.navigate(route = AssistantChat.route) },
+                )
             }
 
             composable(
@@ -284,6 +296,27 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
 
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } }
+                )
+            }
+            /**
+             * AssistantNewConversation
+             */
+            composable(route = AssistantNewConversation.route) {
+                AssistantNewConversationStateFul(
+                    vmChat = vmChat,
+                    vmAssistant = vmAssistant,
+
+                    onNavigateChat = { scope.launch { vmNavigator.navigateAssistantChat(navController) } }
+                )
+            }
+            /**
+             * AssistantChat
+             */
+            composable(route = AssistantChat.route) {
+                AssistantChatStateFul(
+                    vmChat = vmChat,
+                    vmToken = vmToken,
+                    vmAuth = vmAuth,
                 )
             }
             /**

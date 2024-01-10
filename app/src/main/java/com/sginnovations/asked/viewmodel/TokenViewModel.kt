@@ -37,6 +37,7 @@ class TokenViewModel @Inject constructor(
     }
 
     fun oneLessToken() = lessTokenCheckPremium(ONE_LESS_TOKEN)
+    fun xLessToken(num: Int) = lessTokenCheckPremium(num)
 
     fun lessTokenCheckPremium(num: Int) {
         viewModelScope.launch {

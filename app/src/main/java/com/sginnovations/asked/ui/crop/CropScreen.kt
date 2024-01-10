@@ -396,8 +396,8 @@ suspend fun getTextFromCroppedImage(
             Log.d(TAG, "CropStateLess: CAMERA_TEXT")
             vmChat.setUpNewConversation()
 
-            vmCamera.cameraCategoryOCR.value = cameraCategoryOCR.value //TODO LIADA CATEDRALICIA
             vmChat.categoryOCR.value = cameraCategoryOCR.value
+            vmCamera.cameraCategoryOCR.value = cameraCategoryOCR.value //TODO LIADA CATEDRALICIA
 
             vmCamera.getTextFromImage(croppedImage)
 

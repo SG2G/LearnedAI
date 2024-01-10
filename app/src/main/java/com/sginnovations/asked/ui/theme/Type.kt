@@ -64,8 +64,8 @@ fun getTypography(fontSizeIncrease: Float) = Typography(
         fontFamily = monaSansFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = (18.sp.value + fontSizeIncrease).sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+//        lineHeight = 28.sp,
+//        letterSpacing = 0.sp
     ),
     titleSmall = TextStyle(
         fontFamily = monaSansFontFamily,

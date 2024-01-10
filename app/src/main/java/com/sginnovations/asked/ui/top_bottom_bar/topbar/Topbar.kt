@@ -8,8 +8,7 @@ import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
 import com.sginnovations.asked.Gallery
-import com.sginnovations.asked.NewConversation
-import com.sginnovations.asked.ParentalChat
+import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
@@ -61,8 +60,8 @@ fun LearnedTopBar(
         ParentalGuidance.route -> ParentalGuidanceTopBar(
             ParentalGuidance.getName(context),
         )
-        ParentalChat.route -> ParentalGuidanceTopBar(
-            ParentalChat.getName(context),
+        ParentalAssist.route -> ParentalGuidanceTopBar(
+            ParentalAssist.getName(context),
         )
 
 

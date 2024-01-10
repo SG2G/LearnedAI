@@ -54,7 +54,6 @@ val LightColorScheme = lightColorScheme(
     error = errorL,
 )
 
-
 @Composable
 fun LearnedAITheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

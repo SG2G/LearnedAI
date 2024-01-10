@@ -81,7 +81,6 @@ fun ParentalGuidanceStateFul(
                 vmPreferences = vmPreferences,
 
                 lessons = lessons
-
             ) { id ->
                 Log.d(TAG, "id: $id")
                 vmLesson.lessonId.intValue = id

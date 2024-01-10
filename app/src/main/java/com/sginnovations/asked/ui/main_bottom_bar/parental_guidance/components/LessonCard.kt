@@ -5,11 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,64 +42,63 @@ fun LessonCard(
 @Composable
 fun SmallLessonCard(
     lesson: LessonDataClass,
-
     isRead: Boolean,
-
     onClick: () -> Unit,
 ) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 8.dp, vertical = 4.dp),
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
-        Box(
-            modifier = Modifier.clickable { onClick() },
-        ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
+        Box(modifier = Modifier.clickable { onClick() }) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
                 Image(
                     painter = painterResource(id = lesson.imageId),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(92.dp),
+                        .size(92.dp)
+                        .clip(RoundedCornerShape(10.dp)),
                     contentScale = ContentScale.Crop
                 )
 
                 Column(
                     modifier = Modifier
-                        .padding(8.dp)
                         .weight(1f)
+                        .padding(horizontal =  8.dp)
                 ) {
                     Text(
                         text = lesson.title,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = lesson.description,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
 
-                if (isRead) {
-                    Icon(
-                        imageVector = Icons.Filled.CheckCircle,
-                        contentDescription = "check",
-                        tint = Color.Green,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.Top)
-                    )
-                }
+                Icon(
+                    imageVector = if (isRead) Icons.Filled.CheckCircle else Icons.Default.Cancel,
+                    contentDescription = if (isRead) "check" else "checkPlaceHolder",
+                    tint = if (isRead) Color(0xFF5bb93b) else Color.Transparent,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
             }
         }
     }
 }
+
 
 //@Composable
 //fun ExpandedLessonCard(

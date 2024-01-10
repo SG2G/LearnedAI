@@ -1,3 +1,4 @@
+
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 
 package com.sginnovations.asked.ui.chat
@@ -80,6 +81,7 @@ import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
+import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.chat.components.ConfidenceDialog
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
@@ -124,7 +126,8 @@ fun ChatStateFul(
     val showConfidenceDialog = remember { mutableStateOf(false) }
 
     // Change navigator bar color
-    SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb() }
+    val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
+    SideEffect { (context as Activity).window.navigationBarColor = navigationBarColor }
 
     LaunchedEffect(messages.value.size) {
         vmChat.setUpMessageHistory()
@@ -250,30 +253,32 @@ fun ChatStateLess(
     }
 
     fun sendMessage(message: MutableState<String>) {
-        if (NetworkUtils.isOnline(context)) {
-            if (tokens.value > 0) {
-                sendMessageToChatbot(message.value)
+        if (text.value.isNotEmpty()) {
+            if (NetworkUtils.isOnline(context)) {
+                if (tokens.value > 0) {
+                    sendMessageToChatbot(message.value)
 
-                userPlaceHolder = message.value
-                chatAnimation.value = true
-                chatPlaceHolder = true
+                    userPlaceHolder = message.value
+                    chatAnimation.value = true
+                    chatPlaceHolder = true
 
-                message.value = ""
+                    message.value = ""
+                } else {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = context.getString(R.string.snackbar_insufficient_tokens),
+                            actionLabel = context.getString(R.string.snackbar_ok),
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+                }
             } else {
                 scope.launch {
                     snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.snackbar_insufficient_tokens),
-                        actionLabel = context.getString(R.string.snackbar_ok),
+                        message = context.getString(R.string.snackbar_no_internet_connection),
                         duration = SnackbarDuration.Short
                     )
                 }
-            }
-        } else {
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.snackbar_no_internet_connection),
-                    duration = SnackbarDuration.Short
-                )
             }
         }
     }
@@ -539,29 +544,9 @@ fun ChatStateLess(
                         maxLines = Int.MAX_VALUE,
 
                         )
-                    IconButton(
-                        onClick = {
-                            scope.launch {
-
-                                if (text.value.isNotEmpty()) {
-                                    /**
-                                     * Send message
-                                     */
-                                    sendMessage(text)
-
-                                }
-                            }
-                        },
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Icon(
-                            Icons.Default.Send,
-                            contentDescription = "Send",
-                            modifier = Modifier.size(24.dp),
-                            tint =
-                            if (text.value.isEmpty()) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primary
-                        )
-                    }
+                    ChatSendIcon(
+                        text = text,
+                    ) { sendMessage(it) }
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -600,4 +585,3 @@ private suspend fun textConfidenceWarning(
     }
     resetTextConfidence()
 }
-

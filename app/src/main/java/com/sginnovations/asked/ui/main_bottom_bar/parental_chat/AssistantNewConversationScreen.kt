@@ -1,7 +1,8 @@
-package com.sginnovations.asked.ui.newconversation
+package com.sginnovations.asked.ui.main_bottom_bar.parental_chat
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,22 +36,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.R
+import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.ui.chat.components.NewChatSendIcon
-import com.sginnovations.asked.ui.newconversation.components.NewConversationSuggestions
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.NetworkUtils
-import com.sginnovations.asked.viewmodel.CameraViewModel
+import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-private const val TAG = "NewConversationStateFul"
+private const val TAG = "AssistantNewConversationStateFul"
 
 @Composable
-fun NewConversationStateFul(
+fun AssistantNewConversationStateFul(
     vmChat: ChatViewModel,
-    vmCamera: CameraViewModel,
+    vmAssistant: AssistantViewModel,
 
     onNavigateChat: () -> Unit,
 ) {
@@ -58,18 +59,18 @@ fun NewConversationStateFul(
     val scope = rememberCoroutineScope()
 
     val text = remember { mutableStateOf<String?>("") }
-    text.value = vmCamera.imageToText.value
+    text.value = vmAssistant.firstMessage.value
 
-//    val idConversation = vmChat.idConversation.intValue
-    val isLoading = vmCamera.isLoading
+    val isLoading = vmAssistant.isLoading
 
-    val newConversationCostToken = vmChat.newConversationCostTokens()
+    //TODO ASSISTANT COST = 2
+    val newConversationCostToken = vmAssistant.newConversationCostTokens()
 
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
     SideEffect { (context as Activity).window.navigationBarColor = navigationBarColor }
 
-    NewConversationStateLess(
+    AssistantNewConversationStateLess(
         text = text,
 
         newConversationCostToken = newConversationCostToken,
@@ -79,9 +80,14 @@ fun NewConversationStateFul(
         onSendNewMessage = {
             val processText = text.value
             text.value = ""
-            vmCamera.imageToText.value = ""
+            vmAssistant.firstMessage.value = ""
+
+            Log.d(TAG, "processText: $processText")
 
             if (!processText.isNullOrEmpty()) {
+                vmChat.setUpNewConversation()
+                vmChat.categoryOCR.value = Assistant
+
                 sendNewMessage(
                     scope,
                     context,
@@ -89,7 +95,7 @@ fun NewConversationStateFul(
                     processText,
 //                idConversation,
 
-                    vmCamera,
+                    vmAssistant,
                     vmChat
                 ) {
                     onNavigateChat()
@@ -100,7 +106,7 @@ fun NewConversationStateFul(
 }
 
 @Composable
-fun NewConversationStateLess(
+fun AssistantNewConversationStateLess(
     text: MutableState<String?>,
 
     newConversationCostToken: String,
@@ -110,7 +116,7 @@ fun NewConversationStateLess(
     onSendNewMessage: () -> Unit,
 ) {
 
-    NewConversationSuggestions()
+    NewAssistantSuggestions()
 
     /**
      * Loading
@@ -190,6 +196,7 @@ fun NewConversationStateLess(
                     ),
                     maxLines = Int.MAX_VALUE,
                 )
+
                 NewChatSendIcon(
                     text = text
                 ) { onSendNewMessage() }
@@ -205,16 +212,20 @@ fun sendNewMessage(
     scope: CoroutineScope,
     context: Context,
     text: String,
-//    idConversation: Int,
-    vmCamera: CameraViewModel,
+
+    vmAssistant: AssistantViewModel,
     vmChat: ChatViewModel,
 
     onNavigateChat: () -> Unit,
 ) {
+    //TODO vmAssistant CHECK
+
+    Log.d(TAG, "sendNewMessage: sending message")
+
     scope.launch {
         // New Message
         if (NetworkUtils.isOnline(context)) {
-            vmCamera.isLoading.value = true
+            vmAssistant.isLoading.value = true
 
             // GPT call
             val deferred = async { vmChat.sendMessageToOpenaiApi(text) }
@@ -222,13 +233,13 @@ fun sendNewMessage(
 
             // Token cost of the call
             try {
-                vmChat.lessTokenNewConversationCheckPremium()
+                vmAssistant.lessTokenNewConversationCheckPremium()
             } catch (e: Exception) {
                 // NewConversation tokens cost failed
                 e.printStackTrace()
             }
 
-            vmCamera.isLoading.value = false
+            vmAssistant.isLoading.value = false
 
             onNavigateChat()
         } else {

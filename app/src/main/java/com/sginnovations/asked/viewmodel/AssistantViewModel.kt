@@ -7,8 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sginnovations.asked.Constants.Companion.MATH_PREFIX_PROMPT
-import com.sginnovations.asked.Constants.Companion.TEXT_PREFIX_PROMPT
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.data.CategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
@@ -22,24 +21,25 @@ import com.sginnovations.asked.repository.ChatRepository
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
 import com.sginnovations.asked.repository.TokenRepository
+import com.sginnovations.asked.viewmodel.ChatViewModel.Companion.shortenString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "ChatViewModel"
-
+private const val TAG = "AssistantViewModel"
 @HiltViewModel
-class ChatViewModel @Inject constructor(
+class AssistantViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository,
     private val tokensRepository: TokenRepository,
 
     private val remoteConfigRepository: RemoteConfigRepository,
+    ) : ViewModel() {
 
-) : ViewModel() {
+    val firstMessage = mutableStateOf<String?>("")
+    val isLoading = mutableStateOf(false)
 
     val idConversation = mutableIntStateOf(0)
     val categoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
@@ -80,21 +80,15 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun setUpNewConversation() {
+    fun setUpNewConversation() { //TODO NEEDED?
         viewModelScope.launch {
             idConversation.intValue = 0
         }
     }
 
-    suspend fun getAllConversationsExceptAssistant() {
+    suspend fun getAllAssistantConversation() {
         viewModelScope.launch {
             conversations.value = roomRepository.getAllConversationsExceptAssistant().asReversed()
-        }
-    }
-
-    suspend fun getConversationsFromCategory(category: String) {
-        viewModelScope.launch {
-            conversations.value = roomRepository.getConversationsFromCategory(category).asReversed()
         }
     }
 
@@ -109,17 +103,11 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             Log.d(TAG, "hideConversation: id -> $id")
             roomRepository.hideConversation(id)
-            getAllConversationsExceptAssistant()
-        }
-    }
-    suspend fun hideConversationsAssist(id: Int) {
-        viewModelScope.launch {
-            Log.d(TAG, "hideConversationsAssist: id -> $id")
-            roomRepository.hideConversation(id)
-            getConversationsFromCategory(com.sginnovations.asked.data.Assistant.prefix)
+            getAllAssistantConversation()
         }
     }
 
+    //TODO CHANGE
     fun newConversationCostTokens() = remoteConfigRepository.getAllNewConversationCostTokens()
     fun lessTokenNewConversationCheckPremium() {
         viewModelScope.launch {
@@ -137,15 +125,6 @@ class ChatViewModel @Inject constructor(
          */
         //Get Key
         val openAIAPIKey = remoteConfigRepository.getOpenAIAPI()
-
-        prefixPrompt.value =
-            when (categoryOCR.value.prefix) { //TODO CATEGORY UNUSED, DOUBLE CATEGORY "CAMERAVIEWMODEL"
-                TextCategoryOCR.prefix -> TEXT_PREFIX_PROMPT
-                MathCategoryOCR.prefix -> MATH_PREFIX_PROMPT
-                else -> ""
-            }
-
-        Log.d(TAG, "sendMessageToOpenaiApi: prefixPrompt -> ${prefixPrompt.value}")
 
         val userMessage = Message(role = User.role, content = prefixPrompt.value + prompt)
 
@@ -217,14 +196,4 @@ class ChatViewModel @Inject constructor(
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")
     }
 
-    companion object {
-        fun shortenString(input: String): String {
-            val maxLength = 35
-            return if (input.length > maxLength) {
-                input.substring(0, maxLength) + "..."
-            } else {
-                input
-            }
-        }
-    }
 }
