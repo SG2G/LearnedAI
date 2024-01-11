@@ -25,7 +25,7 @@ fun ParentalGuidanceTopBar(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = currentScreenTitle, color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    text = currentScreenTitle, color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp)
                 )

@@ -23,11 +23,15 @@ val DarkColorScheme = darkColorScheme(
     onPrimary = onPrimary,
 
     primaryContainer = primaryContainer,
-    secondaryContainer = secondaryContainer,
     onPrimaryContainer = onPrimaryContainer,
-    onSecondaryContainer = onSecondaryContainer,
+
+//    secondaryContainer = secondaryContainer,
+//    onSecondaryContainer = onSecondaryContainer,
 
     surface = surface,
+    onSurface = onSurface,
+
+    surfaceVariant = surfaceVariant,
     onSurfaceVariant = onSurfaceVariant,
 
     background = background,
@@ -41,17 +45,23 @@ val LightColorScheme = lightColorScheme(
     onPrimary = onPrimaryL,
 
     primaryContainer = primaryContainerL,
-    secondaryContainer = secondaryContainerL,
     onPrimaryContainer = onPrimaryContainerL,
-    onSecondaryContainer = onSecondaryContainerL,
+
+//    secondaryContainer = secondaryContainerL,
+//    onSecondaryContainer = onSecondaryContainerL,
 
     surface = surfaceL,
+    onSurface = onSurfaceL,
+
+    surfaceVariant = surfaceVariantL,
     onSurfaceVariant = onSurfaceVariantL,
 
     background = backgroundL,
     onBackground = onBackgroundL,
 
     error = errorL,
+
+    outline = outlineL
 )
 
 @Composable
@@ -83,7 +93,7 @@ fun LearnedAITheme(
             if (!darkTheme) {
                 window.navigationBarColor = Color(0xFFe9effd).toArgb()
             } else {
-                window.navigationBarColor = Color(0xFF0C1622).toArgb()
+                window.navigationBarColor = Color(0xFF282931).toArgb()
             }
         }
     }

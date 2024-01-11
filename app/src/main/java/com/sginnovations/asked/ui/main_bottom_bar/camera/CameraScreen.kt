@@ -177,7 +177,7 @@ fun CameraStateLess(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            TokenDisplay(tokens = tokens, showPlus = true) { vmToken.switchPointsVisibility() }
+            TokenDisplay(tokens = tokens, showPlus = false) { vmToken.switchPointsVisibility() }
         }
 
         /**

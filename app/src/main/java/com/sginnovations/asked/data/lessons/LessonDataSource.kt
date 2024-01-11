@@ -7,18 +7,34 @@ import javax.inject.Inject
 class LessonDataSource @Inject constructor(
     private val context: Context
 ) {
-
     fun getLessonById(id: Int): LessonDataClass {
-        return lessons.find { it.id == id } ?: defaultLesson()
+        return lessons.find { it.idLesson == id } ?: defaultLesson()
     }
-    fun getAllLessons(): List<LessonDataClass> {
-        return lessons ?: emptyList()
+    fun getAllLessons(): List<LessonDataClass> { return lessons }
+    fun getAllLessonsCategory(): List<LessonCategoryDataClass> { return lessonCategory }
+
+    private fun defaultLesson(): LessonDataClass {
+        // Return a default LessonDataClass object
+        return LessonDataClass(
+            // Set default values
+            idCategory = 0,
+            idLesson = -1000,  // Indicative of a default or non-existent lesson
+            imageId = R.drawable.burro,  // Assuming you have a default drawable
+            title = "Default Title",
+            subtitle = "Default Subtitle",
+            description = "Default Description",
+            transcription = "Default Transcription",
+            introduction = "Default Introduction",
+            videoId = "DefaultVideoID",
+            conclusion = "Default Conclusion"
+        )
     }
 
     private val lessons = listOf(
         LessonDataClass(
             0,
-            R.drawable.burro,
+            1000,
+            R.drawable.lesson_0,
             "Gestión de las Emociones y Resiliencia",
             "Como estudiar",
             "Gestión de las Emociones y Resiliencia",
@@ -42,7 +58,8 @@ class LessonDataSource @Inject constructor(
                     "3. **Técnicas de Autoregulación**: Enseña técnicas simples como la respiración profunda o la visualización para ayudar a los niños a calmarse cuando se sienten abrumados."
         ),
         LessonDataClass(
-            1,
+            0,
+            1001,
             R.drawable.burro,
             "Gestión de las Emociones y Resiliencia",
             "Como estudiar",
@@ -67,7 +84,8 @@ class LessonDataSource @Inject constructor(
                     "3. **Técnicas de Autoregulación**: Enseña técnicas simples como la respiración profunda o la visualización para ayudar a los niños a calmarse cuando se sienten abrumados."
         ),
         LessonDataClass(
-            2,
+            0,
+            1002,
             R.drawable.burro,
             "Gestión de gestiones",
             "Como estudiar",
@@ -93,19 +111,22 @@ class LessonDataSource @Inject constructor(
         ),
     )
 
-    private fun defaultLesson(): LessonDataClass {
-        // Return a default LessonDataClass object
-        return LessonDataClass(
-            // Set default values
-            id = -1,  // Indicative of a default or non-existent lesson
-            imageId = R.drawable.burro,  // Assuming you have a default drawable
-            title = "Default Title",
-            subtitle = "Default Subtitle",
-            description = "Default Description",
-            transcription = "Default Transcription",
-            introduction = "Default Introduction",
-            videoId = "DefaultVideoID",
-            conclusion = "Default Conclusion"
-        )
-    }
+    private val lessonCategory = listOf(
+        LessonCategoryDataClass(
+            0,
+            R.drawable.lesson_0,
+            "Crecimiento y Evolución Infantil",
+            "3 lessons",
+            "Descripción y noseque Descripción y noseque noseque Descripción y noseque",
+
+        ),
+        LessonCategoryDataClass(
+            1,
+            R.drawable.lesson_0,
+            "Hola que pasa",
+            "4 lessons",
+            "Descripción y noseque Descripción y noseque noseque Descripción y noseque",
+
+            )
+    )
 }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -32,7 +33,7 @@ fun LessonCard(
 
     SmallLessonCard(
         lesson = lesson,
-        isRead = vmPreferences.isLessonRead(lesson.id),
+        isRead = vmPreferences.isLessonRead(lesson.idLesson),
         onClick = { onClick() }
     )
 
@@ -45,13 +46,18 @@ fun SmallLessonCard(
     isRead: Boolean,
     onClick: () -> Unit,
 ) {
+    val elevatedCardShape = RoundedCornerShape(15.dp)
+
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .shadow(1.dp, elevatedCardShape),
+        shape = elevatedCardShape,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
     ) {
         Box(modifier = Modifier.clickable { onClick() }) {
             Row(
@@ -82,7 +88,7 @@ fun SmallLessonCard(
                     Text(
                         text = lesson.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -90,9 +96,9 @@ fun SmallLessonCard(
 
                 Icon(
                     imageVector = if (isRead) Icons.Filled.CheckCircle else Icons.Default.Cancel,
-                    contentDescription = if (isRead) "check" else "checkPlaceHolder",
+                    contentDescription = "check",
                     tint = if (isRead) Color(0xFF5bb93b) else Color.Transparent,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier.align(Alignment.Top)
                 )
             }
         }
@@ -113,7 +119,7 @@ fun SmallLessonCard(
 //            .fillMaxWidth()
 //            .padding(16.dp),
 //        shape = RoundedCornerShape(15.dp),
-//        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+//        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
 //    ) {
 //        Box(
 //            modifier = Modifier.clickable { onClick() },

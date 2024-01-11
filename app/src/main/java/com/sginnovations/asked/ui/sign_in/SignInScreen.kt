@@ -232,7 +232,7 @@ fun LearnedAuthStateLess(
                         .fillMaxWidth(0.8f)
                         .testTag(SIGN_IN_BUTTON),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
                     Text(

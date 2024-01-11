@@ -34,7 +34,7 @@ fun ChatsHistoryTopBar(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = currentScreenTitle, color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    text = currentScreenTitle, color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -56,7 +56,7 @@ fun ChatsHistoryTopBar(
                     }
             ) {
                 Text(
-                    text = "PRO", color = MaterialTheme.colorScheme.primaryContainer,
+                    text = "PRO", color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)
                 )

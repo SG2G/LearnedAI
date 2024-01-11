@@ -39,7 +39,7 @@ fun CropTopBar(
             ) {
                 Text(
                     text = vmCamera.cameraCategoryOCR.value.getName(context),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(16.dp)
                 )

@@ -44,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
@@ -81,7 +82,7 @@ fun ParentalAssistantStateFul(
         if (!theme.value) {
             Color(0xFFe9effd).toArgb()
         } else {
-            Color(0xFF0C1622).toArgb()
+            Color(0xFF282931).toArgb()
         }
     }
 
@@ -97,10 +98,8 @@ fun ParentalAssistantStateFul(
         conversations = conversations,
 
         onNavigateNewMessage = {
-            scope.launch {
-                onNavigateNewMessage()
-            }
-        },
+            scope.launch { onNavigateNewMessage() }
+                               },
         onNavigateMessages = { idConversation ->
             scope.launch {
                 Log.i(TAG, "Searching messages whit id: $idConversation")
@@ -190,11 +189,16 @@ fun ParentalChatStateLess(
                     TAG,
                     "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId"
                 )
+
+                val elevatedCardShape = RoundedCornerShape(10.dp)
+
                 Column {
                     ElevatedCard(
+                        shape = elevatedCardShape,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 2.dp)
+                            .shadow(1.dp, elevatedCardShape)
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
@@ -214,18 +218,11 @@ fun ParentalChatStateLess(
                                 )
                             },
                         colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                            containerColor = MaterialTheme.colorScheme.surface
                         ),
-                        shape =
-                        if (index == smallestId) {
-                            RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
-                        } else {
-                            if (index == largestId) {
-                                RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
-                            } else {
-                                RoundedCornerShape(0.dp)
-                            }
-                        }
+                        elevation = CardDefaults.elevatedCardElevation(
+                            defaultElevation = 1.dp
+                        ),
                     ) {
                         /**
                          * Conversation
@@ -242,32 +239,32 @@ fun ParentalChatStateLess(
                                 ) {
                                     Text(
                                         text = conversation.name,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.titleMedium
                                     )
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.Start,
-                                    ) {
-                                        Text(
-                                            text = "Que es esto",
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            style = MaterialTheme.typography.labelSmall
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Icon(
-                                            modifier = Modifier.size(14.dp),
-                                            painter = when (conversation.category) {
-                                                TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
-                                                MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
-                                                TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
-                                                else -> painterResource(id = R.drawable.text_camera)
-                                            },
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
+//                                    Spacer(modifier = Modifier.height(8.dp))
+//                                    Row(
+//                                        verticalAlignment = Alignment.CenterVertically,
+//                                        horizontalArrangement = Arrangement.Start,
+//                                    ) {
+//                                        Text(
+//                                            text = "Que es esto",
+//                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                                            style = MaterialTheme.typography.labelSmall
+//                                        )
+//                                        Spacer(modifier = Modifier.width(8.dp))
+//                                        Icon(
+//                                            modifier = Modifier.size(14.dp),
+//                                            painter = when (conversation.category) {
+//                                                TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
+//                                                MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
+//                                                TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
+//                                                else -> painterResource(id = R.drawable.text_camera)
+//                                            },
+//                                            contentDescription = null,
+//                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+//                                        )
+//                                    }
                                 }
 
 

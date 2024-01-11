@@ -167,7 +167,7 @@ fun GalleryStateFull(
                                 .weight(1f),
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                                containerColor = MaterialTheme.colorScheme.surface
                             )
                         ) {
                             Column {

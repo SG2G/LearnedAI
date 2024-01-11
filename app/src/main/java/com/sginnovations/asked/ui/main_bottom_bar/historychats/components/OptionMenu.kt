@@ -58,7 +58,7 @@ fun OptionMenu(
                 .clip(RoundedCornerShape(menuRounded))
                 .blur(15.dp)
                 .background(
-                    MaterialTheme.colorScheme.primaryContainer,
+                    MaterialTheme.colorScheme.surface,
                     RoundedCornerShape(menuRounded)
                 )
                 .border(1.dp, Color.DarkGray, RoundedCornerShape(menuRounded))

@@ -42,6 +42,15 @@ fun LogOutButton(
         )
     }
 
+    val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
+    val iconTint = MaterialTheme.colorScheme.primary
+
+    val textColor = MaterialTheme.colorScheme.onSurface
+    val textStyle = MaterialTheme.typography.bodyMedium
+
+    val arrowIconModifier = Modifier.size(24.dp)
+    val arrowIconTint = MaterialTheme.colorScheme.onSurfaceVariant
+
     TextButton(
         onClick = {
             showConfirmation = !showConfirmation
@@ -59,19 +68,20 @@ fun LogOutButton(
             Icon(
                 painter = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
                 contentDescription = "ExitToApp",
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(32.dp)
+                modifier = iconModifier,
+                tint = iconTint,
             )
             Text(
                 text = stringResource(R.string.log_out_button_log_out),
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.titleSmall
+                color = textColor,
+                style = textStyle,
+                modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "KeyboardArrowRight",
+                modifier = arrowIconModifier,
+                tint = arrowIconTint,
             )
         }
     }

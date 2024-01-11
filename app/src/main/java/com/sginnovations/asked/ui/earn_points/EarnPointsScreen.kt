@@ -106,7 +106,7 @@ fun EarnPointsStateLess(
                 buttonText = stringResource(R.string.earn_token_see_more),
                 borderColor = MaterialTheme.colorScheme.primary,
                 buttonColor = MaterialTheme.colorScheme.background,
-                cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                cardContainerColor = MaterialTheme.colorScheme.surface,
                 onClick = { onNavigateSubscriptions() }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -116,7 +116,7 @@ fun EarnPointsStateLess(
                 buttonText = stringResource(R.string.earn_token_button_invite),
                 borderColor = Color.Transparent,
                 buttonColor = MaterialTheme.colorScheme.background,
-                cardContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                cardContainerColor = MaterialTheme.colorScheme.surface,
                 onClick = { onNavigateRefCode() }
             )
 

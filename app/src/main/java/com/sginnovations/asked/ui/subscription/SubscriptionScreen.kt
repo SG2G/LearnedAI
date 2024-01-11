@@ -347,7 +347,7 @@ fun SubscriptionStateLess(
             Button(
                 onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } }, //TODO AD
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -358,20 +358,14 @@ fun SubscriptionStateLess(
                 if (userOption.value == Option.OptionWeekly) {
                     Text(
                         text = stringResource(R.string.subscription_start_free_trial_plan),
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleMedium
                     )
                 } else {
                     Text(
                         text = stringResource(R.string.subscription_unlock_asked_ai_pro),
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleMedium
                     )
                     Row(
                         modifier = Modifier.height(24.dp)

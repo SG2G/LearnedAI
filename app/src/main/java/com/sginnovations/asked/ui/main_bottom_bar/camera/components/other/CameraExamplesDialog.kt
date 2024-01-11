@@ -55,7 +55,7 @@ fun CameraExamplesDialog(
             ElevatedCard(
                 shape = RoundedCornerShape(15.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
                 Column(
@@ -99,7 +99,7 @@ fun CameraExamplesDialog(
             ElevatedCard(
                 shape = RoundedCornerShape(15.dp),
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
                 Column(

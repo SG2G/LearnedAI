@@ -52,7 +52,7 @@ fun TranslateSelector(
     ) {
         ElevatedCard(
             colors = CardDefaults.elevatedCardColors(
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.surface
             ),
             shape = RoundedCornerShape(10.dp),
         ) {

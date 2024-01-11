@@ -5,6 +5,7 @@ package com.sginnovations.asked.ui.ui_components.topbars
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Settings
@@ -37,7 +38,7 @@ fun ProfileTopBar(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = currentScreenTitle, color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    text = currentScreenTitle, color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -46,7 +47,11 @@ fun ProfileTopBar(
         navigationIcon = {},
         actions = {
             IconButton(onClick = { onNavigateSettings(Settings) }) {
-                Icon(imageVector = Icons.Outlined.Settings, contentDescription = "Settings")
+                Icon(
+                    imageVector = Icons.Outlined.Settings, contentDescription = "Settings",
+                    modifier = Modifier.size(28.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(

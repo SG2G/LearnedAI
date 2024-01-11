@@ -106,14 +106,16 @@ fun StateLessProfile(
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-
+        /**
+         * Profile User
+         */
         ElevatedCard(
             modifier = Modifier.padding(8.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 4.dp
+                defaultElevation = 2.dp
             )
         ) {
             Row(
@@ -139,26 +141,29 @@ fun StateLessProfile(
                         onClick = { onNavigateSubscriptions() },
                         shape = RoundedCornerShape(5.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                            containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
                         Text(
                             text = stringResource(R.string.profile_upgrade),
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            style = MaterialTheme.typography.titleSmall
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }
             }
         }
 
+        /**
+         * Profile Buttons
+         */
         ElevatedCard(
             modifier = Modifier.padding(8.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 4.dp
+                defaultElevation = 2.dp
             )
         ) {
             Column {
@@ -181,10 +186,10 @@ fun StateLessProfile(
         ElevatedCard(
             modifier = Modifier.padding(8.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 4.dp
+                defaultElevation = 2.dp
             )
         ) {
             Column {
@@ -218,7 +223,7 @@ fun StateLessProfile(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.surfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

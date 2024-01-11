@@ -6,16 +6,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.data.lessons.LessonDataClass
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.LessonCard
+import com.sginnovations.asked.R
+import com.sginnovations.asked.data.lessons.LessonCategoryDataClass
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.CategoryLessonCard
 import com.sginnovations.asked.viewmodel.LessonViewModel
-import com.sginnovations.asked.viewmodel.PreferencesViewModel
 
 private const val TAG = "ParentalGuidanceStateFul"
 
@@ -40,16 +39,17 @@ enum class Tabs(val title: String) {
 @Composable
 fun ParentalGuidanceStateFul(
     vmLesson: LessonViewModel,
-    vmPreferences: PreferencesViewModel,
 
-    onNavigateLesson: () -> Unit,
+    onNavigateCategory: () -> Unit,
 ) {
-    val lessons = vmLesson.getAllLessons()
+    val lessonsCategory = vmLesson.getAllLessonsCategory()
 
     val selectedTab = remember { mutableStateOf(Tabs.Lessons) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Tab Row
+        /**
+         * Tab row
+         */
         TabRow(
             selectedTabIndex = selectedTab.value.ordinal,
             containerColor = MaterialTheme.colorScheme.background,
@@ -75,19 +75,24 @@ fun ParentalGuidanceStateFul(
         }
         Divider()
 
-        // Content of the selected tab
+        /**
+         * StateLess
+         */
         when (selectedTab.value) {
-            Tabs.Lessons -> ParentalGuidanceStateLess(
-                vmPreferences = vmPreferences,
+            Tabs.Lessons ->
+                ParentalGuidanceStateLess(
+                    lessonsCategory = lessonsCategory,
 
-                lessons = lessons
-            ) { id ->
-                Log.d(TAG, "id: $id")
-                vmLesson.lessonId.intValue = id
-                onNavigateLesson()
-            }
+                    onNavigateCategory = { id ->
+                        Log.d(TAG, "category id: $id")
 
-            Tabs.ComingSoon -> ComingSoonTabContent()
+                        vmLesson.lessonCategoryId.intValue = id
+                        onNavigateCategory()
+                    }
+                )
+
+            Tabs.ComingSoon ->
+                ComingSoonTabContent()
         }
     }
 
@@ -95,24 +100,25 @@ fun ParentalGuidanceStateFul(
 
 @Composable
 fun ParentalGuidanceStateLess(
-    vmPreferences: PreferencesViewModel,
+    lessonsCategory: List<LessonCategoryDataClass>,
 
-    lessons: List<LessonDataClass>,
-
-    onNavigate: (Int) -> Unit,
+    onNavigateCategory: (Int) -> Unit,
 ) {
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        lessons.forEach { lesson ->
-            LessonCard(
-                vmPreferences = vmPreferences,
+        lessonsCategory.forEach { category ->
 
-                lesson = lesson,
+            CategoryLessonCard(
+                imagePainter = painterResource(id = R.drawable.burro),
+                title = category.title,
+                subtitle = category.subtitle,
+                description = category.description,
 
-                onClick = { onNavigate(lesson.id) }
+                onNavigateCategory = { onNavigateCategory(category.idCategory) }
             )
+
         }
     }
 }

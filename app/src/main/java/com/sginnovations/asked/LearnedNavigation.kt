@@ -36,6 +36,7 @@ import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryCh
 import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.AssistantChatStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.AssistantNewConversationStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.ParentalAssistantStateFul
+import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.CategoryLessonsStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.LessonStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.TranscriptStateFul
@@ -128,6 +129,7 @@ fun LearnedNavigation(
             Lesson.route -> Lesson
             Transcript.route -> Transcript
             AssistantChat.route -> AssistantChat
+            CategoryLesson.route -> CategoryLesson
 
             else -> null
         }
@@ -234,9 +236,8 @@ fun LearnedNavigation(
             ) {
                 ParentalGuidanceStateFul(
                     vmLesson = vmLesson,
-                    vmPreferences = vmPreferences,
 
-                    onNavigateLesson = { navController.navigate(route = Lesson.route) }
+                    onNavigateCategory = { navController.navigate(route = CategoryLesson.route) }
                 )
             }
             composable(
@@ -271,6 +272,21 @@ fun LearnedNavigation(
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) }
                 )
                 EarnPoints(vmToken, navController)
+            }
+            /**
+             * Category Lessons
+             */
+            composable(
+                route = CategoryLesson.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                CategoryLessonsStateFul(
+                    vmLesson = vmLesson,
+                    vmPreferences = vmPreferences,
+
+                    onNavigateLesson = { navController.navigate(route = Lesson.route) }
+                )
             }
             /**
              * Camera Crop

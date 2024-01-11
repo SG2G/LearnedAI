@@ -277,7 +277,7 @@ fun CropStateLess(
 
 
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                containerColor = MaterialTheme.colorScheme.surface,
             ),
             shape = RoundedCornerShape(25.dp),
             enabled = enabled.value

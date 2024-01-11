@@ -16,9 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.R
 
 @Composable
 fun ProfileButton(
@@ -27,6 +25,14 @@ fun ProfileButton(
 
     onClick: () -> Unit,
 ) {
+    val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
+    val iconTint = MaterialTheme.colorScheme.primary
+
+    val textColor = MaterialTheme.colorScheme.onSurface
+    val textStyle = MaterialTheme.typography.bodyMedium
+
+    val arrowIconModifier = Modifier.size(24.dp)
+    val arrowIconTint = MaterialTheme.colorScheme.onSurfaceVariant
 
     TextButton(
         onClick = { onClick() },
@@ -42,19 +48,20 @@ fun ProfileButton(
             Icon(
                 painter = painterResource,
                 contentDescription = "ProfileButton",
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(28.dp)
+                modifier = iconModifier,
+                tint = iconTint,
             )
             Text(
                 text = text,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.titleSmall,
+                color = textColor,
+                style = textStyle,
                 modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "KeyboardArrowRight",
+                modifier = arrowIconModifier,
+                tint = arrowIconTint,
             )
         }
     }
@@ -67,12 +74,21 @@ fun ProfileButton(
 
     onClick: () -> Unit,
 ) {
+    val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
+    val iconTint = MaterialTheme.colorScheme.primary
+
+    val textColor = MaterialTheme.colorScheme.onSurface
+    val textStyle = MaterialTheme.typography.bodyMedium
+
+    val arrowIconModifier = Modifier.size(24.dp)
+    val arrowIconTint = MaterialTheme.colorScheme.onSurfaceVariant
 
     TextButton(
         onClick = { onClick() },
         shape = RoundedCornerShape(10),
         modifier = Modifier
-            .fillMaxWidth().padding(8.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -82,19 +98,20 @@ fun ProfileButton(
             Icon(
                 imageVector = imageVector,
                 contentDescription = "ProfileButton",
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(28.dp)
+                modifier = iconModifier,
+                tint = iconTint,
             )
             Text(
                 text = text,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.titleSmall,
+                color = textColor,
+                style = textStyle,
                 modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "KeyboardArrowRight",
+                modifier = arrowIconModifier,
+                tint = arrowIconTint,
             )
         }
     }

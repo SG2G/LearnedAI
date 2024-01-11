@@ -259,7 +259,7 @@ fun AssistantChatStateLess(
 //                            .padding(16.dp)
 //                            .background(Color.Transparent)
 //                            .zIndex(15f),
-//                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+//                        containerColor = MaterialTheme.colorScheme.surface,
 //                        shape = RoundedCornerShape(10.dp),
 //                    ) {
 //                        Row(verticalAlignment = Alignment.CenterVertically) {
@@ -343,7 +343,7 @@ fun AssistantChatStateLess(
                                         ElevatedCard(
                                             modifier = Modifier.padding(horizontal = 16.dp),
                                             colors = CardDefaults.elevatedCardColors(
-                                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                                                containerColor = MaterialTheme.colorScheme.surface
                                             )
                                         ) {
                                             Text(

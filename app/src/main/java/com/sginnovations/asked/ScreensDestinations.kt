@@ -83,6 +83,10 @@ object RefCode : ScreensDestinations {
     override val route = "Share"
     override fun getName(context: Context) = context.getString(R.string.topbar_share)
 }
+object CategoryLesson : ScreensDestinations {
+    override val route = "CategoryLesson"
+    override fun getName(context: Context) = "Lessons"
+}
 object Lesson : ScreensDestinations {
     override val route = "Lesson"
     override fun getName(context: Context) = "Lesson"

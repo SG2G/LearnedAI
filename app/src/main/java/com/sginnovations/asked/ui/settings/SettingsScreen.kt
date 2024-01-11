@@ -1,7 +1,13 @@
 package com.sginnovations.asked.ui.settings
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
@@ -64,94 +70,110 @@ fun SettingsStateLess(
     onChangeTextSize: (Float) -> Unit,
 ) {
 
-    Column {
-        Text(
-            text = stringResource(R.string.settings_theme), color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-
-        Card(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            colors = CardDefaults.cardColors(
-                MaterialTheme.colorScheme.primaryContainer
-            )
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        /**
+         * Theme
+         */
+        Column(
+            modifier = Modifier.padding(vertical = 16.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Text(
+                text = stringResource(R.string.settings_theme),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(horizontal = 32.dp)
+            )
+            Card(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                colors = CardDefaults.cardColors(
+                    MaterialTheme.colorScheme.surfaceVariant
+                )
             ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(R.string.settings_dark_mode),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Switch(
-                    checked = themeValue,
-                    onCheckedChange = { onSwitchTheme() },
-                    thumbContent = {
-                        Icon(
-                            modifier = Modifier.padding(4.dp),
-                            painter = painterResource(
-                                id = if (!themeValue)
-                                    R.drawable.sun_2_svgrepo_filled else R.drawable.moon_svgrepo_filled
-                            ),
-                            contentDescription = null,
-                            tint = if (!themeValue) Color.Yellow else Color.White,
-                        )
-                    }
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(R.string.settings_dark_mode),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Switch(
+                        checked = themeValue,
+                        onCheckedChange = { onSwitchTheme() },
+                        thumbContent = {
+                            Icon(
+                                modifier = Modifier.padding(4.dp),
+                                painter = painterResource(
+                                    id = if (!themeValue)
+                                        R.drawable.sun_2_svgrepo_filled else R.drawable.moon_svgrepo_filled
+                                ),
+                                contentDescription = null,
+                                tint = if (!themeValue) Color.Yellow else Color.White,
+                            )
+                        }
+                    )
+                }
             }
         }
 
+        /**
+         * Text Size
+         */
         Text(
             text = stringResource(R.string.settings_text_size),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.padding(horizontal = 32.dp)
         )
         Card(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             colors = CardDefaults.cardColors(
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.surfaceVariant
             )
         ) {
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 TextButton(
                     onClick = { onChangeTextSize(TEXT_SIZE_NORMAL) },
                     colors = ButtonDefaults.textButtonColors(
-                        if (textSize.floatValue == TEXT_SIZE_NORMAL) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                        if (textSize.floatValue == TEXT_SIZE_NORMAL) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
                     )
                 ) {
                     Text(
-                        text = "aA", color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 16.sp)
+                        text = "aA", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
-
                 TextButton(
                     onClick = { onChangeTextSize(TEXT_SIZE_BIG) },
                     colors = ButtonDefaults.textButtonColors(
-                        if (textSize.floatValue == TEXT_SIZE_BIG) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                        if (textSize.floatValue == TEXT_SIZE_BIG) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
                     )
                 ) {
                     Text(
-                        text = "aA", color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                        text = "aA", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 }
 
                 TextButton(
                     onClick = { onChangeTextSize(TEXT_SIZE_BIGGER) },
                     colors = ButtonDefaults.textButtonColors(
-                        if (textSize.floatValue == TEXT_SIZE_BIGGER) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                        if (textSize.floatValue == TEXT_SIZE_BIGGER) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
                     )
                 ) {
                     Text(
-                        text = "aA", color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp)
+                        text = "aA", color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.headlineLarge
                     )
                 }
             }

@@ -1,7 +1,8 @@
 package com.sginnovations.asked.data.lessons
 
 data class LessonDataClass(
-    val id: Int,
+    val idCategory: Int,
+    val idLesson: Int,
 
     val imageId: Int,
 
@@ -14,5 +15,14 @@ data class LessonDataClass(
     val introduction: String,
     val videoId: String,
     val conclusion: String,
+)
+data class LessonCategoryDataClass(
+    val idCategory: Int,
+
+    val imageId: Int,
+
+    val title: String,
+    val subtitle: String,
+    val description: String,
 )
 

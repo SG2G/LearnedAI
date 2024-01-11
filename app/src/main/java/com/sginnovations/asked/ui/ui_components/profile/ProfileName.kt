@@ -30,30 +30,22 @@ fun ProfileName(userAuth: String) {
         isPremium = scope.async { checkIsPremium() }.await()
     }
 
-    if (!isPremium) {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp),
-        ) {
-            Text(
-                text = userAuth,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
+
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp),
+    ) {
+        Text(
+            text = userAuth,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary,
+        )
+        if (!isPremium) {
             Text(
                 text = stringResource(R.string.profile_base_plan),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
             )
-        }
-    } else {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp),
-        ) {
-            Text(
-                text = userAuth,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
+        } else {
             Text(
                 text = stringResource(R.string.profile_1_premium), color = Color.Yellow,
                 style = MaterialTheme.typography.bodySmall

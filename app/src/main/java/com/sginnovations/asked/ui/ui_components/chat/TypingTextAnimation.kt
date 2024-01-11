@@ -59,7 +59,7 @@ fun TypingTextAnimation(
     ElevatedCard(
         modifier = Modifier.padding(horizontal = 16.dp),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Row(

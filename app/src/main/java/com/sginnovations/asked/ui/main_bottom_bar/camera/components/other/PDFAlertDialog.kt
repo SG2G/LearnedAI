@@ -19,7 +19,7 @@ fun PDFAlertDialog(onDismiss: () -> Unit) {
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
                 Text(text = stringResource(R.string.pdf_button_cool), color = MaterialTheme.colorScheme.onBackground)

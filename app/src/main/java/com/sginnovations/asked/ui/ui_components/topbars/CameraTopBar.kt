@@ -37,7 +37,7 @@ fun CameraTopBar(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                TokenDisplay(tokens = tokens, showPlus = true) { vmTokens.switchPointsVisibility() }
+                TokenDisplay(tokens = tokens, showPlus = false) { vmTokens.switchPointsVisibility() }
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(

@@ -116,7 +116,9 @@ fun AssistantNewConversationStateLess(
     onSendNewMessage: () -> Unit,
 ) {
 
-    NewAssistantSuggestions()
+    NewAssistantSuggestions(
+        onUseSuggestion = {}
+    )
 
     /**
      * Loading

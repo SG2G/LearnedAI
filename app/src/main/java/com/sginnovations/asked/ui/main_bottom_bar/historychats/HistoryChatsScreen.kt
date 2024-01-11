@@ -48,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
@@ -191,7 +192,7 @@ fun StateLessHistoryChats(
                         .fillMaxWidth()
                         .padding(8.dp),
                     colors = CardDefaults.outlinedCardColors(
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onBackground,
                         containerColor = Color.Transparent
                     )
                 ) {
@@ -257,11 +258,24 @@ fun StateLessHistoryChats(
                 val largestId = conversations.value.size - 1
 
                 Log.d(TAG, "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId")
+                val elevatedCardShape = RoundedCornerShape(10.dp)
+//                    if (index == smallestId) {
+//                    RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+//                } else {
+//                    if (index == largestId) {
+//                        RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
+//                    } else {
+//                        RoundedCornerShape(0.dp)
+//                    }
+//                }
+
                 Column {
                     ElevatedCard(
+                        shape = elevatedCardShape,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .shadow(1.dp, elevatedCardShape)
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
@@ -281,18 +295,11 @@ fun StateLessHistoryChats(
                                 )
                             },
                         colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                            containerColor = MaterialTheme.colorScheme.surface
                         ),
-                        shape =
-                        if (index == smallestId) {
-                            RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
-                        } else {
-                            if (index == largestId) {
-                                RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
-                            } else {
-                                RoundedCornerShape(0.dp)
-                            }
-                        }
+                        elevation = CardDefaults.elevatedCardElevation(
+                            defaultElevation = 1.dp
+                        ),
                     ) {
                         /**
                          * Conversation
@@ -309,7 +316,7 @@ fun StateLessHistoryChats(
                                 ) {
                                     Text(
                                         text = conversation.name,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     Spacer(modifier = Modifier.height(8.dp))

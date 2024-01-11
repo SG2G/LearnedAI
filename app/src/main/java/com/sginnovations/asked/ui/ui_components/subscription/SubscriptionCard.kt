@@ -60,11 +60,11 @@ fun SubscriptionCard(
 ) {
     val isSelected = userOption.name == subscriptionOption.name
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray,
+        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray,
         label = "",
         animationSpec = tween(250)
     )
-    val circleColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Gray
+    val circleColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
 
     val scale = remember { Animatable(1f) }
 
@@ -131,14 +131,14 @@ fun SubscriptionCard(
                     ) {
                         Card(
                             colors = CardDefaults.cardColors(
-                                MaterialTheme.colorScheme.secondaryContainer
+                                MaterialTheme.colorScheme.primary
                             ),
                             shape = RoundedCornerShape(15.dp),
                             modifier = Modifier.scale(scale.value)
                         ) {
                             Text(
                                 text = stringResource(R.string.subscription_save_50),
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 style = TextStyle(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -149,6 +149,10 @@ fun SubscriptionCard(
                 }
             }
         }
+
+        /**
+         * Blue Select Tick
+         */
         Box(modifier = Modifier.padding(start = 32.dp, top = 4.dp)) {
             Row(
                 modifier = Modifier
@@ -168,7 +172,7 @@ fun SubscriptionCard(
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = "Selected",
-                            tint = Color.White,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.padding(3.dp)
                         )
                     }
@@ -179,7 +183,7 @@ fun SubscriptionCard(
 //                        defaultElevation = 4.dp
 //                    ),
 //                    colors = CardDefaults.elevatedCardColors(
-//                        containerColor = MaterialTheme.colorScheme.primaryContainer
+//                        containerColor = MaterialTheme.colorScheme.surface
 //                    )
 //                ) {
 //                    Text(
