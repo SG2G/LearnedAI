@@ -92,7 +92,7 @@ fun LearnedNavigation(
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
             // User its logged - set up
-            vmNavigator.navigateAuthToCamera(navController)
+            vmNavigator.navigateAuthToX(navController, ParentalGuidance)
 
             Log.i(TAG, "Calling SetUp")
             vmAuth.userJustLogged()
@@ -141,6 +141,7 @@ fun LearnedNavigation(
                 vmTokens = vmToken,
                 vmCamera = vmCamera,
                 vmChat = vmChat,
+                vmLesson = vmLesson,
 
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
@@ -172,7 +173,7 @@ fun LearnedNavigation(
                     vmAuth = vmAuth,
                 ) {
                     scope.launch {
-                        vmNavigator.navigateAuthToCamera(navController)
+                        vmNavigator.navigateAuthToX(navController, ParentalGuidance)
                         Log.i(TAG, "Calling SetUp when sign in")
                         vmAuth.userJustLogged()
                         vmToken.startTokenListener()
@@ -237,7 +238,7 @@ fun LearnedNavigation(
                 ParentalGuidanceStateFul(
                     vmLesson = vmLesson,
 
-                    onNavigateCategory = { navController.navigate(route = CategoryLesson.route) }
+                    onNavigateCategoryLessons = { navController.navigate(route = CategoryLesson.route) }
                 )
             }
             composable(

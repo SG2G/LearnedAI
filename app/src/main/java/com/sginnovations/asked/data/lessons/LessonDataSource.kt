@@ -7,28 +7,19 @@ import javax.inject.Inject
 class LessonDataSource @Inject constructor(
     private val context: Context
 ) {
+    fun getAllCategories(): List<LessonCategoryDataClass> { return categories }
+
+    fun getCategoryById(id: Int): LessonCategoryDataClass {
+        return categories.find { it.idCategory == id } ?: defaultCategory()
+    }
+
+    fun getAllLessonsByCategoryId(idCategory: Int): List<LessonDataClass> {
+        return lessons.filter { it.idCategory == idCategory }
+    }
     fun getLessonById(id: Int): LessonDataClass {
         return lessons.find { it.idLesson == id } ?: defaultLesson()
     }
-    fun getAllLessons(): List<LessonDataClass> { return lessons }
-    fun getAllLessonsCategory(): List<LessonCategoryDataClass> { return lessonCategory }
 
-    private fun defaultLesson(): LessonDataClass {
-        // Return a default LessonDataClass object
-        return LessonDataClass(
-            // Set default values
-            idCategory = 0,
-            idLesson = -1000,  // Indicative of a default or non-existent lesson
-            imageId = R.drawable.burro,  // Assuming you have a default drawable
-            title = "Default Title",
-            subtitle = "Default Subtitle",
-            description = "Default Description",
-            transcription = "Default Transcription",
-            introduction = "Default Introduction",
-            videoId = "DefaultVideoID",
-            conclusion = "Default Conclusion"
-        )
-    }
 
     private val lessons = listOf(
         LessonDataClass(
@@ -111,7 +102,7 @@ class LessonDataSource @Inject constructor(
         ),
     )
 
-    private val lessonCategory = listOf(
+    private val categories = listOf(
         LessonCategoryDataClass(
             0,
             R.drawable.lesson_0,
@@ -129,4 +120,32 @@ class LessonDataSource @Inject constructor(
 
             )
     )
+
+    private fun defaultLesson(): LessonDataClass {
+        // Return a default LessonDataClass object
+        return LessonDataClass(
+            // Set default values
+            idCategory = -1,
+            idLesson = -1000,
+            imageId = R.drawable.burro,
+            title = "Default Title",
+            subtitle = "Default Subtitle",
+            description = "Default Description",
+            transcription = "Default Transcription",
+            introduction = "Default Introduction",
+            videoId = "DefaultVideoID",
+            conclusion = "Default Conclusion"
+        )
+    }
+    private fun defaultCategory(): LessonCategoryDataClass {
+        // Return a default LessonDataClass object
+        return LessonCategoryDataClass(
+            -1,
+            R.drawable.lesson_0, //TODO DEFAULT PHOTO
+            "Default Title",
+            "Default Subtitle",
+            "Default Description",
+
+            )
+    }
 }

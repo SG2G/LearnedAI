@@ -9,12 +9,17 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,7 +38,9 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -44,10 +51,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -78,12 +87,13 @@ fun ParentalAssistantStateFul(
 
     val theme = vmPreferences.theme
 
-    SideEffect { (context as Activity).window.navigationBarColor =
-        if (!theme.value) {
-            Color(0xFFe9effd).toArgb()
-        } else {
-            Color(0xFF282931).toArgb()
-        }
+    SideEffect {
+        (context as Activity).window.navigationBarColor =
+            if (!theme.value) {
+                Color(0xFFe9effd).toArgb()
+            } else {
+                Color(0xFF282931).toArgb()
+            }
     }
 
     LaunchedEffect(Unit) {
@@ -99,7 +109,7 @@ fun ParentalAssistantStateFul(
 
         onNavigateNewMessage = {
             scope.launch { onNavigateNewMessage() }
-                               },
+        },
         onNavigateMessages = { idConversation ->
             scope.launch {
                 Log.i(TAG, "Searching messages whit id: $idConversation")
@@ -144,26 +154,88 @@ fun ParentalChatStateLess(
         modifier = Modifier.fillMaxSize()
     ) {
         item {
+            val backgroundImage = painterResource(id = R.drawable.assistant_banner)
+            val cardShape = RoundedCornerShape(20.dp)
+
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
+                    .height(184.dp),
+                shape = cardShape
             ) {
-                Text(text = "Assistant")
-                Button(
-                    onClick = { onNavigateNewMessage() },
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        MaterialTheme.colorScheme.secondaryContainer
-                    )
+                        .clip(cardShape)
+                        .clickable { onNavigateNewMessage() }
                 ) {
-                    Text(text = "Write")
+                    Image(
+                        painter = backgroundImage,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(32.dp),
+                        ) {
+                            Text(
+                                text = "Lets Chat Together",
+                                style = MaterialTheme.typography.titleLarge,
+                                color = Color.White,
+                                modifier = Modifier.align(Alignment.Start)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Understand your emotions",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.White,
+                                modifier = Modifier.align(Alignment.Start)
+                            )
+                            Spacer(modifier = Modifier.height(32.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(0.5f)
+                            ) {
+                                TextButton(
+                                    onClick = onNavigateNewMessage,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(48.dp)
+                                        .border(1.dp, Color.White, RoundedCornerShape(25.dp)),
+                                    shape = RoundedCornerShape(25.dp),
+                                ) {
+                                    Text(text = "Start Chatting", color = Color.White)
+                                }
+                            }
+
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(
+                            painter = painterResource(id = R.drawable.sofa),
+                            contentDescription = "sofa",
+                            modifier = Modifier
+                                .size(168.dp)
+                                .padding(end = 24.dp)
+                        )
+                    }
+
                 }
             }
+        }
+
+        item {
+            Text(
+                text = "Previous Chats",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
+            )
         }
 
         itemsIndexed(
@@ -197,7 +269,7 @@ fun ParentalChatStateLess(
                         shape = elevatedCardShape,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
                             .shadow(1.dp, elevatedCardShape)
                             .pointerInput(Unit) {
                                 detectTapGestures(

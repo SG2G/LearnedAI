@@ -17,65 +17,65 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
-@Composable
-fun CategoryLessonCard(
-    imagePainter: Painter,
-    title: String,
-    subtitle: String,
-    description: String,
-
-    onNavigateCategory: () -> Unit,
-) {
-
-    ElevatedCard(
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 2.dp
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .shadow(1.dp, RoundedCornerShape(10.dp))
-    ) {
-        Column(
-            modifier = Modifier.clickable {
-                onNavigateCategory()
-            },
-            horizontalAlignment = Alignment.Start
-        ) {
-            Image(
-                painter = imagePainter,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(128.dp),
-                contentScale = ContentScale.Crop
-            )
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = subtitle, style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-        }
-    }
-
-
-}
+//@Composable TODO DELETE
+//fun CategoryLessonCard(
+//    imagePainter: Painter,
+//    title: String,
+//    subtitle: String,
+//    description: String,
+//
+//    onNavigateCategory: () -> Unit,
+//) {
+//
+//    ElevatedCard(
+//        elevation = CardDefaults.elevatedCardElevation(
+//            defaultElevation = 2.dp
+//        ),
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp, vertical = 8.dp)
+//            .shadow(1.dp, RoundedCornerShape(10.dp))
+//    ) {
+//        Column(
+//            modifier = Modifier.clickable {
+//                onNavigateCategory()
+//            },
+//            horizontalAlignment = Alignment.Start
+//        ) {
+//            Image(
+//                painter = imagePainter,
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(128.dp),
+//                contentScale = ContentScale.Crop
+//            )
+//            Column(
+//                modifier = Modifier
+//                    .padding(16.dp)
+//            ) {
+//                Text(
+//                    text = title,
+//                    style = MaterialTheme.typography.titleMedium,
+//                    color = MaterialTheme.colorScheme.primary
+//                )
+//                Spacer(modifier = Modifier.height(4.dp))
+//                Text(
+//                    text = subtitle, style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurfaceVariant
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//                Text(
+//                    text = description,
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurface,
+//                    maxLines = 3,
+//                    overflow = TextOverflow.Ellipsis
+//                )
+//            }
+//
+//        }
+//    }
+//
+//
+//}

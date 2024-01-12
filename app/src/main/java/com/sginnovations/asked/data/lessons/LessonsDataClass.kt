@@ -2,6 +2,7 @@ package com.sginnovations.asked.data.lessons
 
 data class LessonDataClass(
     val idCategory: Int,
+
     val idLesson: Int,
 
     val imageId: Int,

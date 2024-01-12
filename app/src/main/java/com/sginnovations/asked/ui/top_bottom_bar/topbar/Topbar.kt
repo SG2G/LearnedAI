@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.sginnovations.asked.Camera
+import com.sginnovations.asked.CategoryLesson
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
@@ -14,6 +15,7 @@ import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Subscription
 import com.sginnovations.asked.ui.ui_components.topbars.CameraTopBar
+import com.sginnovations.asked.ui.ui_components.topbars.CategoryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.CropTopBar
@@ -23,6 +25,7 @@ import com.sginnovations.asked.ui.ui_components.topbars.ParentalGuidanceTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ProfileTopBar
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
+import com.sginnovations.asked.viewmodel.LessonViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 
 private const val TAG = "LearnedTopBar"
@@ -32,6 +35,7 @@ fun LearnedTopBar(
     vmTokens: TokenViewModel,
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
+    vmLesson: LessonViewModel,
 
     currentScreen: ScreensDestinations?,
     canNavigateBack: Boolean,
@@ -87,6 +91,12 @@ fun LearnedTopBar(
         )
 
         Subscription.route -> {}
+
+        CategoryLesson.route -> CategoryTopBar(
+            vmLesson,
+
+            navigateUp
+        )
 
         else ->
             if (canNavigateBack) {

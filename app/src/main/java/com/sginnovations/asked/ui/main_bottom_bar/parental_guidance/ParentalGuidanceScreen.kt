@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -22,9 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonCategoryDataClass
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.CategoryLessonCard
 import com.sginnovations.asked.viewmodel.LessonViewModel
@@ -40,9 +36,9 @@ enum class Tabs(val title: String) {
 fun ParentalGuidanceStateFul(
     vmLesson: LessonViewModel,
 
-    onNavigateCategory: () -> Unit,
+    onNavigateCategoryLessons: () -> Unit,
 ) {
-    val lessonsCategory = vmLesson.getAllLessonsCategory()
+    val lessonsCategory = vmLesson.getAllCategories()
 
     val selectedTab = remember { mutableStateOf(Tabs.Lessons) }
 
@@ -83,11 +79,11 @@ fun ParentalGuidanceStateFul(
                 ParentalGuidanceStateLess(
                     lessonsCategory = lessonsCategory,
 
-                    onNavigateCategory = { id ->
-                        Log.d(TAG, "category id: $id")
+                    onNavigateCategoryLessons = { category ->
+                        Log.d(TAG, "category id: ${category.idCategory}")
 
-                        vmLesson.lessonCategoryId.intValue = id
-                        onNavigateCategory()
+                        vmLesson.categoryId.intValue = category.idCategory
+                        onNavigateCategoryLessons()
                     }
                 )
 
@@ -102,7 +98,7 @@ fun ParentalGuidanceStateFul(
 fun ParentalGuidanceStateLess(
     lessonsCategory: List<LessonCategoryDataClass>,
 
-    onNavigateCategory: (Int) -> Unit,
+    onNavigateCategoryLessons: (LessonCategoryDataClass) -> Unit,
 ) {
 
     Column(
@@ -111,12 +107,11 @@ fun ParentalGuidanceStateLess(
         lessonsCategory.forEach { category ->
 
             CategoryLessonCard(
-                imagePainter = painterResource(id = R.drawable.burro),
-                title = category.title,
-                subtitle = category.subtitle,
-                description = category.description,
+                category = category,
 
-                onNavigateCategory = { onNavigateCategory(category.idCategory) }
+                onNavigateCategoryLessons = {
+                    onNavigateCategoryLessons(category)
+                }
             )
 
         }

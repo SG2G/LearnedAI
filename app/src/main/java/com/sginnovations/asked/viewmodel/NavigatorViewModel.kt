@@ -9,6 +9,7 @@ import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
+import com.sginnovations.asked.ScreensDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -59,11 +60,11 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
             }
         }
     }
-    suspend fun navigateAuthToCamera(navController: NavController) {
+    suspend fun navigateAuthToX(navController: NavController, screen: ScreensDestinations) {
         withContext(Dispatchers.Main) {
             try {
                 navController.popBackStack(navController.graph.startDestinationId, true)
-                navController.navigate(route = Camera.route)
+                navController.navigate(route = screen.route)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

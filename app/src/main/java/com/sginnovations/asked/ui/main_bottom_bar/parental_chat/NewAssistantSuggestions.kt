@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,10 +26,10 @@ import com.sginnovations.asked.ui.newconversation.components.SubTitleChatUseExam
 import com.sginnovations.asked.ui.newconversation.components.TitleChatUseExample
 
 val myCards = listOf(
-    CardContent(R.drawable.lesson_0, "Título 1", "Subtítulo 1"),
-    CardContent(R.drawable.lesson_0, "Título 2", "Subtítulo 2"),
-    CardContent(R.drawable.lesson_0, "Título 1", "Subtítulo 1"),
-    CardContent(R.drawable.lesson_0, "Título 2", "Subtítulo 2"),
+    CardSuggestionContent("Handling Vegetable Refusal", "How do I deal with a child who refuses to eat vegetables?"),
+    CardSuggestionContent("Título 2", "Subtítulo 2"),
+    CardSuggestionContent("Título 1", "Subtítulo 1"),
+    CardSuggestionContent("Título 2", "Subtítulo 2"),
 )
 
 @Composable
@@ -36,11 +39,13 @@ fun NewAssistantSuggestions(
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp)
+        contentPadding = PaddingValues(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         itemsIndexed(myCards) { _, card ->
             ElevatedCard(
                 modifier = Modifier
+                    .fillMaxWidth(0.7f)
                     .padding(8.dp),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 1.dp
@@ -55,11 +60,16 @@ fun NewAssistantSuggestions(
                     },
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
-                        TitleChatUseExample(
-                            painterResource = painterResource(id = card.imageResId),
-                            text = card.title
+                        Text(
+                            text = card.title,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleSmall
                         )
-                        SubTitleChatUseExample(text = card.subtitle)
+                        Text(
+                            text = card.subtitle,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             }
@@ -67,8 +77,7 @@ fun NewAssistantSuggestions(
     }
 }
 
-data class CardContent(
-    val imageResId: Int,
+data class CardSuggestionContent(
     val title: String,
     val subtitle: String,
 )
