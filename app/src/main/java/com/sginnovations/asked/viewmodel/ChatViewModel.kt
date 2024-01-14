@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.asked.Constants.Companion.MATH_PREFIX_PROMPT
 import com.sginnovations.asked.Constants.Companion.TEXT_PREFIX_PROMPT
+import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.data.CategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
@@ -16,7 +17,6 @@ import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
 import com.sginnovations.asked.data.api_gpt.Message
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.data.database.entities.MessageEntity
-import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.repository.ChatRepository
 import com.sginnovations.asked.repository.RemoteConfigRepository
@@ -24,7 +24,6 @@ import com.sginnovations.asked.repository.RoomRepository
 import com.sginnovations.asked.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,10 +57,17 @@ class ChatViewModel @Inject constructor(
      */
     private val messageHistory =
         mutableListOf(
-            Message(
-                role = "system",
-                content = "You are a helpful assistant. Respond on language:${Locale.current.language}"
-            )
+            if (categoryOCR.value == Assistant) {
+                Message(
+                    role = "system",
+                    content = "You are a helpful assistant.Respond on language:${Locale.current.language}"
+                )
+            } else {
+                Message(
+                    role = "system",
+                    content = "You are a helpful assistant.Respond on language:${Locale.current.language}"
+                )
+            }
         )
 
     fun setUpMessageHistory() {
@@ -120,7 +126,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun newConversationCostTokens() = remoteConfigRepository.getAllNewConversationCostTokens()
+    fun newConversationCostTokens() = remoteConfigRepository.getNewCameraConversationCostTokens()
     fun lessTokenNewConversationCheckPremium() {
         viewModelScope.launch {
             val costTokens = newConversationCostTokens()
@@ -148,6 +154,7 @@ class ChatViewModel @Inject constructor(
         Log.d(TAG, "sendMessageToOpenaiApi: prefixPrompt -> ${prefixPrompt.value}")
 
         val userMessage = Message(role = User.role, content = prefixPrompt.value + prompt)
+        //TODO WE SHOULD ADD THE PREFIX AFTHER SAVE IT ON ROOM
 
         // Create conversation if needed
         if (idConversation.intValue == 0) {
@@ -194,7 +201,7 @@ class ChatViewModel @Inject constructor(
                 roomRepository.insertMessage(
                     MessageEntity(
                         idConversation = idConversation.intValue,
-                        role = Assistant.role,
+                        role = com.sginnovations.asked.data.database.util.Assistant.role,
                         content = apiResponse.content,
                         timestamp = timestamp
                     )

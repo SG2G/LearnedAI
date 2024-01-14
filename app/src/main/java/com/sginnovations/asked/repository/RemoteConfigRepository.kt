@@ -1,17 +1,12 @@
 package com.sginnovations.asked.repository
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
-import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
-import kotlin.math.log
 
 private const val RC_DEFAULT_TOKENS = "defaultTokens"
 private const val RC_AD_REWARD_TOKENS = "adRewardTokens"
@@ -20,7 +15,8 @@ private const val RC_OPENAI = "openAIAPIKey"
 private const val RC_MATHPIX = "mathpixAPIKey"
 private const val RC_CAMERA_MATH_TOKENS = "cameraMathCostTokens"
 private const val RC_CAMERA_TEXT_TOKENS = "cameraTextCostTokens"
-private const val RC_NEW_CONVERSATION_TOKENS = "newConversationCostTokens"
+private const val RC_NEW_CAMERA_CONVERSATION_TOKENS = "newConversationCameraCostTokens"
+private const val RC_NEW_ASSISTANT_CONVERSATION_TOKENS = "newConversationAssistantCostTokens"
 private const val RC_ADS_ALLOWED = "isAdsAllowed"
 
 private const val TAG = "RemoteConfigRepository"
@@ -42,7 +38,8 @@ class RemoteConfigRepository @Inject constructor() {
     fun getInviteRewardTokens() = getValue(RC_INVITE_REWARD_TOKENS)
     fun getCameraMathTokens() = getValue(RC_CAMERA_MATH_TOKENS)
     fun getCameraTextTokens() = getValue(RC_CAMERA_TEXT_TOKENS)
-    fun getAllNewConversationCostTokens() = getValue(RC_NEW_CONVERSATION_TOKENS)
+    fun getNewCameraConversationCostTokens() = getValue(RC_NEW_CAMERA_CONVERSATION_TOKENS)
+    fun getNewAssistConversationCostTokens() = getValue(RC_NEW_ASSISTANT_CONVERSATION_TOKENS)
 
     //API
     fun getOpenAIAPI() = getValue(RC_OPENAI)

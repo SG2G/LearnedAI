@@ -331,7 +331,7 @@ fun LearnedNavigation(
              */
             composable(route = AssistantChat.route) {
                 AssistantChatStateFul(
-                    vmChat = vmChat,
+                    vmAssistant = vmAssistant,
                     vmToken = vmToken,
                     vmAuth = vmAuth,
                 )

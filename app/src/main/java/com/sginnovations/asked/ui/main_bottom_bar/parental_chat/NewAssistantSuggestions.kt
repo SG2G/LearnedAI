@@ -45,7 +45,7 @@ fun NewAssistantSuggestions(
         itemsIndexed(myCards) { _, card ->
             ElevatedCard(
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
+                    .width(304.dp)
                     .padding(8.dp),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 1.dp

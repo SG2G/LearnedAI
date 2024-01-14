@@ -84,6 +84,7 @@ import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.chat.components.ConfidenceDialog
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatUserMessage
@@ -485,18 +486,11 @@ fun ChatStateLess(
 //                    Text(text = "Testing")
 //                }
                 if (!isPremium) {
-                    Row(
-                        modifier = Modifier
-                            .scale(0.8f)
-                            .padding(start = 16.dp, top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "-1")
-                        TokenIcon()
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = stringResource(R.string.message))
-                    }
+                    TokenCostDisplay(
+                        tokenCost = "-1"
+                    )
                 }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

@@ -11,24 +11,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -48,7 +41,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -65,14 +57,14 @@ import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatUserMessage
-import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
+import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.AuthViewModel
-import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.StateFlow
@@ -82,7 +74,7 @@ private const val TAG = "Chat"
 
 @Composable
 fun AssistantChatStateFul(
-    vmChat: ChatViewModel,
+    vmAssistant: AssistantViewModel,
     vmToken: TokenViewModel,
     vmAuth: AuthViewModel,
 ) {
@@ -91,7 +83,7 @@ fun AssistantChatStateFul(
 
     val listState = rememberLazyListState()
 
-    val messages = vmChat.messages
+    val messages = vmAssistant.messages
     val chatAnimation = remember { mutableStateOf(false) }
 
     val userAuth = vmAuth.userAuth.collectAsState() //TODO IMPROVE IT
@@ -100,12 +92,14 @@ fun AssistantChatStateFul(
 
     val tokens = vmToken.tokens
 
+    val conversationCostToken = vmAssistant.newConversationCostTokens()
+
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
     SideEffect { (context as Activity).window.navigationBarColor = navigationBarColor }
 
     LaunchedEffect(messages.value.size) {
-        vmChat.setUpMessageHistory()
+        vmAssistant.setUpMessageHistory()
 
         if (messages.value.isNotEmpty()) {
             listState.scrollToItem(messages.value.size - 1)
@@ -120,16 +114,17 @@ fun AssistantChatStateFul(
 
         tokens = tokens,
 
+        conversationCostToken = conversationCostToken,
+
         userName = userName,
         userProfileUrl = userProfileUrl,
 
-        sendMessageToChatbot = { message ->
-            scope.launch {
-                vmChat.sendMessageToOpenaiApi(message)
-                vmToken.xLessToken(-2)
-            }
-        },
-    )
+        ) { message ->
+        scope.launch {
+            vmAssistant.sendMessageToOpenaiApi(message)
+            vmToken.xLessToken(-2)
+        }
+    }
 }
 
 @Composable
@@ -139,6 +134,8 @@ fun AssistantChatStateLess(
     listState: LazyListState,
 
     tokens: StateFlow<Long>,
+
+    conversationCostToken: String,
 
     userName: String?,
     userProfileUrl: String?,
@@ -235,70 +232,6 @@ fun AssistantChatStateLess(
             }
         }
     }
-
-//    Scaffold(
-//        modifier = Modifier
-//            .background(Color.Transparent),
-//    ) { padding ->
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .zIndex(13f),
-//            contentAlignment = Alignment.BottomCenter
-//        ) {
-//            SnackbarHost(
-//                hostState = snackbarHostState,
-//                modifier = Modifier
-//                    .background(Color.Transparent)
-//                    .padding(padding)
-//                    .zIndex(14f)
-//                    .offset(y = snackbarOffset.value * (-75).dp),
-//                snackbar = { data ->
-//                    Snackbar(
-//                        modifier = Modifier
-//                            .padding(16.dp)
-//                            .background(Color.Transparent)
-//                            .zIndex(15f),
-//                        containerColor = MaterialTheme.colorScheme.surface,
-//                        shape = RoundedCornerShape(10.dp),
-//                    ) {
-//                        Row(verticalAlignment = Alignment.CenterVertically) {
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.warning_svgrepo_com),
-//                                contentDescription = "WarningAmber",
-//                                tint = MaterialTheme.colorScheme.onBackground,
-//                                modifier = Modifier.size(24.dp)
-//                            )
-//                            Spacer(Modifier.width(8.dp))
-//                            Text(
-//                                text = data.visuals.message,
-//                                color = MaterialTheme.colorScheme.onBackground,
-//                                modifier = Modifier.weight(1f)
-//                            )
-//                            data.visuals.actionLabel?.let { actionLabel ->
-//                                IconButton(onClick = {
-//                                    when (actionLabel) {
-//                                        context.getString(R.string.snackbar_why) -> {
-//                                            onShowConfidenceDialog()
-//                                        }
-//
-//                                        else -> {
-//                                            data.dismiss()
-//                                        }
-//                                    }
-//                                }) {
-//                                    Text(
-//                                        text = actionLabel,
-//                                        color = MaterialTheme.colorScheme.primary,
-//                                        style = MaterialTheme.typography.titleSmall
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            )
-//        }
 
     Column(
         Modifier
@@ -439,17 +372,9 @@ fun AssistantChatStateLess(
 //                    Text(text = "Testing")
 //                }
             if (!isPremium) {
-                Row(
-                    modifier = Modifier
-                        .scale(0.8f)
-                        .padding(start = 16.dp, top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "-1")
-                    TokenIcon()
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = stringResource(R.string.message))
-                }
+                TokenCostDisplay(
+                    tokenCost = conversationCostToken
+                )
             }
             Row(
                 modifier = Modifier

@@ -7,9 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sginnovations.asked.Constants
 import com.sginnovations.asked.data.CategoryOCR
-import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.api_gpt.ChatCompletionRequest
 import com.sginnovations.asked.data.api_gpt.Message
@@ -108,7 +106,7 @@ class AssistantViewModel @Inject constructor(
     }
 
     //TODO CHANGE
-    fun newConversationCostTokens() = remoteConfigRepository.getAllNewConversationCostTokens()
+    fun newConversationCostTokens() = remoteConfigRepository.getNewAssistConversationCostTokens()
     fun lessTokenNewConversationCheckPremium() {
         viewModelScope.launch {
             val costTokens = newConversationCostTokens()

@@ -25,11 +25,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,7 +47,9 @@ import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.ui.chat.components.NewChatSendIcon
+import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
+import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
@@ -69,8 +74,13 @@ fun AssistantNewConversationStateFul(
 
     val isLoading = vmAssistant.isLoading
 
-    //TODO ASSISTANT COST = 2
     val newConversationCostToken = vmAssistant.newConversationCostTokens()
+
+    var isPremium by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await()
+    }
 
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
@@ -82,6 +92,7 @@ fun AssistantNewConversationStateFul(
         newConversationCostToken = newConversationCostToken,
 
         isLoading = isLoading,
+        isPremium = isPremium,
 
         onSendNewMessage = {
             val processText = text.value
@@ -118,6 +129,7 @@ fun AssistantNewConversationStateLess(
     newConversationCostToken: String,
 
     isLoading: MutableState<Boolean>,
+    isPremium: Boolean,
 
     onSendNewMessage: () -> Unit,
 ) {
@@ -144,17 +156,19 @@ fun AssistantNewConversationStateLess(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 32.dp),
+            .padding(bottom = 64.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.asked30),
             contentDescription = "Icon",
-            modifier = Modifier.size(36.dp).clip(CircleShape),
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape),
         )
         Text(
-            modifier = Modifier.padding(horizontal = 64.dp),
+            modifier = Modifier.padding(horizontal = 64.dp, vertical = 8.dp),
             text = "Cuentame una situación y te dare mi punto de vista",
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleSmall
@@ -181,25 +195,9 @@ fun AssistantNewConversationStateLess(
                     text.value = suggestedText
                 }
             )
-            Row(
-                modifier = Modifier
-                    .scale(0.8f)
-                    .padding(start = 16.dp, top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TokenIcon()
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text =
-                    when (newConversationCostToken.toInt()) {
-                        0 -> stringResource(R.string.new_conversation_free_message)
-                        else -> {
-                            stringResource(
-                                R.string.new_conversation_cost_message,
-                                newConversationCostToken
-                            )
-                        }
-                    }
+            if (!isPremium) {
+                TokenCostDisplay(
+                    tokenCost = newConversationCostToken
                 )
             }
             Row(
@@ -266,7 +264,7 @@ fun sendNewMessage(
 
             // Token cost of the call
             try {
-                vmAssistant.lessTokenNewConversationCheckPremium()
+                vmChat.lessTokenNewConversationCheckPremium()
             } catch (e: Exception) {
                 // NewConversation tokens cost failed
                 e.printStackTrace()
