@@ -112,17 +112,6 @@ fun PhotoButton(
                     },
                     contentDescription = "Inner Icon",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
-//                    when (categoryOCR.prefix) {
-//                        TextCategoryOCR.prefix -> Color(0xFF887603)
-//                        MathCategoryOCR.prefix -> Color(0xFF052C53)
-//
-//                        TranslateCategoryOCR.prefix -> Color(0xFF90091D)
-//                        SummaryCategoryOCR.prefix -> Color(0xFF5D2417)
-//                        GrammarCategoryOCR.prefix -> Color(0xFF058D4D)
-//
-//                        else -> Color.Blue
-//                    },
-
                 )
             }
         }

@@ -50,9 +50,6 @@ class TokenRepository @Inject constructor(
         if (documentReference != null) incrementTokensUseCase(documentReference!!, numTokens)
     }
 
-    suspend fun giveAdReward() = incrementTokens(
-        remoteConfigRepository.getAdRewardTokens().toInt()
-    )
     suspend fun giveRefCodeReward() = incrementTokens(
         remoteConfigRepository.getInviteRewardTokens().toInt()
     )

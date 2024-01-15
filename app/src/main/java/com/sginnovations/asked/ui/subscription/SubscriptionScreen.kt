@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,10 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
@@ -58,7 +56,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "SubscriptionStateFull"
 
-enum class Option { OptionWeekly, OptionMonthly }
+enum class Option { OptionMonthly, OptionAnnually }
 
 @Composable
 fun SubscriptionStateFull(
@@ -66,18 +64,18 @@ fun SubscriptionStateFull(
 
     onNavigateUp: () -> Unit,
 ) {
-    val userOption = remember { mutableStateOf(Option.OptionWeekly) }
+    val userOption = remember { mutableStateOf(Option.OptionMonthly) }
     val showComposable = remember { mutableStateOf(false) }
 
     val productMonthly = vmBilling.productMonthly
-    val productWeekly = vmBilling.productWeekly
+    val productAnnually = vmBilling.productAnnually
 
+    val priceSubAnnually = remember { mutableStateOf<String?>(null) }
     val priceSubMonthly = remember { mutableStateOf<String?>(null) }
-    val priceSubWeekly = remember { mutableStateOf<String?>(null) }
 
     Log.d(
         TAG,
-        "productMonthly-> ${productMonthly.value.toString()} productWeekly-> ${productWeekly.value.toString()} "
+        "productMonthly-> ${productMonthly.value.toString()} productWeekly-> ${productAnnually.value.toString()} "
     )
 
     val context = LocalContext.current
@@ -98,23 +96,23 @@ fun SubscriptionStateFull(
      */
     LaunchedEffect(Unit) {
         var attempts = 0
-        while (priceSubMonthly.value == null && priceSubWeekly.value == null && attempts < 20) { // try up to 20 times
+        while (priceSubAnnually.value == null && priceSubMonthly.value == null && attempts < 20) { // try up to 20 times
             delay(200)
-            priceSubMonthly.value =
+            priceSubAnnually.value =
                 productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
-                ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
-
-            priceSubWeekly.value =
-                productWeekly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
                     ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
 
-            Log.i(TAG, "$attempts $priceSubWeekly / $priceSubMonthly")
+            priceSubMonthly.value =
+                productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                    ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+
+            Log.i(TAG, "$attempts $priceSubMonthly / $priceSubAnnually")
 
             attempts++
         }
 
         // Check if priceInApp is not null before setting showComposable to true
-        if (priceSubMonthly.value != null && priceSubWeekly.value != null) {
+        if (priceSubAnnually.value != null && priceSubMonthly.value != null) {
             showComposable.value = true
         }
     }
@@ -122,10 +120,10 @@ fun SubscriptionStateFull(
     if (showComposable.value) {
         SubscriptionStateLess(
             productMonthly,
-            productWeekly,
+            productAnnually,
 
+            priceSubAnnually,
             priceSubMonthly,
-            priceSubWeekly,
 
             userOption,
 
@@ -137,14 +135,14 @@ fun SubscriptionStateFull(
                         TAG,
                         "SubscriptionStateFull: Activity not null, launching billing flow"
                     )
-                    when (userOption.value) {
-                        Option.OptionWeekly ->
+                    when (userOption.value) { //TODO ¿?¿?
+                        Option.OptionMonthly ->
                             vmBilling.launchBillingFlowSubs(
                                 activity,
                                 productDetails,
                             )
 
-                        Option.OptionMonthly ->
+                        Option.OptionAnnually ->
                             vmBilling.launchBillingFlowSubs(
                                 activity,
                                 productDetails,
@@ -193,11 +191,11 @@ fun SubscriptionStateFull(
 
 @Composable
 fun SubscriptionStateLess(
-    productLifetime: MutableState<ProductDetails?>,
-    productWeekly: MutableState<ProductDetails?>,
+    productMonthly: MutableState<ProductDetails?>,
+    productAnnually: MutableState<ProductDetails?>,
 
-    priceSubMonthly: MutableState<String?>,
-    priceSubWeekly: MutableState<String?>,
+    priceSubAnnually: MutableState<String?>,
+    priceSubMonthy: MutableState<String?>,
 
     userOption: MutableState<Option>,
 
@@ -205,15 +203,15 @@ fun SubscriptionStateLess(
 
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
-    val selectedPlan = remember { mutableStateOf(productWeekly) }
+    val selectedPlan = remember { mutableStateOf(productAnnually) }
     val cardAlpha = 0.8f
 
     when (userOption.value) {
-        Option.OptionWeekly -> selectedPlan.value = productWeekly
-        Option.OptionMonthly -> selectedPlan.value = productLifetime
+        Option.OptionMonthly -> selectedPlan.value = productAnnually
+        Option.OptionAnnually -> selectedPlan.value = productMonthly
     }
 
-    Log.i(TAG, "SubscriptionStateLess - $priceSubWeekly / $priceSubMonthly")
+    Log.i(TAG, "SubscriptionStateLess - $priceSubMonthy / $priceSubAnnually")
 
     Column(
         modifier = Modifier
@@ -224,13 +222,6 @@ fun SubscriptionStateLess(
         Box(
             contentAlignment = Alignment.TopCenter
         ) {
-//            Image(
-//                painter = painterResource(id = R.drawable.subscription_background_school),
-//                contentDescription = "subscription_background_school",
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .alpha(0.1f)
-//            )
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -259,10 +250,10 @@ fun SubscriptionStateLess(
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
+
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
-                        modifier = Modifier.padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
@@ -273,10 +264,9 @@ fun SubscriptionStateLess(
                         TokenIcon()
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
 
                     Row(
-                        modifier = Modifier.padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
@@ -285,20 +275,20 @@ fun SubscriptionStateLess(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+
                     Row(
-                        modifier = Modifier.padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_ad2),
-                            text = stringResource(R.string.subscription_no_ads)
+                            painterResource = painterResource(id = R.drawable.subscription_star2),
+                            text = "Access to Full Guide"
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+
                     Row(
-                        modifier = Modifier.padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
@@ -306,9 +296,10 @@ fun SubscriptionStateLess(
                                 painterResource = painterResource(id = R.drawable.subscription_star2),
                                 text = stringResource(R.string.subscription_exclusive_functions)
                             )
-                            SubTitleBenefit(text = stringResource(R.string.subscription_subtitle_load_pdf_gpt_4_turbo))
+                            SubTitleBenefit(text = "")
                         }
                     }
+
                 }
             }
         }
@@ -318,25 +309,25 @@ fun SubscriptionStateLess(
          * Products
          */
         // Product 1 - Weekly
-        priceSubWeekly.value?.let {
-            SubscriptionCard(
-                durationTime = stringResource(R.string.subscription_week),
-                smallText = stringResource(R.string.subscription_3_day_free_trial_cancel_anytime_auto_renewable),
-                allPrice = it,
-                subscriptionOption = Option.OptionWeekly,
-                userOption = userOption.value
-            ) { userOption.value = Option.OptionWeekly }
-        }
-
-        // Product 2 - LifeTime
-        priceSubMonthly.value?.let {
+        priceSubMonthy.value?.let { price ->
             SubscriptionCard(
                 durationTime = stringResource(R.string.subscription_monthly),
-                smallText = stringResource(R.string.subscription2_cancel_anytime),
-                allPrice = it,
+                smallText = stringResource(R.string.subscription_monthly_small_text),
+                allPrice = price,
                 subscriptionOption = Option.OptionMonthly,
                 userOption = userOption.value
             ) { userOption.value = Option.OptionMonthly }
+        }
+
+        // Product 2 - LifeTime
+        priceSubAnnually.value?.let { price ->
+            SubscriptionCard(
+                durationTime = stringResource(R.string.subscription_annually),
+                smallText = stringResource(R.string.subscription_annually_small_text),
+                allPrice = price,
+                subscriptionOption = Option.OptionAnnually,
+                userOption = userOption.value
+            ) { userOption.value = Option.OptionAnnually }
         }
 
         Row(
@@ -355,23 +346,15 @@ fun SubscriptionStateLess(
                     .height(58.dp),
                 shape = RoundedCornerShape(15.dp)
             ) {
-                if (userOption.value == Option.OptionWeekly) {
-                    Text(
-                        text = stringResource(R.string.subscription_start_free_trial_plan),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                } else {
-                    Text(
-                        text = stringResource(R.string.subscription_unlock_asked_ai_pro),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Row(
-                        modifier = Modifier.height(24.dp)
-                    ) {
+                Text(
+                    text = stringResource(R.string.subscription_unlock_asked_ai_pro),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Row(
+                    modifier = Modifier.height(24.dp)
+                ) {
 
-                    }
                 }
             }
         }
@@ -379,7 +362,7 @@ fun SubscriptionStateLess(
          * Small Letter
          */
         val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
-        if (userOption.value == Option.OptionWeekly) {
+        if (userOption.value == Option.OptionAnnually) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

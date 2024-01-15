@@ -41,7 +41,6 @@ fun DefaultTopBar(
                         text = currentScreenTitle,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(16.dp)
                     )
                 }
             }

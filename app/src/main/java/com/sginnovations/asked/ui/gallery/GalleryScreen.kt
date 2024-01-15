@@ -126,8 +126,8 @@ fun GalleryStateFull(
                 TextCategoryOCR to R.drawable.text_camera,
                 MathCategoryOCR to R.drawable.math_camera,
                 TranslateCategoryOCR to R.drawable.language_camera,
-                SummaryCategoryOCR to R.drawable.summary_camera,
                 GrammarCategoryOCR to R.drawable.grammar_camera,
+                SummaryCategoryOCR to R.drawable.summary_camera,
                 Soon to R.drawable.sign_caution_svgrepo_com,
                 // Add more categories if needed
             )
@@ -149,13 +149,8 @@ fun GalleryStateFull(
                                     0 -> showToast(context, context.getString(R.string.trollmessage_1))
                                     1 -> showToast(context, context.getString(R.string.trollmessage_2))
                                     2 -> showToast(context, context.getString(R.string.trollmessage_3))
-                                    3 -> showToast(context, context.getString(R.string.trollmessage_4))
-                                    4 -> showToast(context, context.getString(R.string.trollmessage_5))
-                                    5 -> showToast(context, context.getString(R.string.trollmessage_6))
-                                    6 -> showToast(context, context.getString(R.string.trollmessage_7))
-                                    7 -> showToast(context, context.getString(R.string.trollmessage_8))
                                     else -> showToast(context,
-                                        context.getString(R.string.trollmessage_9))
+                                        context.getString(R.string.trollmessage_1))
                                 }
                                 tryClickSoon.intValue ++
                             }

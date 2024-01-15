@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.compose.ui.zIndex
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_DEFAULT
 import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_PREMIUM
 import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
@@ -84,6 +85,7 @@ import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.chat.components.ConfidenceDialog
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
@@ -108,9 +110,13 @@ fun ChatStateFul(
     vmChat: ChatViewModel,
     vmToken: TokenViewModel,
     vmAuth: AuthViewModel,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val showNoTokensDialog = remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
 
@@ -144,6 +150,8 @@ fun ChatStateFul(
         chatAnimation = chatAnimation,
         listState = listState,
 
+        showNoTokensDialog = showNoTokensDialog,
+
         textConfidence = textConfidence,
         resetTextConfidence = { scope.launch { vmCamera.resetTextConfidence() } },
 
@@ -157,12 +165,20 @@ fun ChatStateFul(
         sendMessageToChatbot = { message ->
             scope.launch {
                 vmChat.sendMessageToOpenaiApi(message)
-                vmToken.oneLessToken()
             }
         },
     )
     if (showConfidenceDialog.value) {
         ConfidenceDialog(onDismiss = { showConfidenceDialog.value = false })
+    }
+    if (showNoTokensDialog.value) {
+        NoTokensDialog(
+            onDismissRequest = { showNoTokensDialog.value = false },
+            onSeePremiumSubscription = {
+                showNoTokensDialog.value = false
+                onNavigateSubscriptionScreen()
+            }
+        )
     }
 }
 
@@ -171,6 +187,8 @@ fun ChatStateLess(
     messages: MutableState<List<MessageEntity>>,
     chatAnimation: MutableState<Boolean>,
     listState: LazyListState,
+
+    showNoTokensDialog: MutableState<Boolean>,
 
     textConfidence: MutableDoubleState,
     resetTextConfidence: () -> Unit,
@@ -207,7 +225,7 @@ fun ChatStateLess(
     /**
      * SnackBarAnimation
      */
-    LaunchedEffect(snackbarHostState.currentSnackbarData) {
+    LaunchedEffect(snackbarHostState.currentSnackbarData) { //TODO DUPLICATE CODE
         if (snackbarHostState.currentSnackbarData != null) {
             // Animate snackbar in
             snackbarOffset.animateTo(
@@ -253,10 +271,14 @@ fun ChatStateLess(
         }
     }
 
+    /**
+     * SEND MESSAGE
+     */
     fun sendMessage(message: MutableState<String>) {
         if (text.value.isNotEmpty()) {
             if (NetworkUtils.isOnline(context)) {
-                if (tokens.value > 0) {
+
+                if (isPremium) {
                     sendMessageToChatbot(message.value)
 
                     userPlaceHolder = message.value
@@ -265,14 +287,19 @@ fun ChatStateLess(
 
                     message.value = ""
                 } else {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.snackbar_insufficient_tokens),
-                            actionLabel = context.getString(R.string.snackbar_ok),
-                            duration = SnackbarDuration.Short
-                        )
+                    if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
+                        sendMessageToChatbot(message.value)
+
+                        userPlaceHolder = message.value
+                        chatAnimation.value = true
+                        chatPlaceHolder = true
+
+                        message.value = ""
+                    } else {
+                        showNoTokensDialog.value = true
                     }
                 }
+
             } else {
                 scope.launch {
                     snackbarHostState.showSnackbar(
@@ -391,7 +418,7 @@ fun ChatStateLess(
                                             ElevatedCard(
                                                 modifier = Modifier.padding(horizontal = 16.dp),
                                                 colors = CardDefaults.elevatedCardColors(
-                                                    containerColor = MaterialTheme.colorScheme.surface
+                                                    containerColor = MaterialTheme.colorScheme.primary
                                                 )
                                             ) {
                                                 Text(

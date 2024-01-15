@@ -123,7 +123,10 @@ fun SubscriptionCard(
                         )
                     )
                 }
-                if (subscriptionOption.name == Option.OptionMonthly.name) {
+                /**
+                 * Save x%
+                 */
+                if (subscriptionOption.name == Option.OptionAnnually.name) {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -177,24 +180,23 @@ fun SubscriptionCard(
                         )
                     }
                 }
-//                Spacer(modifier = Modifier.width(8.dp))
-//                ElevatedCard(
-//                    elevation = CardDefaults.elevatedCardElevation(
-//                        defaultElevation = 4.dp
-//                    ),
-//                    colors = CardDefaults.elevatedCardColors(
-//                        containerColor = MaterialTheme.colorScheme.surface
-//                    )
-//                ) {
-//                    Text(
-//                        modifier = Modifier.padding(4.dp),
-//                        text = "Save 50%",
-//                        style = TextStyle(
-//                            fontSize = 12.sp
-//                        ),
-//                        color = MaterialTheme.colorScheme.onPrimaryContainer
-//                    )
-//                }
+                if (subscriptionOption.name == Option.OptionAnnually.name) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Card(
+                        colors = CardDefaults.elevatedCardColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+                            text = stringResource(R.string.subscription_most_popular),
+                            style = TextStyle(
+                                fontSize = 12.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                }
             }
         } // Box 2
     } // Box 1

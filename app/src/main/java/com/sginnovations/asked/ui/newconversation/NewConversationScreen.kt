@@ -18,6 +18,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,15 +38,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.chat.components.NewChatSendIcon
 import com.sginnovations.asked.ui.newconversation.components.NewConversationSuggestions
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
+import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -56,20 +60,25 @@ private const val TAG = "NewConversationStateFul"
 fun NewConversationStateFul(
     vmChat: ChatViewModel,
     vmCamera: CameraViewModel,
+    vmToken: TokenViewModel,
 
     onNavigateChat: () -> Unit,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
+    val showNoTokensDialog = remember { mutableStateOf(false) }
+
     val text = remember { mutableStateOf<String?>("") }
     text.value = vmCamera.imageToText.value
 
-//    val idConversation = vmChat.idConversation.intValue
     val isLoading = vmCamera.isLoading
 
     val newConversationCostToken = vmChat.newConversationCostTokens()
     var isPremium by remember { mutableStateOf(false) }
+    val tokens = vmToken.tokens
 
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
@@ -91,22 +100,55 @@ fun NewConversationStateFul(
             text.value = ""
             vmCamera.imageToText.value = ""
 
-            if (!processText.isNullOrEmpty()) {
-                sendNewMessage(
-                    scope,
-                    context,
+            vmChat.setUpNewConversation()
 
-                    processText,
-//                idConversation,
+            if (processText?.isNotEmpty() == true) {
+                if (NetworkUtils.isOnline(context)) {
 
-                    vmCamera,
-                    vmChat
-                ) {
-                    onNavigateChat()
+                    if (isPremium) {
+                        sendNewMessage(
+                            scope,
+                            context,
+
+                            processText,
+
+                            vmCamera,
+                            vmChat
+                        ) {
+                            onNavigateChat()
+                        }
+                    } else {
+                        if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
+                            sendNewMessage(
+                                scope,
+                                context,
+
+                                processText,
+
+                                vmCamera,
+                                vmChat
+                            ) {
+                                onNavigateChat()
+                            }
+                        } else {
+                            showNoTokensDialog.value = true
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, context.getString(R.string.snackbar_no_internet_connection), Toast.LENGTH_SHORT).show()
                 }
             }
         }
     )
+    if (showNoTokensDialog.value) {
+        NoTokensDialog(
+            onDismissRequest = { showNoTokensDialog.value = false },
+            onSeePremiumSubscription = {
+                showNoTokensDialog.value = false
+                onNavigateSubscriptionScreen()
+            }
+        )
+    }
 }
 
 @Composable
@@ -200,7 +242,6 @@ fun sendNewMessage(
     scope: CoroutineScope,
     context: Context,
     text: String,
-//    idConversation: Int,
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
 
@@ -214,14 +255,6 @@ fun sendNewMessage(
             // GPT call
             val deferred = async { vmChat.sendMessageToOpenaiApi(text) }
             deferred.await()
-
-            // Token cost of the call
-            try {
-                vmChat.lessTokenNewConversationCheckPremium()
-            } catch (e: Exception) {
-                // NewConversation tokens cost failed
-                e.printStackTrace()
-            }
 
             vmCamera.isLoading.value = false
 

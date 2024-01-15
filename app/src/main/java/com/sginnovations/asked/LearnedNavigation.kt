@@ -247,7 +247,7 @@ fun LearnedNavigation(
                 exitTransition = { ExitTransition.None }
             ) {
                 ParentalAssistantStateFul(
-                    vmChat = vmChat,
+                    vmAssistant = vmAssistant,
                     vmPreferences = vmPreferences,
 
                     onNavigateNewMessage = { navController.navigate(route = AssistantNewConversation.route) },
@@ -311,8 +311,10 @@ fun LearnedNavigation(
                 NewConversationStateFul(
                     vmChat = vmChat,
                     vmCamera = vmCamera,
+                    vmToken = vmToken,
 
-                    onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } }
+                    onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
             }
             /**
@@ -320,10 +322,15 @@ fun LearnedNavigation(
              */
             composable(route = AssistantNewConversation.route) {
                 AssistantNewConversationStateFul(
-                    vmChat = vmChat,
                     vmAssistant = vmAssistant,
+                    vmToken = vmToken,
 
-                    onNavigateChat = { scope.launch { vmNavigator.navigateAssistantChat(navController) } }
+                    onNavigateChat = {
+                        scope.launch {
+                            vmNavigator.navigateAssistantChat(navController)
+                        }
+                    },
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
             }
             /**
@@ -334,6 +341,8 @@ fun LearnedNavigation(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
                     vmAuth = vmAuth,
+
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
             }
             /**
@@ -365,6 +374,8 @@ fun LearnedNavigation(
                     vmChat = vmChat,
                     vmToken = vmToken,
                     vmAuth = vmAuth,
+
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
                 EarnPoints(vmToken, navController)
             }

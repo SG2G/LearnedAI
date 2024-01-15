@@ -118,13 +118,6 @@ class ChatViewModel @Inject constructor(
             getAllConversationsExceptAssistant()
         }
     }
-    suspend fun hideConversationsAssist(id: Int) {
-        viewModelScope.launch {
-            Log.d(TAG, "hideConversationsAssist: id -> $id")
-            roomRepository.hideConversation(id)
-            getConversationsFromCategory(com.sginnovations.asked.data.Assistant.prefix)
-        }
-    }
 
     fun newConversationCostTokens() = remoteConfigRepository.getNewCameraConversationCostTokens()
     fun lessTokenNewConversationCheckPremium() {
@@ -219,6 +212,11 @@ class ChatViewModel @Inject constructor(
         }
 
         getMessagesFromIdConversation()
+
+        /**
+         * ONE LESS TOKEN
+         */
+        lessTokenNewConversationCheckPremium()
 
         Log.i(TAG, "messageHistory: $messageHistory")
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")

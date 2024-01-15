@@ -67,6 +67,7 @@ import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.components.OptionMenu
+import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -76,7 +77,7 @@ private const val TAG = "ParentalChatStateFul"
 
 @Composable
 fun ParentalAssistantStateFul(
-    vmChat: ChatViewModel,
+    vmAssistant: AssistantViewModel,
     vmPreferences: PreferencesViewModel,
 
     onNavigateNewMessage: () -> Unit,
@@ -99,10 +100,10 @@ fun ParentalAssistantStateFul(
     LaunchedEffect(Unit) {
         Log.d(TAG, "StateFulHistoryChats: getAllConversations")
         delay(100)
-        vmChat.getConversationsFromCategory(Assistant.prefix)
+        vmAssistant.getConversationsFromCategory(Assistant.prefix)
     }
 
-    val conversations = vmChat.conversations
+    val conversations = vmAssistant.conversations
 
     ParentalChatStateLess(
         conversations = conversations,
@@ -113,10 +114,11 @@ fun ParentalAssistantStateFul(
         onNavigateMessages = { idConversation ->
             scope.launch {
                 Log.i(TAG, "Searching messages whit id: $idConversation")
-                vmChat.idConversation.intValue = idConversation
-                vmChat.getMessagesFromIdConversation()
+
+                vmAssistant.idConversation.intValue = idConversation
+                vmAssistant.getMessagesFromIdConversation()
             }
-            Log.d(TAG, "StateFulHistoryChats: Navigating to messages")
+            Log.d(TAG, "StateFulAssistantHistoryChats: Navigating to messages")
             onNavigateMessages()
         },
 
@@ -127,7 +129,7 @@ fun ParentalAssistantStateFul(
                         TAG,
                         "onDeleteConversation. id -> $id"
                     )
-                    vmChat.hideConversationsAssist(id)
+                    vmAssistant.hideConversationsAssist(id)
                 }
             }
         },

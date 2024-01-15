@@ -7,16 +7,13 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
@@ -36,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -44,15 +40,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
-import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.ui.chat.components.NewChatSendIcon
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
-import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AssistantViewModel
-import com.sginnovations.asked.viewmodel.ChatViewModel
+import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -61,13 +57,17 @@ private const val TAG = "AssistantNewConversationStateFul"
 
 @Composable
 fun AssistantNewConversationStateFul(
-    vmChat: ChatViewModel,
     vmAssistant: AssistantViewModel,
+    vmToken: TokenViewModel,
 
     onNavigateChat: () -> Unit,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val showNoTokensDialog = remember { mutableStateOf(false) }
 
     val text = remember { mutableStateOf<String?>("") }
     text.value = vmAssistant.firstMessage.value
@@ -75,8 +75,8 @@ fun AssistantNewConversationStateFul(
     val isLoading = vmAssistant.isLoading
 
     val newConversationCostToken = vmAssistant.newConversationCostTokens()
-
     var isPremium by remember { mutableStateOf(false) }
+    val tokens = vmToken.tokens
 
     LaunchedEffect(Unit) {
         isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await()
@@ -97,29 +97,58 @@ fun AssistantNewConversationStateFul(
         onSendNewMessage = {
             val processText = text.value
             text.value = ""
-            vmAssistant.firstMessage.value = ""
 
-            Log.d(TAG, "processText: $processText")
+            vmAssistant.setUpNewConversation()
 
-            if (!processText.isNullOrEmpty()) {
-                vmChat.setUpNewConversation()
-                vmChat.categoryOCR.value = Assistant
+            if (processText?.isNotEmpty() == true) {
+                if (NetworkUtils.isOnline(context)) {
 
-                sendNewMessage(
-                    scope,
-                    context,
+                    if (isPremium) {
+                        sendNewMessage(
+                            scope,
+                            context,
 
-                    processText,
-//                idConversation,
+                            processText,
 
-                    vmAssistant,
-                    vmChat
-                ) {
-                    onNavigateChat()
+                            vmAssistant,
+                        ) {
+                            onNavigateChat()
+                        }
+                    } else {
+                        if (tokens.value >= Constants.ASSISTANT_MESSAGE_COST) {
+                            sendNewMessage(
+                                scope,
+                                context,
+
+                                processText,
+
+                                vmAssistant,
+                            ) {
+                                onNavigateChat()
+                            }
+                        } else {
+                            showNoTokensDialog.value = true
+                            Toast.makeText(context, context.getString(R.string.snackbar_insufficient_tokens), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, context.getString(R.string.snackbar_no_internet_connection), Toast.LENGTH_SHORT).show()
                 }
             }
         }
     )
+    /**
+     * No Tokens Dialog
+     */
+    if (showNoTokensDialog.value) {
+        NoTokensDialog(
+            onDismissRequest = { showNoTokensDialog.value = false },
+            onSeePremiumSubscription = {
+                showNoTokensDialog.value = false
+                onNavigateSubscriptionScreen()
+            }
+        )
+    }
 }
 
 @Composable
@@ -245,7 +274,6 @@ fun sendNewMessage(
     text: String,
 
     vmAssistant: AssistantViewModel,
-    vmChat: ChatViewModel,
 
     onNavigateChat: () -> Unit,
 ) {
@@ -259,16 +287,8 @@ fun sendNewMessage(
             vmAssistant.isLoading.value = true
 
             // GPT call
-            val deferred = async { vmChat.sendMessageToOpenaiApi(text) }
+            val deferred = async { vmAssistant.sendMessageToOpenaiApi(text) }
             deferred.await()
-
-            // Token cost of the call
-            try {
-                vmChat.lessTokenNewConversationCheckPremium()
-            } catch (e: Exception) {
-                // NewConversation tokens cost failed
-                e.printStackTrace()
-            }
 
             vmAssistant.isLoading.value = false
 

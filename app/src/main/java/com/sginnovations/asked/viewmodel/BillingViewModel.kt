@@ -40,7 +40,7 @@ class BillingViewModel @Inject constructor(
 ) : ViewModel() {
 
     val productMonthly = mutableStateOf<ProductDetails?>(null)
-    val productWeekly = mutableStateOf<ProductDetails?>(null)
+    val productAnnually = mutableStateOf<ProductDetails?>(null)
 
     val billingResponseCode = MutableLiveData<Int>()
 
@@ -106,11 +106,11 @@ class BillingViewModel @Inject constructor(
         // Query subscriptions
         val subscriptionList = ImmutableList.of(
             QueryProductDetailsParams.Product.newBuilder()
-                .setProductId("asked_subscription_weekly")
+                .setProductId("asked_subscription_monthly")
                 .setProductType(BillingClient.ProductType.SUBS)
                 .build(),
             QueryProductDetailsParams.Product.newBuilder()
-                .setProductId("asked_subscription_monthly")
+                .setProductId("asked_subscription_annually")
                 .setProductType(BillingClient.ProductType.SUBS)
                 .build()
         )
@@ -146,7 +146,7 @@ class BillingViewModel @Inject constructor(
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
                 productMonthly.value = productDetailsList[0]
-                productWeekly.value = productDetailsList[1]
+                productAnnually.value = productDetailsList[1]
             }
         }
     }

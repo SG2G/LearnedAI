@@ -22,7 +22,6 @@
     <string name="subscription_exclusive_functions">Exclusive Functions</string>
     <string name="subscription_higher_word_limit">Higher Word Limit</string>
     <string name="subscription_no_ads">No ads</string>
-    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-day FREE TRIAL, cancel anytime, auto renewable</string>
     <string name="subscription_billed_once">Billed once</string>
     <string name="subscription_start_free_trial_plan"><![CDATA[Start Free Trial & Plan]]></string>
     <string name="subscription_unlock_asked_ai_pro">Unlock Asked AI Pro</string>
@@ -42,7 +41,6 @@
     <string name="pdf_button_cool">Cool!</string>
     <string name="historychats_new_chat">New Chat</string>
     <string name="profile_upgrade">Upgrade</string>
-    <string name="profile_rate_us">Rate Us</string>
     <string name="profile_email_us">Email us</string>
     <string name="earn_token_earn_more_tokens">Earn more Tokens!</string>
     <string name="share_invite_friends">Invite Friends!</string>
@@ -133,18 +131,11 @@
     <string name="trollmessage_1">Function not available</string>
     <string name="trollmessage_2">Hmm, still not available</string>
     <string name="trollmessage_3">You again? Still nothing</string>
-    <string name="trollmessage_4">What do you expect to happen?</string>
-    <string name="trollmessage_5">No, there\'s nothing more</string>
-    <string name="trollmessage_6">Hey, can you leave already?</string>
-    <string name="trollmessage_7">This is the last message</string>
-    <string name="trollmessage_8">STOP</string>
-    <string name="trollmessage_9">Seriously, go study</string>
     <string name="referral_earn">"Earn "</string>
     <string name="referral_tokens_immediately">" Tokens immediately!"</string>
     <string name="crop_crop_the_text_you_want_to">Tip: Crop only what you need, that way you\'ll achieve better results.</string>
     <string name="subscription_monthly">" / Monthly"</string>
-    <string name="subscription2_cancel_anytime">Cancel anytime</string>
-    <string name="subscription_save_50">Save 50%</string>
+    <string name="subscription_save_50">Save 40%</string>
     <string name="topbar_settings">Settings</string>
     <string name="language_english">English</string>
     <string name="language_spanish">Spanish</string>
@@ -163,5 +154,10 @@
     <string name="topbar_parentalchat">Parental Chat</string>
     <string name="topbar_parental_guidance">Parental Guidance</string>
     <string name="topbar_parentalassist">Parental Assist</string>
+    <string name="profile_rate_us">Help us improve</string>
+    <string name="subscription_annually">" / Year"</string>
+    <string name="subscription_most_popular">Most Popular</string>
+    <string name="subscription_annually_small_text">7 days of free trial, cancel anytime</string>
+    <string name="subscription_monthly_small_text">Cancel anytime</string>
 
 </resources>

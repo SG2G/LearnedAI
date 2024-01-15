@@ -46,7 +46,6 @@ fun ChatTopBar(
                     text = "Chat",
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
                 )
             }
         },

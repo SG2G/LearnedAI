@@ -76,21 +76,7 @@ fun CropStateFul(
     val text = remember { mutableStateOf("") }
     text.value = vmCamera.imageToText.value ?: ""
 
-    val instantCrop = remember { mutableStateOf(false) }
-
-    LaunchedEffect(cameraCategoryOCR.value) {
-        Log.d(TAG, "cameraCategoryOCR: ${cameraCategoryOCR.value}")
-        when (cameraCategoryOCR.value.prefix) {
-            TextCategoryOCR.prefix -> instantCrop.value = true
-            MathCategoryOCR.prefix -> instantCrop.value = true
-
-            GrammarCategoryOCR.prefix -> instantCrop.value = true
-            SummaryCategoryOCR.prefix -> instantCrop.value = true
-            TranslateCategoryOCR.prefix -> instantCrop.value = true
-
-            else -> instantCrop.value = true
-        }
-    }
+    val instantCrop = remember { mutableStateOf(true) }
 
     /**
      * CropStateLess
@@ -124,9 +110,6 @@ fun CropStateFul(
 
                 onNavigateConversation = {
                     Log.d(TAG, "onNavigateConversation. instantCrop -> $instantCrop")
-                    if (!instantCrop.value) {
-                        onNavigateNewChat()
-                    } else {
                         scope.launch {
                             /**
                              * Send message instant crop
@@ -144,7 +127,6 @@ fun CropStateFul(
                                 onNavigateNewChat = { onNavigateNewChat() }
                             )
                         }
-                    }
                 }
             )
         }
@@ -286,7 +268,7 @@ fun CropStateLess(
                 text = stringResource(R.string.crop_retake),
                 modifier = Modifier.padding(4.dp),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -294,7 +276,7 @@ fun CropStateLess(
             onClick = { cropifyState.crop() },
 
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
             ),
             shape = RoundedCornerShape(25.dp),
             enabled = enabled.value
@@ -303,7 +285,7 @@ fun CropStateLess(
                 text = stringResource(R.string.crop_crop),
                 modifier = Modifier.padding(4.dp),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }
@@ -363,14 +345,6 @@ suspend fun sendNewMessage(
                 val deferred = async { vmChat.sendMessageToOpenaiApi(prefix + text.value) }
                 deferred.await()
 
-                // Token cost of the call
-                try {
-                    vmChat.lessTokenNewConversationCheckPremium()
-                } catch (e: Exception) {
-                    // NewConversation tokens cost failed
-                    e.printStackTrace()
-                }
-
                 vmCamera.isLoading.value = false
 
                 onNavigateChat()
@@ -401,13 +375,6 @@ suspend fun getTextFromCroppedImage(
 
             vmCamera.getTextFromImage(croppedImage)
 
-            try {
-                val cameraTextCostTokens = vmToken.getCameraTextTokens()
-                vmToken.lessTokenCheckPremium(cameraTextCostTokens.toInt())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
             onNavigateConversation()
         }
 
@@ -420,13 +387,6 @@ suspend fun getTextFromCroppedImage(
             vmChat.categoryOCR.value = cameraCategoryOCR.value
 
             vmCamera.getMathFromImage(croppedImage)
-
-            try {
-                val cameraMathCostTokens = vmToken.getCameraMathTokens()
-                vmToken.lessTokenCheckPremium(cameraMathCostTokens.toInt())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
 
             onNavigateConversation()
         }

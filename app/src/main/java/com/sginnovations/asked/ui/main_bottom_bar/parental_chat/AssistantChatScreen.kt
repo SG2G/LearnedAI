@@ -11,10 +11,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -22,10 +26,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,22 +50,28 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
+import androidx.compose.ui.zIndex
 import com.sginnovations.asked.Constants
+import com.sginnovations.asked.Constants.Companion.ASSISTANT_MESSAGE_COST
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
@@ -77,9 +92,13 @@ fun AssistantChatStateFul(
     vmAssistant: AssistantViewModel,
     vmToken: TokenViewModel,
     vmAuth: AuthViewModel,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val showNoTokensDialog = remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
 
@@ -112,6 +131,8 @@ fun AssistantChatStateFul(
         chatAnimation = chatAnimation,
         listState = listState,
 
+        showNoTokensDialog = showNoTokensDialog,
+
         tokens = tokens,
 
         conversationCostToken = conversationCostToken,
@@ -122,8 +143,16 @@ fun AssistantChatStateFul(
         ) { message ->
         scope.launch {
             vmAssistant.sendMessageToOpenaiApi(message)
-            vmToken.xLessToken(-2)
         }
+    }
+    if (showNoTokensDialog.value) {
+        NoTokensDialog(
+            onDismissRequest = { showNoTokensDialog.value = false },
+            onSeePremiumSubscription = {
+                showNoTokensDialog.value = false
+                onNavigateSubscriptionScreen()
+            }
+        )
     }
 }
 
@@ -132,6 +161,8 @@ fun AssistantChatStateLess(
     messages: MutableState<List<MessageEntity>>,
     chatAnimation: MutableState<Boolean>,
     listState: LazyListState,
+
+    showNoTokensDialog: MutableState<Boolean>,
 
     tokens: StateFlow<Long>,
 
@@ -162,6 +193,7 @@ fun AssistantChatStateLess(
     val snackbarOffset = remember { Animatable(0f) }
 
     val backgroundColor = MaterialTheme.colorScheme.background
+
 
     /**
      * SnackBarAnimation
@@ -205,7 +237,8 @@ fun AssistantChatStateLess(
     fun sendMessage(message: MutableState<String>) {
         if (text.value.isNotEmpty()) {
             if (NetworkUtils.isOnline(context)) {
-                if (tokens.value > 0) {
+
+                if (isPremium) {
                     sendMessageToChatbot(message.value)
 
                     userPlaceHolder = message.value
@@ -214,14 +247,19 @@ fun AssistantChatStateLess(
 
                     message.value = ""
                 } else {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.snackbar_insufficient_tokens),
-                            actionLabel = context.getString(R.string.snackbar_ok),
-                            duration = SnackbarDuration.Short
-                        )
+                    if (tokens.value >= ASSISTANT_MESSAGE_COST) {
+                        sendMessageToChatbot(message.value)
+
+                        userPlaceHolder = message.value
+                        chatAnimation.value = true
+                        chatPlaceHolder = true
+
+                        message.value = ""
+                    } else {
+                        showNoTokensDialog.value = true
                     }
                 }
+
             } else {
                 scope.launch {
                     snackbarHostState.showSnackbar(
@@ -233,91 +271,165 @@ fun AssistantChatStateLess(
         }
     }
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 116.dp)
-    ) {
-        LazyColumn(
+    Scaffold(
+        modifier = Modifier
+            .background(Color.Transparent),
+    ) { padding ->
+        Box(
             modifier = Modifier
-                .weight(1f),
-            //.imePadding(),
-            state = listState,
+                .fillMaxSize()
+                .zIndex(13f),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            itemsIndexed(
-                items = messages.value
-            ) { index, message ->
-                if (index == lastIndex) {
-                    Box(Modifier.onGloballyPositioned {
-                        lastItemVisible = listState.layoutInfo.visibleItemsInfo.any {
-                            it.index == lastIndex
-                        }
-                    }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .padding(padding)
+                    .zIndex(14f)
+                    .offset(y = snackbarOffset.value * (-75).dp),
+                snackbar = { data ->
+                    Snackbar(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .background(Color.Transparent)
+                            .zIndex(15f),
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        shape = RoundedCornerShape(10.dp),
                     ) {
-                        if (message.role == Assistant.role) {
-                            // Last AI message
-                            Row(
-                                verticalAlignment = Alignment.Top,
-                                modifier = Modifier
-                                    .background(backgroundColor)
-                                    .padding(16.dp)
-                                    .fillMaxSize()
-                            ) {
-                                IconAssistantMsg()
-
-                                if (chatAnimation.value) {
-                                    // Animate the last message
-                                    if (!chatPlaceHolder) {
-                                        TypingTextAnimation(
-                                            message.content,
-                                        ) { chatAnimation.value = false }
-                                    } else {
-                                        ElevatedCard(
-                                            modifier = Modifier.padding(horizontal = 16.dp),
-                                            colors = CardDefaults.elevatedCardColors(
-                                                containerColor = MaterialTheme.colorScheme.surface
-                                            )
-                                        ) {
-                                            Text(
-                                                modifier = Modifier.padding(Constants.CHAT_MSG_PADDING),
-                                                text = message.content,
-                                                style = MaterialTheme.typography.bodyMedium,
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                                            )
-                                        }
-                                    }
-                                } else {
-                                    // Message static last AI msg
-                                    ChatAiMessage(
-                                        message.content,
-                                        haveIcon = false,
-
-                                        onSetClip = { text ->
-                                            Log.d(TAG, "clipboardManager: text-> $text ")
-                                            clipboardManager.setText(AnnotatedString(text))
-                                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.warning_svgrepo_com),
+                                contentDescription = "WarningAmber",
+                                tint = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = data.visuals.message,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.weight(1f)
+                            )
+                            data.visuals.actionLabel?.let { actionLabel ->
+                                IconButton(onClick = { data.dismiss() }) {
+                                    Text(
+                                        text = actionLabel,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        style = MaterialTheme.typography.titleSmall
                                     )
                                 }
                             }
                         }
                     }
-                } else {
-                    if (message.role == User.role) {
-                        // Other user msg
+                }
+            )
+        }
+        Column(
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(bottom = 116.dp)
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f),
+                //.imePadding(),
+                state = listState,
+            ) {
+                itemsIndexed(
+                    items = messages.value
+                ) { index, message ->
+                    if (index == lastIndex) {
+                        Box(Modifier.onGloballyPositioned {
+                            lastItemVisible = listState.layoutInfo.visibleItemsInfo.any {
+                                it.index == lastIndex
+                            }
+                        }
+                        ) {
+                            if (message.role == Assistant.role) {
+                                // Last AI message
+                                Row(
+                                    verticalAlignment = Alignment.Top,
+                                    modifier = Modifier
+                                        .background(backgroundColor)
+                                        .padding(16.dp)
+                                        .fillMaxSize()
+                                ) {
+                                    IconAssistantMsg()
+
+                                    if (chatAnimation.value) {
+                                        // Animate the last message
+                                        if (!chatPlaceHolder) {
+                                            TypingTextAnimation(
+                                                message.content,
+                                            ) { chatAnimation.value = false }
+                                        } else {
+                                            ElevatedCard(
+                                                modifier = Modifier.padding(horizontal = 16.dp),
+                                                colors = CardDefaults.elevatedCardColors(
+                                                    containerColor = MaterialTheme.colorScheme.primary
+                                                )
+                                            ) {
+                                                Text(
+                                                    modifier = Modifier.padding(Constants.CHAT_MSG_PADDING),
+                                                    text = message.content,
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                                )
+                                            }
+                                        }
+                                    } else {
+                                        // Message static last AI msg
+                                        ChatAiMessage(
+                                            message.content,
+                                            haveIcon = false,
+
+                                            onSetClip = { text ->
+                                                Log.d(TAG, "clipboardManager: text-> $text ")
+                                                clipboardManager.setText(AnnotatedString(text))
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if (message.role == User.role) {
+                            // Other user msg
+                            ChatUserMessage(
+                                userName,
+                                userProfileUrl,
+                                message.content,
+
+                                onSetClip = { text ->
+                                    clipboardManager.setText(AnnotatedString(text))
+                                }
+                            )
+                        } else {
+                            // Other AI msg
+                            ChatAiMessage(
+                                message.content,
+
+                                onSetClip = { text ->
+                                    clipboardManager.setText(AnnotatedString(text))
+                                }
+                            )
+                        }
+                    }
+                }
+                item {
+                    if (chatPlaceHolder) {
                         ChatUserMessage(
                             userName,
                             userProfileUrl,
-                            message.content,
+                            userPlaceHolder,
 
                             onSetClip = { text ->
                                 clipboardManager.setText(AnnotatedString(text))
                             }
                         )
-                    } else {
-                        // Other AI msg
                         ChatAiMessage(
-                            message.content,
+                            assistantPlaceHolder,
 
                             onSetClip = { text ->
                                 clipboardManager.setText(AnnotatedString(text))
@@ -326,119 +438,100 @@ fun AssistantChatStateLess(
                     }
                 }
             }
-            item {
-                if (chatPlaceHolder) {
-                    ChatUserMessage(
-                        userName,
-                        userProfileUrl,
-                        userPlaceHolder,
+        }
 
-                        onSetClip = { text ->
-                            clipboardManager.setText(AnnotatedString(text))
-                        }
+        /**
+         * TextField
+         */
+
+        /**
+         * TextField
+         */
+
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .fillMaxSize(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(
+                        MaterialTheme.colorScheme.background,
+                        RoundedCornerShape(
+                            topStart = 25.dp,
+                            topEnd = 25.dp
+                        ) //TODO PREMIUM CANT SEE IT
                     )
-                    ChatAiMessage(
-                        assistantPlaceHolder,
+            ) {
+                if (!isPremium) {
+                    TokenCostDisplay(
+                        tokenCost = conversationCostToken
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = text.value,
+                        onValueChange = {
+                            if (isPremium) {
+                                if (it.length <= Constants.CHAT_LIMIT_PREMIUM) {
+                                    text.value = it
+                                }
+                            } else {
+                                if (it.length <= Constants.CHAT_LIMIT_DEFAULT) {
+                                    text.value = it
+                                }
+                            }
+                        },
+                        trailingIcon = {
+                            Text(
+                                "${text.value.length}/" +
+                                        if (isPremium) Constants.CHAT_LIMIT_PREMIUM else Constants.CHAT_LIMIT_DEFAULT,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+                        },
 
-                        onSetClip = { text ->
-                            clipboardManager.setText(AnnotatedString(text))
-                        }
+                        modifier = Modifier
+                            .weight(1f)
+                            .imePadding(),
+                        placeholder = {
+                            Text(
+                                text = stringResource(R.string.enter_your_text),
+                                fontSize = 14.sp
+                            )
+                        },
+                        textStyle = TextStyle(fontSize = 14.sp),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        ),
+                        maxLines = Int.MAX_VALUE,
+
+                        )
+                    ChatSendIcon(
+                        text = text,
+                    ) { sendMessage(it) }
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.chat_supported_asked_can_make_mistakes_consider_checking_important_information),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.labelSmall
                     )
                 }
             }
-        }
+        } // Column Free msg + Textfield
     }
-
-    /**
-     * TextField
-     */
-
-    Column(
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-        Column(
-            modifier = Modifier
-                .background(
-                    MaterialTheme.colorScheme.background,
-                    RoundedCornerShape(
-                        topStart = 25.dp,
-                        topEnd = 25.dp
-                    ) //TODO PREMIUM CANT SEE IT
-                )
-        ) {
-//                Button(onClick = { textConfidence.doubleValue = 0.3435678 }) { //TODO DELETE
-//                    Text(text = "Testing")
-//                }
-            if (!isPremium) {
-                TokenCostDisplay(
-                    tokenCost = conversationCostToken
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    value = text.value,
-                    onValueChange = {
-                        if (isPremium) {
-                            if (it.length <= Constants.CHAT_LIMIT_PREMIUM) {
-                                text.value = it
-                            }
-                        } else {
-                            if (it.length <= Constants.CHAT_LIMIT_DEFAULT) {
-                                text.value = it
-                            }
-                        }
-                    },
-                    trailingIcon = {
-                        Text(
-                            "${text.value.length}/" +
-                                    if (isPremium) Constants.CHAT_LIMIT_PREMIUM else Constants.CHAT_LIMIT_DEFAULT,
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                    },
-
-                    modifier = Modifier
-                        .weight(1f)
-                        .imePadding(),
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.enter_your_text),
-                            fontSize = 14.sp
-                        )
-                    },
-                    textStyle = TextStyle(fontSize = 14.sp),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    ),
-                    maxLines = Int.MAX_VALUE,
-
-                    )
-                ChatSendIcon(
-                    text = text,
-                ) { sendMessage(it) }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.chat_supported_asked_can_make_mistakes_consider_checking_important_information),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.labelSmall
-                )
-            }
-        }
-    } // Column Free msg + Textfield
 }
 //}

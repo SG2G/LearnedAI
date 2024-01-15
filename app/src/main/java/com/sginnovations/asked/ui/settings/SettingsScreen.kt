@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -86,7 +87,9 @@ fun SettingsStateLess(
                 modifier = Modifier.padding(horizontal = 32.dp)
             )
             Card(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 colors = CardDefaults.cardColors(
                     MaterialTheme.colorScheme.surfaceVariant
                 )
@@ -94,6 +97,7 @@ fun SettingsStateLess(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(68.dp)
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -132,13 +136,17 @@ fun SettingsStateLess(
             modifier = Modifier.padding(horizontal = 32.dp)
         )
         Card(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             colors = CardDefaults.cardColors(
                 MaterialTheme.colorScheme.surfaceVariant
             )
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(68.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {

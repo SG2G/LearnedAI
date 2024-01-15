@@ -18,7 +18,6 @@
     <string name="subscription_exclusive_functions">Funciones Exclusivas</string>
     <string name="subscription_higher_word_limit">Limite de palabras mas alto</string>
     <string name="subscription_no_ads">Sin anuncios</string>
-    <string name="subscription_3_day_free_trial_cancel_anytime_auto_renewable">3-días DE PRUEBA GRATIS, cancela cuando quieras, auto renovable</string>
     <string name="subscription_billed_once">Paga una vez</string>
     <string name="subscription_start_free_trial_plan"><![CDATA[Empezar Prueba y Plan]]></string>
     <string name="subscription_unlock_asked_ai_pro">Desbloquea Asked AI Pro</string>
@@ -38,7 +37,7 @@
     <string name="pdf_button_cool">Perfecto!</string>
     <string name="historychats_new_chat">"Nuevo Chat "</string>
     <string name="profile_upgrade">Actualizar</string>
-    <string name="profile_rate_us">Alguna Opinión?</string>
+    <string name="profile_rate_us">Ayúdanos a mejorar</string>
     <string name="profile_email_us">Envianos un Email!</string>
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
     <string name="share_invite_friends">Invita Amigos!</string>
@@ -129,18 +128,11 @@
     <string name="trollmessage_1">Función no disponible</string>
     <string name="trollmessage_2">Mmm, todavía no está disponible</string>
     <string name="trollmessage_3">¿Tú otra vez? Todavía no hay nada</string>
-    <string name="trollmessage_4">¿Qué esperas que suceda?</string>
-    <string name="trollmessage_5">No, no hay nada más</string>
-    <string name="trollmessage_6">Oye, ¿puedes irte ya?</string>
-    <string name="trollmessage_7">Este es el último mensaje</string>
-    <string name="trollmessage_8">PARA</string>
-    <string name="trollmessage_9">En serio, ponte a estudiar</string>
     <string name="referral_earn">"Gana "</string>
     <string name="referral_tokens_immediately">" Tokens inmediatamente!"</string>
     <string name="crop_crop_the_text_you_want_to">Consejo: Recorta solo lo que necesites, así conseguirás mejores resultados</string>
     <string name="subscription_monthly">" / Mes"</string>
-    <string name="subscription2_cancel_anytime">Cancela en cualquier momento</string>
-    <string name="subscription_save_50">Ahorra 50%</string>
+    <string name="subscription_save_50">Ahorra 40%</string>
     <string name="topbar_settings">Ajustes</string>
     <string name="language_english">Inglés</string>
     <string name="language_spanish">Español</string>
@@ -152,4 +144,5 @@
     <string name="language_alert_cancel">Cancelar</string>
     <string name="language_translate_to">"Traducir al: "</string>
     <string name="historychats_category">"Categoría - "</string>
+    <string name="subscription_annually">" / Año"</string>
 </resources>

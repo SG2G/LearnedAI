@@ -47,6 +47,8 @@ class Constants {
         const val TEXT_SIZE_BIG = 2f
         const val TEXT_SIZE_BIGGER = 4f
 
+        const val ASSISTANT_MESSAGE_COST = 2
+        const val CAMERA_MESSAGE_COST = 1
         // CHAT LIMIT - FEATURE
         const val CHAT_LIMIT_DEFAULT = 500
         const val CHAT_LIMIT_PREMIUM = 4000

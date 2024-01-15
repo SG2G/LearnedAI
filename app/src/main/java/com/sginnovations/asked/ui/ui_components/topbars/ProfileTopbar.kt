@@ -39,8 +39,7 @@ fun ProfileTopBar(
             ) {
                 Text(
                     text = currentScreenTitle, color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(16.dp)
+                    style = MaterialTheme.typography.titleLarge,
                 )
             }
         },

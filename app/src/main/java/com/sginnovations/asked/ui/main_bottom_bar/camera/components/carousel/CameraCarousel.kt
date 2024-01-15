@@ -55,8 +55,8 @@ fun CameraCarousel(
     val pagerState = rememberPagerState(initialPage = 3)
 
     val sliderList = listOf(
-        GrammarCategoryOCR,
         SummaryCategoryOCR,
+        GrammarCategoryOCR,
         TranslateCategoryOCR,
         TextCategoryOCR,
         MathCategoryOCR

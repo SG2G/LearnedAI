@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
@@ -49,6 +51,8 @@ fun LearnedBottomBar(
     canNavigateBack: Boolean,
     backStackEntry: NavBackStackEntry?,
 ) {
+    val context = LocalContext.current
+
     Log.i(TAG, "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController")
     if (!canNavigateBack) {
         Log.i(TAG, "currentScreenTitle: $currentScreen")
@@ -129,7 +133,9 @@ fun AnimatedIcon(item: ScreensDestinations, isSelected: Boolean) {
         (if (selected) item.selectedIcon else item.icon)?.let { iconRedId ->
             val icon = painterResource(id = iconRedId)
             Icon(
-                modifier = Modifier.scale(scale.value).size(28.dp),
+                modifier = Modifier
+                    .scale(scale.value)
+                    .size(28.dp),
                 painter = icon,
                 contentDescription = null
             )

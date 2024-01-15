@@ -40,7 +40,6 @@ class AssistantViewModel @Inject constructor(
     val isLoading = mutableStateOf(false)
 
     val idConversation = mutableIntStateOf(0)
-    val categoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
 
     private val prefixPrompt = mutableStateOf("")
     private val timestamp = System.currentTimeMillis()
@@ -77,16 +76,14 @@ class AssistantViewModel @Inject constructor(
             Log.d(TAG, "setUpMessageHistory: messageHistory -> $messageHistory ")
         }
     }
-
-    fun setUpNewConversation() { //TODO NEEDED?
+    fun setUpNewConversation() {
         viewModelScope.launch {
             idConversation.intValue = 0
         }
     }
-
-    suspend fun getAllAssistantConversation() {
+    suspend fun getConversationsFromCategory(category: String) {
         viewModelScope.launch {
-            conversations.value = roomRepository.getAllConversationsExceptAssistant().asReversed()
+            conversations.value = roomRepository.getConversationsFromCategory(category).asReversed()
         }
     }
 
@@ -97,17 +94,17 @@ class AssistantViewModel @Inject constructor(
         }
     }
 
-    suspend fun hideConversation(id: Int) {
+    suspend fun hideConversationsAssist(id: Int) {
         viewModelScope.launch {
-            Log.d(TAG, "hideConversation: id -> $id")
+            Log.d(TAG, "hideConversationsAssist: id -> $id")
             roomRepository.hideConversation(id)
-            getAllAssistantConversation()
+            getConversationsFromCategory(com.sginnovations.asked.data.Assistant.prefix)
         }
     }
 
     //TODO CHANGE
     fun newConversationCostTokens() = remoteConfigRepository.getNewAssistConversationCostTokens()
-    fun lessTokenNewConversationCheckPremium() {
+    private suspend fun lessTokenNewConversationAssistCheckPremium() {
         viewModelScope.launch {
             val costTokens = newConversationCostTokens()
             tokensRepository.lessTokenCheckPremium(costTokens.toInt())
@@ -131,7 +128,7 @@ class AssistantViewModel @Inject constructor(
             idConversation.intValue = roomRepository.createConversation(
                 ConversationEntity(
                     name = shortenString(prompt),
-                    category = categoryOCR.value.prefix,
+                    category = com.sginnovations.asked.data.Assistant.prefix,
                     visible = true
                 )
             ).toInt()
@@ -189,6 +186,11 @@ class AssistantViewModel @Inject constructor(
         }
 
         getMessagesFromIdConversation()
+
+        /**
+         * Less TOKENS
+         */
+        lessTokenNewConversationAssistCheckPremium()
 
         Log.i(TAG, "messageHistory: $messageHistory")
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")
