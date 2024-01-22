@@ -16,6 +16,8 @@ data class LessonDataClass(
     val introduction: String,
     val videoId: String,
     val conclusion: String,
+
+    val isPremium: Boolean,
 )
 data class LessonCategoryDataClass(
     val idCategory: Int,

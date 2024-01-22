@@ -17,7 +17,7 @@ class IntentViewModel @Inject constructor(
 
     fun openYouTubeVideo(context: Context, videoId: String) {
         viewModelScope.launch {
-            intentRepository.openYouTubeVideo(context,videoId)
+            intentRepository.openYouTubeVideo(context, videoId)
         }
     }
 
@@ -26,4 +26,6 @@ class IntentViewModel @Inject constructor(
 
     fun rateUs(context: Context) =
         intentRepository.rateUs(context)
+
+    fun manageSubscription(context: Context) = intentRepository.manageSubscription(context)
 }

@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.ui_components.chat
+package com.sginnovations.asked.ui.ui_components.lesson
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -8,12 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.sginnovations.asked.R
 
 @Composable
-fun NoTokensDialog(
+fun PremiumLessonDialog(
     onDismissRequest: () -> Unit,
     onSeePremiumSubscription: () -> Unit,
 ) {
@@ -21,13 +19,13 @@ fun NoTokensDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = stringResource(R.string.no_tokens_dialog_tittle),
+                text = "join Premium Learners",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
         },
         text = {
-            Text(text = stringResource(R.string.no_tokens_dialog_subtitle))
+            Text(text = "Be part of a special community that's already enhancing their children's learning experience. Don't miss out on the advanced features and unique lessons available only to premium members. Every moment matters in your child's education. Make the most of it with premium.")
         },
         confirmButton = {
             Button(
@@ -38,7 +36,7 @@ fun NoTokensDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.no_tokens_dialog_view_premium_subscription), color = MaterialTheme.colorScheme.onPrimary,
+                    text = "Yes, I Choose Premium!", color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -52,7 +50,8 @@ fun NoTokensDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.no_tokens_dialog_cancel), color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    text = "Stay with Basic Access",
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

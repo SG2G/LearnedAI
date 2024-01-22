@@ -24,6 +24,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -139,21 +142,36 @@ fun GalleryStateFull(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     rowItems.forEach { (category, iconResId) ->
-                        Button(
-                            onClick = { if (category != Soon) {
-                                Log.d(TAG, "category: $category Soon $Soon ")
-                                vmCamera.cameraCategoryOCR.value = category
-                                launcher.launch("image/*")
-                            } else {
-                                when (tryClickSoon.intValue) {
-                                    0 -> showToast(context, context.getString(R.string.trollmessage_1))
-                                    1 -> showToast(context, context.getString(R.string.trollmessage_2))
-                                    2 -> showToast(context, context.getString(R.string.trollmessage_3))
-                                    else -> showToast(context,
-                                        context.getString(R.string.trollmessage_1))
+                        ElevatedButton(
+                            onClick = {
+                                if (category != Soon) {
+                                    Log.d(TAG, "category: $category Soon $Soon ")
+                                    vmCamera.cameraCategoryOCR.value = category
+                                    launcher.launch("image/*")
+                                } else {
+                                    when (tryClickSoon.intValue) {
+                                        0 -> showToast(
+                                            context,
+                                            context.getString(R.string.trollmessage_1)
+                                        )
+
+                                        1 -> showToast(
+                                            context,
+                                            context.getString(R.string.trollmessage_2)
+                                        )
+
+                                        2 -> showToast(
+                                            context,
+                                            context.getString(R.string.trollmessage_3)
+                                        )
+
+                                        else -> showToast(
+                                            context,
+                                            context.getString(R.string.trollmessage_1)
+                                        )
+                                    }
+                                    tryClickSoon.intValue++
                                 }
-                                tryClickSoon.intValue ++
-                            }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -163,6 +181,9 @@ fun GalleryStateFull(
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.surface
+                            ),
+                            elevation = ButtonDefaults.elevatedButtonElevation(
+                                defaultElevation = 1.dp
                             )
                         ) {
                             Column {
@@ -180,7 +201,7 @@ fun GalleryStateFull(
                                         }
                                     },
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.titleSmall,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     textAlign = TextAlign.Center,
                                 )
                                 Image(
@@ -189,7 +210,7 @@ fun GalleryStateFull(
                                     alignment = Alignment.Center,
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .size(48.dp)
+                                        .size(38.dp)
                                         .padding(4.dp),
                                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                                 )
@@ -202,6 +223,7 @@ fun GalleryStateFull(
         }
     }
 }
+
 fun showToast(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }

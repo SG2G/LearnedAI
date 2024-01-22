@@ -54,97 +54,94 @@ fun CategoryCarousel(
 ) {
     val context = LocalContext.current
 
-    val sliderList = listOf(All, TextCategoryOCR, MathCategoryOCR, TranslateCategoryOCR, SummaryCategoryOCR, GrammarCategoryOCR)
+    val sliderList = listOf(
+        All,
+        TextCategoryOCR,
+        MathCategoryOCR,
+        TranslateCategoryOCR,
+        SummaryCategoryOCR,
+        GrammarCategoryOCR
+    )
     var actualOption by remember { mutableStateOf(sliderList[0]) }
     val scale = remember { Animatable(1f) }
 
     //TODO ANIMATE ALL CLICK
-    ElevatedCard(
-        shape = RoundedCornerShape(15.dp),
-        modifier = Modifier
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 1.dp
-        ),
-    ) {
-        LazyRow {
-            items(sliderList) { item ->
-                val isSelected = actualOption == item
-                Log.d(TAG,"isSelected -> $isSelected / actualOption -> $actualOption / item -> $item")
+    LazyRow {
+        items(sliderList) { item ->
+            val isSelected = actualOption == item
+            Log.d(TAG, "isSelected -> $isSelected / actualOption -> $actualOption / item -> $item")
 
-                onChangeCategory(actualOption.prefix)
+            onChangeCategory(actualOption.prefix)
 
-                LaunchedEffect(isSelected) {
-                    scale.animateTo(
-                        targetValue = if (isSelected) 0.9f else 1f,
-                        animationSpec = tween(100, easing = LinearEasing)
+            LaunchedEffect(isSelected) {
+                scale.animateTo(
+                    targetValue = if (isSelected) 0.9f else 1f,
+                    animationSpec = tween(100, easing = LinearEasing)
+                )
+                scale.animateTo(
+                    targetValue = 1f,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
                     )
-                    scale.animateTo(
-                        targetValue = 1f,
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessMedium
-                        )
-                    )
-                }
-
-                if (isSelected) {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
-                        ),
-                        modifier = Modifier
-                            .scale(scale.value)
-                            .padding(8.dp),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(8.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = item.getName(context),
-                                color = MaterialTheme.colorScheme.primary,
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                        }
-                    }
-                } else {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color.Transparent
-                        ),
-                        modifier = Modifier
-                            .padding(8.dp),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .pointerInput(Unit) {
-                                    detectTapGestures(
-                                        onTap = {
-                                            actualOption = item
-                                            Log.d(TAG, "CategoryCarousel: Click")
-                                        }
-                                    )
-                                },
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = item.getName(context),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                        }
-                    }
-                }
-
+                )
             }
+
+            val shape = RoundedCornerShape(15.dp)
+            if (isSelected) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier
+                        .scale(scale.value)
+                        .padding(horizontal = 6.dp, vertical = 4.dp),
+                    shape = shape
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = item.getName(context),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
+            } else {
+                OutlinedCard(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.Transparent
+                    ),
+                    modifier = Modifier
+                        .padding(horizontal = 6.dp, vertical = 4.dp),
+                    shape = shape
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .pointerInput(Unit) {
+                                detectTapGestures(
+                                    onTap = {
+                                        actualOption = item
+                                        Log.d(TAG, "CategoryCarousel: Click")
+                                    }
+                                )
+                            },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = item.getName(context),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
+            }
+
         }
     }
 }

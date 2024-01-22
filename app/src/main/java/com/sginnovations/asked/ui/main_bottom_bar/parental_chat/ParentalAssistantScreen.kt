@@ -59,6 +59,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Assistant
@@ -146,7 +147,6 @@ fun ParentalChatStateLess(
 
     onDeleteConversation: (Int?) -> Unit,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val showMenu = remember { mutableStateOf(false) }
@@ -233,7 +233,7 @@ fun ParentalChatStateLess(
 
         item {
             Text(
-                text = "Previous Chats",
+                text = stringResource(R.string.parental_assist_previous_chats),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)

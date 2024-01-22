@@ -88,7 +88,7 @@ fun getTypography(fontSizeIncrease: Float) = Typography(
     labelLarge = TextStyle(
         fontFamily = monaSansFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = (16.sp.value + fontSizeIncrease).sp
+        fontSize = (14.sp.value + fontSizeIncrease).sp
     ),
     labelMedium = TextStyle(
         fontFamily = monaSansFontFamily,

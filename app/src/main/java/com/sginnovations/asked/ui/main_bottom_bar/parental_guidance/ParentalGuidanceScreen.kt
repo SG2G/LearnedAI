@@ -1,5 +1,6 @@
 package com.sginnovations.asked.ui.main_bottom_bar.parental_guidance
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,16 +21,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonCategoryDataClass
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.CategoryLessonCard
 import com.sginnovations.asked.viewmodel.LessonViewModel
 
 private const val TAG = "ParentalGuidanceStateFul"
 
-enum class Tabs(val title: String) {
-    Lessons("Lessons"),
-    ComingSoon("Content")
+
+enum class Tabs {
+    Lessons,
+    ComingSoon;
+
+    fun getTitle(context: Context): String {
+        return when (this) {
+            Lessons -> context.getString(R.string.tabs_lessons)
+            ComingSoon -> context.getString(R.string.tabs_content)
+        }
+    }
 }
 
 @Composable
@@ -38,6 +49,8 @@ fun ParentalGuidanceStateFul(
 
     onNavigateCategoryLessons: () -> Unit,
 ) {
+    val context = LocalContext.current
+
     val lessonsCategory = vmLesson.getAllCategories()
 
     val selectedTab = remember { mutableStateOf(Tabs.Lessons) }
@@ -61,7 +74,7 @@ fun ParentalGuidanceStateFul(
         ) {
             Tabs.values().forEach { tab ->
                 Tab(
-                    text = { Text(tab.title) },
+                    text = { Text(tab.getTitle(context)) },
                     selected = tab == selectedTab.value,
                     onClick = { selectedTab.value = tab },
                     selectedContentColor = MaterialTheme.colorScheme.primary,

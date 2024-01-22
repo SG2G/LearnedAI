@@ -25,7 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -114,21 +113,24 @@ fun SubscriptionCard(
                             fontSize = 12.sp
                         ),
                     )
-                    Text(
-                        text = allPrice + durationTime,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
+                    Row {
+                        Text(
+                            text = allPrice + durationTime,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
                         )
-                    )
+                    }
+
                 }
                 /**
                  * Save x%
                  */
                 if (subscriptionOption.name == Option.OptionAnnually.name) {
                     Column(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(0.5f),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         horizontalAlignment = Alignment.End
                     ) {

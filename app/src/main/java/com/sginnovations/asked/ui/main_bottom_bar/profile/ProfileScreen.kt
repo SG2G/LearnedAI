@@ -1,5 +1,6 @@
 package com.sginnovations.asked.ui.main_bottom_bar.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -78,6 +79,7 @@ fun StateFulProfile(
 
         onSendEmail = { vmIntent.sendEmail(context, userAuth) },
         onRateUs = { vmIntent.rateUs(context) },
+        onManageSubscription = { vmIntent.manageSubscription(context) },
 
         onNavigateRefCode = { onNavigateRefCode() },
         onNavigateSubscriptions = { onNavigateSubscriptions() }
@@ -93,6 +95,7 @@ fun StateLessProfile(
     onSignOut: () -> Unit,
     onSendEmail: () -> Unit,
     onRateUs: () -> Unit,
+    onManageSubscription: () -> Unit,
 
     onNavigateRefCode: () -> Unit,
     onNavigateSubscriptions: () -> Unit,
@@ -131,11 +134,25 @@ fun StateLessProfile(
                         modifier = Modifier.weight(1f)
                     ) {
                         ProfileName(userAuth.value?.userName.toString())
-                        TokenDisplay(
-                            modifier = Modifier.scale(0.8f),
-                            tokens = tokens,
-                            showPlus = false
-                        ) { vmToken.switchPointsVisibility() }
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TokenDisplay(
+                                modifier = Modifier.scale(0.8f),
+                                tokens = tokens,
+                                showPlus = false
+                            ) { vmToken.switchPointsVisibility() }
+
+                            Text(
+                                modifier = Modifier.clickable {
+                                    onManageSubscription()
+                                },
+                                text = stringResource(R.string.profile_manage_subscription),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
                     }
                     Button(
                         onClick = { onNavigateSubscriptions() },

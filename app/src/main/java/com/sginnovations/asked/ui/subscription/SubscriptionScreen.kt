@@ -195,7 +195,7 @@ fun SubscriptionStateLess(
     productAnnually: MutableState<ProductDetails?>,
 
     priceSubAnnually: MutableState<String?>,
-    priceSubMonthy: MutableState<String?>,
+    priceSubMonthly: MutableState<String?>,
 
     userOption: MutableState<Option>,
 
@@ -204,14 +204,12 @@ fun SubscriptionStateLess(
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
     val selectedPlan = remember { mutableStateOf(productAnnually) }
-    val cardAlpha = 0.8f
 
     when (userOption.value) {
         Option.OptionMonthly -> selectedPlan.value = productAnnually
         Option.OptionAnnually -> selectedPlan.value = productMonthly
     }
-
-    Log.i(TAG, "SubscriptionStateLess - $priceSubMonthy / $priceSubAnnually")
+    Log.i(TAG, "SubscriptionStateLess - $priceSubMonthly / $priceSubAnnually")
 
     Column(
         modifier = Modifier
@@ -304,12 +302,11 @@ fun SubscriptionStateLess(
             }
         }
 
-
         /**
          * Products
          */
         // Product 1 - Weekly
-        priceSubMonthy.value?.let { price ->
+        priceSubMonthly.value?.let { price ->
             SubscriptionCard(
                 durationTime = stringResource(R.string.subscription_monthly),
                 smallText = stringResource(R.string.subscription_monthly_small_text),
@@ -417,5 +414,28 @@ fun SubscriptionStateLess(
                 }
             }
         }
+    }
+}
+
+
+fun calculatePercentageSave(
+    priceSubMonthly: MutableState<String?>,
+    priceSubAnnually: MutableState<String?>,
+): Double {
+    // Obtener los valores de los precios como enteros
+    val monthlyPrice = priceSubMonthly.value?.toIntOrNull() ?: 0
+    val annualPrice = priceSubAnnually.value?.toIntOrNull() ?: 0
+
+    // Calcular el costo total si se paga mensualmente durante un año
+    val totalCostMonthly = monthlyPrice * 12
+
+    // Calcular el ahorro
+    val annualSavings = totalCostMonthly - annualPrice
+
+    // Calcular el porcentaje de ahorro
+    return if (totalCostMonthly > 0) {
+        (annualSavings.toDouble() / totalCostMonthly.toDouble()) * 100
+    } else {
+        0.0
     }
 }

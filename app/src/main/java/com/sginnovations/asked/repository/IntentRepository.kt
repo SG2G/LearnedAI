@@ -92,4 +92,10 @@ class IntentRepository @Inject constructor() {
         )
         context.startActivity(goToMarket)
     }
+    fun manageSubscription(context: Context) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("https://play.google.com/store/account/subscriptions")
+        }
+        context.startActivity(intent)
+    }
 }

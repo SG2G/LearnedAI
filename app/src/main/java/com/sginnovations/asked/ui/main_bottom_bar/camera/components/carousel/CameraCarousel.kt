@@ -5,7 +5,6 @@ package com.sginnovations.asked.ui.main_bottom_bar.camera.components.carousel
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.camera.view.LifecycleCameraController
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,13 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,7 +36,10 @@ import com.sginnovations.asked.data.MathCategoryOCR
 import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
-import com.sginnovations.asked.viewmodel.TokenViewModel
+import com.sginnovations.asked.ui.ui_components.camera.PremiumCameraDialog
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
+import com.sginnovations.asked.utils.CheckIsPremium
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 private const val TAG = "sliderList"
@@ -43,16 +48,21 @@ private const val TAG = "sliderList"
 fun CameraCarousel(
     modifier: Modifier = Modifier,
 
-    vmToken: TokenViewModel,
     controller: LifecycleCameraController,
 
     onChangeCategory: (CategoryOCR) -> Unit,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 
     onPhotoTaken: (Bitmap) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = 3)
+
+    var isPremium by remember { mutableStateOf(false) }
+
+    val showPremiumCameraDialog = remember { mutableStateOf(false) }
 
     val sliderList = listOf(
         SummaryCategoryOCR,
@@ -62,6 +72,10 @@ fun CameraCarousel(
         MathCategoryOCR
     )
 
+    LaunchedEffect(Unit) {
+        isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await()
+    }
+
     HorizontalPager(
         count = sliderList.size,
         state = pagerState,
@@ -69,28 +83,9 @@ fun CameraCarousel(
         modifier = modifier
     ) { item ->
         val isSelected = pagerState.currentPage == item
-        val targetAlpha = if (isSelected) 1f else 0.5f
-        val targetScale = if (isSelected) 1f else 0.8f
 
         Log.d(TAG, "sliderList: ${sliderList[pagerState.currentPage]}")
         onChangeCategory(sliderList[pagerState.currentPage])
-
-//        val mathCostToken = vmToken.getCameraMathTokens()
-
-        // Tokens Cost Subtitle
-//        val tokenCost = when (sliderList[item].root) { //TODO COMMENTED
-//            TextCategoryOCR.root -> "Free"
-//            MathCategoryOCR.root ->
-//                if (mathCostToken == "0") {
-//                    "Free"
-//                } else {
-//                    mathCostToken
-//                }
-//
-//            else -> {
-//                "Free"
-//            }
-//        }
 
         val verticalOffset = if (isSelected) 0.dp else 18.dp
 
@@ -125,33 +120,30 @@ fun CameraCarousel(
                 onChangeIcon = { scope.launch { pagerState.animateScrollToPage(item) } },
             ) {
                 if (isSelected) {
-                    onPhotoTaken(it)
+                    if (isPremium) {
+                        onPhotoTaken(it)
+                    } else {
+                        when (sliderList[pagerState.currentPage].prefix) {
+                            TranslateCategoryOCR.prefix -> showPremiumCameraDialog.value = true
+                            GrammarCategoryOCR.prefix -> showPremiumCameraDialog.value = true
+                            SummaryCategoryOCR.prefix -> showPremiumCameraDialog.value = true
+                            else -> {
+                                onPhotoTaken(it)
+                            }
+                        }
+                    }
                 }
             }
-
         }
     }
-}
 
-//ref 1
-//            AnimatedVisibility(
-//                visible = isSelected,
-//                enter = slideInVertically(initialOffsetY = { -40 }) + expandVertically() + fadeIn(
-//                    initialAlpha = 0.3f
-//                ),
-//                exit = slideOutVertically(targetOffsetY = { -40 }) + shrinkVertically() + fadeOut(),
-//                modifier = Modifier.padding(bottom = 2.dp)
-//            ) {
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    horizontalArrangement = Arrangement.Center
-//                ) {
-//                    Text(
-//                        text = tokenCost,
-//                        style = MaterialTheme.typography.labelMedium,
-//                        color = MaterialTheme.colorScheme.primary
-//                    )
-//                    Spacer(modifier = Modifier.width(4.dp))
-//                    TokenIcon()
-//                }
-//            }
+    if (showPremiumCameraDialog.value) {
+        PremiumCameraDialog(
+            onDismissRequest = { showPremiumCameraDialog.value = false },
+            onSeePremiumSubscription = {
+                showPremiumCameraDialog.value = false
+                onNavigateSubscriptionScreen()
+            }
+        )
+    }
+}

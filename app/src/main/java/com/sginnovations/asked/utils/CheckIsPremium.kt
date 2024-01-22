@@ -15,7 +15,7 @@ object CheckIsPremium {
 
     suspend fun checkIsPremium(): Boolean {
         val currentTime = System.currentTimeMillis()
-        if (currentTime - lastCheckTime < 60 * 60 * 1000) {
+        if (currentTime - lastCheckTime < 60 /** 60 * 1000*/) {
             // If less than an hour has passed since the last check, returns the stored value
             Log.d(TAG, "checkIsPremium: isPremiumCache")
             return isPremiumCache

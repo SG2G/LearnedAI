@@ -135,7 +135,7 @@
     <string name="referral_tokens_immediately">" Tokens immediately!"</string>
     <string name="crop_crop_the_text_you_want_to">Tip: Crop only what you need, that way you\'ll achieve better results.</string>
     <string name="subscription_monthly">" / Monthly"</string>
-    <string name="subscription_save_50">Save 40%</string>
+    <string name="subscription_save_50">Save 30%</string>
     <string name="topbar_settings">Settings</string>
     <string name="language_english">English</string>
     <string name="language_spanish">Spanish</string>
@@ -157,7 +157,15 @@
     <string name="profile_rate_us">Help us improve</string>
     <string name="subscription_annually">" / Year"</string>
     <string name="subscription_most_popular">Most Popular</string>
-    <string name="subscription_annually_small_text">7 days of free trial, cancel anytime</string>
-    <string name="subscription_monthly_small_text">Cancel anytime</string>
+    <string name="subscription_annually_small_text">7 days of free trial, cancel anytime, auto-renewable</string>
+    <string name="subscription_monthly_small_text">Cancel anytime, auto-renewable</string>
+    <string name="tabs_lessons">Lessons</string>
+    <string name="tabs_content">Content</string>
+    <string name="parental_assist_previous_chats">Previous Chats</string>
+    <string name="no_tokens_dialog_tittle">Insufficient Tokens</string>
+    <string name="no_tokens_dialog_subtitle">You do not have enough tokens for today. Try again tomorrow or upgrade to Premium.</string>
+    <string name="no_tokens_dialog_view_premium_subscription">View Premium Subscription</string>
+    <string name="no_tokens_dialog_cancel">I will wait until tomorrow</string>
+    <string name="profile_manage_subscription">Manage subscription</string>
 
 </resources>

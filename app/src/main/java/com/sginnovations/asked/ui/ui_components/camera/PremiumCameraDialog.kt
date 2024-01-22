@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.ui_components.chat
+package com.sginnovations.asked.ui.ui_components.camera
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -8,12 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.sginnovations.asked.R
 
 @Composable
-fun NoTokensDialog(
+fun PremiumCameraDialog(
     onDismissRequest: () -> Unit,
     onSeePremiumSubscription: () -> Unit,
 ) {
@@ -21,13 +19,13 @@ fun NoTokensDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = stringResource(R.string.no_tokens_dialog_tittle),
+                text = "Unlock the Full Potential of Premium!",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
         },
         text = {
-            Text(text = stringResource(R.string.no_tokens_dialog_subtitle))
+            Text(text = "Join other proactive parents who are elevating their capabilities. Access exclusive photography tools designed for intelligent problem-solving, available only for Premium members.")
         },
         confirmButton = {
             Button(
@@ -38,7 +36,7 @@ fun NoTokensDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.no_tokens_dialog_view_premium_subscription), color = MaterialTheme.colorScheme.onPrimary,
+                    text = "Embrace Premium Benefits", color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -52,7 +50,8 @@ fun NoTokensDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.no_tokens_dialog_cancel), color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    text = "I'll Consider This Later",
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

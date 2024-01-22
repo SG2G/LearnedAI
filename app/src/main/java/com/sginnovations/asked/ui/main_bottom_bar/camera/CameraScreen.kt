@@ -58,6 +58,8 @@ fun CameraStateFul(
     vmCamera: CameraViewModel,
     vmToken: TokenViewModel,
 
+    onNavigateSubscriptions: () -> Unit,
+
     onGetPhotoGallery: () -> Unit,
     onCropNavigation: () -> Unit,
 ) {
@@ -96,11 +98,13 @@ fun CameraStateFul(
                 showCategoryExamples.value = true
             },
 
+            onNavigateSubscriptionScreen = { onNavigateSubscriptions() },
+
             onChangeTranslateLanguage = { language ->
                 vmCamera.translateLanguage.value = language
             }
 
-            ) { categoryOCR ->
+        ) { categoryOCR ->
             Log.d(TAG, "categoryOCR prefix: $categoryOCR")
             vmCamera.cameraCategoryOCR.value = categoryOCR
         }
@@ -131,6 +135,8 @@ fun CameraStateLess(
     onLoadPDF: () -> Unit,
 
     onShowCategoryExamples: () -> Unit,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 
     onChangeTranslateLanguage: (String) -> Unit,
     onChangeCategory: (CategoryOCR) -> Unit,
@@ -209,7 +215,7 @@ fun CameraStateLess(
                             else -> ""
                         },
                         color = Color.White,
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .padding(4.dp)
                     )
@@ -245,10 +251,10 @@ fun CameraStateLess(
                     modifier = Modifier
                         .height(132.dp)
                         .width(212.dp),
-                    vmToken = vmToken,
                     controller = controller,
 
-                    onChangeCategory = { categoryOCR -> onChangeCategory(categoryOCR) }
+                    onChangeCategory = { categoryOCR -> onChangeCategory(categoryOCR) },
+                    onNavigateSubscriptionScreen = { onNavigateSubscriptionScreen() }
                 ) { onPhotoTaken(it) }
 
                 Spacer(modifier = Modifier.width(16.dp))

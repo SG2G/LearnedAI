@@ -207,6 +207,8 @@ fun LearnedNavigation(
                         vmCamera = vmCamera,
                         vmToken = vmToken,
 
+                        onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
+
                         onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
                         onCropNavigation = { navController.navigate(route = Crop.route) },
                     )
@@ -286,7 +288,8 @@ fun LearnedNavigation(
                     vmLesson = vmLesson,
                     vmPreferences = vmPreferences,
 
-                    onNavigateLesson = { navController.navigate(route = Lesson.route) }
+                    onNavigateLesson = { navController.navigate(route = Lesson.route) },
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
             }
             /**

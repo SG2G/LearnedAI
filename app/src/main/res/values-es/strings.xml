@@ -37,6 +37,9 @@
     <string name="pdf_button_cool">Perfecto!</string>
     <string name="historychats_new_chat">"Nuevo Chat "</string>
     <string name="profile_upgrade">Actualizar</string>
+    <string name="error_error_taking_the_photo_if_the_issue_persists_please_send_us_an_email">"Error al tomar la foto. Si el problema persiste, envíenos un correo electrónico. "</string>
+    <string name="settings_dark_mode">Habilitar el modo oscuro</string>
+    <string name="settings_text_size">Tamaño del texto</string>
     <string name="profile_rate_us">Ayúdanos a mejorar</string>
     <string name="profile_email_us">Envianos un Email!</string>
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
@@ -132,7 +135,7 @@
     <string name="referral_tokens_immediately">" Tokens inmediatamente!"</string>
     <string name="crop_crop_the_text_you_want_to">Consejo: Recorta solo lo que necesites, así conseguirás mejores resultados</string>
     <string name="subscription_monthly">" / Mes"</string>
-    <string name="subscription_save_50">Ahorra 40%</string>
+    <string name="subscription_save_50">Ahorra 30%</string>
     <string name="topbar_settings">Ajustes</string>
     <string name="language_english">Inglés</string>
     <string name="language_spanish">Español</string>
@@ -145,4 +148,7 @@
     <string name="language_translate_to">"Traducir al: "</string>
     <string name="historychats_category">"Categoría - "</string>
     <string name="subscription_annually">" / Año"</string>
+    <string name="subscription_most_popular">Más popular</string>
+    <string name="subscription_annually_small_text">7 días de prueba gratuita, cancela en cualquier momento, autorenovable</string>
+    <string name="subscription_monthly_small_text">Cancela en cualquier momento, autorenovable</string>
 </resources>

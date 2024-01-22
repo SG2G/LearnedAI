@@ -67,6 +67,10 @@ class BillingViewModel @Inject constructor(
                     // The BillingClient is ready. You can query purchases here.
                     Log.i(TAG, "onBillingSetupFinished: The BillingClient is ready")
 
+                    connectionDeferred.complete(true)
+
+                    Log.i(TAG, "onBillingSetupFinished: following billing")
+
                     viewModelScope.launch { loadQueryProductsDetails() }
                     billingResponseCode.value = BillingClient.BillingResponseCode.OK
                     // Set the PurchasesUpdatedListener
@@ -75,7 +79,6 @@ class BillingViewModel @Inject constructor(
                             onPurchasesUpdated(billingResult, purchases)
                         }
                     }
-                    connectionDeferred.complete(true)
                 } else {
                     connectionDeferred.complete(false)
                 }
