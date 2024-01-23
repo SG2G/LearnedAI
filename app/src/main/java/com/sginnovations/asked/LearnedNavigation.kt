@@ -393,7 +393,8 @@ fun LearnedNavigation(
                     vmIntent = vmIntent,
                     vmPreferences = vmPreferences,
 
-                    onOpenTranscript = { navController.navigate(route = Transcript.route) }
+                    onOpenTranscript = { navController.navigate(route = Transcript.route) },
+                    onNavigateBack = { navController.navigateUp() }
                 )
             }
             composable(

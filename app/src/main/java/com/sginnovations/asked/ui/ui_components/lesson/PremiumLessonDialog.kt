@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.sginnovations.asked.R
 
 @Composable
 fun PremiumLessonDialog(
@@ -19,13 +21,13 @@ fun PremiumLessonDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = "join Premium Learners",
+                text = stringResource(R.string.lesson_dialog_title),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
         },
         text = {
-            Text(text = "Be part of a special community that's already enhancing their children's learning experience. Don't miss out on the advanced features and unique lessons available only to premium members. Every moment matters in your child's education. Make the most of it with premium.")
+            Text(text = stringResource(R.string.lesson_dialog_subtitle))
         },
         confirmButton = {
             Button(
@@ -36,7 +38,7 @@ fun PremiumLessonDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Yes, I Choose Premium!", color = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(R.string.lesson_dialog_confirm_button), color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -50,7 +52,7 @@ fun PremiumLessonDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Stay with Basic Access",
+                    text = stringResource(R.string.lesson_dialog_dimiss_button),
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )

@@ -76,7 +76,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     // accompanist
-    implementation ("com.google.accompanist:accompanist-pager:0.20.0")
+    implementation ("com.google.accompanist:accompanist-pager:0.32.0")
     /// admob ///
     implementation("com.google.android.gms:play-services-ads:22.4.0")
     /// Coil ///

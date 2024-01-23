@@ -1,15 +1,23 @@
 package com.sginnovations.asked.ui.main_bottom_bar.parental_guidance
 
+import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.TextView
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -18,18 +26,34 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.res.ResourcesCompat
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import com.sginnovations.asked.Constants
+import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonDataClass
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.ComposeYouTubePlayer
+import com.sginnovations.asked.ui.ui_components.lesson.CustomAlertDialog
+import com.sginnovations.asked.ui.ui_components.lesson.LessonDescriptionWithLinks
 import com.sginnovations.asked.viewmodel.IntentViewModel
 import com.sginnovations.asked.viewmodel.LessonViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
+import io.noties.markwon.Markwon
+import io.noties.markwon.ext.latex.JLatexMathPlugin
+import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
+import kotlinx.coroutines.launch
+
 
 private const val TAG = "LessonStateFul"
 
@@ -40,13 +64,17 @@ fun LessonStateFul(
     vmPreferences: PreferencesViewModel,
 
     onOpenTranscript: () -> Unit,
+
+    onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val lessonId = vmLesson.lessonId
 
     val lesson = vmLesson.getLessonById(lessonId.intValue)
 
-    Log.d(TAG, "lessonId: ${lessonId.intValue} lesson -> ${lesson.toString()}")
+    val showEndLesson = remember { mutableStateOf(false) }
+
+    //Log.d(TAG, "lessonId: ${lessonId.intValue} lesson -> ${lesson.toString()}")
 
     LessonStateLess(
         lesson = lesson,
@@ -54,12 +82,27 @@ fun LessonStateFul(
         onOpenTranscript = { onOpenTranscript() },
         onYouTubeClick = { vmIntent.openYouTubeVideo(context, lesson.videoId) },
 
-        onLessonRead = {
+        onLessonReadAndFinish = {
+            Log.d(TAG, "lessonId: ${lessonId.intValue} lesson -> ${lesson.toString()}")
             vmPreferences.markLessonAsRead(lessonId.intValue)
+            showEndLesson.value = true
         },
     )
+    if (showEndLesson.value) {
+        CustomAlertDialog(
+            onDismissRequest = {
+                showEndLesson.value = false
+            },
+            onConfirmRequest = {
+                showEndLesson.value = false
+                onNavigateBack()
+            },
+            image = painterResource(id = R.drawable.burro),
+            title = "Well Done!",
+            buttonText = "Ok thankiu"
+        )
+    }
 }
-
 
 @Composable
 fun LessonStateLess(
@@ -68,115 +111,184 @@ fun LessonStateLess(
     onOpenTranscript: () -> Unit,
     onYouTubeClick: () -> Unit,
 
-    onLessonRead: () -> Unit,
+    onLessonReadAndFinish: () -> Unit,
 ) {
-    val scrollState = rememberScrollState()
+    val pagerState = rememberPagerState()
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
     ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-            Text(
-                text = lesson.introduction,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+        HorizontalPager(
+            count = 2,
+            state = pagerState
+        ) { page ->
+            Log.d(TAG, "page: $page  pagerState -> ${pagerState.currentPage}")
+            when (page) {
+                0 -> Page1(
+                    lesson = lesson,
 
-            ElevatedCard(
-                elevation = CardDefaults.elevatedCardElevation(
-                    defaultElevation = 2.dp
+                    onYouTubeClick = { onYouTubeClick() },
+                    onOpenTranscript = { onOpenTranscript() },
                 )
-            ) {
-                ComposeYouTubePlayer(videoId = lesson.videoId)
 
-                Box(modifier = Modifier.padding(8.dp)) {
-                    LessonDescriptionWithLinks(
-                        onYouTubeClick = { onYouTubeClick() },
-                        onTranscriptClick = { onOpenTranscript() }
+                1 -> Page2(
+                    lesson = lesson,
+                )
+            }
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                Row(
+                    Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(pagerState.pageCount) { iteration ->
+                        val color =
+                            if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else Color.LightGray
+                        val width = if (pagerState.currentPage == iteration) 24.dp else 8.dp
+
+                        Box(
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .animateContentSize()
+                                .size(width, 8.dp)
+                                .clip(if (pagerState.currentPage == iteration) RoundedCornerShape(10.dp) else CircleShape)
+                                .background(color)
+                        )
+
+                    }
+                }
+
+                Button(
+                    onClick = {
+                        if (page == 1) {
+                            // page actual == page count
+                            onLessonReadAndFinish()
+
+                        } else {
+                            scope.launch {
+                                pagerState.scrollToPage(pagerState.currentPage + 1 % pagerState.pageCount)
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp, vertical = 16.dp)
+                        .height(48.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text(
+                        text =
+                        if (page == 1) {
+                            "Finish"
+                        } else {
+                            "Next"
+                        }
                     )
                 }
             }
-
         }
 
-//        Text(text = "If you have any problem watch it on")
-//        TextButton(onClick = { onOpenTranscript() }) {
-//            Text(text = "Transcript")
-//        }
+    }
+}
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 16.dp),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Button(
-                onClick = {
-                    onLessonRead()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-                    .height(48.dp),
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    MaterialTheme.colorScheme.primary
+@Composable
+fun Page2(
+    lesson: LessonDataClass,
+) {
+    val context = LocalContext.current
+    val verticalScroll = rememberScrollState()
+
+    val markwon = remember {
+        Markwon.builder(context)
+            .usePlugin(MarkwonInlineParserPlugin.create())
+            .usePlugin(
+                JLatexMathPlugin.create(
+                    42f,
+                    JLatexMathPlugin.BuilderConfigure { builder ->
+                        builder.inlinesEnabled(true)
+                    }
                 )
-            ) {
-                Text(text = "Next")
+            )
+            .build()
+    }
+
+    val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+    val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(verticalScroll)
+    ) {
+        AndroidView(
+            modifier = Modifier
+                .padding(Constants.CHAT_MSG_PADDING),
+            factory = { ctx ->
+                TextView(ctx).apply {
+                    setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    setTextColor(textColor)
+                    textSize = textSizee
+                    typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
+                    movementMethod = LinkMovementMethod.getInstance()
+                }
+            },
+            update = { view ->
+                val node = markwon.parse(lesson.conclusion)
+                val renderedMarkdown = markwon.render(node)
+                markwon.setParsedMarkdown(view, renderedMarkdown)
             }
+        )
+
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
+            Text(text = "Example")
         }
     }
 }
 
 @Composable
-fun LessonDescriptionWithLinks(onYouTubeClick: () -> Unit, onTranscriptClick: () -> Unit) {
-    val lessonDescriptionTypography = MaterialTheme.typography.bodyLarge.toSpanStyle()
-    val lessonLinkColor = MaterialTheme.colorScheme.primary
+fun Page1(
+    lesson: LessonDataClass,
 
-    val annotatedText = buildAnnotatedString {
-        withStyle(style = lessonDescriptionTypography) {
-            append("If you have any problem watch it on ")
-        }
+    onYouTubeClick: () -> Unit,
+    onOpenTranscript: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = lesson.introduction,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
 
-        // Annotation for "YouTube"
-        pushStringAnnotation(tag = "URL_YOUTUBE", annotation = "youtube")
-        withStyle(
-            style = lessonDescriptionTypography.merge(
-                SpanStyle(color = lessonLinkColor)
+        ElevatedCard(
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 2.dp
             )
         ) {
-            append("YouTube")
-        }
-        pop()
+            ComposeYouTubePlayer(videoId = lesson.videoId)
 
-        withStyle(style = lessonDescriptionTypography) {
-            append(" or you can see the ")
+            Box(modifier = Modifier.padding(8.dp)) {
+                LessonDescriptionWithLinks(
+                    onYouTubeClick = { onYouTubeClick() },
+                    onTranscriptClick = { onOpenTranscript() }
+                )
+            }
         }
 
-        // Annotation for "transcript"
-        pushStringAnnotation(tag = "URL_TRANSCRIPT", annotation = "transcript")
-        withStyle(
-            style = lessonDescriptionTypography.merge(
-                SpanStyle(color = lessonLinkColor)
-            )
-        ) {
-            append("Transcript")
-        }
-        pop()
     }
-
-    ClickableText(
-        text = annotatedText,
-        onClick = { offset ->
-            annotatedText.getStringAnnotations(tag = "URL_YOUTUBE", start = offset, end = offset)
-                .firstOrNull()?.let { onYouTubeClick() }
-            annotatedText.getStringAnnotations(tag = "URL_TRANSCRIPT", start = offset, end = offset)
-                .firstOrNull()?.let { onTranscriptClick() }
-        }
-    )
 }

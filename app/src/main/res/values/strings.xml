@@ -152,7 +152,7 @@
     <string name="settings_text_size">Text Size</string>
     <string name="settings_theme">Theme</string>
     <string name="topbar_parentalchat">Parental Chat</string>
-    <string name="topbar_parental_guidance">Parental Guidance</string>
+    <string name="topbar_parental_guidance">Parental Guide</string>
     <string name="topbar_parentalassist">Parental Assist</string>
     <string name="profile_rate_us">Help us improve</string>
     <string name="subscription_annually">" / Year"</string>
@@ -163,9 +163,17 @@
     <string name="tabs_content">Content</string>
     <string name="parental_assist_previous_chats">Previous Chats</string>
     <string name="no_tokens_dialog_tittle">Insufficient Tokens</string>
-    <string name="no_tokens_dialog_subtitle">You do not have enough tokens for today. Try again tomorrow or upgrade to Premium.</string>
     <string name="no_tokens_dialog_view_premium_subscription">View Premium Subscription</string>
     <string name="no_tokens_dialog_cancel">I will wait until tomorrow</string>
     <string name="profile_manage_subscription">Manage subscription</string>
+    <string name="no_tokens_dialog_subtitle">You do not have enough tokens for today. Try again tomorrow or upgrade to Premium.</string>
+    <string name="lesson_description_if_you_have_any_problem_watch_it_on">"If you have any problem watch it on "</string>
+    <string name="lesson_description_youtube">YouTube</string>
+    <string name="lesson_description_or_you_can_see_the">" or you can see the "</string>
+    <string name="lesson_description_transcript">Transcript</string>
+    <string name="lesson_dialog_title">join Premium Learners!</string>
+    <string name="lesson_dialog_subtitle">Be part of a special community that\'s already enhancing their children\'s learning experience. Don\'t miss out on the advanced features and unique lessons available only to premium members. Every moment matters in your child\'s education. Make the most of it with premium.</string>
+    <string name="lesson_dialog_confirm_button">Yes, I Choose Premium!</string>
+    <string name="lesson_dialog_dimiss_button">Stay with Basic Access</string>
 
 </resources>

@@ -40,6 +40,10 @@
     <string name="error_error_taking_the_photo_if_the_issue_persists_please_send_us_an_email">"Error al tomar la foto. Si el problema persiste, envíenos un correo electrónico. "</string>
     <string name="settings_dark_mode">Habilitar el modo oscuro</string>
     <string name="settings_text_size">Tamaño del texto</string>
+    <string name="settings_theme">Tema</string>
+    <string name="topbar_parentalchat">Chat Parental</string>
+    <string name="topbar_parental_guidance">Guía Parental</string>
+    <string name="topbar_parentalassist">Asistencia Parental</string>
     <string name="profile_rate_us">Ayúdanos a mejorar</string>
     <string name="profile_email_us">Envianos un Email!</string>
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
@@ -151,4 +155,12 @@
     <string name="subscription_most_popular">Más popular</string>
     <string name="subscription_annually_small_text">7 días de prueba gratuita, cancela en cualquier momento, autorenovable</string>
     <string name="subscription_monthly_small_text">Cancela en cualquier momento, autorenovable</string>
+    <string name="tabs_lessons">Lecciones</string>
+    <string name="tabs_content">Contenido</string>
+    <string name="parental_assist_previous_chats">Chats anteriores</string>
+    <string name="no_tokens_dialog_tittle">Tokens insuficientes</string>
+    <string name="no_tokens_dialog_subtitle">No tienes suficientes tokens para hoy. Vuelve a intentarlo mañana o actualiza a Premium.</string>
+    <string name="no_tokens_dialog_view_premium_subscription">Ver suscripción premium</string>
+    <string name="no_tokens_dialog_cancel">Esperaré hasta mañana</string>
+    <string name="profile_manage_subscription">Administrar suscripción</string>
 </resources>

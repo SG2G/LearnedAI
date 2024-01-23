@@ -42,7 +42,7 @@ class LessonDataSource @Inject constructor(
                     "La historia de Elena y Lucas demuestra que enseñar a los niños a gestionar sus emociones y a ser resilientes es un proceso continuo que requiere paciencia y comprensión. Al reconocer y validar las emociones de los niños, y al proporcionarles herramientas para manejarlas, los padres les están equipando con habilidades cruciales para la vida.",
             "La gestión de emociones y el desarrollo de la resiliencia son habilidades esenciales que los padres pueden fomentar en sus hijos desde una edad temprana. Estas habilidades son fundamentales para el bienestar emocional y la capacidad de los niños para enfrentar desafíos en la vida. Inspirado por los conceptos presentados en \"El niño emocionalmente inteligente\" de John Gottman, este artículo explora cómo los padres pueden guiar a sus hijos jóvenes en el reconocimiento, la expresión y la gestión de sus emociones de manera saludable.",
             "54fjHJlMoNY",
-            "**Consejos Prácticos**\n" +
+            "## Consejos Prácticos\n" +
                     "\n" +
                     "1. **Validación Emocional**: Reconoce y valida las emociones de tu hijo. Esto les enseña que todas las emociones son válidas y parte de la experiencia humana.\n" +
                     "2. **Modelado de Comportamiento**: Los niños aprenden observando. Muestra cómo gestionar tus propias emociones de manera saludable.\n" +
@@ -69,7 +69,7 @@ class LessonDataSource @Inject constructor(
                     "La historia de Elena y Lucas demuestra que enseñar a los niños a gestionar sus emociones y a ser resilientes es un proceso continuo que requiere paciencia y comprensión. Al reconocer y validar las emociones de los niños, y al proporcionarles herramientas para manejarlas, los padres les están equipando con habilidades cruciales para la vida.",
             "La gestión de emociones y el desarrollo de la resiliencia son habilidades esenciales que los padres pueden fomentar en sus hijos desde una edad temprana. Estas habilidades son fundamentales para el bienestar emocional y la capacidad de los niños para enfrentar desafíos en la vida. Inspirado por los conceptos presentados en \"El niño emocionalmente inteligente\" de John Gottman, este artículo explora cómo los padres pueden guiar a sus hijos jóvenes en el reconocimiento, la expresión y la gestión de sus emociones de manera saludable.",
             "54fjHJlMoNY",
-            "**Consejos Prácticos**\n" +
+            "# Consejos Prácticos\n" +
                     "\n" +
                     "1. **Validación Emocional**: Reconoce y valida las emociones de tu hijo. Esto les enseña que todas las emociones son válidas y parte de la experiencia humana.\n" +
                     "2. **Modelado de Comportamiento**: Los niños aprenden observando. Muestra cómo gestionar tus propias emociones de manera saludable.\n" +
