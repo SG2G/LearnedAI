@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
@@ -46,6 +48,7 @@ import com.sginnovations.asked.data.lessons.LessonDataClass
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.ComposeYouTubePlayer
 import com.sginnovations.asked.ui.ui_components.lesson.CustomAlertDialog
 import com.sginnovations.asked.ui.ui_components.lesson.LessonDescriptionWithLinks
+import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.IntentViewModel
 import com.sginnovations.asked.viewmodel.LessonViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
@@ -60,6 +63,7 @@ private const val TAG = "LessonStateFul"
 @Composable
 fun LessonStateFul(
     vmLesson: LessonViewModel,
+    vmAssistant: AssistantViewModel,
     vmIntent: IntentViewModel,
     vmPreferences: PreferencesViewModel,
 
@@ -81,6 +85,12 @@ fun LessonStateFul(
 
         onOpenTranscript = { onOpenTranscript() },
         onYouTubeClick = { vmIntent.openYouTubeVideo(context, lesson.videoId) },
+
+        onExampleButton = {
+            vmAssistant.firstMessage.value = lesson.questionAsked
+
+            //onNavigateAssistant()
+        },
 
         onLessonReadAndFinish = {
             Log.d(TAG, "lessonId: ${lessonId.intValue} lesson -> ${lesson.toString()}")
@@ -111,6 +121,8 @@ fun LessonStateLess(
     onOpenTranscript: () -> Unit,
     onYouTubeClick: () -> Unit,
 
+    onExampleButton: () -> Unit,
+
     onLessonReadAndFinish: () -> Unit,
 ) {
     val pagerState = rememberPagerState()
@@ -121,7 +133,7 @@ fun LessonStateLess(
             .fillMaxSize()
     ) {
         HorizontalPager(
-            count = 2,
+            count = if (lesson.conclusion.isNullOrEmpty()) 1 else 2,
             state = pagerState
         ) { page ->
             Log.d(TAG, "page: $page  pagerState -> ${pagerState.currentPage}")
@@ -135,6 +147,8 @@ fun LessonStateLess(
 
                 1 -> Page2(
                     lesson = lesson,
+
+                    onExampleButton = { onExampleButton() }
                 )
             }
 
@@ -167,7 +181,7 @@ fun LessonStateLess(
 
                 Button(
                     onClick = {
-                        if (page == 1) {
+                        if (page == lesson.lessonPages) {
                             // page actual == page count
                             onLessonReadAndFinish()
 
@@ -188,10 +202,10 @@ fun LessonStateLess(
                 ) {
                     Text(
                         text =
-                        if (page == 1) {
-                            "Finish"
+                        if (page == lesson.lessonPages) {
+                            stringResource(R.string.lesson_finish)
                         } else {
-                            "Next"
+                            stringResource(R.string.lesson_next)
                         }
                     )
                 }
@@ -204,57 +218,61 @@ fun LessonStateLess(
 @Composable
 fun Page2(
     lesson: LessonDataClass,
+
+    onExampleButton: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val verticalScroll = rememberScrollState()
+    if (lesson.conclusion != null) {
+        val context = LocalContext.current
+        val verticalScroll = rememberScrollState()
 
-    val markwon = remember {
-        Markwon.builder(context)
-            .usePlugin(MarkwonInlineParserPlugin.create())
-            .usePlugin(
-                JLatexMathPlugin.create(
-                    42f,
-                    JLatexMathPlugin.BuilderConfigure { builder ->
-                        builder.inlinesEnabled(true)
-                    }
+        val markwon = remember {
+            Markwon.builder(context)
+                .usePlugin(MarkwonInlineParserPlugin.create())
+                .usePlugin(
+                    JLatexMathPlugin.create(
+                        42f,
+                        JLatexMathPlugin.BuilderConfigure { builder ->
+                            builder.inlinesEnabled(true)
+                        }
+                    )
                 )
-            )
-            .build()
-    }
+                .build()
+        }
 
-    val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
-    val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
+        val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+        val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(verticalScroll)
-    ) {
-        AndroidView(
+        Column(
             modifier = Modifier
-                .padding(Constants.CHAT_MSG_PADDING),
-            factory = { ctx ->
-                TextView(ctx).apply {
-                    setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                    setTextColor(textColor)
-                    textSize = textSizee
-                    typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
-                    movementMethod = LinkMovementMethod.getInstance()
-                }
-            },
-            update = { view ->
-                val node = markwon.parse(lesson.conclusion)
-                val renderedMarkdown = markwon.render(node)
-                markwon.setParsedMarkdown(view, renderedMarkdown)
-            }
-        )
-
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .fillMaxSize()
+                .verticalScroll(verticalScroll)
         ) {
-            Text(text = "Example")
+            AndroidView(
+                modifier = Modifier
+                    .padding(Constants.CHAT_MSG_PADDING),
+                factory = { ctx ->
+                    TextView(ctx).apply {
+                        setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                        setTextColor(textColor)
+                        textSize = textSizee
+                        typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
+                        movementMethod = LinkMovementMethod.getInstance()
+                    }
+                },
+                update = { view ->
+                    val node = markwon.parse(lesson.conclusion)
+                    val renderedMarkdown = markwon.render(node)
+                    markwon.setParsedMarkdown(view, renderedMarkdown)
+                }
+            )
+
+            Button(
+                onClick = { onExampleButton() },
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(text = lesson.buttonText ?: "See Example") //TODO TRANSLATE MAYBE
+            }
         }
     }
 }
@@ -274,6 +292,7 @@ fun Page1(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
+        Spacer(modifier = Modifier.height(16.dp))
 
         ElevatedCard(
             elevation = CardDefaults.elevatedCardElevation(

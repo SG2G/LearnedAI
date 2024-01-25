@@ -175,5 +175,63 @@
     <string name="lesson_dialog_subtitle">Be part of a special community that\'s already enhancing their children\'s learning experience. Don\'t miss out on the advanced features and unique lessons available only to premium members. Every moment matters in your child\'s education. Make the most of it with premium.</string>
     <string name="lesson_dialog_confirm_button">Yes, I Choose Premium!</string>
     <string name="lesson_dialog_dimiss_button">Stay with Basic Access</string>
+    <string name="lesson_title_1000">Introduction</string>
+    <string name="lesson_subtitle_1000">Aqui te introduzco</string>
+    <string name="lesson_transcription_1000">En los últimos años, el panorama de la crianza de los hijos ha experimentado un cambio revolucionario, gracias a avances revolucionarios en neurociencia y tecnología. Han quedado atrás los días de consejos de crianza de talla única. Hoy, nos encontramos en la vanguardia de una nueva era, donde las perspicacias respaldadas por la ciencia nos ofrecen una comprensión sin precedentes de las mentes de nuestros hijos.\n\nEsta guía es tu llave para desvelar estos secretos. Aquí descubrirás cómo los últimos hallazgos en neurociencia están remodelando nuestra manera de pensar sobre la parentalidad. Ya seas un padre o madre primerizo o un veterano experimentado, esta guía avivará tu pasión por aprender y alimentará tu deseo de forjar una conexión más profunda y significativa con tu hijo.\n\nImagina **mejorar la autoestima de tu hijo, fortalecer su autonomía y nutrir una relación que no solo sea amorosa, sino también profundamente sintonizada con sus necesidades individuales**. Esto no es solo un sueño, es una realidad tangible gracias a las últimas perspicacias científicas.\n\nCada capítulo de esta guía es un tesoro de información valiosa, actual y rigurosamente verificada. Consultamos a destacados neurocientíficos y expertos en el desarrollo infantil para asegurarnos de que estás obteniendo consejos confiables y aplicables.\n\nMientras emprendes este viaje, recuerda: el arte de la parentalidad está en constante evolución. Abraza la emoción de aprender, la emoción de aplicar nuevas estrategias y la alegría de ver a tu hijo prosperar como nunca antes. Transformemos juntos la forma en que criamos a nuestros hijos.\n\nBienvenidos al futuro de la parentalidad.</string>
+    <string name="lesson_introduction_1000">¿Sabías que un simple cambio en tu forma de comunicarte puede influir enormemente en el desarrollo cerebral de tu hijo?\nDescubre estrategias de crianza basadas en la neurociencia que todo padre debería conocer</string>
+    <string name="lesson_finish">Finish</string>
+    <string name="lesson_next">Next</string>
+    <string name="lesson_title_1001">Fomento de la Autoestima en los Niños</string>
+    <string name="lesson_subtitle_1001">Como estudiar</string>
+    <string name="lesson_transcription_1001">Julia, madre de Emma de nueve años, se esforzaba constantemente por ser un pilar de apoyo y guía en la vida de su hija. Consciente de que la construcción de la autoestima es fundamental en la infancia y adolescencia, Julia se enfrentaba al reto de cómo reforzar la confianza de Emma, un desafío común para muchos padres.\n\nLa oportunidad de enseñar una lección valiosa surgió un día cuando Emma regresó de la escuela, desalentada por un proyecto escolar que no había salido como esperaba. Julia, en lugar de centrarse en el resultado no deseado, decidió destacar la importancia del proceso creativo y el esfuerzo de Emma. \'Me impresiona cómo abordaste este proyecto, Emma. Usaste tu imaginación, y eso es realmente lo más valioso\', le aseguró Julia, inculcando una lección de perseverancia y valoración del esfuerzo.\n\nAdemás, Julia sabía que era importante fomentar la autonomía en Emma para construir su autoconfianza. Comenzó a delegarle pequeñas responsabilidades, adecuadas para su edad, como cuidar las plantas o ayudar en pequeñas tareas domésticas. Cada pequeño logro era una oportunidad para celebrar las habilidades y el crecimiento de Emma, reforzando su autoestima.\n\nCon el tiempo, los cambios en Emma fueron evidentes. Se mostraba más segura para participar en clase y en su círculo social, y enfrentaba nuevos desafíos con una actitud más positiva.\n\nEsta historia de Julia y Emma resalta un principio clave para los padres de niños y adolescentes: la construcción de la autoestima en los hijos es un proceso activo y continuo. Reconocer el esfuerzo, fomentar la independencia y celebrar cada logro, son estrategias efectivas que los padres pueden emplear en todas las etapas, desde la primera infancia hasta la adolescencia, para ayudar a sus hijos a desarrollar un sentido sólido de autoeficacia y valor personal.\n</string>
+    <string name="lesson_introduction_1001">¿Sabías que la autoestima de un niño comienza a formarse desde sus primeros años? ¿Cómo podemos cultivarla efectivamente desde la infancia? Descubrámoslo.</string>
+    <string name="lesson_conclusion_1001">**Consejos Prácticos**\n\n1. **Elogia el Esfuerzo, No Solo los Logros**: Reconoce y valora el esfuerzo y la perseverancia de tu hijo, no solo los resultados exitosos.\n2. **Fomenta la Autonomía**: Deja que tus hijos tomen decisiones y asuman responsabilidades apropiadas para su edad, lo que ayuda a desarrollar su sentido de competencia.\n3. **Escucha y Valida Sus Sentimientos**: Mostrar interés y comprensión por los pensamientos y sentimientos de tu hijo refuerza su valor y autoestima.\n</string>
+    <string name="lesson_button_text_1001">Descubre el Secreto de Elogiar Correctamente</string>
+    <string name="lesson_question_asked_1001">¿Cuál es la diferencia entre elogiar el esfuerzo frente al resultado, y cómo puede afectar esto a la relación entre padres e hijos?</string>
+    <string name="guide_category_title_0">1. Desarrollo Emocional y Personal</string>
+    <string name="guide_category_title_1">2. Educación y Aprendizaje</string>
+    <string name="guide_category_title_2">3. Salud y Bienestar</string>
+    <string name="guide_category_title_3">4. Valores y Empatía</string>
+    <string name="guide_category_title_4">5. Tecnología y Responsabilidad</string>
+    <string name="guide_category_description_0">Descubre cómo fortalecer la inteligencia emocional y la autoconfianza de tus hijos, claves para su éxito y bienestar.</string>
+    <string name="guide_category_description_1">Aprende técnicas para encender el amor por el aprendizaje en tus hijos, mejorando su educación y habilidades de gestión del tiempo.</string>
+    <string name="guide_category_description_2">Explora estrategias para promover hábitos saludables en tus hijos, desde nutrición balanceada hasta la importancia del sueño y ejercicio.</string>
+    <string name="guide_category_description_3">Impulsa la enseñanza de valores como la tolerancia y la empatía, preparando a tus hijos para ser individuos respetuosos y compasivos.</string>
+    <string name="guide_category_description_4">Domina el equilibrio entre tecnología y vida real para tus hijos, enseñándoles a usar el mundo digital de manera segura y responsable.</string>
+    <string name="lesson_transcription_1002">**La Transformación de Ana y su Hijo Diego**\n
+
+Ana, madre de Diego, de ocho años, siempre había creído que era una buena comunicadora. Sin embargo, a menudo se encontraba en desacuerdo con su hijo, especialmente durante las tareas escolares y los momentos de juego.\n
+
+Un viernes por la tarde, cuando Diego luchaba con una tarea de matemáticas y mostraba signos de frustración, Ana resistió el impulso de darle las respuestas o decirle que se calmara. En lugar de eso, se sentó a su lado y dijo, "Parece que esta tarea es realmente un desafío para ti". Diego miró a su madre, sorprendido por su respuesta empática. Esto abrió una conversación en la que Diego pudo expresar sus dificultades y, juntos, buscaron soluciones.\n
+
+Este cambio en la comunicación no solo ayudó a Diego a sentirse más comprendido y apoyado, sino que también permitió a Ana guiarlo de manera más efectiva hacia la solución de problemas. Las conversaciones entre ellos se convirtieron en diálogos más ricos y constructivos, mejorando significativamente su relación.\n
+
+**Conclusión: Un Viaje Hacia la Comprensión Mutua**\n
+
+La historia de Ana y Diego nos muestra que la comunicación efectiva va más allá de simplemente hablar y escuchar. Se trata de conectar en un nivel más profundo, entendiendo y validando las emociones del otro. Este enfoque no solo resuelve conflictos, sino que también fortalece el vínculo entre padres e hijos, creando una atmósfera de confianza y respeto mutuo.</string>
+    <string name="lesson_conclusion_2000">##Consejos Prácticos\n
+
+1. **Fomentar la Autonomía**: Anime a su hijo a enfrentar los problemas por sí mismo antes de intervenir. Esto desarrolla la independencia y la autoconfianza.
+2. **Crear un Ambiente Favorable para el Estudio**: Establezca un lugar tranquilo y organizado en casa dedicado a los estudios.
+3. **Ofrecer Apoyo Emocional y Paciencia**: Cada niño tiene su propio ritmo de aprendizaje. Ofrecer apoyo emocional y paciencia es clave en su desarrollo.</string>
+    <string name="lesson_conclusion_1002">##Consejos Prácticos\n
+
+1. **Escucha Activa**: Dedica tu atención completa cuando tu hijo hable. Evita interrumpir y muestra interés en sus palabras.\n
+2. **Validación Emocional**: Reconoce y valida los sentimientos de tu hijo. Esto no significa estar siempre de acuerdo, sino mostrar comprensión por sus emociones.\n
+3. **Comunicación No Verbal**: Sé consciente de tus expresiones faciales, gestos y tono de voz. La comunicación no verbal puede ser tan poderosa como las palabras que usas.</string>
+    <string name="lesson_transcription_2000">Lucía, madre de Gabriel, un niño de siete años, notó que su hijo a menudo se sentía abrumado y desmotivado con los deberes. Lucía reconoció la necesidad de cambiar su enfoque para hacer de la tarea una experiencia más positiva y enriquecedora.\n
+
+En lugar de simplemente dar respuestas o dictar cómo hacer las tareas, Lucía empezó a emplear técnicas de guía y descubrimiento. Por ejemplo, cuando Gabriel tenía dificultades con un problema matemático, Lucía no le daba la solución inmediatamente. En cambio, hacía preguntas que guiaban a Gabriel a pensar en el problema de diferentes maneras, como "¿Qué te dice el problema que necesitas encontrar?" o "¿Hay alguna otra forma de abordar esta pregunta?"\n
+
+Lucía también estableció un área específica en casa para los deberes, libre de distracciones, donde Gabriel podía concentrarse. Además, creó una rutina regular para los deberes, pero permitiendo flexibilidad para adaptarse a las necesidades de Gabriel y a su nivel de energía cada día.\n
+
+**Conclusión: Apoyando la Autonomía y el Entendimiento**\n
+
+La experiencia de Lucía y Gabriel ilustra la importancia de un enfoque que fomente la autonomía y el pensamiento crítico en los niños. Ayudar con los deberes no significa hacer el trabajo por ellos, sino brindar el apoyo necesario para que desarrollen sus habilidades de resolución de problemas.</string>
+    <string name="lesson_conclusion_2001">## Consejos prácticos\n
+
+1. **Hazlo Divertido**: Transforma la organización en un juego, utilizando herramientas visuales y creativas para que los niños encuentren alegría en la planificación y gestión del tiempo.\n
+2. **Reconoce Esfuerzos**: Celebra las tareas completadas por los niños, no importa qué tan pequeñas, para motivarlos a seguir practicando buenos hábitos de organización.\n
+3. **Planificación en Familia**: Involucra a los niños en la planificación familiar para enseñarles colaboración y mejorar sus habilidades de organización de manera práctica y participativa.</string>
 
 </resources>

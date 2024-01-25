@@ -34,7 +34,7 @@ fun DefaultTopBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Start
             ) {
                 if (currentScreenTitle != null) {
                     Text(

@@ -5,19 +5,23 @@ data class LessonDataClass(
 
     val idLesson: Int,
 
-    val imageId: Int,
-
     val title: String,
     val subtitle: String,
-    val description: String,
 
     val transcription: String,
 
     val introduction: String,
     val videoId: String,
-    val conclusion: String,
+    val reference: String,
+
+
+    val conclusion: String?,
+    val buttonText: String?,
+    val questionAsked: String?,
 
     val isPremium: Boolean,
+
+    val lessonPages: Int,
 )
 data class LessonCategoryDataClass(
     val idCategory: Int,

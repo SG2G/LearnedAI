@@ -55,8 +55,8 @@ fun ChatsHistoryTopBar(
                     }
             ) {
                 Text(
-                    text = "PRO", color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.titleLarge,
+                    text = "Premium", color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)
                 )
             }

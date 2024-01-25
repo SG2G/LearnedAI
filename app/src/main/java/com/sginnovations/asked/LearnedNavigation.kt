@@ -390,6 +390,7 @@ fun LearnedNavigation(
             ) {
                 LessonStateFul(
                     vmLesson = vmLesson,
+                    vmAssistant = vmAssistant,
                     vmIntent = vmIntent,
                     vmPreferences = vmPreferences,
 
