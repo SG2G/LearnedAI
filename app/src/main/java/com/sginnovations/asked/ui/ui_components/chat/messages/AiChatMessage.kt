@@ -25,6 +25,7 @@ import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.chat.components.messageOptionsIcon
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.asked.ui.ui_components.chat.IconMsg
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.latex.JLatexMathPlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
@@ -34,8 +35,9 @@ private const val TAG = "ChatAiMessage"
 @Composable
 fun ChatAiMessage(
     assistantMessage: String,
-    haveIcon: Boolean = true,
+    isAssistant: Boolean = false,
 
+    onReportMessage: (String) -> Unit,
     onSetClip: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -60,10 +62,10 @@ fun ChatAiMessage(
         verticalAlignment = Alignment.Top,
         modifier = Modifier
             .background(backgroundColor)
-            .padding(if (haveIcon) 16.dp else 0.dp)
+            .padding(16.dp)
             .fillMaxSize()
     ) {
-        if (haveIcon) IconAssistantMsg()
+        if (isAssistant) IconAssistantMsg() else IconMsg()
 
         //val assistantMessageMarkdown = assistantMessage.replace("\n", "<br>")
         Log.d(TAG, "message: $assistantMessage")
@@ -100,6 +102,9 @@ fun ChatAiMessage(
             }
 
             messageOptionsIcon(
+                onReportMessage = {
+                    onReportMessage(markdownText)
+                },
                 onSetClip = {
                     onSetClip(markdownText)
                 }

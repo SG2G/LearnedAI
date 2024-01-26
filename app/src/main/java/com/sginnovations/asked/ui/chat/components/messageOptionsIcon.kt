@@ -2,7 +2,13 @@ package com.sginnovations.asked.ui.chat.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +28,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun messageOptionsIcon(
+    onReportMessage: () -> Unit,
     onSetClip: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -32,16 +39,19 @@ fun messageOptionsIcon(
     var targetColor by remember { mutableStateOf(noActiveIconColor) }
     val iconColor by animateColorAsState(targetColor, label = "")
 
-    IconButton(
-        onClick = { onSetClip() },
+    Row(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.copy_svgrepo_com),
-            contentDescription = "Copy text",
-            tint = iconColor,
+        IconButton(
+            onClick = { onSetClip() },
             modifier = Modifier
-                .size(20.dp)
-                .pointerInput(Unit) {
+                .size(18.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.copy_svgrepo_com),
+                contentDescription = "Copy text",
+                tint = iconColor,
+                modifier = Modifier.pointerInput(Unit) {
                     detectTapGestures(
                         onTap = {
                             scope.launch {
@@ -59,6 +69,39 @@ fun messageOptionsIcon(
                         }
                     )
                 }
-        )
-    } // Copy IconButton
+            )
+        } // Copy IconButton
+        Spacer(modifier =Modifier.width(4.dp))
+        IconButton(
+            onClick = { onReportMessage() },
+            modifier = Modifier
+                .size(18.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Flag,
+                contentDescription = "Report Text",
+                tint = iconColor,
+                modifier = Modifier
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = {
+                                scope.launch {
+                                    targetColor = activeIconColor
+                                    delay(200)
+                                    targetColor = noActiveIconColor
+                                    onReportMessage()
+                                }
+                            },
+                            onPress = {
+                                targetColor = activeIconColor
+                                tryAwaitRelease()
+                                targetColor = noActiveIconColor
+                                onReportMessage()
+                            }
+                        )
+                    }
+            )
+        } // Copy IconButton
+    }
+
 }

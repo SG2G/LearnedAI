@@ -60,6 +60,7 @@ import com.sginnovations.asked.viewmodel.LessonViewModel
 import com.sginnovations.asked.viewmodel.NavigatorViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
+import com.sginnovations.asked.viewmodel.ReportViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
@@ -79,6 +80,7 @@ fun LearnedNavigation(
     vmNavigator: NavigatorViewModel = hiltViewModel(),
     vmLesson: LessonViewModel = hiltViewModel(),
     vmAssistant: AssistantViewModel = hiltViewModel(),
+    vmReport: ReportViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -101,6 +103,8 @@ fun LearnedNavigation(
             vmBilling.connectToGooglePlay()
 
             checkIsPremium()
+
+            vmToken.ensureMinimumTokensUseCaseCheckPremium()
         }
     }
 
@@ -344,6 +348,7 @@ fun LearnedNavigation(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
                     vmAuth = vmAuth,
+                    vmReport = vmReport,
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
@@ -377,6 +382,7 @@ fun LearnedNavigation(
                     vmChat = vmChat,
                     vmToken = vmToken,
                     vmAuth = vmAuth,
+                    vmReport = vmReport,
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )

@@ -2,6 +2,7 @@ package com.sginnovations.asked.ui.main_bottom_bar.parental_chat
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -69,9 +70,11 @@ import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
+import com.sginnovations.asked.data.report.Report
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
+import com.sginnovations.asked.ui.ui_components.chat.ReportDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
@@ -80,6 +83,7 @@ import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.AuthViewModel
+import com.sginnovations.asked.viewmodel.ReportViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.StateFlow
@@ -92,6 +96,7 @@ fun AssistantChatStateFul(
     vmAssistant: AssistantViewModel,
     vmToken: TokenViewModel,
     vmAuth: AuthViewModel,
+    vmReport: ReportViewModel,
 
     onNavigateSubscriptionScreen: () -> Unit,
 ) {
@@ -112,6 +117,9 @@ fun AssistantChatStateFul(
     val tokens = vmToken.tokens
 
     val conversationCostToken = vmAssistant.newConversationCostTokens()
+
+    val reportText = remember { mutableStateOf("") }
+    val showReportDialog = remember { mutableStateOf(false) }
 
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
@@ -140,6 +148,11 @@ fun AssistantChatStateFul(
         userName = userName,
         userProfileUrl = userProfileUrl,
 
+        onReportMessage = { text ->
+            reportText.value = text
+            showReportDialog.value = true
+        },
+
         ) { message ->
         scope.launch {
             vmAssistant.sendMessageToOpenaiApi(message)
@@ -151,6 +164,19 @@ fun AssistantChatStateFul(
             onSeePremiumSubscription = {
                 showNoTokensDialog.value = false
                 onNavigateSubscriptionScreen()
+            }
+        )
+    }
+    if (showReportDialog.value) {
+        ReportDialog(
+            reportText = reportText.value,
+
+            onDismissRequest = { showReportDialog.value = false },
+            onSendReport = {
+                val report = Report(reportText.value, null)
+                vmReport.sendReport(report)
+                showReportDialog.value = false
+                Toast.makeText(context, "Report sent successfully ", Toast.LENGTH_SHORT).show()
             }
         )
     }
@@ -170,6 +196,8 @@ fun AssistantChatStateLess(
 
     userName: String?,
     userProfileUrl: String?,
+
+    onReportMessage: (String) -> Unit,
 
     sendMessageToChatbot: (String) -> Unit,
 ) {
@@ -193,8 +221,6 @@ fun AssistantChatStateLess(
     val snackbarOffset = remember { Animatable(0f) }
 
     val backgroundColor = MaterialTheme.colorScheme.background
-
-
     /**
      * SnackBarAnimation
      */
@@ -352,10 +378,8 @@ fun AssistantChatStateLess(
                                     verticalAlignment = Alignment.Top,
                                     modifier = Modifier
                                         .background(backgroundColor)
-                                        .padding(16.dp)
                                         .fillMaxSize()
                                 ) {
-                                    IconAssistantMsg()
 
                                     if (chatAnimation.value) {
                                         // Animate the last message
@@ -367,7 +391,7 @@ fun AssistantChatStateLess(
                                             ElevatedCard(
                                                 modifier = Modifier.padding(horizontal = 16.dp),
                                                 colors = CardDefaults.elevatedCardColors(
-                                                    containerColor = MaterialTheme.colorScheme.primary
+                                                    containerColor = MaterialTheme.colorScheme.primaryContainer
                                                 )
                                             ) {
                                                 Text(
@@ -382,8 +406,9 @@ fun AssistantChatStateLess(
                                         // Message static last AI msg
                                         ChatAiMessage(
                                             message.content,
-                                            haveIcon = false,
+                                            isAssistant = true,
 
+                                            onReportMessage = { onReportMessage(it) },
                                             onSetClip = { text ->
                                                 Log.d(TAG, "clipboardManager: text-> $text ")
                                                 clipboardManager.setText(AnnotatedString(text))
@@ -408,8 +433,10 @@ fun AssistantChatStateLess(
                         } else {
                             // Other AI msg
                             ChatAiMessage(
-                                message.content,
+                                assistantMessage = message.content,
+                                isAssistant = true,
 
+                                onReportMessage = { onReportMessage(it) },
                                 onSetClip = { text ->
                                     clipboardManager.setText(AnnotatedString(text))
                                 }
@@ -429,8 +456,10 @@ fun AssistantChatStateLess(
                             }
                         )
                         ChatAiMessage(
-                            assistantPlaceHolder,
+                            assistantMessage = assistantPlaceHolder,
+                            isAssistant = true,
 
+                            onReportMessage = { onReportMessage(it) },
                             onSetClip = { text ->
                                 clipboardManager.setText(AnnotatedString(text))
                             }

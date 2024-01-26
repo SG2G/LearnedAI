@@ -1,11 +1,13 @@
 package com.sginnovations.asked.ui.ui_components.profile
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun ConfirmActionDialog(
@@ -31,7 +33,8 @@ fun ConfirmActionDialog(
         confirmButton = {
             Button(
                 onClick = onConfirm,
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error)
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = confirmText,
@@ -41,11 +44,14 @@ fun ConfirmActionDialog(
             }
         },
         dismissButton = {
-            Button(onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)) {
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 Text(
                     text = dismissText,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.titleSmall
                 )
             }

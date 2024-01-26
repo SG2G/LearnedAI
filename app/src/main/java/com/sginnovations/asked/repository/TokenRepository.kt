@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sginnovations.asked.Constants.Companion.TOKENS_NAME
 import com.sginnovations.asked.Constants.Companion.USERS_NAME
+import com.sginnovations.asked.domain.token.EnsureMinimumTokensUseCase
 import com.sginnovations.asked.domain.token.GetTokensUseCase
 import com.sginnovations.asked.domain.token.IncrementTokensUseCase
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
@@ -23,6 +24,8 @@ private const val TAG = "TokenRepository"
 class TokenRepository @Inject constructor(
     private val getTokensUseCase: GetTokensUseCase,
     private val incrementTokensUseCase: IncrementTokensUseCase,
+    private val ensureMinimumTokensUseCase: EnsureMinimumTokensUseCase,
+
     private val authRepository: AuthRepository,
 
     private val remoteConfigRepository: RemoteConfigRepository,
@@ -49,6 +52,10 @@ class TokenRepository @Inject constructor(
         Log.i(TAG, "incrementTokens")
         if (documentReference != null) incrementTokensUseCase(documentReference!!, numTokens)
     }
+    private suspend fun ensureMinimumTokensUseCase() {
+        Log.i(TAG, "ensureMinimumTokensUseCase")
+        if (documentReference != null) ensureMinimumTokensUseCase(documentReference!!)
+    }
 
     suspend fun giveRefCodeReward() = incrementTokens(
         remoteConfigRepository.getInviteRewardTokens().toInt()
@@ -56,6 +63,9 @@ class TokenRepository @Inject constructor(
 
     suspend fun lessTokenCheckPremium(num: Int) {
         if (!checkIsPremium()) incrementTokens(num)
+    }
+    suspend fun ensureMinimumTokensUseCaseCheckPremium() {
+        if (!checkIsPremium()) ensureMinimumTokensUseCase()
     }
 
     fun giveInvitorReward(inviteUserId: String) { // TODO USE CASE

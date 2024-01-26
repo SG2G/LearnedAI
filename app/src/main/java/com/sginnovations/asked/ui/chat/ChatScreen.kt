@@ -1,4 +1,3 @@
-
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 
 package com.sginnovations.asked.ui.chat
@@ -6,6 +5,7 @@ package com.sginnovations.asked.ui.chat
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -82,10 +82,13 @@ import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
 import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
+import com.sginnovations.asked.data.report.Report
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.chat.components.ConfidenceDialog
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
+import com.sginnovations.asked.ui.ui_components.chat.IconMsg
 import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
+import com.sginnovations.asked.ui.ui_components.chat.ReportDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.ui.ui_components.chat.TypingTextAnimation
 import com.sginnovations.asked.ui.ui_components.chat.messages.ChatAiMessage
@@ -96,6 +99,7 @@ import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
+import com.sginnovations.asked.viewmodel.ReportViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.StateFlow
@@ -110,6 +114,7 @@ fun ChatStateFul(
     vmChat: ChatViewModel,
     vmToken: TokenViewModel,
     vmAuth: AuthViewModel,
+    vmReport: ReportViewModel,
 
     onNavigateSubscriptionScreen: () -> Unit,
 ) {
@@ -131,6 +136,9 @@ fun ChatStateFul(
 
     val textConfidence = vmCamera.textConfidence
     val showConfidenceDialog = remember { mutableStateOf(false) }
+
+    val reportText = remember { mutableStateOf("") }
+    val showReportDialog = remember { mutableStateOf(false) }
 
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
@@ -160,8 +168,12 @@ fun ChatStateFul(
         userName = userName,
         userProfileUrl = userProfileUrl,
 
-        onShowConfidenceDialog = { showConfidenceDialog.value = true },
+        onReportMessage = { text ->
+            reportText.value = text
+            showReportDialog.value = true
+        },
 
+        onShowConfidenceDialog = { showConfidenceDialog.value = true },
         sendMessageToChatbot = { message ->
             scope.launch {
                 vmChat.sendMessageToOpenaiApi(message)
@@ -177,6 +189,19 @@ fun ChatStateFul(
             onSeePremiumSubscription = {
                 showNoTokensDialog.value = false
                 onNavigateSubscriptionScreen()
+            }
+        )
+    }
+    if (showReportDialog.value) {
+        ReportDialog(
+            reportText = reportText.value,
+
+            onDismissRequest = { showReportDialog.value = false },
+            onSendReport = {
+                val report = Report(reportText.value, null)
+                vmReport.sendReport(report)
+                showReportDialog.value = false
+                Toast.makeText(context, "Report sent successfully ", Toast.LENGTH_SHORT).show()
             }
         )
     }
@@ -197,6 +222,8 @@ fun ChatStateLess(
 
     userName: String?,
     userProfileUrl: String?,
+
+    onReportMessage: (String) -> Unit,
 
     onShowConfidenceDialog: () -> Unit,
     sendMessageToChatbot: (String) -> Unit,
@@ -403,10 +430,8 @@ fun ChatStateLess(
                                     verticalAlignment = Alignment.Top,
                                     modifier = Modifier
                                         .background(backgroundColor)
-                                        .padding(16.dp)
                                         .fillMaxSize()
                                 ) {
-                                    IconAssistantMsg()
 
                                     if (chatAnimation.value) {
                                         // Animate the last message
@@ -418,7 +443,7 @@ fun ChatStateLess(
                                             ElevatedCard(
                                                 modifier = Modifier.padding(horizontal = 16.dp),
                                                 colors = CardDefaults.elevatedCardColors(
-                                                    containerColor = MaterialTheme.colorScheme.primary
+                                                    containerColor = MaterialTheme.colorScheme.primaryContainer
                                                 )
                                             ) {
                                                 Text(
@@ -432,9 +457,9 @@ fun ChatStateLess(
                                     } else {
                                         // Message static last AI msg
                                         ChatAiMessage(
-                                            message.content,
-                                            haveIcon = false,
+                                            assistantMessage = message.content,
 
+                                            onReportMessage = { onReportMessage(it) },
                                             onSetClip = { text ->
                                                 Log.d(TAG, "clipboardManager: text-> $text ")
                                                 clipboardManager.setText(AnnotatedString(text))
@@ -459,8 +484,9 @@ fun ChatStateLess(
                         } else {
                             // Other AI msg
                             ChatAiMessage(
-                                message.content,
+                                assistantMessage = message.content,
 
+                                onReportMessage = { onReportMessage(it) },
                                 onSetClip = { text ->
                                     clipboardManager.setText(AnnotatedString(text))
                                 }
@@ -480,8 +506,9 @@ fun ChatStateLess(
                             }
                         )
                         ChatAiMessage(
-                            assistantPlaceHolder,
+                            assistantMessage = assistantPlaceHolder,
 
+                            onReportMessage = { onReportMessage(it) },
                             onSetClip = { text ->
                                 clipboardManager.setText(AnnotatedString(text))
                             }
@@ -595,7 +622,8 @@ private suspend fun textConfidenceWarning(
 
     try {
         val confidenceLevel = "%.2f".format(Locale.US, textConfidence.doubleValue).toDouble()
-        val message = context.getString(R.string.snackbar_be_careful_the_message_may_contain_errors_confidence_level) + confidenceLevel
+        val message =
+            context.getString(R.string.snackbar_be_careful_the_message_may_contain_errors_confidence_level) + confidenceLevel
         snackbarHostState.showSnackbar(
             message = message,
             actionLabel = context.getString(R.string.snackbar_why),

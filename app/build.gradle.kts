@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sginnovations.asked"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 33
         versionCode = 18
         versionName = "1.2.3"

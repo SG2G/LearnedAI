@@ -120,7 +120,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun newConversationCostTokens() = remoteConfigRepository.getNewCameraConversationCostTokens()
-    fun lessTokenNewConversationCheckPremium() {
+    private fun lessTokenNewConversationCheckPremium() {
         viewModelScope.launch {
             val costTokens = newConversationCostTokens()
             tokensRepository.lessTokenCheckPremium(costTokens.toInt())

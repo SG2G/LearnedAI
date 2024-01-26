@@ -46,7 +46,7 @@ import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonDataClass
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.ComposeYouTubePlayer
-import com.sginnovations.asked.ui.ui_components.lesson.CustomAlertDialog
+import com.sginnovations.asked.ui.ui_components.lesson.EndLessonDialog
 import com.sginnovations.asked.ui.ui_components.lesson.LessonDescriptionWithLinks
 import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.IntentViewModel
@@ -99,7 +99,7 @@ fun LessonStateFul(
         },
     )
     if (showEndLesson.value) {
-        CustomAlertDialog(
+        EndLessonDialog(
             onDismissRequest = {
                 showEndLesson.value = false
             },
@@ -107,9 +107,6 @@ fun LessonStateFul(
                 showEndLesson.value = false
                 onNavigateBack()
             },
-            image = painterResource(id = R.drawable.burro),
-            title = "Well Done!",
-            buttonText = "Ok thankiu"
         )
     }
 }

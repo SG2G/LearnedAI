@@ -36,26 +36,31 @@ class TokenViewModel @Inject constructor(
         }
     }
 
-    fun oneLessToken() = lessTokenCheckPremium(ONE_LESS_TOKEN)
-    fun xLessToken(num: Int) = lessTokenCheckPremium(num)
-
-    fun lessTokenCheckPremium(num: Int) {
+    fun ensureMinimumTokensUseCaseCheckPremium() {
         viewModelScope.launch {
-            Log.i(TAG, "oneLessToken")
-            tokenRepository.lessTokenCheckPremium(num)
+            tokenRepository.ensureMinimumTokensUseCaseCheckPremium()
         }
     }
-    fun getCameraMathTokens(): String {
-        Log.i(TAG, "getCameraMathTokens")
-        return remoteConfigRepository.getCameraMathTokens()
-    }
-    fun getCameraTextTokens(): String {
-        Log.i(TAG, "getCameraMathTokens")
-        return remoteConfigRepository.getCameraTextTokens()
-    }
-
     fun switchPointsVisibility() {
         Log.i(TAG, "switchPointsVisibility")
         _pointsScreenVisible.value = !_pointsScreenVisible.value
     }
 }
+
+//fun getCameraMathTokens(): String {
+//        Log.i(TAG, "getCameraMathTokens")
+//        return remoteConfigRepository.getCameraMathTokens()
+//    }
+//    fun getCameraTextTokens(): String {
+//        Log.i(TAG, "getCameraMathTokens")
+//        return remoteConfigRepository.getCameraTextTokens()
+//    }
+//    fun oneLessToken() = lessTokenCheckPremium(ONE_LESS_TOKEN)
+//    fun xLessToken(num: Int) = lessTokenCheckPremium(num)
+//
+//    private fun lessTokenCheckPremium(num: Int) {
+//        viewModelScope.launch {
+//            Log.i(TAG, "oneLessToken")
+//            tokenRepository.lessTokenCheckPremium(num)
+//        }
+//    }

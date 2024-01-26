@@ -112,7 +112,7 @@ class LessonDataSource @Inject constructor(
             conclusion = context.getString(R.string.lesson_conclusion_2001),
             buttonText = "Juega y Organiza: Aprende Cómo",
             questionAsked = "¿Puedes darme más ejemplos de juegos o actividades lúdicas que los padres pueden usar para enseñar a los niños sobre la gestión del tiempo y la organización?",
-            isPremium = false,
+            isPremium = true,
             lessonPages = 1
         ),
         /**
@@ -130,7 +130,7 @@ class LessonDataSource @Inject constructor(
             conclusion = "",
             buttonText = "",
             questionAsked = "",
-            isPremium = false,
+            isPremium = true,
             lessonPages = 1
         ),
     )

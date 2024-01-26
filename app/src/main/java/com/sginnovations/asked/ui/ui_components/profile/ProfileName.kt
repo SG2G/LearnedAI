@@ -22,7 +22,7 @@ import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import kotlinx.coroutines.async
 
 @Composable
-fun ProfileName(userAuth: String) {
+fun ProfileName(userName: String) {
     val scope = rememberCoroutineScope()
     var isPremium by remember { mutableStateOf(false) }
 
@@ -35,7 +35,7 @@ fun ProfileName(userAuth: String) {
         modifier = Modifier.padding(horizontal = 16.dp),
     ) {
         Text(
-            text = userAuth,
+            text = userName.capitalizeFirstLetter(),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary,
         )
@@ -57,4 +57,9 @@ fun ProfileName(userAuth: String) {
             )
         }
     }
+}
+
+fun String.capitalizeFirstLetter(): String {
+    if (this.isEmpty()) return ""
+    return this[0].uppercase() + this.substring(1)
 }

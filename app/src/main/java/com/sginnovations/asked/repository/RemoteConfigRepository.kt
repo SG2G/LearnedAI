@@ -36,8 +36,8 @@ class RemoteConfigRepository @Inject constructor() {
     fun getDefaultTokens()= getValue(RC_DEFAULT_TOKENS)
     fun getAdRewardTokens() = getValue(RC_AD_REWARD_TOKENS)
     fun getInviteRewardTokens() = getValue(RC_INVITE_REWARD_TOKENS)
-    fun getCameraMathTokens() = getValue(RC_CAMERA_MATH_TOKENS)
-    fun getCameraTextTokens() = getValue(RC_CAMERA_TEXT_TOKENS)
+//    fun getCameraMathTokens() = getValue(RC_CAMERA_MATH_TOKENS)
+//    fun getCameraTextTokens() = getValue(RC_CAMERA_TEXT_TOKENS)
     fun getNewCameraConversationCostTokens() = getValue(RC_NEW_CAMERA_CONVERSATION_TOKENS)
     fun getNewAssistConversationCostTokens() = getValue(RC_NEW_ASSISTANT_CONVERSATION_TOKENS)
 
@@ -45,7 +45,7 @@ class RemoteConfigRepository @Inject constructor() {
     fun getOpenAIAPI() = getValue(RC_OPENAI)
     fun getMathpixAPI() = getValue(RC_MATHPIX)
     // ADS
-    fun isAdsAllowed() = getValue(RC_ADS_ALLOWED)
+//    fun isAdsAllowed() = getValue(RC_ADS_ALLOWED)
 
 
     /**

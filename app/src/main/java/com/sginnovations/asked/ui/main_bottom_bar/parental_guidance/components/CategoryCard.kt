@@ -69,13 +69,13 @@ fun CategoryLessonCard(
                     Text(
                         text = category.title,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = category.subtitle,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )

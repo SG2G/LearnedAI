@@ -82,7 +82,7 @@ fun LearnedBottomBar(
                             }
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedIconColor = MaterialTheme.colorScheme.onSurface,
                             indicatorColor = MaterialTheme.colorScheme.primaryContainer,
 
                             unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -109,7 +109,7 @@ fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
             modifier = Modifier
                 .width(lineWidth)
                 .height(2.dp)
-                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 50))
+                .background(MaterialTheme.colorScheme.onSurface, RoundedCornerShape(percent = 50))
         )
     }
 }

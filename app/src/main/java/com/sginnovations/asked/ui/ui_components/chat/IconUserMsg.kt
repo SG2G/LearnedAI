@@ -14,30 +14,30 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sginnovations.asked.R
 
-/**
- * Photo
- */
-@Composable
-fun IconUserMsg(
-    photoUrl: String,
-) {
-    AsyncImage(
-        model = photoUrl,
-        contentDescription = null,
-        modifier = Modifier
-            .background(Color.Transparent)
-            .clip(CircleShape)
-            .size(32.dp)
-    )
-}
+///**
+// * Photo
+// */
+//@Composable
+//fun IconUserMsg(
+//    photoUrl: String,
+//) {
+//    AsyncImage(
+//        model = photoUrl,
+//        contentDescription = null,
+//        modifier = Modifier
+//            .background(Color.Transparent)
+//            .clip(CircleShape)
+//            .size(32.dp)
+//    )
+//}
 
 /**
  * Default Photo Photo
  */
 @Composable
 fun IconAssistantMsg() {
-
     val image: Painter = painterResource(id = R.drawable.asked30)
+
     Image(
         painter = image,
         contentDescription = null,
@@ -46,6 +46,23 @@ fun IconAssistantMsg() {
             .clip(CircleShape)
             .size(32.dp)
     )
+}
+/**
+ * Default Photo Photo
+ */
+@Composable
+fun IconMsg() {
+    val image: Painter = painterResource(id = R.drawable.burro)
+
+    Image(
+        painter = image,
+        contentDescription = null,
+        modifier = Modifier
+            .background(Color.Transparent)
+            .clip(CircleShape)
+            .size(32.dp)
+    )
+}
 
 //    AsyncImage(
 //        model = ASSISTANT_PROFILE_URL,
@@ -55,4 +72,3 @@ fun IconAssistantMsg() {
 //            .clip(CircleShape)
 //            .size(32.dp)
 //    )
-}
