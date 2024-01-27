@@ -63,8 +63,12 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
     suspend fun navigateAuthToX(navController: NavController, screen: ScreensDestinations) {
         withContext(Dispatchers.Main) {
             try {
-                navController.popBackStack(navController.graph.startDestinationId, true)
-                navController.navigate(route = screen.route)
+                navController.navigate(screen.route) {
+                    // This ensures that the previous screen is removed from the backstack
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

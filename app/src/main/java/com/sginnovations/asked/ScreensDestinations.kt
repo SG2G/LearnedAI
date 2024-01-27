@@ -74,6 +74,10 @@ object Crop : ScreensDestinations {
     override val route = "Crop"
     override fun getName(context: Context) = context.getString(R.string.topbar_crop)
 }
+object OnBoarding : ScreensDestinations {
+    override val route = "OnBoarding"
+    override fun getName(context: Context) = "OnBoarding"
+}
 
 object Auth : ScreensDestinations {
     override val route = "Auth"

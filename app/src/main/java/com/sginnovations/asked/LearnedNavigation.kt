@@ -89,12 +89,13 @@ fun LearnedNavigation(
 
     val intent = remember { (context as Activity).intent }
 
+    val firstBottomScreen = ParentalAssist
     val firsTimeLaunch = vmPreferences.firstTimeLaunch
 
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
             // User its logged - set up
-            vmNavigator.navigateAuthToX(navController, ParentalGuidance)
+            vmNavigator.navigateAuthToX(navController, firstBottomScreen)
 
             Log.i(TAG, "Calling SetUp")
             vmAuth.userJustLogged()
@@ -116,6 +117,7 @@ fun LearnedNavigation(
             Auth.route -> Auth
 
             Crop.route -> Crop
+            OnBoarding.route -> OnBoarding
 
             ChatsHistory.route -> ChatsHistory
             ParentalGuidance.route -> ParentalGuidance
@@ -156,14 +158,12 @@ fun LearnedNavigation(
         },
 
         bottomBar = {
-            if (!firsTimeLaunch.value) {
-                LearnedBottomBar(
-                    navController = navController,
-                    currentScreen = currentScreen,
-                    canNavigateBack = navController.previousBackStackEntry != null,
-                    backStackEntry = backStackEntry,
-                )
-            }
+            LearnedBottomBar(
+                navController = navController,
+                currentScreen = currentScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                backStackEntry = backStackEntry,
+            )
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
@@ -177,7 +177,19 @@ fun LearnedNavigation(
                     vmAuth = vmAuth,
                 ) {
                     scope.launch {
-                        vmNavigator.navigateAuthToX(navController, ParentalGuidance)
+                        // IMPORTANT
+                        if (firsTimeLaunch.value) {
+                            vmNavigator.navigateAuthToX(
+                                navController,
+                                OnBoarding
+                            )
+                        } else {
+                            vmNavigator.navigateAuthToX(
+                                navController,
+                                firstBottomScreen
+                            )
+                        }
+
                         Log.i(TAG, "Calling SetUp when sign in")
                         vmAuth.userJustLogged()
                         vmToken.startTokenListener()
@@ -199,25 +211,16 @@ fun LearnedNavigation(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
+                CameraStateFul(
+                    vmCamera = vmCamera,
+                    vmToken = vmToken,
 
-                if (firsTimeLaunch.value) {
-                    Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
-                    onBoarding(
-                        onFinish = { scope.launch { vmPreferences.setNotFirstTime() } },
-                        onSkip = { scope.launch { vmPreferences.setNotFirstTime() } },
-                    )
-                } else {
-                    CameraStateFul(
-                        vmCamera = vmCamera,
-                        vmToken = vmToken,
+                    onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
 
-                        onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
-
-                        onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
-                        onCropNavigation = { navController.navigate(route = Crop.route) },
-                    )
-                    EarnPoints(vmToken, navController)
-                }
+                    onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
+                    onCropNavigation = { navController.navigate(route = Crop.route) },
+                )
+                EarnPoints(vmToken, navController)
             }
 
             composable(
@@ -252,6 +255,9 @@ fun LearnedNavigation(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
+                /**
+                 * ONBOARDING
+                 */
                 ParentalAssistantStateFul(
                     vmAssistant = vmAssistant,
                     vmPreferences = vmPreferences,
@@ -310,6 +316,20 @@ fun LearnedNavigation(
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
                     onNavigateNewChat = { scope.launch { vmNavigator.navigateNewChat(navController) } }
                 )
+            }
+            composable(
+                route = OnBoarding.route
+            ) {
+                suspend fun endOnBoarding() {
+                    vmPreferences.setNotFirstTime()
+                    vmNavigator.navigateAuthToX(navController, firstBottomScreen)
+                }
+                Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
+                onBoarding(
+                    onFinish = { scope.launch { endOnBoarding() } },
+                    onSkip = { scope.launch { endOnBoarding() } },
+                )
+
             }
             /**
              * NewConversation

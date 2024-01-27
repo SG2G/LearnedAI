@@ -46,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
 import com.sginnovations.asked.ui.subscription.components.TitleBenefit
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
@@ -53,6 +54,8 @@ import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.time.LocalDateTime
 
 private const val TAG = "SubscriptionStateFull"
 
@@ -71,11 +74,12 @@ fun SubscriptionStateFull(
     val productAnnually = vmBilling.productAnnually
 
     val priceSubAnnually = remember { mutableStateOf<String?>(null) }
+    val priceDiscountSubAnnually = remember { mutableStateOf<String?>(null) }
     val priceSubMonthly = remember { mutableStateOf<String?>(null) }
 
     Log.d(
         TAG,
-        "productMonthly-> ${productMonthly.value.toString()} productWeekly-> ${productAnnually.value.toString()} "
+        "productMonthly-> ${productMonthly.value.toString()} productAnnually-> ${productAnnually.value.toString()} "
     )
 
     val context = LocalContext.current
@@ -98,15 +102,30 @@ fun SubscriptionStateFull(
         var attempts = 0
         while (priceSubAnnually.value == null && priceSubMonthly.value == null && attempts < 20) { // try up to 20 times
             delay(200)
-            priceSubAnnually.value =
+            Log.d(TAG, "size: ${productAnnually.value?.subscriptionOfferDetails?.size} ")
+
+            if (productAnnually.value?.subscriptionOfferDetails?.size == 1) {
+                priceSubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+            } else {
+                priceDiscountSubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+
+                priceSubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.getOrNull(1)?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+            }
+
+            priceSubMonthly.value =
                 productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
                     ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
 
-            priceSubMonthly.value =
-                productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
-                    ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
-
-            Log.i(TAG, "$attempts $priceSubMonthly / $priceSubAnnually")
+            Log.i(
+                TAG,
+                "$attempts priceSubMonthly -> $priceSubMonthly / priceSubAnnually -> $priceSubAnnually / priceDiscountSubAnnually -> ${priceDiscountSubAnnually.value}"
+            )
 
             attempts++
         }
@@ -123,6 +142,7 @@ fun SubscriptionStateFull(
             productAnnually,
 
             priceSubAnnually,
+            priceDiscountSubAnnually,
             priceSubMonthly,
 
             userOption,
@@ -157,13 +177,6 @@ fun SubscriptionStateFull(
             verticalArrangement = Arrangement.Top
         ) {
             Box {
-                Image(
-                    painter = painterResource(id = R.drawable.subscription_background_school),
-                    contentDescription = "subscription_background_school",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .alpha(0.1f)
-                )
                 Column {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -195,6 +208,7 @@ fun SubscriptionStateLess(
     productAnnually: MutableState<ProductDetails?>,
 
     priceSubAnnually: MutableState<String?>,
+    priceDiscountSubAnnually: MutableState<String?>,
     priceSubMonthly: MutableState<String?>,
 
     userOption: MutableState<Option>,
@@ -203,19 +217,22 @@ fun SubscriptionStateLess(
 
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
+    //Define the target date here
+    val targetDate =
+        LocalDateTime.of(2024, 5, 30, 0, 0) // Example: May 30, 2024 at midnight
+
     val selectedPlan = remember { mutableStateOf(productAnnually) }
 
     when (userOption.value) {
-        Option.OptionMonthly -> selectedPlan.value = productAnnually
-        Option.OptionAnnually -> selectedPlan.value = productMonthly
+        Option.OptionMonthly -> selectedPlan.value = productMonthly
+        Option.OptionAnnually -> selectedPlan.value = productAnnually
     }
-    Log.i(TAG, "SubscriptionStateLess - $priceSubMonthly / $priceSubAnnually")
+
+    Log.i(TAG, "userOption -> ${userOption.value} selectedPlan -> ${selectedPlan.value}")
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .scrollable(rememberScrollState(), Orientation.Vertical),
-        verticalArrangement = Arrangement.Center
+            .fillMaxSize(),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter
@@ -243,7 +260,11 @@ fun SubscriptionStateLess(
                     IconButton(onClick = { }) {}
                 }
                 /**
-                 * Benfits
+                 * CountDown
+                 */
+                CountdownTimer(targetDate = targetDate)
+                /**
+                 * Benefits
                  */
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -302,140 +323,135 @@ fun SubscriptionStateLess(
             }
         }
 
+
         /**
          * Products
          */
-        // Product 1 - Weekly
-        priceSubMonthly.value?.let { price ->
-            SubscriptionCard(
-                durationTime = stringResource(R.string.subscription_monthly),
-                smallText = stringResource(R.string.subscription_monthly_small_text),
-                allPrice = price,
-                subscriptionOption = Option.OptionMonthly,
-                userOption = userOption.value
-            ) { userOption.value = Option.OptionMonthly }
-        }
-
-        // Product 2 - LifeTime
-        priceSubAnnually.value?.let { price ->
-            SubscriptionCard(
-                durationTime = stringResource(R.string.subscription_annually),
-                smallText = stringResource(R.string.subscription_annually_small_text),
-                allPrice = price,
-                subscriptionOption = Option.OptionAnnually,
-                userOption = userOption.value
-            ) { userOption.value = Option.OptionAnnually }
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        Column(
+            verticalArrangement = Arrangement.Center
         ) {
-            Button(
-                onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } }, //TODO AD
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .height(58.dp),
-                shape = RoundedCornerShape(15.dp)
+            // Product 1 - Weekly
+            priceSubMonthly.value?.let { price ->
+                SubscriptionCard(
+                    durationTime = stringResource(R.string.subscription_monthly),
+                    smallText = stringResource(R.string.subscription_monthly_small_text),
+                    allPrice = price,
+                    priceDiscount = null,
+                    subscriptionOption = Option.OptionMonthly,
+                    userOption = userOption.value
+                ) { userOption.value = Option.OptionMonthly }
+            }
+
+            // Product 2 - LifeTime
+            priceSubAnnually.value?.let { price ->
+                SubscriptionCard(
+                    durationTime = stringResource(R.string.subscription_annually),
+                    smallText = stringResource(R.string.subscription_annually_small_text),
+                    allPrice = price,
+                    priceDiscount = priceDiscountSubAnnually.value,
+                    subscriptionOption = Option.OptionAnnually,
+                    userOption = userOption.value
+                ) { userOption.value = Option.OptionAnnually }
+            }
+        }
+
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            /**
+             * Button
+             */
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = stringResource(R.string.subscription_unlock_asked_ai_pro),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Row(
-                    modifier = Modifier.height(24.dp)
+                Button(
+                    onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } }, //TODO AD
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .height(58.dp),
+                    shape = RoundedCornerShape(15.dp)
                 ) {
+                    Text(
+                        text = stringResource(R.string.subscription_unlock_asked_ai_pro),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Row(
+                        modifier = Modifier.height(24.dp)
+                    ) {
 
+                    }
+                }
+            }
+
+            /**
+             * Small Letter
+             */
+            val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
+            if (userOption.value == Option.OptionAnnually) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(28.dp)
+                        .padding(smallLetterPadding),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box {
+                        Text(
+                            text = stringResource(R.string.subscription_cancel_anytime),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row {
+                        Icon(
+                            imageVector = Icons.Filled.Shield,
+                            contentDescription = "Shield",
+                            tint = Color(0xFF8dad63)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.subscription_no_payment_now),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(28.dp)
+                        .padding(smallLetterPadding),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box {
+                        Text(
+                            text = stringResource(R.string.subscription_cancel_anytime),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row {
+                        Text(
+                            text = "",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                 }
             }
         }
-        /**
-         * Small Letter
-         */
-        val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
-        if (userOption.value == Option.OptionAnnually) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(28.dp)
-                    .padding(smallLetterPadding),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box {
-                    Text(
-                        text = stringResource(R.string.subscription_cancel_anytime),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Row {
-                    Icon(
-                        imageVector = Icons.Filled.Shield,
-                        contentDescription = "Shield",
-                        tint = Color(0xFF8dad63)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = stringResource(R.string.subscription_no_payment_now),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
-        } else {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(28.dp)
-                    .padding(smallLetterPadding),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box {
-                    Text(
-                        text = stringResource(R.string.subscription_cancel_anytime),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Row {
-                    Text(
-                        text = "",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
-        }
-    }
-}
 
-
-fun calculatePercentageSave(
-    priceSubMonthly: MutableState<String?>,
-    priceSubAnnually: MutableState<String?>,
-): Double {
-    // Obtener los valores de los precios como enteros
-    val monthlyPrice = priceSubMonthly.value?.toIntOrNull() ?: 0
-    val annualPrice = priceSubAnnually.value?.toIntOrNull() ?: 0
-
-    // Calcular el costo total si se paga mensualmente durante un año
-    val totalCostMonthly = monthlyPrice * 12
-
-    // Calcular el ahorro
-    val annualSavings = totalCostMonthly - annualPrice
-
-    // Calcular el porcentaje de ahorro
-    return if (totalCostMonthly > 0) {
-        (annualSavings.toDouble() / totalCostMonthly.toDouble()) * 100
-    } else {
-        0.0
     }
 }

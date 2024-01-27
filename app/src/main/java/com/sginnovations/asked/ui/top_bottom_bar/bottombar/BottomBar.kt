@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ import androidx.navigation.NavController
 import com.sginnovations.asked.Auth
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.OnBoarding
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
@@ -53,41 +55,44 @@ fun LearnedBottomBar(
 ) {
     val context = LocalContext.current
 
-    Log.i(TAG, "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController")
+    Log.i(
+        TAG,
+        "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController"
+    )
     if (!canNavigateBack) {
         Log.i(TAG, "currentScreenTitle: $currentScreen")
-
         if (currentScreen?.route != Auth.route) {
-            val items = listOf(Camera, ChatsHistory, ParentalGuidance, ParentalAssist, Profile)
-            NavigationBar(
-                modifier = Modifier.height(64.dp),
-            ) {
-                items.forEach { item ->
-                    val isSelected = item.route == backStackEntry?.destination?.route
-                    NavigationBarItem(
-                        icon = {
-                            AnimatedIconWithLine(item = item, isSelected = isSelected)
-                        },
-                        selected = isSelected,
-                        onClick = {
-                            // This is where you handle navigation
-                            navController.navigate(item.route) {
-                                // This ensures that the previous screen is removed from the backstack
-                                popUpTo(navController.currentDestination?.route ?: "") {
-                                    inclusive = true
-                                    saveState = true
+            if (currentScreen?.route != OnBoarding.route) {
+                val items = listOf(Camera, ChatsHistory, ParentalAssist, ParentalGuidance, Profile)
+                NavigationBar(
+                    modifier = Modifier.height(64.dp),
+                ) {
+                    items.forEach { item ->
+                        val isSelected = item.route == backStackEntry?.destination?.route
+                        NavigationBarItem(
+                            icon = {
+                                AnimatedIconWithLine(item = item, isSelected = isSelected)
+                            },
+                            selected = isSelected,
+                            onClick = {
+                                // This is where you handle navigation
+                                navController.navigate(item.route) {
+                                    // This ensures that the previous screen is removed from the backstack
+                                    popUpTo(navController.currentDestination?.route ?: "") {
+                                        inclusive = true
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
 
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -109,10 +114,11 @@ fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
             modifier = Modifier
                 .width(lineWidth)
                 .height(2.dp)
-                .background(MaterialTheme.colorScheme.onSurface, RoundedCornerShape(percent = 50))
+                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 50))
         )
     }
 }
+
 @Composable
 fun AnimatedIcon(item: ScreensDestinations, isSelected: Boolean) {
     val scale = remember { androidx.compose.animation.core.Animatable(1f) }
@@ -123,11 +129,15 @@ fun AnimatedIcon(item: ScreensDestinations, isSelected: Boolean) {
         )
         scale.animateTo(
             targetValue = 1f,
-            animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMedium)
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
         )
     }
 
-    Crossfade(targetState = isSelected, animationSpec = tween(durationMillis = 750),
+    Crossfade(
+        targetState = isSelected, animationSpec = tween(durationMillis = 750),
         label = ""
     ) { selected ->
         (if (selected) item.selectedIcon else item.icon)?.let { iconRedId ->

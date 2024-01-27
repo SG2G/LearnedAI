@@ -1,5 +1,6 @@
 package com.sginnovations.asked.ui.ui_components.subscription
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -42,6 +43,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.R
@@ -52,6 +54,7 @@ fun SubscriptionCard(
     durationTime: String,
     smallText: String,
     allPrice: String,
+    priceDiscount: String?,
     subscriptionOption: Option,
     userOption: Option,
 
@@ -63,7 +66,7 @@ fun SubscriptionCard(
         label = "",
         animationSpec = tween(250)
     )
-    val circleColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+    val selecterColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
 
     val scale = remember { Animatable(1f) }
 
@@ -102,6 +105,9 @@ fun SubscriptionCard(
             Row(
                 modifier = Modifier.padding(16.dp),
             ) {
+                /**
+                 * Small Text
+                 */
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -113,17 +119,51 @@ fun SubscriptionCard(
                             fontSize = 12.sp
                         ),
                     )
-                    Row {
-                        Text(
-                            text = allPrice + durationTime,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp
-                            )
-                        )
-                    }
 
+                    if (subscriptionOption.name == Option.OptionAnnually.name) {
+                        Log.d("SubscriptionCard", "priceDiscount-> $priceDiscount allPrice -> $allPrice ")
+                        if (priceDiscount.equals(allPrice) || priceDiscount.isNullOrEmpty()) {
+                            Row {
+                                Text(
+                                    text = allPrice + durationTime,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp
+                                    )
+                                )
+                            }
+                        } else {
+                            Column {
+                                Text(
+                                    text = allPrice,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        textDecoration = TextDecoration.LineThrough
+                                    )
+                                )
+                                Text(
+                                    text = priceDiscount + durationTime,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp
+                                    )
+                                )
+                            }
+                        }
+                    } else {
+                        Row {
+                            Text(
+                                text = allPrice + durationTime,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp
+                                )
+                            )
+                        }
+                    }
                 }
                 /**
                  * Save x%
@@ -138,7 +178,7 @@ fun SubscriptionCard(
                             colors = CardDefaults.cardColors(
                                 MaterialTheme.colorScheme.primary
                             ),
-                            shape = RoundedCornerShape(15.dp),
+                            shape = RoundedCornerShape(5.dp),
                             modifier = Modifier.scale(scale.value)
                         ) {
                             Text(
@@ -156,7 +196,7 @@ fun SubscriptionCard(
         }
 
         /**
-         * Blue Select Tick
+         * Blue Select Tick & Most Popular Badge
          */
         Box(modifier = Modifier.padding(start = 32.dp, top = 4.dp)) {
             Row(
@@ -170,7 +210,7 @@ fun SubscriptionCard(
                     modifier = Modifier
                         .size(20.dp)
                         .clip(CircleShape)
-                        .background(circleColor),
+                        .background(selecterColor),
                     contentAlignment = Alignment.Center
                 ) {
                     if (isSelected) {
@@ -186,11 +226,11 @@ fun SubscriptionCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Card(
                         colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.primary
+                            containerColor = selecterColor
                         )
                     ) {
                         Text(
-                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+                            modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp),
                             text = stringResource(R.string.subscription_most_popular),
                             style = TextStyle(
                                 fontSize = 12.sp

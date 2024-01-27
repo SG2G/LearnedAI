@@ -43,9 +43,9 @@ fun LogOutButton(
     }
 
     val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
-    val iconTint = MaterialTheme.colorScheme.primary
+    val iconTint = MaterialTheme.colorScheme.error
 
-    val textColor = MaterialTheme.colorScheme.onSurface
+    val textColor = MaterialTheme.colorScheme.error
     val textStyle = MaterialTheme.typography.bodyMedium
 
     val arrowIconModifier = Modifier.size(24.dp)

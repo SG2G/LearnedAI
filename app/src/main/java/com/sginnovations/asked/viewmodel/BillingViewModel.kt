@@ -148,8 +148,8 @@ class BillingViewModel @Inject constructor(
             // check billingResult
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
-                productMonthly.value = productDetailsList[0]
-                productAnnually.value = productDetailsList[1]
+                productAnnually.value = productDetailsList[0]
+                productMonthly.value = productDetailsList[1]
             }
         }
     }
@@ -168,7 +168,7 @@ class BillingViewModel @Inject constructor(
                         // handle error
                         Log.e(TAG, "Error checking subscriptions", e)
                     }
-                    delay(20000) // 5 min
+                    delay(20000) // 5 min //TODO AUMENTAR
                 }
             } else {
                 //is not connected to google play
@@ -182,7 +182,6 @@ class BillingViewModel @Inject constructor(
         viewModelScope.launch {
             val params = QueryPurchasesParams.newBuilder()
                 .setProductType(BillingClient.ProductType.SUBS)
-//                .setProductType(BillingClient.ProductType.INAPP)
                 .build()
 
             billingClient.queryPurchasesAsync(params) { _, purchases ->
