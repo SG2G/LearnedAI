@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.sginnovations.asked.AssistantChat
+import com.sginnovations.asked.AssistantNewConversation
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
@@ -43,6 +44,19 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                 }
             }
             navController.navigate(AssistantChat.route)
+        }
+    }
+    suspend fun navigateAssistantNewChat(navController: NavController) {
+        Log.i(TAG, "Navigating navigateChat")
+
+        withContext(Dispatchers.Main) {
+            navController.navigate(ParentalAssist.route) {
+                // This ensures that the previous screen is removed from the backstack
+                popUpTo(navController.graph.id) {
+                    inclusive = true
+                }
+            }
+            navController.navigate(AssistantNewConversation.route)
         }
     }
     suspend fun navigateNewChat(navController: NavController) {

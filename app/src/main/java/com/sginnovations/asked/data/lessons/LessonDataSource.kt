@@ -23,6 +23,9 @@ class LessonDataSource @Inject constructor(
         return lessons.find { it.idLesson == id } ?: defaultLesson()
     }
 
+    fun countLessonsByCategory(idCategory: Int): Int {
+        return lessons.count { it.idCategory == idCategory }
+    }
 
     private val lessons = listOf(
         /**
@@ -37,11 +40,11 @@ class LessonDataSource @Inject constructor(
             introduction = context.getString(R.string.lesson_introduction_1000),
             videoId = "54fjHJlMoNY",
             reference = "",
-            conclusion = null,
+            conclusion = context.getString(R.string.lesson_conclusion_1000),
             buttonText = null,
             questionAsked = null,
             isPremium = false,
-            lessonPages = 0
+            lessonPages = 1
         ),
         /**
          * Self esteem
@@ -54,7 +57,7 @@ class LessonDataSource @Inject constructor(
             transcription = context.getString(R.string.lesson_transcription_1001),
             introduction = context.getString(R.string.lesson_introduction_1001),
             videoId = "54fjHJlMoNY",
-            reference = "Waters, L. (2017). The strength switch: how the new science of strength-based parenting helps your child and your teen flourish. Scribe Publications.",
+            reference = context.getString(R.string.lesson_reference_1001),
             conclusion = context.getString(R.string.lesson_conclusion_1001),
             buttonText = context.getString(R.string.lesson_button_text_1001),
             questionAsked = context.getString(R.string.lesson_question_asked_1001),
@@ -67,15 +70,15 @@ class LessonDataSource @Inject constructor(
         LessonDataClass(
             idCategory = 0,
             idLesson = 1002,
-            title = "Comunicación efectiva",
-            subtitle = "algo",
+            title = context.getString(R.string.lesson_title_1002),
+            subtitle = context.getString(R.string.lesson_subtitle_1002),
             transcription = context.getString(R.string.lesson_transcription_1002),
-            introduction = "¿Sabías que la manera en que hablas con tus hijos puede influir en su confianza y éxito futuro? Descubre cómo la comunicación efectiva puede ser tu herramienta más poderosa como padre.",
+            introduction = context.getString(R.string.lesson_introduction_1002),
             videoId = "54fjHJlMoNY",
-            reference = "Rolland, R. (2023). El arte de hablar con niños: Claves sencillas para fomentar su autonomía, creatividad y confianza. Diana Editorial.",
+            reference = context.getString(R.string.lesson_reference_1002),
             conclusion = context.getString(R.string.lesson_conclusion_1002),
-            buttonText = "Desbloquea la Magia de Escuchar a tu Hijo",
-            questionAsked = "¿Cómo puedo mejorar mis habilidades de escucha activa para tener una comunicación más efectiva con mi hijo?",
+            buttonText = context.getString(R.string.lesson_button_text_1002),
+            questionAsked = context.getString(R.string.lesson_question_asked_1002),
             isPremium = false,
             lessonPages = 1
         ),
@@ -85,15 +88,15 @@ class LessonDataSource @Inject constructor(
         LessonDataClass(
             idCategory = 1,
             idLesson = 2000,
-            title = "Cómo los Padres Pueden Ayudar a sus Hijos con los Deberes",
-            subtitle = "Estrategias para una Educación Colaborativa",
+            title = context.getString(R.string.lesson_title_2000),
+            subtitle = context.getString(R.string.lesson_subtitle_2000),
             transcription = context.getString(R.string.lesson_transcription_2000),
-            introduction = "Es la hora de hacer los deberes y tu hijo está frustrado, no sabe por dónde empezar. ¿Intervienes o lo dejas enfrentarse solo a este reto? Esta es una pregunta común que muchos padres se hacen. Hoy, vamos a explorar cómo puedes ser un apoyo efectivo sin quitarles a tus hijos la oportunidad de aprender por sí mismos.",
+            introduction = context.getString(R.string.lesson_introduction_2000),
             videoId = "54fjHJlMoNY",
-            reference = "Kohn, A. (2007). The homework myth: Why Our Kids Get Too Much of a Bad Thing. Hachette UK.",
+            reference = context.getString(R.string.lesson_reference_2000),
             conclusion = context.getString(R.string.lesson_conclusion_2000),
-            buttonText = "Descubre el Arte de Apoyar sin Interferir",
-            questionAsked = "¿Cómo puedo identificar el momento adecuado para intervenir y ayudar a mi hijo con sus deberes sin quitarle la oportunidad de aprender por sí mismo?",
+            buttonText = context.getString(R.string.lesson_button_text_2000),
+            questionAsked = context.getString(R.string.lesson_question_asked_2000),
             isPremium = false,
             lessonPages = 1
         ),
@@ -103,16 +106,16 @@ class LessonDataSource @Inject constructor(
         LessonDataClass(
             idCategory = 1,
             idLesson = 2001,
-            title = "Comunicación efectiva",
-            subtitle = "algo",
-            transcription = "context.getString(R.string.lesson_transcription_1002)",
-            introduction = "¿Te has preguntado cómo algo tan simple como la gestión del tiempo puede ser un superpoder oculto en la educación de tus hijos? Descubre cómo convertirlo en una aventura emocionante y fundamental para su éxito futuro",
+            title = context.getString(R.string.lesson_title_2001),
+            subtitle = context.getString(R.string.lesson_subtitle_2001),
+            transcription = context.getString(R.string.lesson_transcription_2001),
+            introduction = context.getString(R.string.lesson_introduction_2001),
             videoId = "54fjHJlMoNY",
-            reference = "Dawson, P., & Guare, R. (2011). Smart but scattered: The Revolutionary «Executive Skills» Approach to Helping Kids Reach Their Potential. Guilford Press.",
+            reference = context.getString(R.string.lesson_reference_2001),
             conclusion = context.getString(R.string.lesson_conclusion_2001),
-            buttonText = "Juega y Organiza: Aprende Cómo",
-            questionAsked = "¿Puedes darme más ejemplos de juegos o actividades lúdicas que los padres pueden usar para enseñar a los niños sobre la gestión del tiempo y la organización?",
-            isPremium = true,
+            buttonText = context.getString(R.string.lesson_button_text_2001),
+            questionAsked = context.getString(R.string.lesson_question_asked_2001),
+            isPremium = false, //TODO CHANGE
             lessonPages = 1
         ),
         /**
@@ -121,16 +124,90 @@ class LessonDataSource @Inject constructor(
         LessonDataClass(
             idCategory = 2,
             idLesson = 3000,
-            title = "Nutrición Equilibrada y Alimentación Saludable para Niños.",
-            subtitle = "algo",
-            transcription = "",
-            introduction = "¿Sabies que si si?",
+            title = context.getString(R.string.lesson_title_3000),
+            subtitle = context.getString(R.string.lesson_subtitle_3000),
+            transcription = context.getString(R.string.lesson_transcription_3000),
+            introduction = context.getString(R.string.lesson_introduction_3000),
+            videoId = "54fjHJlMoNYas",
+            reference = context.getString(R.string.lesson_reference_3000),
+            conclusion = context.getString(R.string.lesson_conclusion_3000),
+            buttonText = context.getString(R.string.lesson_button_text_3000),
+            questionAsked = context.getString(R.string.lesson_question_asked_3000),
+            isPremium = false,
+            lessonPages = 1
+        ),
+        /**
+         * Important of Sports
+         */
+        LessonDataClass(
+            idCategory = 2,
+            idLesson = 3001,
+            title = context.getString(R.string.lesson_title_3001),
+            subtitle = context.getString(R.string.lesson_subtitle_3001),
+            transcription = context.getString(R.string.lesson_transcription_3001),
+            introduction = context.getString(R.string.lesson_introduction_3001),
             videoId = "54fjHJlMoNY",
-            reference = "",
-            conclusion = "",
-            buttonText = "",
-            questionAsked = "",
-            isPremium = true,
+            reference = context.getString(R.string.lesson_reference_3001),
+            conclusion = context.getString(R.string.lesson_conclusion_3001),
+            buttonText = context.getString(R.string.lesson_button_text_3001),
+            questionAsked = context.getString(R.string.lesson_question_asked_3001),
+            isPremium = false,
+            lessonPages = 1
+        ),
+        /**
+         * Sleep zzZZZ
+         */
+        LessonDataClass(
+            idCategory = 2,
+            idLesson = 3002,
+            title = context.getString(R.string.lesson_title_3002),
+            subtitle = context.getString(R.string.lesson_subtitle_3002),
+            transcription = context.getString(R.string.lesson_transcription_3002),
+            introduction = context.getString(R.string.lesson_introduction_3002),
+            videoId = "54fjHJlMoNY",
+            reference = context.getString(R.string.lesson_reference_3002),
+            conclusion = context.getString(R.string.lesson_conclusion_3002),
+            buttonText = context.getString(R.string.lesson_button_text_3002),
+            questionAsked = context.getString(R.string.lesson_question_asked_3002),
+            isPremium = false,
+            lessonPages = 1
+        ),
+
+        /**
+         * Empathy
+         */
+        LessonDataClass(
+            idCategory = 3,
+            idLesson = 4000,
+            title = context.getString(R.string.lesson_title_4000),
+            subtitle = context.getString(R.string.lesson_subtitle_4000),
+            transcription = context.getString(R.string.lesson_transcription_4000),
+            introduction = context.getString(R.string.lesson_introduction_4000),
+            videoId = "54fjHJlMoNY",
+            reference = context.getString(R.string.lesson_reference_4000),
+            conclusion = context.getString(R.string.lesson_conclusion_4000),
+            buttonText = context.getString(R.string.lesson_button_text_4000),
+            questionAsked = context.getString(R.string.lesson_question_asked_4000),
+            isPremium = false,
+            lessonPages = 1
+        ),
+
+        /**
+         * Tech
+         */
+        LessonDataClass(
+            idCategory = 4,
+            idLesson = 5000,
+            title = "lesson",
+            subtitle = "lesson",
+            transcription = "lesson",
+            introduction = "lesson",
+            videoId = "54fjHJlMoNY",
+            reference = "lesson",
+            conclusion = "lesson",
+            buttonText = "lesson",
+            questionAsked = "lesson",
+            isPremium = false,
             lessonPages = 1
         ),
     )
@@ -140,7 +217,7 @@ class LessonDataSource @Inject constructor(
             0,
             R.drawable.lesson_0,
             context.getString(R.string.guide_category_title_0),
-            "3 lessons",
+            context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_0),
 
             ),
@@ -148,7 +225,7 @@ class LessonDataSource @Inject constructor(
             1,
             R.drawable.lesson_1,
             context.getString(R.string.guide_category_title_1),
-            "2 lessons",
+            context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_1),
 
             ),
@@ -156,7 +233,7 @@ class LessonDataSource @Inject constructor(
             2,
             R.drawable.lesson_2,
             context.getString(R.string.guide_category_title_2),
-            "2 lessons",
+            context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_2),
 
             ),
@@ -164,7 +241,7 @@ class LessonDataSource @Inject constructor(
             3,
             R.drawable.lesson_3,
             context.getString(R.string.guide_category_title_3),
-            "2 lessons",
+            context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_3),
 
             ),
@@ -172,7 +249,7 @@ class LessonDataSource @Inject constructor(
             4,
             R.drawable.lesson_4,
             context.getString(R.string.guide_category_title_4),
-            "2 lessons",
+            context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_4),
 
             ),

@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonCategoryDataClass
@@ -92,6 +93,8 @@ fun ParentalGuidanceStateFul(
         when (selectedTab.value) {
             Tabs.Lessons ->
                 ParentalGuidanceStateLess(
+                    vmLesson = vmLesson,
+
                     lessonsCategory = lessonsCategory,
 
                     onNavigateCategoryLessons = { category ->
@@ -111,6 +114,8 @@ fun ParentalGuidanceStateFul(
 
 @Composable
 fun ParentalGuidanceStateLess(
+    vmLesson: LessonViewModel,
+
     lessonsCategory: List<LessonCategoryDataClass>,
 
     onNavigateCategoryLessons: (LessonCategoryDataClass) -> Unit,
@@ -125,6 +130,8 @@ fun ParentalGuidanceStateLess(
         lessonsCategory.forEach { category ->
 
             CategoryLessonCard(
+                vmLesson = vmLesson,
+
                 category = category,
 
                 onNavigateCategoryLessons = {
@@ -143,7 +150,7 @@ fun ComingSoonTabContent() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Coming Soon...", style = MaterialTheme.typography.titleMedium)
+        Text(text = stringResource(R.string.coming_soon), style = MaterialTheme.typography.titleMedium)
     }
 }
 

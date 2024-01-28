@@ -421,6 +421,8 @@ fun LearnedNavigation(
                     vmPreferences = vmPreferences,
 
                     onOpenTranscript = { navController.navigate(route = Transcript.route) },
+
+                    onNavigateAssistant = { scope.launch { vmNavigator.navigateAssistantNewChat(navController) } },
                     onNavigateBack = { navController.navigateUp() }
                 )
             }

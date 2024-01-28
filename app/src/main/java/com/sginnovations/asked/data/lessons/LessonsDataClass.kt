@@ -29,7 +29,7 @@ data class LessonCategoryDataClass(
     val imageId: Int,
 
     val title: String,
-    val subtitle: String,
+    val lessonsNum: String,
     val description: String,
 )
 

@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -25,24 +26,44 @@ import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.newconversation.components.SubTitleChatUseExample
 import com.sginnovations.asked.ui.newconversation.components.TitleChatUseExample
 
-val myCards = listOf(
-    CardSuggestionContent("Handling Vegetable Refusal", "How do I deal with a child who refuses to eat vegetables?"),
-    CardSuggestionContent("Título 2", "Subtítulo 2"),
-    CardSuggestionContent("Título 1", "Subtítulo 1"),
-    CardSuggestionContent("Título 2", "Subtítulo 2"),
-)
-
 @Composable
 fun NewAssistantSuggestions(
     onUseSuggestion: (String) -> Unit,
 ) {
+    val myCards = listOf(
+        CardSuggestionContent(stringResource(R.string.suggestion_title_1),
+            stringResource(R.string.suggestion_text_1)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_2),
+            stringResource(R.string.suggestion_text_2)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_3),
+            stringResource(R.string.suggestion_text_3)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_4),
+            stringResource(R.string.suggestion_text_4)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_5),
+            stringResource(R.string.suggestion_text_5)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_6),
+            stringResource(R.string.suggestion_text_6)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_7),
+            stringResource(R.string.suggestion_text_7)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_8),
+            stringResource(R.string.suggestion_text_8)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_9),
+            stringResource(R.string.suggestion_text_9)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_10),
+            stringResource(R.string.suggestion_text_10)),
+        CardSuggestionContent(stringResource(R.string.suggestion_title_11),
+            stringResource(R.string.suggestion_text_11))
+    )
+
+    val randomCards = myCards.shuffled().take(4)
+
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        itemsIndexed(myCards) { _, card ->
+        itemsIndexed(randomCards) { _, card ->
             ElevatedCard(
                 modifier = Modifier
                     .width(304.dp)
@@ -68,7 +89,7 @@ fun NewAssistantSuggestions(
                         Text(
                             text = card.subtitle,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }

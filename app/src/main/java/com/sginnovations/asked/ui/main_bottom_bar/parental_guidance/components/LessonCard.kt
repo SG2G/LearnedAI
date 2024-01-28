@@ -46,8 +46,8 @@ fun SmallLessonCard(
                 .padding(horizontal = 16.dp, vertical = 4.dp)
                 .shadow(1.dp, elevatedCardShape)
                 .alpha(
-                    when (isPremium != lesson.isPremium) {
-                        false -> 1f
+                    when (isPremium) {
+                        true -> 1f
                         else -> 0.6f
                     }
                 ),
@@ -94,15 +94,15 @@ fun SmallLessonCard(
                         )
                     }
 
-                    when (isPremium != lesson.isPremium) {
-                        false -> Icon(
+                    when (isPremium) {
+                        true -> Icon(
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
                                 .size(28.dp)
                                 .padding(end = 8.dp)
                                 .weight(0.2f),
                             imageVector = if (isRead) Icons.Filled.CheckCircle else Icons.Default.PlayArrow,
-                            contentDescription = "check",
+                            contentDescription = "check or play",
                             tint = if (isRead) Color(0xFF469C29) else MaterialTheme.colorScheme.primary,
                         )
 
@@ -161,7 +161,7 @@ fun SmallLessonCard(
                             text = lesson.subtitle,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface,
-                            maxLines = 1,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                         )
                     }

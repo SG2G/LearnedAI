@@ -50,5 +50,10 @@ class LessonViewModel @Inject constructor(
     fun getLessonById(id: Int): LessonDataClass {
         return lessonDataSource.getLessonById(id)
     }
-
+    /**
+     * Get number of lessons
+     */
+    fun countLessonsByCategory(id: Int): Int {
+        return lessonDataSource.countLessonsByCategory(id)
+    }
 }

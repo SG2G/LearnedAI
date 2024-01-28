@@ -36,7 +36,7 @@ import com.sginnovations.asked.R
  */
 @Composable
 fun IconAssistantMsg() {
-    val image: Painter = painterResource(id = R.drawable.asked30)
+    val image: Painter = painterResource(id = R.drawable.asked_assistant)
 
     Image(
         painter = image,
@@ -52,7 +52,7 @@ fun IconAssistantMsg() {
  */
 @Composable
 fun IconMsg() {
-    val image: Painter = painterResource(id = R.drawable.burro)
+    val image: Painter = painterResource(id = R.drawable.asked30)
 
     Image(
         painter = image,

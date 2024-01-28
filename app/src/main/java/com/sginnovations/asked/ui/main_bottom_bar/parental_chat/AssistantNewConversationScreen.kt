@@ -51,6 +51,7 @@ import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "AssistantNewConversationStateFul"
@@ -185,12 +186,12 @@ fun AssistantNewConversationStateLess(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 64.dp),
+            .padding(bottom = 84.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.asked30),
+            painter = painterResource(id = R.drawable.asked_assistant),
             contentDescription = "Icon",
             modifier = Modifier
                 .size(48.dp)

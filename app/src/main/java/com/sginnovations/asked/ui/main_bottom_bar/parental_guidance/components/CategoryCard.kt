@@ -25,9 +25,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.data.lessons.LessonCategoryDataClass
+import com.sginnovations.asked.viewmodel.LessonViewModel
 
 @Composable
 fun CategoryLessonCard(
+    vmLesson: LessonViewModel,
+
     category: LessonCategoryDataClass,
 //    isRead: Boolean,
     onNavigateCategoryLessons: () -> Unit,
@@ -73,7 +76,7 @@ fun CategoryLessonCard(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = category.subtitle,
+                        text = vmLesson.countLessonsByCategory(category.idCategory).toString() + " " + category.lessonsNum,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,

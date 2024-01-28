@@ -55,6 +55,7 @@ import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.latex.JLatexMathPlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -69,16 +70,17 @@ fun LessonStateFul(
 
     onOpenTranscript: () -> Unit,
 
+    onNavigateAssistant: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     val lessonId = vmLesson.lessonId
 
     val lesson = vmLesson.getLessonById(lessonId.intValue)
 
     val showEndLesson = remember { mutableStateOf(false) }
-
-    //Log.d(TAG, "lessonId: ${lessonId.intValue} lesson -> ${lesson.toString()}")
 
     LessonStateLess(
         lesson = lesson,
@@ -87,9 +89,11 @@ fun LessonStateFul(
         onYouTubeClick = { vmIntent.openYouTubeVideo(context, lesson.videoId) },
 
         onExampleButton = {
-            vmAssistant.firstMessage.value = lesson.questionAsked
+            scope.launch {
+                vmAssistant.firstMessage.value = lesson.questionAsked
 
-            //onNavigateAssistant()
+                onNavigateAssistant()
+            }
         },
 
         onLessonReadAndFinish = {
@@ -125,15 +129,14 @@ fun LessonStateLess(
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        HorizontalPager(
-            count = if (lesson.conclusion.isNullOrEmpty()) 1 else 2,
-            state = pagerState
-        ) { page ->
-            Log.d(TAG, "page: $page  pagerState -> ${pagerState.currentPage}")
+    HorizontalPager(
+        count = if (lesson.conclusion.isNullOrEmpty()) 1 else 2,
+        state = pagerState
+    ) { page ->
+        Log.d(TAG, "page: $page  pagerState -> ${pagerState.currentPage}")
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
             when (page) {
                 0 -> Page1(
                     lesson = lesson,
@@ -169,7 +172,11 @@ fun LessonStateLess(
                                 .padding(2.dp)
                                 .animateContentSize()
                                 .size(width, 8.dp)
-                                .clip(if (pagerState.currentPage == iteration) RoundedCornerShape(10.dp) else CircleShape)
+                                .clip(
+                                    if (pagerState.currentPage == iteration) RoundedCornerShape(
+                                        10.dp
+                                    ) else CircleShape
+                                )
                                 .background(color)
                         )
 
@@ -207,8 +214,8 @@ fun LessonStateLess(
                     )
                 }
             }
-        }
 
+        }
     }
 }
 
@@ -241,8 +248,10 @@ fun Page2(
 
         Column(
             modifier = Modifier
+                .padding(bottom = 108.dp)
                 .fillMaxSize()
                 .verticalScroll(verticalScroll)
+
         ) {
             AndroidView(
                 modifier = Modifier
@@ -263,12 +272,16 @@ fun Page2(
                 }
             )
 
-            Button(
-                onClick = { onExampleButton() },
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text(text = lesson.buttonText ?: "See Example") //TODO TRANSLATE MAYBE
+            if (!lesson.buttonText.isNullOrEmpty()) {
+                Button(
+                    onClick = { onExampleButton() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(5.dp)
+                ) {
+                    Text(text = lesson.buttonText ?: "See Example") //TODO TRANSLATE MAYBE
+                }
             }
         }
     }
@@ -284,6 +297,12 @@ fun Page1(
     Column(
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
+        Text(
+            text = lesson.title,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = lesson.introduction,
             style = MaterialTheme.typography.bodyLarge,
