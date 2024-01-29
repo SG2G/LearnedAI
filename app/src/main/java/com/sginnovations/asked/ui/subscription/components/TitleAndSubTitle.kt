@@ -27,13 +27,13 @@ fun TitleBenefit(painterResource: Painter, text: String) {
         Icon(
             painter = painterResource,
             contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier.size(38.dp)
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text, color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleSmall
         )
     }
 }
@@ -41,8 +41,8 @@ fun TitleBenefit(painterResource: Painter, text: String) {
 @Composable
 fun SubTitleBenefit(text: String) {
     Text(
-        modifier = Modifier.padding(vertical = 8.dp, horizontal = 44.dp),
-        text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
-        style = MaterialTheme.typography.titleSmall
+        modifier = Modifier.padding(vertical = 0.dp, horizontal = 48.dp),
+        text = text, color = MaterialTheme.colorScheme.onSurface,
+        style = MaterialTheme.typography.bodyMedium
     )
 }

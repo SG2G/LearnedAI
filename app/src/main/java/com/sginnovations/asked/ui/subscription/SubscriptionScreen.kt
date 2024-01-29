@@ -4,9 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,12 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,11 +34,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
@@ -54,7 +49,6 @@ import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.time.LocalDateTime
 
 private const val TAG = "SubscriptionStateFull"
@@ -217,6 +211,7 @@ fun SubscriptionStateLess(
 
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
+    val scrollState = rememberScrollState()
     //Define the target date here
     val targetDate =
         LocalDateTime.of(2024, 5, 30, 0, 0) // Example: May 30, 2024 at midnight
@@ -232,7 +227,8 @@ fun SubscriptionStateLess(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(scrollState),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter
@@ -263,6 +259,18 @@ fun SubscriptionStateLess(
                  * CountDown
                  */
                 CountdownTimer(targetDate = targetDate)
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                ) {
+                    Text(
+                        text = "Choose Your Plan",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        text = "Con nuestra suscripción premium, abres un mundo de posibilidades para ti y tu hijo. Experimenta una educación más fácil, interactiva y efectiva. ¡Todo en la palma de tu mano!",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
                 /**
                  * Benefits
                  */
@@ -283,29 +291,40 @@ fun SubscriptionStateLess(
                         TokenIcon()
                     }
 
-                    Divider()
+                    //Divider()
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_chat2),
-                            text = stringResource(R.string.subscription_higher_word_limit)
+                            painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
+                            text = "Unlimited Camera Photos and Messages"
                         )
                     }
 
-                    Divider()
+                    //Divider()
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_star2),
-                            text = "Access to Full Guide"
+                            painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
+                            text = "Unlimited Parent Assist Messages"
                         )
                     }
 
-                    Divider()
+                    //Divider()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
+                            text = "Access to Guide"
+                        )
+                    }
+
+                    //Divider()
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -315,10 +334,10 @@ fun SubscriptionStateLess(
                                 painterResource = painterResource(id = R.drawable.subscription_star2),
                                 text = stringResource(R.string.subscription_exclusive_functions)
                             )
-                            SubTitleBenefit(text = "")
+                            SubTitleBenefit(text = "- Camera - Translate, Summary, Corrections")
+                            SubTitleBenefit(text = stringResource(id = R.string.subscription_higher_word_limit))
                         }
                     }
-
                 }
             }
         }
@@ -330,11 +349,21 @@ fun SubscriptionStateLess(
         Column(
             verticalArrangement = Arrangement.Center
         ) {
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = "Try 7 Free Days of Asked Premium",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
             // Product 1 - Weekly
             priceSubMonthly.value?.let { price ->
                 SubscriptionCard(
                     durationTime = stringResource(R.string.subscription_monthly),
-                    smallText = stringResource(R.string.subscription_monthly_small_text),
+                    //smallText = stringResource(R.string.subscription_monthly_small_text),
                     allPrice = price,
                     priceDiscount = null,
                     subscriptionOption = Option.OptionMonthly,
@@ -346,7 +375,7 @@ fun SubscriptionStateLess(
             priceSubAnnually.value?.let { price ->
                 SubscriptionCard(
                     durationTime = stringResource(R.string.subscription_annually),
-                    smallText = stringResource(R.string.subscription_annually_small_text),
+                    //smallText = stringResource(R.string.subscription_annually_small_text),
                     allPrice = price,
                     priceDiscount = priceDiscountSubAnnually.value,
                     subscriptionOption = Option.OptionAnnually,
@@ -377,7 +406,7 @@ fun SubscriptionStateLess(
                         .fillMaxWidth()
                         .padding(16.dp)
                         .height(58.dp),
-                    shape = RoundedCornerShape(15.dp)
+                    shape = RoundedCornerShape(30.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.subscription_unlock_asked_ai_pro),
@@ -395,62 +424,15 @@ fun SubscriptionStateLess(
             /**
              * Small Letter
              */
-            val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
-            if (userOption.value == Option.OptionAnnually) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(28.dp)
-                        .padding(smallLetterPadding),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box {
-                        Text(
-                            text = stringResource(R.string.subscription_cancel_anytime),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Row {
-                        Icon(
-                            imageVector = Icons.Filled.Shield,
-                            contentDescription = "Shield",
-                            tint = Color(0xFF8dad63)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = stringResource(R.string.subscription_no_payment_now),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
-            } else {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(28.dp)
-                        .padding(smallLetterPadding),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box {
-                        Text(
-                            text = stringResource(R.string.subscription_cancel_anytime),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Row {
-                        Text(
-                            text = "",
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
-            }
+            val smallLetterPadding = PaddingValues(bottom = 12.dp, start = 20.dp, end = 20.dp)
+
+            Text(
+                modifier = Modifier.padding(smallLetterPadding),
+                text = stringResource(R.string.subscription_info_policy),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center
+            )
         }
 
     }

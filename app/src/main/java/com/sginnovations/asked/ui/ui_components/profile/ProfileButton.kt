@@ -26,7 +26,7 @@ fun ProfileButton(
     onClick: () -> Unit,
 ) {
     val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
-    val iconTint = MaterialTheme.colorScheme.primary
+    val iconTint = MaterialTheme.colorScheme.onSurface
 
     val textColor = MaterialTheme.colorScheme.onSurface
     val textStyle = MaterialTheme.typography.bodyMedium
@@ -75,7 +75,7 @@ fun ProfileButton(
     onClick: () -> Unit,
 ) {
     val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
-    val iconTint = MaterialTheme.colorScheme.primary
+    val iconTint = MaterialTheme.colorScheme.onSurface
 
     val textColor = MaterialTheme.colorScheme.onSurface
     val textStyle = MaterialTheme.typography.bodyMedium

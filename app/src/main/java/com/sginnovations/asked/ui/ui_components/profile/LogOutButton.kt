@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +31,15 @@ fun LogOutButton(
 ) {
     var showConfirmation by remember { mutableStateOf(false) }
 
+    val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
+    val iconTint = MaterialTheme.colorScheme.error
+
+    val textColor = MaterialTheme.colorScheme.error
+    val textStyle = MaterialTheme.typography.bodyMedium
+
+    val arrowIconModifier = Modifier.size(24.dp)
+    val arrowIconTint = MaterialTheme.colorScheme.onSurfaceVariant
+
     if (showConfirmation) {
         ConfirmActionDialog(
             title = stringResource(R.string.log_out_button_confirm_action),
@@ -42,47 +53,48 @@ fun LogOutButton(
         )
     }
 
-    val iconModifier = Modifier.size(28.dp).padding(end = 8.dp)
-    val iconTint = MaterialTheme.colorScheme.error
-
-    val textColor = MaterialTheme.colorScheme.error
-    val textStyle = MaterialTheme.typography.bodyMedium
-
-    val arrowIconModifier = Modifier.size(24.dp)
-    val arrowIconTint = MaterialTheme.colorScheme.onSurfaceVariant
-
-    TextButton(
-        onClick = {
-            showConfirmation = !showConfirmation
-        },
-        shape = RoundedCornerShape(10),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
+    ElevatedCard(
+        modifier = Modifier.padding(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 2.dp
+        )
     ) {
-        Row(
+        TextButton(
+            onClick = {
+                showConfirmation = !showConfirmation
+            },
+            shape = RoundedCornerShape(10),
             modifier = Modifier
-                .fillMaxWidth(1f),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .padding(8.dp)
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
-                contentDescription = "ExitToApp",
-                modifier = iconModifier,
-                tint = iconTint,
-            )
-            Text(
-                text = stringResource(R.string.log_out_button_log_out),
-                color = textColor,
-                style = textStyle,
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "KeyboardArrowRight",
-                modifier = arrowIconModifier,
-                tint = arrowIconTint,
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.logout_fill0_wght400_grad0_opsz48),
+                    contentDescription = "ExitToApp",
+                    modifier = iconModifier,
+                    tint = iconTint,
+                )
+                Text(
+                    text = stringResource(R.string.log_out_button_log_out),
+                    color = textColor,
+                    style = textStyle,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "KeyboardArrowRight",
+                    modifier = arrowIconModifier,
+                    tint = arrowIconTint,
+                )
+            }
         }
     }
 }

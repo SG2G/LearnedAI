@@ -2,7 +2,6 @@
 <resources>
 
     <string name="bottom_bar_label_profile">Perfil</string>
-    <string name="subscription_week">" / Semana"</string>
     <string name="crop_retake">Retomar</string>
     <string name="crop_crop">Recortar</string>
     <string name="earn_token_unlimited_points">Tokens Ilimitados</string>
@@ -16,8 +15,7 @@
     <string name="subscription_lifetime">/ Para siempre</string>
     <string name="subscription_unlimited">Ilimitados</string>
     <string name="subscription_exclusive_functions">Funciones Exclusivas</string>
-    <string name="subscription_higher_word_limit">Limite de palabras mas alto</string>
-    <string name="subscription_no_ads">Sin anuncios</string>
+    <string name="subscription_higher_word_limit">- Limite de palabras mas alto</string>
     <string name="subscription_billed_once">Paga una vez</string>
     <string name="subscription_start_free_trial_plan"><![CDATA[Empezar Prueba y Plan]]></string>
     <string name="subscription_unlock_asked_ai_pro">Desbloquea Asked AI Pro</string>
@@ -138,7 +136,7 @@
     <string name="referral_earn">"Gana "</string>
     <string name="referral_tokens_immediately">" Tokens inmediatamente!"</string>
     <string name="crop_crop_the_text_you_want_to">Consejo: Recorta solo lo que necesites, así conseguirás mejores resultados</string>
-    <string name="subscription_monthly">" / Mes"</string>
+    <string name="subscription_monthly">Mensual</string>
     <string name="subscription_save_50">Ahorra 30%</string>
     <string name="topbar_settings">Ajustes</string>
     <string name="language_english">Inglés</string>
@@ -151,10 +149,8 @@
     <string name="language_alert_cancel">Cancelar</string>
     <string name="language_translate_to">"Traducir al: "</string>
     <string name="historychats_category">"Categoría - "</string>
-    <string name="subscription_annually">" / Año"</string>
+    <string name="subscription_annually">Anual</string>
     <string name="subscription_most_popular">Más popular</string>
-    <string name="subscription_annually_small_text">7 días de prueba gratuita, cancela en cualquier momento, autorenovable</string>
-    <string name="subscription_monthly_small_text">Cancela en cualquier momento, autorenovable</string>
     <string name="tabs_lessons">Lecciones</string>
     <string name="tabs_content">Contenido</string>
     <string name="parental_assist_previous_chats">Chats anteriores</string>
@@ -199,5 +195,8 @@
     <string name="suggestion_text_10">¿Qué puedo hacer para ayudar a construir una fuerte autoestima en mi hijo?</string>
     <string name="suggestion_text_11">¿Cómo puedo abordar y resolver eficazmente la rivalidad entre hermanos en mi hogar?</string>
     <string name="coming_soon">Próximamente...</string>
+    <string name="subscription_info_policy">Cancele en cualquier momento en la Play Store sin costo adicional; la suscripción se renovará automáticamente después del período actual o de prueba, a menos que se cancele 24 horas antes de la renovación como muy tarde. Tras el período de prueba, si no cancela, se le cobrará el plan seleccionado.</string>
+    <string name="subscription_year">/ Año</string>
+    <string name="subscription_month">/ Mes</string>
 
 </resources>

@@ -240,6 +240,29 @@ fun ParentalChatStateLess(
             )
         }
 
+        if (conversations.value.isEmpty()) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 64.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.thinking2),
+                        contentDescription = "thinking head",
+                        modifier = Modifier.fillMaxWidth(0.6f)
+                    )
+                    Text(
+                        text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+        }
+
         itemsIndexed(
             items = conversations.value
         ) { index, conversation ->

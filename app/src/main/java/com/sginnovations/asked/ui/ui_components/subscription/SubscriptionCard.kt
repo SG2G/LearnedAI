@@ -52,7 +52,7 @@ import com.sginnovations.asked.ui.subscription.Option
 @Composable
 fun SubscriptionCard(
     durationTime: String,
-    smallText: String,
+    //smallText: String,
     allPrice: String,
     priceDiscount: String?,
     subscriptionOption: Option,
@@ -113,24 +113,26 @@ fun SubscriptionCard(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = smallText,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = TextStyle(
-                            fontSize = 12.sp
-                        ),
+                        text = durationTime,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleMedium
                     )
 
                     if (subscriptionOption.name == Option.OptionAnnually.name) {
                         Log.d("SubscriptionCard", "priceDiscount-> $priceDiscount allPrice -> $allPrice ")
                         if (priceDiscount.equals(allPrice) || priceDiscount.isNullOrEmpty()) {
-                            Row {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
-                                    text = allPrice + durationTime,
+                                    text = allPrice + " " + stringResource(R.string.subscription_year),
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 20.sp
-                                    )
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                                Text(
+                                    text = "  (7,08€ monthly)",
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.bodySmall
                                 )
                             }
                         } else {
@@ -142,25 +144,31 @@ fun SubscriptionCard(
                                         textDecoration = TextDecoration.LineThrough
                                     )
                                 )
-                                Text(
-                                    text = priceDiscount + durationTime,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 20.sp
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = priceDiscount + " " + stringResource(R.string.subscription_year),
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        style = MaterialTheme.typography.titleSmall
                                     )
-                                )
+                                    Text(
+                                        text = "  (7,08€ monthly)",
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                }
                             }
                         }
-                    } else {
-                        Row {
+                    }
+                    if (subscriptionOption.name == Option.OptionMonthly.name) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Text(
-                                text = allPrice + durationTime,
+                                text = allPrice + " " + stringResource(R.string.subscription_month),
                                 color = MaterialTheme.colorScheme.onBackground,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 20.sp
-                                )
+                                style = MaterialTheme.typography.titleSmall
                             )
                         }
                     }
