@@ -198,5 +198,22 @@
     <string name="subscription_info_policy">Cancele en cualquier momento en la Play Store sin costo adicional; la suscripción se renovará automáticamente después del período actual o de prueba, a menos que se cancele 24 horas antes de la renovación como muy tarde. Tras el período de prueba, si no cancela, se le cobrará el plan seleccionado.</string>
     <string name="subscription_year">/ Año</string>
     <string name="subscription_month">/ Mes</string>
+    <string name="onboarding_title_1">Bienvenido a Asked</string>
+    <string name="onboarding_description_1">¡Saludos! Es un placer darle la bienvenida a Asked, su aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en usted, para hacer su experiencia en la educación más sencilla y gratificante. \n\n Le presentamos nuestras características principales de forma breve:</string>
+    <string name="onboarding_title_2">Cámara Inteligente</string>
+    <string name="onboarding_subtitle_2">Resuelva Problemas Escolares</string>
+    <string name="onboarding_description_2">**Capture y Consulte:** Tome una foto de cualquier problema escolar y envíela a nuestro chat.\n\n**Soluciones Paso a Paso:** Reciba explicaciones detalladas para comprender y resolver el problema.\n\n**Consulta Continua:** ¿Tiene más dudas? Pregunte todo lo que necesite hasta que todo quede claro.</string>
+    <string name="onboarding_titlte_3">Asistente de Parentalidad</string>
+    <string name="onboarding_subtitle_3">Tu Asistente Experto en Psicología Infantil y Neurociencia</string>
+    <string name="onboarding_description_3">**Sus Preguntas, Nuestras Respuestas:** ¿Tiene inquietudes sobre crianza? Nuestro asistente de IA está listo para ayudarle.\n \n**Conocimiento a tu Alcance:** La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras. \n\n**Consejos Prácticos:** Desde cómo manejar rabietas hasta fomentar buenos hábitos. \n\n**Apoyo Constante**: Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre.</string>
+    <string name="onboarding_title_4">Guía Parental Profesional</string>
+    <string name="onboarding_subtitle_4">Sabiduría para un Hogar Feliz</string>
+    <string name="onboarding_description_4">**Consejos de Expertos:** Acceda a una colección de conocimientos de psicólogos, neurocientíficos y pediatras.\n\n**Estrategias Aplicables:** Encuentre consejos útiles y estrategias para mejorar la convivencia familiar.\n\n**Fomento de un Ambiente Feliz:** Aplique lo aprendido para crear un hogar más armonioso y feliz.</string>
+    <string name="onboarding_title_5">Compromiso con su Privacidad</string>
+    <string name="onboarding_subtitle_5">" "</string>
+    <string name="onboarding_description_5">**Su Privacidad, Nuestra Prioridad:** Asked no recopila datos personales.\n\n**Confidencialidad Asegurada:** Los mensajes en nuestra app son privados y no se almacenan.</string>
+    <string name="next">Siguiente</string>
+    <string name="finish">Finalizar</string>
+    <string name="skip">Saltar</string>
 
 </resources>

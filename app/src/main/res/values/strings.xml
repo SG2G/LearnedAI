@@ -285,6 +285,23 @@
     <string name="subscription_info_policy">Cancel at any time in the Play Store at no additional cost; the subscription will automatically renew after the current or trial period, unless cancelled 24 hours before the renewal at the latest. After the trial period, if not cancelled, the selected plan will be charged.</string>
     <string name="subscription_year">/ Year</string>
     <string name="subscription_month">/ Month</string>
+    <string name="onboarding_title_1">Welcome to Asked</string>
+    <string name="onboarding_description_1">Greetings! It is a pleasure to welcome you to Asked, your ally in the beautiful task of parenting. \n\nWe have created this application with you in mind, to make your experience in education simpler and more rewarding.\n\n We briefly present our main features:</string>
+    <string name="onboarding_title_2">Smart Camera</string>
+    <string name="onboarding_subtitle_2">Solve School Problems</string>
+    <string name="onboarding_description_2">**Capture y Consulte:** Tome una foto de cualquier problema escolar y envíela a nuestro chat.\n\n**Soluciones Paso a Paso:** Reciba explicaciones detalladas para comprender y resolver el problema.\n\n**Consulta Continua:** ¿Tiene más dudas? Pregunte todo lo que necesite hasta que todo quede claro.</string>
+    <string name="onboarding_titlte_3">Parenting Assistant</string>
+    <string name="onboarding_subtitle_3">Your Expert Assistant in Child Psychology and Neuroscience</string>
+    <string name="onboarding_description_3">**Your Questions, Our Answers:** Do you have concerns about parenting? Our AI assistant is ready to help you.\n\n**Knowledge at Your Fingertips:** The AI has information extracted from books and articles by psychologists, neuroscientists, and pediatricians.\n\n**Practical Advice:** From handling tantrums to encouraging good habits.\n\n**Constant Support**: Available 24 hours a day, every day, to provide guidance and advice in your role as a parent.</string>
+    <string name="onboarding_title_4">Professional Parenting Guide</string>
+    <string name="onboarding_subtitle_4">Wisdom for a Happy Home</string>
+    <string name="onboarding_description_4">**Expert Advice:** Access a collection of knowledge from psychologists, neuroscientists, and pediatricians.\n\n**Applicable Strategies:** Find useful tips and strategies to improve family life.\n\n**Fostering a Happy Environment:** Apply what you\'ve learned to create a more harmonious and happy home.</string>
+    <string name="onboarding_title_5">Commitment to Your Privacy</string>
+    <string name="onboarding_description_5">**Your Privacy, Our Priority:** Asked does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored.\n\n**Assured Confidentiality:** Messages in our app are private and are not stored.</string>
+    <string name="onboarding_subtitle_5">" "</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+    <string name="skip">Skip</string>
 
 
 </resources>

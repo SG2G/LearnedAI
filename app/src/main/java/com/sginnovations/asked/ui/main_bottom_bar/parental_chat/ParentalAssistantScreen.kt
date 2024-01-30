@@ -68,6 +68,7 @@ import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.components.OptionMenu
+import com.sginnovations.asked.ui.ui_components.other.EmptyConversationsMessage
 import com.sginnovations.asked.viewmodel.AssistantViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
@@ -156,77 +157,43 @@ fun ParentalChatStateLess(
         modifier = Modifier.fillMaxSize()
     ) {
         item {
-            val backgroundImage = painterResource(id = R.drawable.assistant_banner)
             val cardShape = RoundedCornerShape(20.dp)
 
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-                    .height(184.dp),
+                    .padding(8.dp),
                 shape = cardShape
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(cardShape)
-                        .clickable { onNavigateNewMessage() }
+                Column(
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    Image(
-                        painter = backgroundImage,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                    Text(
+                        text = "Tu Asistente de bolsillo",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Bottom
+                    Text(
+                        text = "Obtén orientación parental instantánea, en cualquier momento.",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Button(
+                        onClick = { onNavigateNewMessage() },
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(32.dp),
-                        ) {
-                            Text(
-                                text = "Lets Chat Together",
-                                style = MaterialTheme.typography.titleLarge,
-                                color = Color.White,
-                                modifier = Modifier.align(Alignment.Start)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "Understand your emotions",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White,
-                                modifier = Modifier.align(Alignment.Start)
-                            )
-                            Spacer(modifier = Modifier.height(32.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(0.5f)
-                            ) {
-                                TextButton(
-                                    onClick = onNavigateNewMessage,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(48.dp)
-                                        .border(1.dp, Color.White, RoundedCornerShape(25.dp)),
-                                    shape = RoundedCornerShape(25.dp),
-                                ) {
-                                    Text(text = "Start Chatting", color = Color.White)
-                                }
-                            }
-
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        Image(
-                            painter = painterResource(id = R.drawable.sofa),
-                            contentDescription = "sofa",
-                            modifier = Modifier
-                                .size(168.dp)
-                                .padding(end = 24.dp)
+                        Text(
+                            text = "Preguntar Ahora",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
-
                 }
             }
         }
@@ -242,24 +209,7 @@ fun ParentalChatStateLess(
 
         if (conversations.value.isEmpty()) {
             item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 64.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.thinking2),
-                        contentDescription = "thinking head",
-                        modifier = Modifier.fillMaxWidth(0.6f)
-                    )
-                    Text(
-                        text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
+                EmptyConversationsMessage()
             }
         }
 
@@ -339,31 +289,7 @@ fun ParentalChatStateLess(
                                         color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.titleMedium
                                     )
-//                                    Spacer(modifier = Modifier.height(8.dp))
-//                                    Row(
-//                                        verticalAlignment = Alignment.CenterVertically,
-//                                        horizontalArrangement = Arrangement.Start,
-//                                    ) {
-//                                        Text(
-//                                            text = "Que es esto",
-//                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-//                                            style = MaterialTheme.typography.labelSmall
-//                                        )
-//                                        Spacer(modifier = Modifier.width(8.dp))
-//                                        Icon(
-//                                            modifier = Modifier.size(14.dp),
-//                                            painter = when (conversation.category) {
-//                                                TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
-//                                                MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
-//                                                TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
-//                                                else -> painterResource(id = R.drawable.text_camera)
-//                                            },
-//                                            contentDescription = null,
-//                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-//                                        )
-//                                    }
                                 }
-
 
 
                                 IconButton(onClick = {

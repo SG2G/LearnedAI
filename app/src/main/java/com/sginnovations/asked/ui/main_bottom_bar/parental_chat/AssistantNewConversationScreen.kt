@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -38,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.Constants
@@ -199,10 +201,19 @@ fun AssistantNewConversationStateLess(
         )
         Text(
             modifier = Modifier.padding(horizontal = 64.dp, vertical = 8.dp),
-            text = "Cuentame una situación y te dare mi punto de vista",
+            text = "Cuentame una situación y ayudare con lo que sea necesario",
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center
         )
+        TextButton(onClick = { /*TODO*/ }) {
+            Text(
+                text = "¿Por qué confiar en la IA?",
+                color = MaterialTheme.colorScheme.tertiary,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 
     /**

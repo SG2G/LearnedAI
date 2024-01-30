@@ -65,6 +65,7 @@ import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.ui.main_bottom_bar.historychats.components.OptionMenu
+import com.sginnovations.asked.ui.ui_components.other.EmptyConversationsMessage
 import com.sginnovations.asked.viewmodel.ChatViewModel
 import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -214,24 +215,7 @@ fun StateLessHistoryChats(
         }
         if (conversations.value.isEmpty()) {
             item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 64.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.thinking2),
-                        contentDescription = "thinking head",
-                        modifier = Modifier.fillMaxWidth(0.6f)
-                    )
-                    Text(
-                        text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
+                EmptyConversationsMessage()
             }
         }
 
