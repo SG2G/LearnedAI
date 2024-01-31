@@ -13,7 +13,7 @@
     <string name="profile_get_more_tokens">Consigue mas Tokens</string>
     <string name="profile_invite_friends">Invitar Amigos</string>
     <string name="subscription_lifetime">/ Para siempre</string>
-    <string name="subscription_unlimited">Ilimitados</string>
+    <string name="subscription_unlimited">Tokens Ilimitados</string>
     <string name="subscription_exclusive_functions">Funciones Exclusivas</string>
     <string name="subscription_higher_word_limit">- Limite de palabras mas alto</string>
     <string name="subscription_billed_once">Paga una vez</string>
@@ -41,7 +41,7 @@
     <string name="settings_theme">Tema</string>
     <string name="topbar_parentalchat">Chat Parental</string>
     <string name="topbar_parental_guidance">Guía Parental</string>
-    <string name="topbar_parentalassist">Asistencia Parental</string>
+    <string name="topbar_parentalassist">Asistente Parental</string>
     <string name="profile_rate_us">Ayúdanos a mejorar</string>
     <string name="profile_email_us">Envianos un Email!</string>
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
@@ -137,7 +137,6 @@
     <string name="referral_tokens_immediately">" Tokens inmediatamente!"</string>
     <string name="crop_crop_the_text_you_want_to">Consejo: Recorta solo lo que necesites, así conseguirás mejores resultados</string>
     <string name="subscription_monthly">Mensual</string>
-    <string name="subscription_save_50">Ahorra 30%</string>
     <string name="topbar_settings">Ajustes</string>
     <string name="language_english">Inglés</string>
     <string name="language_spanish">Español</string>
@@ -215,5 +214,9 @@
     <string name="next">Siguiente</string>
     <string name="finish">Finalizar</string>
     <string name="skip">Saltar</string>
+    <string name="topbar_assistant_chat">Asistente</string>
+    <string name="topbar_transcript">Transcripción</string>
+    <string name="topbar_lesson">Lección</string>
+    <string name="topbar_lessons">Lecciones</string>
 
 </resources>

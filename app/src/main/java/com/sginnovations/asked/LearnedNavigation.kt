@@ -66,6 +66,24 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "LearnedNavigation"
 
+/**
+ * Animations
+ */
+val enterTransitionSlide = slideInHorizontally(
+    initialOffsetX = { fullWidth -> fullWidth },
+    animationSpec = tween(
+        durationMillis = 300,
+        easing = LinearEasing
+    )
+)
+val exitTransitionSlide = slideOutHorizontally(
+    targetOffsetX = { fullWidth -> fullWidth },
+    animationSpec = tween(
+        durationMillis = 300,
+        easing = LinearEasing
+    )
+)
+
 @Composable
 fun LearnedNavigation(
     vmPreferences: PreferencesViewModel,
@@ -120,12 +138,14 @@ fun LearnedNavigation(
             OnBoarding.route -> OnBoarding
 
             ChatsHistory.route -> ChatsHistory
-            ParentalGuidance.route -> ParentalGuidance
             ParentalAssist.route -> ParentalAssist
+            ParentalGuidance.route -> ParentalGuidance
             Profile.route -> Profile
 
             NewConversation.route -> NewConversation
+            AssistantNewConversation.route -> AssistantNewConversation
             Chat.route -> Chat
+            AssistantChat.route -> AssistantChat
 
             Gallery.route -> Gallery
             Subscription.route -> Subscription
@@ -134,7 +154,7 @@ fun LearnedNavigation(
 
             Lesson.route -> Lesson
             Transcript.route -> Transcript
-            AssistantChat.route -> AssistantChat
+
             CategoryLesson.route -> CategoryLesson
 
             else -> null
@@ -334,7 +354,9 @@ fun LearnedNavigation(
             /**
              * NewConversation
              */
-            composable(route = NewConversation.route) {
+            composable(
+                route = NewConversation.route,
+            ) {
                 NewConversationStateFul(
                     vmChat = vmChat,
                     vmCamera = vmCamera,
@@ -347,7 +369,9 @@ fun LearnedNavigation(
             /**
              * AssistantNewConversation
              */
-            composable(route = AssistantNewConversation.route) {
+            composable(
+                route = AssistantNewConversation.route,
+            ) {
                 AssistantNewConversationStateFul(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
@@ -363,7 +387,11 @@ fun LearnedNavigation(
             /**
              * AssistantChat
              */
-            composable(route = AssistantChat.route) {
+            composable(
+                route = AssistantChat.route,
+                enterTransition = { enterTransitionSlide },
+                exitTransition = { exitTransitionSlide },
+            ) {
                 AssistantChatStateFul(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
@@ -373,29 +401,14 @@ fun LearnedNavigation(
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
             }
+
             /**
              * Chat
              */
             composable(
                 route = Chat.route,
-                enterTransition = {
-                    slideInHorizontally(
-                        initialOffsetX = { fullWidth -> fullWidth },
-                        animationSpec = tween(
-                            durationMillis = 300,
-                            easing = LinearEasing
-                        )
-                    )
-                },
-                exitTransition = {
-                    slideOutHorizontally(
-                        targetOffsetX = { fullWidth -> fullWidth },
-                        animationSpec = tween(
-                            durationMillis = 300,
-                            easing = LinearEasing
-                        )
-                    )
-                },
+                enterTransition = { enterTransitionSlide },
+                exitTransition = { exitTransitionSlide },
             ) {
                 ChatStateFul(
                     vmCamera = vmCamera,
@@ -422,7 +435,13 @@ fun LearnedNavigation(
 
                     onOpenTranscript = { navController.navigate(route = Transcript.route) },
 
-                    onNavigateAssistant = { scope.launch { vmNavigator.navigateAssistantNewChat(navController) } },
+                    onNavigateAssistant = {
+                        scope.launch {
+                            vmNavigator.navigateAssistantNewChat(
+                                navController
+                            )
+                        }
+                    },
                     onNavigateBack = { navController.navigateUp() }
                 )
             }

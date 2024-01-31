@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,8 @@ fun EmptyConversationsMessage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 64.dp),
+            .padding(top = 64.dp)
+            .alpha(0.7f),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -33,7 +35,7 @@ fun EmptyConversationsMessage() {
         Text(
             text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

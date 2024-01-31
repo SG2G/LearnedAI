@@ -17,7 +17,7 @@
     <string name="subscription_lifetime"> / Lifetime</string>
     <string name="infinite" translatable="false">∞</string>
     <string name="asked_email" translatable="false">askedaihelp@gmail.com</string>
-    <string name="subscription_unlimited">Unlimited</string>
+    <string name="subscription_unlimited">Unlimited Tokens</string>
     <string name="subscription_exclusive_functions">Exclusive Functions</string>
     <string name="subscription_higher_word_limit">Higher Word Limit</string>
     <string name="subscription_billed_once">Billed once</string>
@@ -133,7 +133,6 @@
     <string name="referral_tokens_immediately">" Tokens immediately!"</string>
     <string name="crop_crop_the_text_you_want_to">Tip: Crop only what you need, that way you\'ll achieve better results.</string>
     <string name="subscription_monthly">Monthly</string>
-    <string name="subscription_save_50">Save 30%</string>
     <string name="topbar_settings">Settings</string>
     <string name="language_english">English</string>
     <string name="language_spanish">Spanish</string>
@@ -151,7 +150,7 @@
     <string name="settings_theme">Theme</string>
     <string name="topbar_parentalchat">Parental Chat</string>
     <string name="topbar_parental_guidance">Parental Guide</string>
-    <string name="topbar_parentalassist">Parental Assist</string>
+    <string name="topbar_parentalassist">Parental Assistant</string>
     <string name="profile_rate_us">Help us improve</string>
     <string name="subscription_annually">Yearly</string>
     <string name="subscription_most_popular">Most Popular</string>
@@ -213,7 +212,7 @@
     <string name="lesson_transcription_3001">## Historia Principal\n\n\nCarlos, un profesor de educación física en una escuela primaria, observó una transformación notable en su clase después de implementar un programa de deportes diversificado. Uno de sus alumnos, Miguel, era particularmente tímido y tenía dificultades para socializar. Al principio, Miguel se mostraba reacio a participar en actividades deportivas, prefiriendo quedarse al margen.\n\nSin embargo, Carlos introdujo una variedad de deportes y actividades físicas, desde fútbol hasta baile y gimnasia, buscando algo que resonara con cada niño. Para sorpresa de Carlos, Miguel mostró un interés inesperado en la escalada. A medida que Miguel participaba en la escalada, Carlos notó un cambio: su confianza comenzó a florecer. No solo mejoró su habilidad física, sino que también se volvió más abierto a interactuar con sus compañeros.\n\nEl cambio no se limitó a Miguel. En general, los estudiantes de la clase de Carlos mostraron mejoras en la concentración, el trabajo en equipo y la resiliencia. Los deportes les proporcionaron un espacio para liberar energía, enfrentar desafíos y aprender a manejar tanto el éxito como la decepción.\n\n## Conclusión y Explicación del Método\n\n\nLa experiencia de Carlos demuestra que el deporte y la actividad física pueden ser herramientas poderosas para el desarrollo integral de los niños. **No solo mejoran la salud física, sino que también fortalecen habilidades sociales, emocionales e intelectuales.** El enfoque de Carlos para ofrecer una variedad de deportes permitió que cada niño encontrara una actividad que disfrutara y en la cual pudiera destacarse, lo cual es clave para fomentar un compromiso a largo plazo con la actividad física.</string>
     <string name="lesson_transcription_4000">## Historia Principal\n\n\nCarla, madre de dos hijos, se enfrentaba a un reto moderno: sus hijos, de 10 y 12 años, empezaban a mostrar un gran interés en internet y las redes sociales. Carla sabía que prohibir completamente el uso de estas plataformas no era la solución, ya que quería que sus hijos aprendieran a usarlas de manera responsable. Por ello, decidió tomar un camino proactivo.\n\nInició con una serie de charlas familiares donde discutían temas como la privacidad en línea, el respeto por los demás y los peligros potenciales de internet. Carla utilizó ejemplos adaptados a su edad para ilustrar situaciones reales, como qué hacer ante un mensaje de un desconocido o cómo identificar noticias falsas.\n\nAdemás, estableció reglas claras para el uso de dispositivos: no compartir información personal, limitar el tiempo de pantalla y utilizar las redes sociales solo en áreas comunes de la casa. Carla también se involucró en las actividades en línea de sus hijos, mostrando interés y participando en las conversaciones sobre lo que encontraban en internet.\n\nEsta estrategia ayudó a sus hijos a entender la importancia de un uso seguro y responsable de internet y las redes sociales, y les proporcionó herramientas para navegar en este entorno digital de manera más informada y consciente.\n\n## Conclusión y Explicación del Método\n\n\nLa estrategia de Carla se basa en la educación y la comunicación abierta, clave para fomentar un uso seguro de internet y redes sociales en los niños. En lugar de imponer restricciones estrictas, enseñó a sus hijos a ser críticos y conscientes de su entorno digital. Esta aproximación fomenta la confianza y prepara a los niños para enfrentar y gestionar los desafíos de internet de forma independiente.</string>
     <string name="lesson_conclusion_4000">## Consejos Prácticos\n\n1. **Establece una hora de acostarse regular**: Mantén horarios consistentes para acostarse y despertarse.\n\n2. **Crea una rutina relajante antes de dormir**: Actividades como leer un libro o tomar un baño pueden ayudar a los niños a calmarse.\n\n3. **Minimiza la exposición a pantallas antes de dormir**: La luz azul de los dispositivos puede interferir con el sueño.</string>
-    <string name="lesson_reference_3000" translatable="false"><![CDATA[Dietz, W. H., & Stern, L. (2012). Nutrition: What Every Parent Needs to Know.]]></string>
+    <string name="lesson_reference_3000"><![CDATA[Dietz, W. H., & Stern, L. (2012). Nutrition: What Every Parent Needs to Know.]]></string>
     <string name="lesson_introduction_3000">¿Sabías que una nutrición equilibrada durante la infancia no solo afecta el crecimiento físico de los niños, sino también su desarrollo cognitivo y emocional? Un patrón alimentario saludable establecido desde temprana edad puede sentar las bases para un futuro más sano y feliz.</string>
     <string name="lesson_title_3000">Pequeños Chefs, Grandes Mentes</string>
     <string name="lesson_subtitle_3000">Nutriendo el Futuro de Tus Hijos</string>
@@ -222,19 +221,19 @@
     <string name="lesson_title_3001">Desarrollando Mentes y Cuerpos Fuertes</string>
     <string name="lesson_subtitle_3001">La Magia del Deporte en la Infancia</string>
     <string name="lesson_introduction_3001">¿Sabías que la actividad física regular puede mejorar la capacidad de aprendizaje y la memoria en los niños? El deporte va más allá de los beneficios físicos, influenciando positivamente su desarrollo cognitivo y emocional.</string>
-    <string name="lesson_reference_3001" translatable="false">Ratey, J. J. (2013). Spark: The Revolutionary New Science of Exercise and the Brain. Little, Brown.</string>
+    <string name="lesson_reference_3001">Ratey, J. J. (2013). Spark: The Revolutionary New Science of Exercise and the Brain. Little, Brown.</string>
     <string name="lesson_button_text_3001">Actividad Física: Más que Músculos</string>
     <string name="lesson_question_asked_3001">¿Cómo influye la actividad física en el desarrollo cognitivo y emocional de los niños, más allá de los beneficios físicos?</string>
     <string name="lesson_title_3002">El Secreto para un Crecimiento Saludable</string>
     <string name="lesson_subtitle_3002">El Poder del Sueño en los Niños</string>
     <string name="lesson_introduction_3002">¿Sabías que un niño de entre 6 y 13 años necesita entre 9 y 11 horas de sueño cada noche para un desarrollo óptimo? Sin embargo, en la actualidad, muchos niños no alcanzan estas cifras esenciales.</string>
-    <string name="lesson_reference_3002" translatable="false">Huffington, A. (2017). The sleep Revolution: Transforming Your Life, One Night at a Time. Harmony.</string>
+    <string name="lesson_reference_3002">Huffington, A. (2017). The sleep Revolution: Transforming Your Life, One Night at a Time. Harmony.</string>
     <string name="lesson_button_text_3002">Optimiza el Sueño Infantil: Descubre Cómo</string>
     <string name="lesson_question_asked_3002">¿Cuál es el impacto del sueño en el desarrollo cognitivo y físico de los niños, y qué estrategias generales pueden los padres adoptar para mejorar la calidad del sueño de sus hijos?</string>
     <string name="lesson_title_4000">El Jardín de la Empatía</string>
     <string name="lesson_subtitle_4000">Cómo Cultivar Corazones Comprensivos en los Más Pequeños</string>
     <string name="lesson_introduction_4000">¿Sabías que la empatía y los valores sólidos pueden comenzar a fomentarse en los niños desde tan temprano como los tres años? Estos elementos son cruciales para su desarrollo emocional y social.</string>
-    <string name="lesson_reference_4000" translatable="false">Hoffman, M. L. (2000). Empathy and moral development: Implications for Caring and Justice.</string>
+    <string name="lesson_reference_4000">Hoffman, M. L. (2000). Empathy and moral development: Implications for Caring and Justice.</string>
     <string name="lesson_question_asked_4000">¿Cuál es la importancia de fomentar la empatía y los valores sólidos en el desarrollo emocional y social de los niños desde una edad temprana, y qué métodos se consideran más efectivos para lograrlo?</string>
     <string name="lesson_button_text_4000">Cultiva Empatía y Valores en la Infancia</string>
     <string name="lesson_transcription_3002">## Historia Principal\n\n\nLucía, madre de dos niños, siempre se enorgulleció de su hogar activo y lleno de energía. Sin embargo, últimamente notó que sus hijos, Carlos de 8 años y Sofía de 6, estaban irritables, tenían problemas para concentrarse en la escuela y a menudo se enfermaban. Tras una consulta con el pediatra, Lucía se dio cuenta de que el problema radicaba en las rutinas de sueño de la familia.\n\nDecidida a cambiar las cosas, Lucía implementó una serie de cambios en el hogar. Estableció una hora fija para acostarse, incluso los fines de semana, y creó una rutina relajante antes de dormir que incluía lectura y baños tibios. También limitó la exposición a pantallas una hora antes de acostarse y aseguró que el ambiente del dormitorio fuera tranquilo y cómodo.\n\nCon el tiempo, estos cambios dieron resultados positivos. Los niños comenzaron a dormirse más rápido y a despertar por sí mismos por la mañana, mostrando más energía y mejor humor durante el día. Las visitas al médico por enfermedades comunes también disminuyeron.\n\n## Conclusión y Explicación del Método\n\n\nLa historia de Lucía ilustra la importancia de las rutinas de sueño saludables para el bienestar y desarrollo de los niños. Un sueño adecuado no solo afecta el estado de ánimo y la energía, sino que **también es crucial para el aprendizaje, la memoria y el sistema inmunológico**. Establecer una rutina constante ayuda a regular el reloj biológico de los niños, facilitando un sueño de mejor</string>
@@ -244,7 +243,7 @@
     <string name="lesson_title_1002">El Poder de la Empatía</string>
     <string name="lesson_subtitle_1002">Transformando la Comunicación con tus Hijos</string>
     <string name="lesson_introduction_1002">¿Sabías que la manera en que hablas con tus hijos puede influir en su confianza y éxito futuro? Descubre cómo la comunicación efectiva puede ser tu herramienta más poderosa como padre.</string>
-    <string name="lesson_reference_1002">Rolland, R. (2023). El arte de hablar con niños: Claves sencillas para fomentar su autonomía, creatividad y confianza. Diana Editorial.</string>
+    <string name="lesson_reference_1002">Rolland, R. (2023). The Art of Talking with Children: Simple Keys to Foster Their Autonomy, Creativity, and Confidence. Diana Editorial.</string>
     <string name="lesson_button_text_1002">Desbloquea la Magia de Escuchar a tu Hijo</string>
     <string name="lesson_question_asked_1002">¿Cómo puedo mejorar mis habilidades de escucha activa para tener una comunicación más efectiva con mi hijo?</string>
     <string name="lesson_title_2000">Desbloqueando el Potencial de Tu Hijo</string>
@@ -302,6 +301,10 @@
     <string name="next">Next</string>
     <string name="finish">Finish</string>
     <string name="skip">Skip</string>
+    <string name="topbar_assistant_chat">Assistant Chat</string>
+    <string name="topbar_transcript">Transcript</string>
+    <string name="topbar_lesson">Lesson</string>
+    <string name="topbar_lessons">Lessons</string>
 
 
 </resources>

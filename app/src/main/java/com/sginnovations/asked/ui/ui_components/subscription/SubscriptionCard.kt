@@ -52,9 +52,10 @@ import com.sginnovations.asked.ui.subscription.Option
 @Composable
 fun SubscriptionCard(
     durationTime: String,
-    //smallText: String,
     allPrice: String,
-    priceDiscount: String?,
+    priceWithDiscount: String?,
+    priceAnnualMonthly: String? = null,
+    savingsPercentage : Int? = null,
     subscriptionOption: Option,
     userOption: Option,
 
@@ -66,7 +67,7 @@ fun SubscriptionCard(
         label = "",
         animationSpec = tween(250)
     )
-    val selecterColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+    val selectedColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
 
     val scale = remember { Animatable(1f) }
 
@@ -112,15 +113,42 @@ fun SubscriptionCard(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(
-                        text = durationTime,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = durationTime,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        if (subscriptionOption.name == Option.OptionAnnually.name) {
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(5.dp),
+                                modifier = Modifier.scale(scale.value)
+                            ) {
+                                Text(
+                                    text = "Save $savingsPercentage %",
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    modifier = Modifier.padding(8.dp)
+                                )
+                            }
+                        }
+                    }
 
                     if (subscriptionOption.name == Option.OptionAnnually.name) {
-                        Log.d("SubscriptionCard", "priceDiscount-> $priceDiscount allPrice -> $allPrice ")
-                        if (priceDiscount.equals(allPrice) || priceDiscount.isNullOrEmpty()) {
+                        Log.d(
+                            "SubscriptionCard",
+                            "priceDiscount-> $priceWithDiscount allPrice -> $allPrice "
+                        )
+                        if (priceWithDiscount.equals(allPrice) || priceWithDiscount.isNullOrEmpty()) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -129,14 +157,17 @@ fun SubscriptionCard(
                                     color = MaterialTheme.colorScheme.onBackground,
                                     style = MaterialTheme.typography.titleSmall
                                 )
+                                Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "  (7,08€ monthly)",
+                                    text = "($priceAnnualMonthly" + " " +"monthly)",
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = MaterialTheme.typography.bodySmall
+                                    style = MaterialTheme.typography.labelMedium
                                 )
                             }
                         } else {
-                            Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
                                     text = allPrice,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -144,21 +175,20 @@ fun SubscriptionCard(
                                         textDecoration = TextDecoration.LineThrough
                                     )
                                 )
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = priceDiscount + " " + stringResource(R.string.subscription_year),
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        style = MaterialTheme.typography.titleSmall
-                                    )
-                                    Text(
-                                        text = "  (7,08€ monthly)",
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = priceWithDiscount + " " + stringResource(R.string.subscription_year),
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "($priceAnnualMonthly" + " " +"monthly)",
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
                             }
+
                         }
                     }
                     if (subscriptionOption.name == Option.OptionMonthly.name) {
@@ -169,33 +199,6 @@ fun SubscriptionCard(
                                 text = allPrice + " " + stringResource(R.string.subscription_month),
                                 color = MaterialTheme.colorScheme.onBackground,
                                 style = MaterialTheme.typography.titleSmall
-                            )
-                        }
-                    }
-                }
-                /**
-                 * Save x%
-                 */
-                if (subscriptionOption.name == Option.OptionAnnually.name) {
-                    Column(
-                        modifier = Modifier.weight(0.5f),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                MaterialTheme.colorScheme.primary
-                            ),
-                            shape = RoundedCornerShape(5.dp),
-                            modifier = Modifier.scale(scale.value)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.subscription_save_50),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     }
@@ -218,7 +221,7 @@ fun SubscriptionCard(
                     modifier = Modifier
                         .size(20.dp)
                         .clip(CircleShape)
-                        .background(selecterColor),
+                        .background(selectedColor),
                     contentAlignment = Alignment.Center
                 ) {
                     if (isSelected) {
@@ -234,7 +237,7 @@ fun SubscriptionCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Card(
                         colors = CardDefaults.elevatedCardColors(
-                            containerColor = selecterColor
+                            containerColor = selectedColor
                         )
                     ) {
                         Text(

@@ -388,17 +388,18 @@ fun AssistantChatStateLess(
                                                 message.content,
                                             ) { chatAnimation.value = false }
                                         } else {
+                                            IconAssistantMsg()
                                             ElevatedCard(
                                                 modifier = Modifier.padding(horizontal = 16.dp),
                                                 colors = CardDefaults.elevatedCardColors(
-                                                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                                                    containerColor = MaterialTheme.colorScheme.surface
                                                 )
                                             ) {
                                                 Text(
                                                     modifier = Modifier.padding(Constants.CHAT_MSG_PADDING),
                                                     text = message.content,
                                                     style = MaterialTheme.typography.bodyMedium,
-                                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                                    color = MaterialTheme.colorScheme.onSurface
                                                 )
                                             }
                                         }

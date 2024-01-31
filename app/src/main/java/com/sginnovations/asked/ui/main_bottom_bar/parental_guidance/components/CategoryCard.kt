@@ -46,7 +46,7 @@ fun CategoryLessonCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
         Box(modifier = Modifier.clickable { onNavigateCategoryLessons() }) {
             Row(
@@ -74,7 +74,7 @@ fun CategoryLessonCard(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = vmLesson.countLessonsByCategory(category.idCategory).toString() + " " + category.lessonsNum,
                         style = MaterialTheme.typography.bodySmall,
@@ -82,7 +82,7 @@ fun CategoryLessonCard(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = category.description,
                         style = MaterialTheme.typography.bodySmall,

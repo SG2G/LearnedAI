@@ -158,12 +158,10 @@ fun ParentalChatStateLess(
     ) {
         item {
             val cardShape = RoundedCornerShape(20.dp)
-
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
-                    .padding(8.dp),
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                 shape = cardShape
             ) {
                 Column(
@@ -183,7 +181,8 @@ fun ParentalChatStateLess(
                         onClick = { onNavigateNewMessage() },
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )

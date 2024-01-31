@@ -89,15 +89,15 @@ object RefCode : ScreensDestinations {
 }
 object CategoryLesson : ScreensDestinations {
     override val route = "CategoryLesson"
-    override fun getName(context: Context) = "Lessons"
+    override fun getName(context: Context) = context.getString(R.string.topbar_lessons)
 }
 object Lesson : ScreensDestinations {
     override val route = "Lesson"
-    override fun getName(context: Context) = "Lesson"
+    override fun getName(context: Context) = context.getString(R.string.topbar_lesson)
 }
 object Transcript : ScreensDestinations {
     override val route = "Transcript"
-    override fun getName(context: Context) = "Transcript"
+    override fun getName(context: Context) = context.getString(R.string.topbar_transcript)
 }
 object Subscription : ScreensDestinations {
     override val route = "Subscription"
@@ -114,9 +114,9 @@ object Settings : ScreensDestinations {
 }
 object AssistantNewConversation : ScreensDestinations {
     override val route = "AssistantNewConversation"
-    override fun getName(context: Context) = "New Chat"
+    override fun getName(context: Context) = context.getString(R.string.topbar_new_chat)
 }
 object AssistantChat : ScreensDestinations {
     override val route = "AssistantChat"
-    override fun getName(context: Context) = "Assistant Chat"
+    override fun getName(context: Context) = context.getString(R.string.topbar_assistant_chat)
 }

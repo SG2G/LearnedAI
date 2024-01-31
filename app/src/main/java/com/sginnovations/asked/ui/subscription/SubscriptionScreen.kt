@@ -41,7 +41,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
-import com.sginnovations.asked.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
 import com.sginnovations.asked.ui.subscription.components.TitleBenefit
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
@@ -49,11 +48,29 @@ import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 import com.sginnovations.asked.viewmodel.BillingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
 import java.time.LocalDateTime
+import java.util.Currency
+import kotlin.math.roundToInt
 
 private const val TAG = "SubscriptionStateFull"
 
 enum class Option { OptionMonthly, OptionAnnually }
+
+fun formatPriceAnnualToMonthly(priceAmountMicros: Long, priceCurrencyCode: String): String {
+    val amount = (priceAmountMicros / 1_000_000.0) / 12
+    val format = NumberFormat.getCurrencyInstance().apply {
+        currency = Currency.getInstance(priceCurrencyCode)
+        maximumFractionDigits = 2
+    }
+    return format.format(amount)
+}
+
+fun calculateSavingsPercentage(microsMonth: Long, microsAnnual: Long): Int {
+    val month = (microsMonth / 1_000_000.0) * 12
+    val annual = microsAnnual / 1_000_000.0
+    return (((month - annual) / month) * 100).roundToInt()
+}
 
 @Composable
 fun SubscriptionStateFull(
@@ -70,6 +87,10 @@ fun SubscriptionStateFull(
     val priceSubAnnually = remember { mutableStateOf<String?>(null) }
     val priceDiscountSubAnnually = remember { mutableStateOf<String?>(null) }
     val priceSubMonthly = remember { mutableStateOf<String?>(null) }
+
+    val priceMicrosSubAnnually = remember { mutableStateOf<Long?>(null) }
+    val priceMicrosSubMonthly = remember { mutableStateOf<Long?>(null) }
+    val priceCurrencySubAnnually = remember { mutableStateOf<String?>(null) }
 
     Log.d(
         TAG,
@@ -102,10 +123,26 @@ fun SubscriptionStateFull(
                 priceSubAnnually.value =
                     productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
                         ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+
+                priceMicrosSubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.priceAmountMicros
+
+                priceCurrencySubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.priceCurrencyCode
             } else {
                 priceDiscountSubAnnually.value =
                     productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
                         ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+
+                priceMicrosSubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.priceAmountMicros
+
+                priceCurrencySubAnnually.value =
+                    productAnnually.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                        ?.firstOrNull { it.priceAmountMicros > 0 }?.priceCurrencyCode
 
                 priceSubAnnually.value =
                     productAnnually.value?.subscriptionOfferDetails?.getOrNull(1)?.pricingPhases?.pricingPhaseList
@@ -115,6 +152,10 @@ fun SubscriptionStateFull(
             priceSubMonthly.value =
                 productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
                     ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
+
+            priceMicrosSubMonthly.value =
+                productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+                    ?.firstOrNull { it.priceAmountMicros > 0 }?.priceAmountMicros
 
             Log.i(
                 TAG,
@@ -130,7 +171,7 @@ fun SubscriptionStateFull(
         }
     }
 
-    if (showComposable.value) {
+    if (showComposable.value) { //TODO CHANGE
         SubscriptionStateLess(
             productMonthly,
             productAnnually,
@@ -138,6 +179,10 @@ fun SubscriptionStateFull(
             priceSubAnnually,
             priceDiscountSubAnnually,
             priceSubMonthly,
+
+            priceMicrosSubAnnually,
+            priceMicrosSubMonthly,
+            priceCurrencySubAnnually,
 
             userOption,
 
@@ -205,6 +250,11 @@ fun SubscriptionStateLess(
     priceDiscountSubAnnually: MutableState<String?>,
     priceSubMonthly: MutableState<String?>,
 
+    priceMicrosSubAnnually: MutableState<Long?>,
+
+    priceMicrosSubMonthly: MutableState<Long?>,
+    priceCurrencySubAnnually: MutableState<String?>,
+
     userOption: MutableState<Option>,
 
     onNavigateUp: () -> Unit,
@@ -255,76 +305,81 @@ fun SubscriptionStateLess(
                     )
                     IconButton(onClick = { }) {}
                 }
-                /**
-                 * CountDown
-                 */
-                CountdownTimer(targetDate = targetDate)
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                ) {
-                    Text(
-                        text = "Choose Your Plan",
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                    Text(
-                        text = "Con nuestra suscripción premium, abres un mundo de posibilidades para ti y tu hijo. Experimenta una educación más fácil, interactiva y efectiva. ¡Todo en la palma de tu mano!",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
+//                /**
+//                 * CountDown
+//                 */
+//                CountdownTimer(targetDate = targetDate)
+//                Column(
+//                    modifier = Modifier.padding(horizontal = 16.dp),
+//                ) {
+//                    Text(
+//                        text = "Choose Your Plan",
+//                        style = MaterialTheme.typography.titleMedium,
+//                    )
+//                    Text(
+//                        text = "Con nuestra suscripción premium, abres un mundo de posibilidades para ti y tu hijo. Experimenta una educación más fácil, interactiva y efectiva. ¡Todo en la palma de tu mano!",
+//                        style = MaterialTheme.typography.bodyMedium,
+//                    )
+//                }
                 /**
                  * Benefits
                  */
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                    Column {
+                            TitleBenefit(
+                                painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
+                                text = stringResource(R.string.subscription_unlimited)
+                            )
+                            SubTitleBenefit(text = "- Libertad total, tokens ilimitados")
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            TitleBenefit(
+                                painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
+                                text = "Soluciones Instantáneas"
+                            )
+                            SubTitleBenefit(text = "- Fotos ilimitadas, mensajes ilimitados y todas las cameras disponibles.")
+                        }
+                    }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_infinite2),
-                            text = stringResource(R.string.subscription_unlimited)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        TokenIcon()
+                        Column {
+                            TitleBenefit(
+                                painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
+                                text = "Respuestas sin limites"
+                            )
+                            SubTitleBenefit(text = "- Mensajes ilimitados para el Asistente, todas sus dudas resueltas.")
+                        }
                     }
 
-                    //Divider()
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
-                            text = "Unlimited Camera Photos and Messages"
-                        )
+                        Column {
+                            TitleBenefit(
+                                painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
+                                text = "Sabiduría a Su Alcance"
+                            )
+                            SubTitleBenefit(text = "- Acceda a consejos extraídos directamente de libros de expertos, reunidos para usted.")
+                        }
                     }
 
-                    //Divider()
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
-                            text = "Unlimited Parent Assist Messages"
-                        )
-                    }
-
-                    //Divider()
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
-                            text = "Access to Guide"
-                        )
-                    }
-
-                    //Divider()
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -334,7 +389,6 @@ fun SubscriptionStateLess(
                                 painterResource = painterResource(id = R.drawable.subscription_star2),
                                 text = stringResource(R.string.subscription_exclusive_functions)
                             )
-                            SubTitleBenefit(text = "- Camera - Translate, Summary, Corrections")
                             SubTitleBenefit(text = stringResource(id = R.string.subscription_higher_word_limit))
                         }
                     }
@@ -342,14 +396,13 @@ fun SubscriptionStateLess(
             }
         }
 
-
         /**
          * Products
          */
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -363,9 +416,8 @@ fun SubscriptionStateLess(
             priceSubMonthly.value?.let { price ->
                 SubscriptionCard(
                     durationTime = stringResource(R.string.subscription_monthly),
-                    //smallText = stringResource(R.string.subscription_monthly_small_text),
                     allPrice = price,
-                    priceDiscount = null,
+                    priceWithDiscount = null,
                     subscriptionOption = Option.OptionMonthly,
                     userOption = userOption.value
                 ) { userOption.value = Option.OptionMonthly }
@@ -375,9 +427,23 @@ fun SubscriptionStateLess(
             priceSubAnnually.value?.let { price ->
                 SubscriptionCard(
                     durationTime = stringResource(R.string.subscription_annually),
-                    //smallText = stringResource(R.string.subscription_annually_small_text),
                     allPrice = price,
-                    priceDiscount = priceDiscountSubAnnually.value,
+                    priceWithDiscount = priceDiscountSubAnnually.value,
+                    priceAnnualMonthly = priceMicrosSubAnnually.value?.let { micro ->
+                        priceCurrencySubAnnually.value?.let { currency ->
+                            formatPriceAnnualToMonthly(
+                                micro,
+                                currency
+                            )
+                        }
+                    },
+                    savingsPercentage = priceMicrosSubMonthly.value?.let { microsMonth ->
+                        priceMicrosSubAnnually.value?.let { microsAnnual ->
+                            calculateSavingsPercentage(
+                                microsMonth, microsAnnual
+                            )
+                        }
+                    },
                     subscriptionOption = Option.OptionAnnually,
                     userOption = userOption.value
                 ) { userOption.value = Option.OptionAnnually }
@@ -389,6 +455,15 @@ fun SubscriptionStateLess(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
         ) {
+            if (userOption.value == Option.OptionAnnually && priceDiscountSubAnnually.value != null) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    text = "First year at ${priceDiscountSubAnnually.value}/year, then ${priceSubAnnually.value}/year. Automatic renewal. Easy cancellation.",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.labelSmall,
+                    textAlign = TextAlign.Center
+                )
+            }
             /**
              * Button
              */
@@ -430,7 +505,7 @@ fun SubscriptionStateLess(
                 modifier = Modifier.padding(smallLetterPadding),
                 text = stringResource(R.string.subscription_info_policy),
                 color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Center
             )
         }

@@ -3,12 +3,15 @@ package com.sginnovations.asked.ui.top_bottom_bar.topbar
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.sginnovations.asked.AssistantChat
+import com.sginnovations.asked.AssistantNewConversation
 import com.sginnovations.asked.Camera
 import com.sginnovations.asked.CategoryLesson
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
 import com.sginnovations.asked.Gallery
+import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
@@ -16,7 +19,7 @@ import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Subscription
 import com.sginnovations.asked.ui.ui_components.topbars.CameraTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.CategoryTopBar
-import com.sginnovations.asked.ui.ui_components.topbars.ChatTopBar
+import com.sginnovations.asked.ui.ui_components.topbars.NameAndTokensTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.ChatsHistoryTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.CropTopBar
 import com.sginnovations.asked.ui.ui_components.topbars.DefaultTopBar
@@ -80,9 +83,27 @@ fun LearnedTopBar(
             vmCamera,
             navigateUp
         )
-
-        Chat.route -> ChatTopBar(
+        /**
+         * Token
+         */
+        Chat.route -> NameAndTokensTopBar(
             vmTokens,
+            currentScreen.getName(context),
+            navigateUp
+        )
+        NewConversation.route -> NameAndTokensTopBar(
+            vmTokens,
+            currentScreen.getName(context),
+            navigateUp
+        )
+        AssistantNewConversation.route -> NameAndTokensTopBar(
+            vmTokens,
+            currentScreen.getName(context),
+            navigateUp
+        )
+        AssistantChat.route -> NameAndTokensTopBar(
+            vmTokens,
+            currentScreen.getName(context),
             navigateUp
         )
 
