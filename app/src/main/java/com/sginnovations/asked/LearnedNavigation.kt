@@ -7,7 +7,9 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
@@ -69,19 +71,27 @@ private const val TAG = "LearnedNavigation"
 /**
  * Animations
  */
-val enterTransitionSlide = slideInHorizontally(
+val enterTransitionHorizontalSlide = slideInHorizontally(
     initialOffsetX = { fullWidth -> fullWidth },
     animationSpec = tween(
         durationMillis = 300,
         easing = LinearEasing
     )
 )
-val exitTransitionSlide = slideOutHorizontally(
+val exitTransitionHorizontalSlide = slideOutHorizontally(
     targetOffsetX = { fullWidth -> fullWidth },
     animationSpec = tween(
         durationMillis = 300,
         easing = LinearEasing
     )
+)
+val enterTransitionVerticalSlide = slideInVertically(
+    initialOffsetY = { fullHeight -> fullHeight },
+    animationSpec = tween(durationMillis = 300)
+)
+val exitTransitionVerticalSlide = slideOutVertically(
+    targetOffsetY = { fullHeight -> -fullHeight },
+    animationSpec = tween(durationMillis = 300)
 )
 
 @Composable
@@ -389,8 +399,8 @@ fun LearnedNavigation(
              */
             composable(
                 route = AssistantChat.route,
-                enterTransition = { enterTransitionSlide },
-                exitTransition = { exitTransitionSlide },
+                enterTransition = { enterTransitionHorizontalSlide },
+                exitTransition = { exitTransitionHorizontalSlide },
             ) {
                 AssistantChatStateFul(
                     vmAssistant = vmAssistant,
@@ -407,8 +417,8 @@ fun LearnedNavigation(
              */
             composable(
                 route = Chat.route,
-                enterTransition = { enterTransitionSlide },
-                exitTransition = { exitTransitionSlide },
+                enterTransition = { enterTransitionHorizontalSlide },
+                exitTransition = { exitTransitionHorizontalSlide },
             ) {
                 ChatStateFul(
                     vmCamera = vmCamera,
@@ -447,8 +457,8 @@ fun LearnedNavigation(
             }
             composable(
                 route = Transcript.route,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
+                enterTransition = { enterTransitionVerticalSlide },
+                exitTransition = { exitTransitionVerticalSlide },
             ) {
                 TranscriptStateFul(
                     vmLesson = vmLesson,

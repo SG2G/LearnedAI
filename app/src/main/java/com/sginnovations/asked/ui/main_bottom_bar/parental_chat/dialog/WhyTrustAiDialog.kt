@@ -1,4 +1,4 @@
-package com.sginnovations.asked.ui.ui_components.camera
+package com.sginnovations.asked.ui.main_bottom_bar.parental_chat.dialog
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -11,32 +11,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun PremiumCameraDialog(
+fun WhyTrustAiDialog(
     onDismissRequest: () -> Unit,
-    onSeePremiumSubscription: () -> Unit,
+    onAcceptRequest: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = "Unlock the Full Potential of Premium!",
+                text = "Why Trust AI",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
         },
         text = {
-            Text(text = "Join other proactive parents who are elevating their capabilities. Access exclusive photography tools designed for intelligent problem-solving, available only for Premium members.")
+            Text(text = "The AI is intelligence")
         },
         confirmButton = {
             Button(
-                onClick = { onSeePremiumSubscription() },
+                onClick = { onAcceptRequest() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Embrace Premium Benefits", color = MaterialTheme.colorScheme.onPrimary,
+                    text = "I Understand", color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -50,7 +50,7 @@ fun PremiumCameraDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "I'll Consider This Later",
+                    text = "Close",
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )

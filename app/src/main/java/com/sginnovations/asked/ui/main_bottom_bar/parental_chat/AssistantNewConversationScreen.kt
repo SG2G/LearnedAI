@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.chat.components.NewChatSendIcon
+import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.dialog.WhyTrustAiDialog
 import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.ui.ui_components.chat.TokenCostDisplay
 import com.sginnovations.asked.utils.CheckIsPremium
@@ -71,6 +72,7 @@ fun AssistantNewConversationStateFul(
     val scope = rememberCoroutineScope()
 
     val showNoTokensDialog = remember { mutableStateOf(false) }
+    val showTrustAI = remember { mutableStateOf(false) }
 
     val text = remember { mutableStateOf<String?>("") }
     text.value = vmAssistant.firstMessage.value
@@ -96,6 +98,8 @@ fun AssistantNewConversationStateFul(
 
         isLoading = isLoading,
         isPremium = isPremium,
+
+        onWhyTrust = { showTrustAI.value = true },
 
         onSendNewMessage = {
             val processText = text.value
@@ -152,6 +156,12 @@ fun AssistantNewConversationStateFul(
             }
         )
     }
+    if (showTrustAI.value) {
+        WhyTrustAiDialog(
+            onDismissRequest = { showTrustAI.value = false },
+            onAcceptRequest = { showTrustAI.value = false },
+        )
+    }
 }
 
 @Composable
@@ -162,6 +172,8 @@ fun AssistantNewConversationStateLess(
 
     isLoading: MutableState<Boolean>,
     isPremium: Boolean,
+
+    onWhyTrust: () -> Unit,
 
     onSendNewMessage: () -> Unit,
 ) {
@@ -206,7 +218,7 @@ fun AssistantNewConversationStateLess(
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center
         )
-        TextButton(onClick = { /*TODO*/ }) {
+        TextButton(onClick = { onWhyTrust() }) {
             Text(
                 text = "¿Por qué confiar en la IA?",
                 color = MaterialTheme.colorScheme.tertiary,

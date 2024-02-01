@@ -63,28 +63,28 @@ fun CheckPermissions(
                 }
             )
         }
-        !permissionState.status.isGranted -> {
-            // Permission is not granted, but the user hasn't denied it permanently.
-            // Show a rationale message and request the permission again.
-            AlertDialog(
-                onDismissRequest = { },
-                title = { Text(stringResource(R.string.permissions_permission_required, permName),color = MaterialTheme.colorScheme.onBackground) },
-                text = { Text(
-                    stringResource(
-                        R.string.permissions_this_app_requires_access_to_your,
-                        permName
-                    ),color = MaterialTheme.colorScheme.onSurfaceVariant) },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            permissionState.launchPermissionRequest()
-                        }
-                    ) {
-                        Text("OK")
-                    }
-                }
-            )
-        }
+//        !permissionState.status.isGranted -> {
+//            // Permission is not granted, but the user hasn't denied it permanently.
+//            // Show a rationale message and request the permission again.
+//            AlertDialog(
+//                onDismissRequest = { },
+//                title = { Text(stringResource(R.string.permissions_permission_required, permName),color = MaterialTheme.colorScheme.onBackground) },
+//                text = { Text(
+//                    stringResource(
+//                        R.string.permissions_this_app_requires_access_to_your,
+//                        permName
+//                    ),color = MaterialTheme.colorScheme.onSurfaceVariant) },
+//                confirmButton = {
+//                    Button(
+//                        onClick = {
+//                            permissionState.launchPermissionRequest()
+//                        }
+//                    ) {
+//                        Text("OK")
+//                    }
+//                }
+//            )
+//        }
         else -> {
             // Permission is denied permanently. Show a message and navigate to app settings.
             AlertDialog(

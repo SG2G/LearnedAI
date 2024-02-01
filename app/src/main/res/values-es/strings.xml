@@ -218,5 +218,36 @@
     <string name="topbar_transcript">Transcripción</string>
     <string name="topbar_lesson">Lección</string>
     <string name="topbar_lessons">Lecciones</string>
+    <string name="lesson_videoid_1000">F9hd7T4Ny9k</string>
+    <string name="lesson_subtitle_1000">Explora cómo la Neurociencia Está Moldeando el Futuro de la Crianza</string>
+    <string name="lesson_transcription_1000">## Introducción \n\n\nEn los últimos años, el panorama de la crianza de los hijos ha experimentado un cambio revolucionario, gracias a avances revolucionarios en neurociencia y tecnología. Han quedado atrás los días de consejos de crianza de talla única. Hoy, nos encontramos en la vanguardia de una nueva era, donde las perspicacias respaldadas por la ciencia nos ofrecen una comprensión sin precedentes de las mentes de nuestros hijos.\n\nEsta guía es tu llave para desvelar estos secretos. Aquí descubrirás cómo los últimos hallazgos en neurociencia están remodelando nuestra manera de pensar sobre la parentalidad. Ya seas un padre o madre primerizo o un veterano experimentado, esta guía avivará tu pasión por aprender y alimentará tu deseo de forjar una conexión más profunda y significativa con tu hijo.\n\nImagina mejorar la autoestima de tu hijo, fortalecer su autonomía y nutrir una relación que no solo sea amorosa, sino también profundamente sintonizada con sus necesidades individuales. Esto no es solo un sueño, es una realidad tangible gracias a las últimas perspicacias científicas.\n\nCada capítulo de esta guía es un tesoro de información valiosa, actual y seleccionada cuidadosamente. La información presentada proviene de libros y artículos escritos por destacados neurocientíficos y expertos en el desarrollo infantil, garantizando así que estás recibiendo consejos confiables y aplicables.\n\nMientras emprendes este viaje, recuerda: el arte de la parentalidad está en constante evolución. Abraza la emoción de aprender, la emoción de aplicar nuevas estrategias y la alegría de ver a tu hijo prosperar como nunca antes. Transformemos juntos la forma en que criamos a nuestros hijos.\n\nBienvenidos al futuro de la parentalidad.</string>
+    <string name="lesson_introduction_1000">¿Sabías que un simple cambio en tu forma de comunicarte puede influir enormemente en el desarrollo cerebral de tu hijo?\nDescubre estrategias de crianza basadas en la neurociencia que todo padre debería conocer</string>
+    <string name="lesson_title_1001">Cultivando Autoestima en la Infancia</string>
+    <string name="lesson_subtitle_1001">El Camino hacia Niños Felices y Seguros</string>
+    <string name="lesson_introduction_1001">¿Sabías que la autoestima de un niño comienza a formarse desde sus primeros años? ¿Cómo podemos cultivarla efectivamente desde la infancia? Descubrámoslo.</string>
+    <string name="lesson_button_text_1001">Descubre el Secreto de Elogiar Correctamente</string>
+    <string name="lesson_question_asked_1001">¿Cuál es la diferencia entre elogiar el esfuerzo frente al resultado, y cómo puede afectar esto a la relación entre padres e hijos?</string>
+    <string name="lesson_title_3000">Pequeños Chefs, Grandes Mentes</string>
+    <string name="lesson_subtitle_3000">Nutriendo el Futuro de Tus Hijos</string>
+    <string name="lesson_button_text_3000">Nutre el Futuro: Estrategias y Efectos</string>
+    <string name="lesson_question_asked_3000">¿Cuáles son las estrategias más efectivas para fomentar hábitos alimenticios saludables en los niños, y cómo estos hábitos impactan en su desarrollo físico, cognitivo y emocional a largo plazo?</string>
+    <string name="lesson_subtitle_3001">La Magia del Deporte en la Infancia</string>
+    <string name="lesson_introduction_3001">¿Sabías que la actividad física regular puede mejorar la capacidad de aprendizaje y la memoria en los niños? El deporte va más allá de los beneficios físicos, influenciando positivamente su desarrollo cognitivo y emocional.</string>
+    <string name="lesson_button_text_3001">Actividad Física: Más que Músculos</string>
+    <string name="lesson_question_asked_3001">¿Cómo influye la actividad física en el desarrollo cognitivo y emocional de los niños, más allá de los beneficios físicos?</string>
+    <string name="lesson_title_3002">El Secreto para un Crecimiento Saludable</string>
+    <string name="lesson_subtitle_3002">El Poder del Sueño en los Niños</string>
+    <string name="lesson_introduction_3002">¿Sabías que un niño de entre 6 y 13 años necesita entre 9 y 11 horas de sueño cada noche para un desarrollo óptimo? Sin embargo, en la actualidad, muchos niños no alcanzan estas cifras esenciales.</string>
+    <string name="lesson_button_text_3002">Optimiza el Sueño Infantil: Descubre Cómo</string>
+    <string name="lesson_question_asked_3002">¿Cuál es el impacto del sueño en el desarrollo cognitivo y físico de los niños, y qué estrategias generales pueden los padres adoptar para mejorar la calidad del sueño de sus hijos?</string>
+    <string name="lesson_title_4000">El Jardín de la Empatía</string>
+    <string name="lesson_subtitle_4000">Cómo Cultivar Corazones Comprensivos en los Más Pequeños</string>
+    <string name="lesson_introduction_4000">¿Sabías que la empatía y los valores sólidos pueden comenzar a fomentarse en los niños desde tan temprano como los tres años? Estos elementos son cruciales para su desarrollo emocional y social.</string>
+    <string name="lesson_question_asked_4000">¿Cuál es la importancia de fomentar la empatía y los valores sólidos en el desarrollo emocional y social de los niños desde una edad temprana, y qué métodos se consideran más efectivos para lograrlo?</string>
+    <string name="lesson_button_text_4000">Cultiva Empatía y Valores en la Infancia</string>
+    <string name="lesson_title_1002">El Poder de la Empatía</string>
+    <string name="lesson_subtitle_1002">Transformando la Comunicación con tus Hijos</string>
+    <string name="lesson_videoid_1001">y0qTbjErKGE</string>
+    <string name="introduction">Introducción</string>
 
 </resources>

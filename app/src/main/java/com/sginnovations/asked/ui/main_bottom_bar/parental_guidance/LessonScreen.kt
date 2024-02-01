@@ -210,7 +210,9 @@ fun LessonStateLess(
                             stringResource(R.string.lesson_finish)
                         } else {
                             stringResource(R.string.lesson_next)
-                        }
+                        },
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }
@@ -278,9 +280,16 @@ fun Page2(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-                    shape = RoundedCornerShape(5.dp)
+                    shape = RoundedCornerShape(20.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        Color(0xFFA161F1)
+                    )
                 ) {
-                    Text(text = lesson.buttonText ?: "See Example") //TODO TRANSLATE MAYBE
+                    Text(
+                        text = lesson.buttonText ?: "See Example",
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    ) //TODO TRANSLATE MAYBE
                 }
             }
         }
@@ -299,13 +308,19 @@ fun Page1(
     ) {
         Text(
             text = lesson.title,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.introduction),
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = lesson.introduction,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(16.dp))
