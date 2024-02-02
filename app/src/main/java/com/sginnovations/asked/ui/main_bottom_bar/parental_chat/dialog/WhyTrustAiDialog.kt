@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.sginnovations.asked.R
 
 @Composable
 fun WhyTrustAiDialog(
@@ -19,13 +21,13 @@ fun WhyTrustAiDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = "Why Trust AI",
+                text = stringResource(R.string.trust_ai_title),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
         },
         text = {
-            Text(text = "The AI is intelligence")
+            Text(text = stringResource(R.string.trust_ai_text))
         },
         confirmButton = {
             Button(
@@ -36,25 +38,10 @@ fun WhyTrustAiDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "I Understand", color = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(R.string.trust_ai_button), color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         },
-        dismissButton = {
-            Button(
-                onClick = { onDismissRequest() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                ),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Close",
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
     )
 }

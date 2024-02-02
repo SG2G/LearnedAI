@@ -157,42 +157,35 @@ fun ParentalChatStateLess(
         modifier = Modifier.fillMaxSize()
     ) {
         item {
-            val cardShape = RoundedCornerShape(20.dp)
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                shape = cardShape
+            Column(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
+                Text(
+                    text = "Tu Ayudante de bolsillo",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "Obtén orientación parental instantánea, en cualquier momento.",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = { onNavigateNewMessage() },
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
                     Text(
-                        text = "Tu Asistente de bolsillo",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.titleMedium
+                        text = "Preguntar Ahora",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyLarge
                     )
-                    Text(
-                        text = "Obtén orientación parental instantánea, en cualquier momento.",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Button(
-                        onClick = { onNavigateNewMessage() },
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(
-                            text = "Preguntar Ahora",
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
                 }
             }
         }
@@ -211,6 +204,7 @@ fun ParentalChatStateLess(
                 EmptyConversationsMessage()
             }
         }
+
 
         itemsIndexed(
             items = conversations.value
@@ -238,101 +232,98 @@ fun ParentalChatStateLess(
 
                 val elevatedCardShape = RoundedCornerShape(10.dp)
 
-                Column {
-                    ElevatedCard(
-                        shape = elevatedCardShape,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
-                            .shadow(1.dp, elevatedCardShape)
-                            .pointerInput(Unit) {
-                                detectTapGestures(
-                                    onTap = {
-                                        Log.i(
-                                            "StateLessHistoryChats",
-                                            "idConversation: ${conversation.idConversation}"
-                                        )
-                                        onNavigateMessages(conversation.idConversation ?: 0)
-                                    },
-                                    onLongPress = {
-                                        scope.launch {
-                                            Log.d(TAG, "expanded.value = true")
+                ElevatedCard(
+                    shape = elevatedCardShape,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .shadow(1.dp, elevatedCardShape)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    Log.i(
+                                        "StateLessHistoryChats",
+                                        "idConversation: ${conversation.idConversation}"
+                                    )
+                                    onNavigateMessages(conversation.idConversation ?: 0)
+                                },
+                                onLongPress = {
+                                    scope.launch {
+                                        Log.d(TAG, "expanded.value = true")
 
-                                            showMenu.value = true
-                                        }
+                                        showMenu.value = true
                                     }
-                                )
-                            },
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(
-                            defaultElevation = 1.dp
-                        ),
-                    ) {
-                        /**
-                         * Conversation
-                         */
-                        Box {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                                }
+                            )
+                        },
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    elevation = CardDefaults.elevatedCardElevation(
+                        defaultElevation = 1.dp
+                    ),
+                ) {
+                    /**
+                     * Conversation
+                     */
+                    Box {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .weight(1f)
                             ) {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .weight(1f)
-                                ) {
-                                    Text(
-                                        text = conversation.name,
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.titleMedium
-                                    )
-                                }
-
-
-                                IconButton(onClick = {
-                                    showMenu.value = true
-                                    indexMenu.value = index
-                                }) {
-                                    Icon(
-                                        Icons.Default.MoreVert,
-                                        contentDescription = "options"
-                                    )
-                                }
-                                /**
-                                 * Menu
-                                 */
-
-                                val scale by animateFloatAsState(
-                                    targetValue = if (showMenu.value) 1f else 0.9f,
-                                    animationSpec = tween(
-                                        durationMillis = 300,
-                                        easing = FastOutSlowInEasing
-                                    ),
-                                    label = ""
+                                Text(
+                                    text = conversation.name,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    style = MaterialTheme.typography.titleMedium
                                 )
+                            }
 
-                                if (showMenu.value && index == indexMenu.value) {
-                                    conversation.idConversation?.let {
-                                        OptionMenu(
-                                            showMenu = showMenu,
-                                            indexMenu = indexMenu,
 
-                                            scale = scale,
+                            IconButton(onClick = {
+                                showMenu.value = true
+                                indexMenu.value = index
+                            }) {
+                                Icon(
+                                    Icons.Default.MoreVert,
+                                    contentDescription = "options"
+                                )
+                            }
+                            /**
+                             * Menu
+                             */
 
-                                            conversationId = it,
+                            val scale by animateFloatAsState(
+                                targetValue = if (showMenu.value) 1f else 0.9f,
+                                animationSpec = tween(
+                                    durationMillis = 300,
+                                    easing = FastOutSlowInEasing
+                                ),
+                                label = ""
+                            )
 
-                                            onDeleteConversation = { id ->
-                                                onDeleteConversation(id)
-                                            },
-                                        ) {}
-                                    }
+                            if (showMenu.value && index == indexMenu.value) {
+                                conversation.idConversation?.let {
+                                    OptionMenu(
+                                        showMenu = showMenu,
+                                        indexMenu = indexMenu,
+
+                                        scale = scale,
+
+                                        conversationId = it,
+
+                                        onDeleteConversation = { id ->
+                                            onDeleteConversation(id)
+                                        },
+                                    ) {}
                                 }
                             }
                         }
                     }
-
                 }
             } // Animated visibility
         }

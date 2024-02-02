@@ -41,7 +41,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.subscription.components.Feature
 import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
+import com.sginnovations.asked.ui.subscription.components.SubscriptionComparisonTable
 import com.sginnovations.asked.ui.subscription.components.TitleBenefit
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
@@ -299,7 +301,7 @@ fun SubscriptionStateLess(
                         )
                     }
                     Text(
-                        text = "AskedAI Pro",
+                        text = "Asked Premium",
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -330,14 +332,16 @@ fun SubscriptionStateLess(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                    Column {
+                        Column {
                             TitleBenefit(
                                 painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
                                 text = stringResource(R.string.subscription_unlimited)
                             )
-                            SubTitleBenefit(text = "- Libertad total, tokens ilimitados")
+                            SubTitleBenefit(text = "Libertad total, tokens ilimitados")
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -347,7 +351,7 @@ fun SubscriptionStateLess(
                                 painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
                                 text = "Soluciones Instantáneas"
                             )
-                            SubTitleBenefit(text = "- Fotos ilimitadas, mensajes ilimitados y todas las cameras disponibles.")
+                            SubTitleBenefit(text = "Fotos ilimitadas, mensajes ilimitados y todas las cameras disponibles.")
                         }
                     }
 
@@ -361,7 +365,7 @@ fun SubscriptionStateLess(
                                 painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
                                 text = "Respuestas sin limites"
                             )
-                            SubTitleBenefit(text = "- Mensajes ilimitados para el Asistente, todas sus dudas resueltas.")
+                            SubTitleBenefit(text = "Mensajes ilimitados para el Asistente, todas sus dudas resueltas.")
                         }
                     }
 
@@ -375,7 +379,7 @@ fun SubscriptionStateLess(
                                 painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
                                 text = "Sabiduría a Su Alcance"
                             )
-                            SubTitleBenefit(text = "- Acceda a consejos extraídos directamente de libros de expertos, reunidos para usted.")
+                            SubTitleBenefit(text = "Acceda a consejos extraídos directamente de libros de expertos, reunidos para usted.")
                         }
                     }
 
@@ -407,7 +411,7 @@ fun SubscriptionStateLess(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                text = "Try 7 Free Days of Asked Premium",
+                text = stringResource(R.string.subscription_try_7_free_days_of_asked_premium),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
@@ -458,10 +462,13 @@ fun SubscriptionStateLess(
             if (userOption.value == Option.OptionAnnually && priceDiscountSubAnnually.value != null) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = "First year at ${priceDiscountSubAnnually.value}/year, then ${priceSubAnnually.value}/year. Automatic renewal. Easy cancellation.",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.labelSmall,
-                    textAlign = TextAlign.Center
+                    text = stringResource(R.string.subscription_first_year_at) + " " + priceDiscountSubAnnually.value + stringResource(id = R.string.subscription_year) + ", " + stringResource(
+                        R.string.then
+                    ) + " " + priceSubAnnually.value + stringResource(id = R.string.subscription_year) + ". " + stringResource(
+                        R.string.subscription_automatic_renewal_easy_cancellation),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Center
                 )
             }
             /**
@@ -499,7 +506,7 @@ fun SubscriptionStateLess(
             /**
              * Small Letter
              */
-            val smallLetterPadding = PaddingValues(bottom = 12.dp, start = 20.dp, end = 20.dp)
+            val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 20.dp, end = 20.dp)
 
             Text(
                 modifier = Modifier.padding(smallLetterPadding),
@@ -508,7 +515,19 @@ fun SubscriptionStateLess(
                 style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Center
             )
-        }
 
+            val features = listOf(
+                Feature(stringResource(R.string.feature_unlimited_tokens), "-", "✓"),
+                Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
+                Feature(stringResource(R.string.feature_unlimited_camera_messages),
+                    stringResource(R.string.feature_3_day), "✓"),
+                Feature(stringResource(R.string.feature_unlimited_assistant_messages),
+                    stringResource(
+                        R.string.feature_1_day
+                    ), "✓"),
+                Feature(stringResource(R.string.feature_access_full_guide), "-", "✓")
+            )
+            SubscriptionComparisonTable(features = features)
+        }
     }
 }

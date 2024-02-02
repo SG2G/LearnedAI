@@ -132,22 +132,24 @@ fun SubscriptionCard(
                                 modifier = Modifier.scale(scale.value)
                             ) {
                                 Text(
-                                    text = "Save $savingsPercentage %",
+                                    text = stringResource(R.string.save) + " $savingsPercentage%",
                                     color = MaterialTheme.colorScheme.onPrimary,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Bold
-                                    ),
-                                    modifier = Modifier.padding(8.dp)
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(4.dp)
                                 )
                             }
                         }
                     }
 
+                    /**
+                     * Money
+                     */
                     if (subscriptionOption.name == Option.OptionAnnually.name) {
-                        Log.d(
-                            "SubscriptionCard",
-                            "priceDiscount-> $priceWithDiscount allPrice -> $allPrice "
-                        )
+//                        Log.d(
+//                            "SubscriptionCard",
+//                            "priceDiscount-> $priceWithDiscount allPrice -> $allPrice "
+//                        )
                         if (priceWithDiscount.equals(allPrice) || priceWithDiscount.isNullOrEmpty()) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -159,7 +161,7 @@ fun SubscriptionCard(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "($priceAnnualMonthly" + " " +"monthly)",
+                                    text = "($priceAnnualMonthly" + " " + stringResource(id = R.string.subscription_monthly) + ")",
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     style = MaterialTheme.typography.labelMedium
                                 )
@@ -183,7 +185,7 @@ fun SubscriptionCard(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "($priceAnnualMonthly" + " " +"monthly)",
+                                    text = "($priceAnnualMonthly" + " " + stringResource(id = R.string.subscription_monthly) + ")",
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     style = MaterialTheme.typography.labelMedium
                                 )

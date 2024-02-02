@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
@@ -53,7 +54,7 @@ fun TranscriptStateFul(
             .usePlugin(MarkwonInlineParserPlugin.create())
             .usePlugin(
                 JLatexMathPlugin.create(
-                    42f,
+                    72f,
                     JLatexMathPlugin.BuilderConfigure { builder ->
                         builder.inlinesEnabled(true)
                     }
@@ -63,7 +64,7 @@ fun TranscriptStateFul(
     }
 
     val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
-    val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
+    val textSizee = MaterialTheme.typography.titleSmall.fontSize.value
 
     Column(
         modifier = Modifier
@@ -90,10 +91,17 @@ fun TranscriptStateFul(
         )
 
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            text = stringResource(R.string.reference),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
             text = lesson.reference,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

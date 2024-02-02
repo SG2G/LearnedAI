@@ -1,6 +1,7 @@
 package com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -95,21 +96,22 @@ fun SmallLessonCard(
                     }
 
                     when (isPremium) {
-                        true -> Icon(
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .size(28.dp)
-                                .padding(end = 8.dp)
-                                .weight(0.2f),
-                            imageVector = if (isRead) Icons.Filled.CheckCircle else Icons.Default.PlayArrow,
-                            contentDescription = "check or play",
-                            tint = if (isRead) Color(0xFF469C29) else MaterialTheme.colorScheme.primary,
-                        )
+                        true ->
+                            Icon(
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .size(if (isRead) 24.dp else 28.dp)
+                                    .padding(end = 8.dp)
+                                    .weight(0.2f),
+                                imageVector = if (isRead) Icons.Filled.CheckCircle else Icons.Default.PlayArrow,
+                                contentDescription = "check or play",
+                                tint = if (isRead) Color(0xFF469C29) else MaterialTheme.colorScheme.primary,
+                            )
 
                         else -> Icon(
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
-                                .size(28.dp)
+                                .size(if (isRead) 24.dp else 28.dp)
                                 .padding(end = 8.dp)
                                 .weight(0.2f),
                             imageVector = Icons.Filled.Lock,
@@ -169,7 +171,7 @@ fun SmallLessonCard(
                     Icon(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
-                            .size(28.dp)
+                            .size(if (isRead) 24.dp else 28.dp)
                             .padding(end = 8.dp)
                             .weight(0.2f),
                         imageVector = if (isRead) Icons.Filled.CheckCircle else Icons.Default.PlayArrow,

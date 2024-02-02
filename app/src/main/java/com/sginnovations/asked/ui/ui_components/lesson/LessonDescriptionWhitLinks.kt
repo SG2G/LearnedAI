@@ -11,7 +11,7 @@ import com.sginnovations.asked.R
 
 @Composable
 fun LessonDescriptionWithLinks(onYouTubeClick: () -> Unit, onTranscriptClick: () -> Unit) {
-    val lessonDescriptionTypography = MaterialTheme.typography.bodyLarge.toSpanStyle()
+    val lessonDescriptionTypography = MaterialTheme.typography.bodyMedium.toSpanStyle()
     val lessonLinkColor = MaterialTheme.colorScheme.primary
 
     val annotatedText = buildAnnotatedString {
