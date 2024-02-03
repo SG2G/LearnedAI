@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.sginnovations.asked.R
 
 @Composable
 fun ReportDialog(
@@ -21,7 +23,7 @@ fun ReportDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = "Report message",
+                text = stringResource(R.string.report_message),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
@@ -38,7 +40,7 @@ fun ReportDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Send Report", color = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(R.string.send_report), color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -52,7 +54,7 @@ fun ReportDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Cancel", color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

@@ -74,7 +74,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_1002),
             transcription = context.getString(R.string.lesson_transcription_1002),
             introduction = context.getString(R.string.lesson_introduction_1002),
-            videoId = "54fjHJlMoNY",
+            videoId = context.getString(R.string.lesson_videoid_1002),
             reference = context.getString(R.string.lesson_reference_1002),
             conclusion = context.getString(R.string.lesson_conclusion_1002),
             buttonText = context.getString(R.string.lesson_button_text_1002),
@@ -92,7 +92,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_2000),
             transcription = context.getString(R.string.lesson_transcription_2000),
             introduction = context.getString(R.string.lesson_introduction_2000),
-            videoId = "54fjHJlMoNY",
+            videoId = context.getString(R.string.lesson_videoid_2000),
             reference = context.getString(R.string.lesson_reference_2000),
             conclusion = context.getString(R.string.lesson_conclusion_2000),
             buttonText = context.getString(R.string.lesson_button_text_2000),
@@ -110,7 +110,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_2001),
             transcription = context.getString(R.string.lesson_transcription_2001),
             introduction = context.getString(R.string.lesson_introduction_2001),
-            videoId = "54fjHJlMoNY",
+            videoId = context.getString(R.string.lesson_videoid_2001),
             reference = context.getString(R.string.lesson_reference_2001),
             conclusion = context.getString(R.string.lesson_conclusion_2001),
             buttonText = context.getString(R.string.lesson_button_text_2001),
@@ -119,7 +119,7 @@ class LessonDataSource @Inject constructor(
             lessonPages = 1
         ),
         /**
-         * Health and well-being
+         * Health and well-being Food
          */
         LessonDataClass(
             idCategory = 2,
@@ -128,7 +128,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_3000),
             transcription = context.getString(R.string.lesson_transcription_3000),
             introduction = context.getString(R.string.lesson_introduction_3000),
-            videoId = "54fjHJlMoNYas",
+            videoId = context.getString(R.string.lesson_videoid_3000),
             reference = context.getString(R.string.lesson_reference_3000),
             conclusion = context.getString(R.string.lesson_conclusion_3000),
             buttonText = context.getString(R.string.lesson_button_text_3000),
@@ -146,7 +146,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_3001),
             transcription = context.getString(R.string.lesson_transcription_3001),
             introduction = context.getString(R.string.lesson_introduction_3001),
-            videoId = "54fjHJlMoNY",
+            videoId = context.getString(R.string.lesson_videoid_3001),
             reference = context.getString(R.string.lesson_reference_3001),
             conclusion = context.getString(R.string.lesson_conclusion_3001),
             buttonText = context.getString(R.string.lesson_button_text_3001),
@@ -164,7 +164,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_3002),
             transcription = context.getString(R.string.lesson_transcription_3002),
             introduction = context.getString(R.string.lesson_introduction_3002),
-            videoId = "54fjHJlMoNY",
+            videoId = context.getString(R.string.lesson_videoid_3002),
             reference = context.getString(R.string.lesson_reference_3002),
             conclusion = context.getString(R.string.lesson_conclusion_3002),
             buttonText = context.getString(R.string.lesson_button_text_3002),
@@ -183,7 +183,7 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_4000),
             transcription = context.getString(R.string.lesson_transcription_4000),
             introduction = context.getString(R.string.lesson_introduction_4000),
-            videoId = "54fjHJlMoNY",
+            videoId = "IBTb2C4nnbo",
             reference = context.getString(R.string.lesson_reference_4000),
             conclusion = context.getString(R.string.lesson_conclusion_4000),
             buttonText = context.getString(R.string.lesson_button_text_4000),
@@ -195,27 +195,27 @@ class LessonDataSource @Inject constructor(
         /**
          * Tech
          */
-        LessonDataClass(
-            idCategory = 4,
-            idLesson = 5000,
-            title = "lesson",
-            subtitle = "lesson",
-            transcription = "lesson",
-            introduction = "lesson",
-            videoId = "54fjHJlMoNY",
-            reference = "lesson",
-            conclusion = "lesson",
-            buttonText = "lesson",
-            questionAsked = "lesson",
-            isPremium = false,
-            lessonPages = 1
-        ),
+//        LessonDataClass(
+//            idCategory = 4,
+//            idLesson = 5000,
+//            title = "lesson",
+//            subtitle = "lesson",
+//            transcription = "lesson",
+//            introduction = "lesson",
+//            videoId = "54fjHJlMoNY",
+//            reference = "lesson",
+//            conclusion = "lesson",
+//            buttonText = "lesson",
+//            questionAsked = "lesson",
+//            isPremium = false,
+//            lessonPages = 1
+//        ),
     )
 
     private val categories = listOf(
         LessonCategoryDataClass(
             0,
-            R.drawable.lesson_0,
+            R.drawable._1,
             context.getString(R.string.guide_category_title_0),
             context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_0),
@@ -223,7 +223,7 @@ class LessonDataSource @Inject constructor(
             ),
         LessonCategoryDataClass(
             1,
-            R.drawable.lesson_1,
+            R.drawable._2,
             context.getString(R.string.guide_category_title_1),
             context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_1),
@@ -231,7 +231,7 @@ class LessonDataSource @Inject constructor(
             ),
         LessonCategoryDataClass(
             2,
-            R.drawable.lesson_2,
+            R.drawable._3,
             context.getString(R.string.guide_category_title_2),
             context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_2),
@@ -239,7 +239,7 @@ class LessonDataSource @Inject constructor(
             ),
         LessonCategoryDataClass(
             3,
-            R.drawable.lesson_3,
+            R.drawable._4,
             context.getString(R.string.guide_category_title_3),
             context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_3),
@@ -247,7 +247,7 @@ class LessonDataSource @Inject constructor(
             ),
         LessonCategoryDataClass(
             4,
-            R.drawable.lesson_4,
+            R.drawable._5,
             context.getString(R.string.guide_category_title_4),
             context.getString(R.string.lessons),
             context.getString(R.string.guide_category_description_4),

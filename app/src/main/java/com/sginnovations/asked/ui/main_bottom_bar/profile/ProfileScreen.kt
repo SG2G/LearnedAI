@@ -151,7 +151,7 @@ fun StateLessProfile(
                                 },
                                 text = stringResource(R.string.profile_manage_subscription),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodySmall
+                                style = MaterialTheme.typography.labelSmall
                             )
                         }
                     }

@@ -1,6 +1,5 @@
 package com.sginnovations.asked.ui.ui_components.subscription
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -51,7 +50,7 @@ import com.sginnovations.asked.ui.subscription.Option
 
 @Composable
 fun SubscriptionCard(
-    durationTime: String,
+    subscriptionDuration: String,
     allPrice: String,
     priceWithDiscount: String?,
     priceAnnualMonthly: String? = null,
@@ -118,8 +117,8 @@ fun SubscriptionCard(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = durationTime,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            text = subscriptionDuration,
+                            color = MaterialTheme.colorScheme.secondary,
                             style = MaterialTheme.typography.titleMedium
                         )
                         Spacer(modifier = Modifier.weight(1f))
@@ -134,9 +133,9 @@ fun SubscriptionCard(
                                 Text(
                                     text = stringResource(R.string.save) + " $savingsPercentage%",
                                     color = MaterialTheme.colorScheme.onPrimary,
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(4.dp)
+                                    modifier = Modifier.padding(8.dp)
                                 )
                             }
                         }

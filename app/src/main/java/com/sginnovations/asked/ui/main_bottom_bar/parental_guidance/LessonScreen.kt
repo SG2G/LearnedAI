@@ -4,6 +4,7 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.widget.TextView
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -24,12 +26,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -43,6 +47,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.sginnovations.asked.Constants
+import com.sginnovations.asked.Constants.Companion.PURPLE_COLOR
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonDataClass
 import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.ComposeYouTubePlayer
@@ -279,17 +284,27 @@ fun Page2(
                     onClick = { onExampleButton() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 64.dp),
+                        .padding(horizontal = 72.dp),
                     shape = RoundedCornerShape(20.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        Color(0xFFA161F1)
-                    )
+                    colors = ButtonDefaults.buttonColors(PURPLE_COLOR)
                 ) {
-                    Text(
-                        text = lesson.buttonText ?: "See Example",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    ) //TODO TRANSLATE MAYBE
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.asked_assistant),
+                            contentDescription = "Icon",
+                            modifier = Modifier
+                                .size(42.dp)
+                                .clip(CircleShape),
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(
+                            text = lesson.buttonText ?: "See Example",
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium
+                        ) //TODO TRANSLATE MAYBE
+                    }
                 }
             }
         }

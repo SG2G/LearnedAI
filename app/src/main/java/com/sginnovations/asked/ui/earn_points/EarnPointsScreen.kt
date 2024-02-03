@@ -7,12 +7,15 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -78,48 +81,55 @@ fun EarnPointsStateLess(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = screenHeight),
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Card(
+            modifier = Modifier.fillMaxSize(),
+            colors = CardDefaults.cardColors(
+                MaterialTheme.colorScheme.surface
+            )
         ) {
-            Row(
-                modifier = Modifier.padding(16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TokenDisplay(
-                    tokens = tokens,
-                    showPlus = false
-                ) {}
-                Text(
-                    text = stringResource(R.string.earn_token_earn_more_tokens), color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.titleMedium
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TokenDisplay(
+                        tokens = tokens,
+                        showPlus = false
+                    ) {}
+                    Text(
+                        text = stringResource(R.string.earn_token_earn_more_tokens),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                TokensCard(
+                    num = stringResource(R.string.infinite),
+                    text = stringResource(R.string.earn_token_unlimited_points),
+                    buttonText = stringResource(R.string.earn_token_see_more),
+                    borderColor = MaterialTheme.colorScheme.primary,
+                    buttonColor = MaterialTheme.colorScheme.primary,
+                    cardContainerColor = MaterialTheme.colorScheme.background,
+                    onClick = { onNavigateSubscriptions() }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                TokensCard(
+                    num = "+" + vmRemoteConfig.getInviteRewardTokens(),
+                    text = stringResource(R.string.earn_token_invite_friends),
+                    buttonText = stringResource(R.string.earn_token_button_invite),
+                    borderColor = Color.Transparent,
+                    buttonColor = MaterialTheme.colorScheme.secondary,
+                    cardContainerColor = MaterialTheme.colorScheme.background,
+                    onClick = { onNavigateRefCode() }
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            TokensCard(
-                num = stringResource(R.string.infinite),
-                text = stringResource(R.string.earn_token_unlimited_points),
-                buttonText = stringResource(R.string.earn_token_see_more),
-                borderColor = MaterialTheme.colorScheme.primary,
-                buttonColor = MaterialTheme.colorScheme.background,
-                cardContainerColor = MaterialTheme.colorScheme.surface,
-                onClick = { onNavigateSubscriptions() }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            TokensCard(
-                num = "+" + vmRemoteConfig.getInviteRewardTokens(),
-                text = stringResource(R.string.earn_token_invite_friends),
-                buttonText = stringResource(R.string.earn_token_button_invite),
-                borderColor = Color.Transparent,
-                buttonColor = MaterialTheme.colorScheme.background,
-                cardContainerColor = MaterialTheme.colorScheme.surface,
-                onClick = { onNavigateRefCode() }
-            )
-
         }
     } // ModalBottom
 }

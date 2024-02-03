@@ -8,7 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import com.sginnovations.asked.R
 
 @Composable
 fun PremiumCameraDialog(
@@ -19,13 +22,13 @@ fun PremiumCameraDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
-                text = "Unlock the Full Potential of Premium!",
+                text = stringResource(R.string.premium_camera_title),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium
             )
         },
         text = {
-            Text(text = "Join other proactive parents who are elevating their capabilities. Access exclusive photography tools designed for intelligent problem-solving, available only for Premium members.")
+            Text(text = stringResource(R.string.premium_camera_text))
         },
         confirmButton = {
             Button(
@@ -36,8 +39,9 @@ fun PremiumCameraDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Embrace Premium Benefits", color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                    text = stringResource(R.string.premium_camera_confirm_button), color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Center
                 )
             }
         },
@@ -50,9 +54,10 @@ fun PremiumCameraDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "I'll Consider This Later",
+                    text = stringResource(R.string.premium_camera_dimiss_button),
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
                 )
             }
         }

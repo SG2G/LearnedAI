@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -61,6 +62,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.data.MathCategoryOCR
@@ -160,16 +162,31 @@ fun ParentalChatStateLess(
             Column(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
             ) {
-                Text(
-                    text = "Tu Ayudante de bolsillo",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "Obtén orientación parental instantánea, en cualquier momento.",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.asked_assistant),
+                        contentDescription = "Icon",
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape),
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Column {
+                        Text(
+                            text = stringResource(R.string.parental_assistant_title),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = stringResource(R.string.parental_guidance_subtitle),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = { onNavigateNewMessage() },
@@ -178,11 +195,11 @@ fun ParentalChatStateLess(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = Constants.PURPLE_COLOR
                     )
                 ) {
                     Text(
-                        text = "Preguntar Ahora",
+                        text = stringResource(R.string.parental_assist_button_text),
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -279,7 +296,7 @@ fun ParentalChatStateLess(
                                 Text(
                                     text = conversation.name,
                                     color = MaterialTheme.colorScheme.onSurface,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.bodyMedium
                                 )
                             }
 

@@ -1,6 +1,7 @@
 package com.sginnovations.asked
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import javax.inject.Inject
@@ -55,6 +56,7 @@ class Constants {
         const val CHAT_LIMIT_PREMIUM = 4000
 
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
+        val PURPLE_COLOR = Color(0xFFA161F1)
 
     }
 }

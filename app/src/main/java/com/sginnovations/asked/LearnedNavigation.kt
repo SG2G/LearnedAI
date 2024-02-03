@@ -64,6 +64,7 @@ import com.sginnovations.asked.viewmodel.PreferencesViewModel
 import com.sginnovations.asked.viewmodel.ReferralViewModel
 import com.sginnovations.asked.viewmodel.ReportViewModel
 import com.sginnovations.asked.viewmodel.TokenViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "LearnedNavigation"
@@ -199,7 +200,7 @@ fun LearnedNavigation(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = START_DESTINATION,
+            startDestination = Auth.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = Auth.route) {
@@ -393,6 +394,7 @@ fun LearnedNavigation(
                     },
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
+                EarnPoints(vmToken, navController)
             }
             /**
              * AssistantChat
@@ -410,6 +412,7 @@ fun LearnedNavigation(
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
+                EarnPoints(vmToken, navController)
             }
 
             /**
@@ -474,6 +477,9 @@ fun LearnedNavigation(
             composable(route = Subscription.route) {
                 SubscriptionStateFull(
                     vmBilling = vmBilling,
+                    vmIntent = vmIntent,
+                    vmAuth = vmAuth,
+
                     onNavigateUp = { navController.navigateUp() }
                 )
             }

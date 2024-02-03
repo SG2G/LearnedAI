@@ -7,9 +7,13 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -53,6 +58,7 @@ import com.sginnovations.asked.utils.test_tags.TestTags.EMAIL_TEXT_FIELD
 import com.sginnovations.asked.utils.test_tags.TestTags.PASSWORD_TEXT_FIELD
 import com.sginnovations.asked.utils.test_tags.TestTags.SIGN_IN_BUTTON
 import com.sginnovations.asked.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "AskedSignIn"

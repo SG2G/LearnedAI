@@ -301,7 +301,7 @@ fun StateLessHistoryChats(
                                     Text(
                                         text = conversation.name,
                                         color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.titleMedium
+                                        style = MaterialTheme.typography.titleSmall
                                     )
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Row(

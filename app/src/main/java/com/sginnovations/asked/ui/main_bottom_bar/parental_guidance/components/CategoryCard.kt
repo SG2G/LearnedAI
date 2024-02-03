@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,16 +38,15 @@ fun CategoryLessonCard(
 ) {
     val elevatedCardShape = RoundedCornerShape(15.dp)
 
-    ElevatedCard(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .shadow(1.dp, elevatedCardShape),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = elevatedCardShape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
+//        colors = CardDefaults.cardColors(
+//            containerColor = MaterialTheme.colorScheme.surface
+//        ),
+//        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
     ) {
         Box(modifier = Modifier.clickable { onNavigateCategoryLessons() }) {
             Row(

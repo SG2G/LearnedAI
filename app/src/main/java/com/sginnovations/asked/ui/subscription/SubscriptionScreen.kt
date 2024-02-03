@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -22,13 +22,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,8 +49,9 @@ import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
 import com.sginnovations.asked.ui.subscription.components.SubscriptionComparisonTable
 import com.sginnovations.asked.ui.subscription.components.TitleBenefit
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
-import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
+import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.BillingViewModel
+import com.sginnovations.asked.viewmodel.IntentViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -77,9 +81,13 @@ fun calculateSavingsPercentage(microsMonth: Long, microsAnnual: Long): Int {
 @Composable
 fun SubscriptionStateFull(
     vmBilling: BillingViewModel,
+    vmIntent: IntentViewModel,
+    vmAuth: AuthViewModel,
 
     onNavigateUp: () -> Unit,
 ) {
+    val userAuth = vmAuth.userAuth.collectAsState()
+
     val userOption = remember { mutableStateOf(Option.OptionMonthly) }
     val showComposable = remember { mutableStateOf(false) }
 
@@ -189,7 +197,10 @@ fun SubscriptionStateFull(
             userOption,
 
             onNavigateUp,
-        ) { productDetails ->
+
+            onSendEmail = { vmIntent.sendEmail(context, userAuth) },
+
+            ) { productDetails ->
             if (activity != null) {
                 scope.launch {
                     Log.i(
@@ -260,6 +271,8 @@ fun SubscriptionStateLess(
     userOption: MutableState<Option>,
 
     onNavigateUp: () -> Unit,
+
+    onSendEmail: () -> Unit,
 
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
@@ -419,7 +432,7 @@ fun SubscriptionStateLess(
             // Product 1 - Weekly
             priceSubMonthly.value?.let { price ->
                 SubscriptionCard(
-                    durationTime = stringResource(R.string.subscription_monthly),
+                    subscriptionDuration = stringResource(R.string.subscription_monthly),
                     allPrice = price,
                     priceWithDiscount = null,
                     subscriptionOption = Option.OptionMonthly,
@@ -430,7 +443,7 @@ fun SubscriptionStateLess(
             // Product 2 - LifeTime
             priceSubAnnually.value?.let { price ->
                 SubscriptionCard(
-                    durationTime = stringResource(R.string.subscription_annually),
+                    subscriptionDuration = stringResource(R.string.subscription_annually),
                     allPrice = price,
                     priceWithDiscount = priceDiscountSubAnnually.value,
                     priceAnnualMonthly = priceMicrosSubAnnually.value?.let { micro ->
@@ -462,13 +475,16 @@ fun SubscriptionStateLess(
             if (userOption.value == Option.OptionAnnually && priceDiscountSubAnnually.value != null) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(R.string.subscription_first_year_at) + " " + priceDiscountSubAnnually.value + stringResource(id = R.string.subscription_year) + ", " + stringResource(
+                    text = stringResource(R.string.subscription_first_year_at) + " " + priceDiscountSubAnnually.value + stringResource(
+                        id = R.string.subscription_year
+                    ) + ", " + stringResource(
                         R.string.then
                     ) + " " + priceSubAnnually.value + stringResource(id = R.string.subscription_year) + ". " + stringResource(
-                        R.string.subscription_automatic_renewal_easy_cancellation),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Center
+                        R.string.subscription_automatic_renewal_easy_cancellation
+                    ),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.labelMedium,
+                    textAlign = TextAlign.Center
                 )
             }
             /**
@@ -512,22 +528,46 @@ fun SubscriptionStateLess(
                 modifier = Modifier.padding(smallLetterPadding),
                 text = stringResource(R.string.subscription_info_policy),
                 color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.Center
             )
 
             val features = listOf(
                 Feature(stringResource(R.string.feature_unlimited_tokens), "-", "✓"),
                 Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
-                Feature(stringResource(R.string.feature_unlimited_camera_messages),
-                    stringResource(R.string.feature_3_day), "✓"),
-                Feature(stringResource(R.string.feature_unlimited_assistant_messages),
+                Feature(
+                    stringResource(R.string.feature_unlimited_camera_messages),
+                    stringResource(R.string.feature_3_day), "✓"
+                ),
+                Feature(
+                    stringResource(R.string.feature_unlimited_assistant_messages),
                     stringResource(
                         R.string.feature_1_day
-                    ), "✓"),
+                    ), "✓"
+                ),
                 Feature(stringResource(R.string.feature_access_full_guide), "-", "✓")
             )
             SubscriptionComparisonTable(features = features)
+            Divider()
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.subscription_having_issues_with_your_subscription),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.subscription_contact_us_at_askedaihelp_gmail_com),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onSendEmail() },
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

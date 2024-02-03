@@ -213,14 +213,14 @@ fun AssistantNewConversationStateLess(
         )
         Text(
             modifier = Modifier.padding(horizontal = 64.dp, vertical = 8.dp),
-            text = "Cuentame una situación y ayudare con lo que sea necesario",
+            text = stringResource(R.string.how_can_i_help_you_today),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center
         )
         TextButton(onClick = { onWhyTrust() }) {
             Text(
-                text = "¿Por qué confiar en la IA?",
+                text = stringResource(R.string.why_trust_ai),
                 color = MaterialTheme.colorScheme.tertiary,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center

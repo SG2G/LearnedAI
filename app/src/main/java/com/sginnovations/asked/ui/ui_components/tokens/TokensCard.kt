@@ -61,11 +61,12 @@ fun TokensCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = num, modifier = Modifier.width(36.dp),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = text, modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Justify
                 )
                 Button(
@@ -76,8 +77,9 @@ fun TokensCard(
                     )
                 ) {
                     Text(
-                        text = buttonText, color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleSmall
+                        text = buttonText,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
