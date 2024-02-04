@@ -96,23 +96,23 @@ fun PhotoButton(
                         .alpha(if (!isSelected) 0.6f else 1f),
                     tint = Color.White
                 )
-                Icon(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .alpha(if (!isSelected) 0.8f else 1f),
-                    painter = when (categoryOCR.prefix) {
-                        TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
-                        MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
-
-                        TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
-                        SummaryCategoryOCR.prefix -> painterResource(id = R.drawable.summary_camera)
-                        GrammarCategoryOCR.prefix -> painterResource(id = R.drawable.grammar_camera)
-
-                        else -> painterResource(id = R.drawable.text_camera)
-                    },
-                    contentDescription = "Inner Icon",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+//                Icon(
+//                    modifier = Modifier
+//                        .size(28.dp)
+//                        .alpha(if (!isSelected) 0.8f else 1f),
+//                    painter = when (categoryOCR.prefix) {
+//                        TextCategoryOCR.prefix -> painterResource(id = R.drawable.text_camera)
+//                        MathCategoryOCR.prefix -> painterResource(id = R.drawable.math_camera)
+//
+//                        TranslateCategoryOCR.prefix -> painterResource(id = R.drawable.language_camera)
+//                        SummaryCategoryOCR.prefix -> painterResource(id = R.drawable.summary_camera)
+//                        GrammarCategoryOCR.prefix -> painterResource(id = R.drawable.grammar_camera)
+//
+//                        else -> painterResource(id = R.drawable.text_camera)
+//                    },
+//                    contentDescription = "Inner Icon",
+//                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+//                )
             }
         }
     }

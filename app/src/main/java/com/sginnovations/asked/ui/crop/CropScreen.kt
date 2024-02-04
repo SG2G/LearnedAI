@@ -233,7 +233,7 @@ fun CropStateLess(
                     else -> stringResource(R.string.crop_crop_the_text_you_want_to)
                 },
                 color = Color.White,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, bottom = 4.dp, top = 0.dp),
                 textAlign = TextAlign.Center

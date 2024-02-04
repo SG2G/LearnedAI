@@ -37,7 +37,8 @@ fun TitleBenefit(painterResource: Painter, text: String) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text, color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -45,10 +46,10 @@ fun TitleBenefit(painterResource: Painter, text: String) {
 @Composable
 fun SubTitleBenefit(text: String) {
     Text(
-        modifier = Modifier.padding(vertical = 0.dp, horizontal = 36.dp),
+        modifier = Modifier.padding(start = 32.dp),
         text = text,
         color = MaterialTheme.colorScheme.secondary,
         style = MaterialTheme.typography.bodySmall,
-        fontWeight = FontWeight.SemiBold
+//        fontWeight = FontWeight.SemiBold
     )
 }

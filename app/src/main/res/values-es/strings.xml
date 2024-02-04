@@ -162,7 +162,7 @@
     <string name="lesson_description_or_you_can_see_the">" o puedes ver la "</string>
     <string name="lesson_description_transcript">Transcripción</string>
     <string name="lesson_dialog_title">¡Únete a los Miembros Premium!</string>
-    <string name="lesson_dialog_subtitle">Sé parte de una comunidad especial que ya está mejorando la experiencia educativa de sus hijos. No te pierdas las funciones avanzadas y las lecciones únicas disponibles solo para miembros premium. Cada momento es importante en la educación de tu hijo. Aprovéchalo al máximo con premium.</string>
+    <string name="lesson_dialog_subtitle">Sé parte de una comunidad especial que ya está mejorando la experiencia educativa de sus hijos.\n\nNo te pierdas las funciones avanzadas y las lecciones únicas disponibles solo para miembros premium. \n\nCada momento es importante en la educación de tu hijo. Aprovéchalo al máximo con premium.</string>
     <string name="lesson_dialog_confirm_button">Sí, ¡Elijo Premium!</string>
     <string name="lesson_dialog_dimiss_button">Permanecer con Acceso Básico</string>
     <string name="lesson_title_1000">Introducción</string>
@@ -268,7 +268,7 @@
     <string name="feature_1_day">1/día</string>
     <string name="subscription_first_year_at">Primer año a</string>
     <string name="then">después</string>
-    <string name="subscriptions_need_to_compare">¿Necesita comparar?</string>
+    <string name="subscriptions_need_to_compare">¿Necesitas comparar?</string>
     <string name="guide_category_title_0">1. Desarrollo Emocional y Personal</string>
     <string name="guide_category_title_1">2. Educación y Aprendizaje</string>
     <string name="guide_category_title_2">3. Salud y Bienestar</string>
@@ -324,5 +324,21 @@
     <string name="subscription_contact_us_at_askedaihelp_gmail_com">Contáctanos en askedaihelp@gmail.com</string>
     <string name="why_trust_ai">¿Por qué confiar en la IA?</string>
     <string name="how_can_i_help_you_today">¿En qué puedo ayudarte hoy?</string>
+    <string name="report_message">Reportar Mensaje</string>
+    <string name="send_report">Enviar Reporte</string>
+    <string name="cancel">Cancelar</string>
+    <string name="lesson_videoid_4000">6tNbLQUU3GE</string>
+    <string name="lesson_transcription_4000">## Historia Principal\n\n\n¿Alguna vez te has preguntado qué se necesita para cultivar la empatía en un mundo que a menudo parece carecer de ella? Este es el dilema con el que se encontraba Laura, una maestra de primer grado en una pequeña escuela en las afueras de la ciudad. Sus estudiantes tenían dificultades para compartir, colaborar y entender las emociones de los demás. No siendo de las que se dan por vencidas ante un desafío, Laura decidió tomar medidas, y así nació el proyecto \'Jardín de la Empatía\'. \n\nCada semana, en el corazón del aula, un círculo de pequeñas caras se reunía para un ejercicio de comprensión emocional. Los niños expresaban sus sentimientos y discutían situaciones donde se encontraban con diversas emociones. Laura tejía cuentos y juegos de roles en la mezcla, donde los niños tenían que ponerse en los zapatos de otros personajes. Esto provocaba conversaciones sobre cómo se sentirían y reaccionarían en circunstancias similares, fomentando un ambiente de empatía y comprensión.\n\nPero la magia no se detenía ahí. La gloria máxima del proyecto era la creación de un jardín real, vivo y respirable en la escuela. A cada niño se le daba la responsabilidad de una planta, un compañero silencioso y verde que dependía de ellos para su cuidado y nutrición. Esto les enseñaba no solo sobre la responsabilidad sino también sobre la importancia de cuidar a los demás. La colaboración no solo se fomentaba, sino que era necesaria, ya que los niños tenían que trabajar juntos para asegurar que el jardín prosperara. A través de esta experiencia táctil, los niños comenzaron a entender y respetar las necesidades y sentimientos de los demás.\n\nEste enfoque práctico e interactivo produjo resultados extraordinarios. Los niños no solo aprendieron sobre empatía y valores de manera teórica, sino que lo saborearon, lo sintieron, lo vivieron todos los días. Laura observó cómo sus estudiantes se transformaban, volviéndose más considerados y cooperativos, reflejando la empatía y los valores cultivados en su \'Jardín de la Empatía\'.\n\nEntonces, ¿qué nos dice esta historia? Nos muestra que la empatía y la comprensión pueden ser cultivadas, incluso en los corazones más jóvenes. Destaca el poder del aprendizaje práctico y el impacto transformador que puede tener en una comunidad. Y lo más importante, demuestra que cada uno de nosotros tiene la capacidad de marcar la diferencia.\n\n## Conclusión y Explicación del Método\n\n\nAsí que, aquí tienes un desafío: Inspírate en la historia de Laura y piensa en cómo puedes sembrar las semillas de la empatía en tu propia comunidad. Ya sea comenzando un jardín comunitario, implementando un círculo de compartir semanal o simplemente tomando el tiempo para hablar sobre emociones y comprensión, cada esfuerzo cuenta. Recuerda, cada jardín comienza con una sola semilla. Es hora de plantar la tuya.</string>
+    <string name="subscription_unlimited_text">Libertad total, \nTokens ilimitados</string>
+    <string name="subscription_camera_title">Soluciones Instantáneas</string>
+    <string name="subscription_camera_text">Fotos ilimitadas, mensajes ilimitados y todas las cameras disponibles.\nCamaras Extra: Traducción, Resumir y Corregir gramatica</string>
+    <string name="subscription_assistant_title">"Respuestas sin límites "</string>
+    <string name="subscription_assistant_text">Mensajes ilimitados para el Asistente, todas sus dudas resueltas.</string>
+    <string name="subscription_guide_title">Sabiduría a Su Alcance</string>
+    <string name="subscription_guide_text">Acceda a lecciones extraídos directamente de libros de expertos, reunidos para usted.</string>
+    <string name="subscription_private_tutor_comparation">Por el costo de solo 8 horas con un tutor de $10/hora, desbloquea un año completo de Asked—el compañero educativo 24/7 de tu hijo.</string>
+    <string name="only_until_march_31st">Solo hasta el 31 de Marzo!</string>
+    <string name="feature_all_cameras">Todas las camaras</string>
+    <string name="delete">Borrar</string>
 
 </resources>

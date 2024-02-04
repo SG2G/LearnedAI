@@ -38,7 +38,7 @@ class ChatViewModel @Inject constructor(
 
     private val remoteConfigRepository: RemoteConfigRepository,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     val idConversation = mutableIntStateOf(0)
     val categoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
@@ -57,17 +57,10 @@ class ChatViewModel @Inject constructor(
      */
     private val messageHistory =
         mutableListOf(
-            if (categoryOCR.value == Assistant) {
-                Message(
-                    role = "system",
-                    content = "You are a helpful assistant.Respond on language:${Locale.current.language}"
-                )
-            } else {
-                Message(
-                    role = "system",
-                    content = "You are a helpful assistant.Respond on language:${Locale.current.language}"
-                )
-            }
+            Message(
+                role = "system",
+                content = "You are a helpful assistant. Resolve the problems slow, step by step. Respond on language:${Locale.current.language}"
+            )
         )
 
     fun setUpMessageHistory() {

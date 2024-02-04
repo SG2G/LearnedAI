@@ -90,8 +90,6 @@ fun SmallLessonCard(
                             text = lesson.subtitle,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
                         )
                     }
 
@@ -163,8 +161,6 @@ fun SmallLessonCard(
                             text = lesson.subtitle,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
                         )
                     }
 

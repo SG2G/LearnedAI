@@ -31,19 +31,24 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.ui.subscription.components.Feature
 import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
 import com.sginnovations.asked.ui.subscription.components.SubscriptionComparisonTable
@@ -226,10 +231,11 @@ fun SubscriptionStateFull(
     } else {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top
         ) {
             Box {
-                Column {
+                Column(
+                    verticalArrangement = Arrangement.Top
+                ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -242,13 +248,27 @@ fun SubscriptionStateFull(
                             )
                         }
                         Text(
-                            text = "AskedAI Pro",
+                            text = "Asked Premium",
                             style = MaterialTheme.typography.displayMedium,
                             modifier = Modifier.padding(16.dp)
                         )
                         IconButton(onClick = { }) {}
                     }
                 }
+//                Column(
+//                    verticalArrangement = Arrangement.Center
+//                ) {
+//                    Text(
+//                        text = "If you still seeing this screen, send a email to:",
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        modifier = Modifier.padding(16.dp)
+//                    )
+//                    Text(
+//                        text = " askedaihelp@gmail.com",
+//                        style = MaterialTheme.typography.labelMedium,
+//                        modifier = Modifier.padding(16.dp)
+//                    )
+//                }
             }
         }
     }
@@ -279,7 +299,7 @@ fun SubscriptionStateLess(
     val scrollState = rememberScrollState()
     //Define the target date here
     val targetDate =
-        LocalDateTime.of(2024, 5, 30, 0, 0) // Example: May 30, 2024 at midnight
+        LocalDateTime.of(2024, 3, 31, 0, 0) // Example: 31 March
 
     val selectedPlan = remember { mutableStateOf(productAnnually) }
 
@@ -305,7 +325,7 @@ fun SubscriptionStateLess(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
+                    horizontalArrangement = Arrangement.Start
                 ) {
                     IconButton(onClick = { onNavigateUp() }) {
                         Icon(
@@ -313,113 +333,124 @@ fun SubscriptionStateLess(
                             contentDescription = "Cancel"
                         )
                     }
-                    Text(
-                        text = "Asked Premium",
-                        style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    IconButton(onClick = { }) {}
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Asked",
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            text = " Premium",
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Filled.Cancel,
+                            contentDescription = "Cancel2",
+                            tint = Color.Transparent
+                        )
+                    }
                 }
-//                /**
-//                 * CountDown
-//                 */
-//                CountdownTimer(targetDate = targetDate)
-//                Column(
-//                    modifier = Modifier.padding(horizontal = 16.dp),
-//                ) {
-//                    Text(
-//                        text = "Choose Your Plan",
-//                        style = MaterialTheme.typography.titleMedium,
-//                    )
-//                    Text(
-//                        text = "Con nuestra suscripción premium, abres un mundo de posibilidades para ti y tu hijo. Experimenta una educación más fácil, interactiva y efectiva. ¡Todo en la palma de tu mano!",
-//                        style = MaterialTheme.typography.bodyMedium,
-//                    )
-//                }
+
+                /**
+                 * CountDown
+                 */
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Oferta de Lanzamiento",
+                            style = MaterialTheme.typography.titleSmall,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                        CountdownTimer(targetDate = targetDate)
+                        Text(
+                            text = stringResource(R.string.only_until_march_31st),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                }
+
                 /**
                  * Benefits
                  */
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    Column(
+                        modifier = Modifier.fillMaxWidth(0.5f)
                     ) {
-                        Column {
-                            TitleBenefit(
-                                painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
-                                text = stringResource(R.string.subscription_unlimited)
-                            )
-                            SubTitleBenefit(text = "Libertad total, tokens ilimitados")
-                        }
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
+                            text = stringResource(R.string.subscription_unlimited)
+                        )
+                        SubTitleBenefit(text = stringResource(R.string.subscription_unlimited_text))
+
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
+                            text = stringResource(R.string.subscription_camera_title)
+                        )
+                        SubTitleBenefit(text = stringResource(R.string.subscription_camera_text))
+
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Column {
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
+                            text = stringResource(R.string.subscription_assistant_title)
+                        )
+                        SubTitleBenefit(text = stringResource(R.string.subscription_assistant_text))
 
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            TitleBenefit(
-                                painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
-                                text = "Soluciones Instantáneas"
-                            )
-                            SubTitleBenefit(text = "Fotos ilimitadas, mensajes ilimitados y todas las cameras disponibles.")
-                        }
-                    }
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
+                            text = stringResource(R.string.subscription_guide_title)
+                        )
+                        SubTitleBenefit(text = stringResource(R.string.subscription_guide_text))
 
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            TitleBenefit(
-                                painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
-                                text = "Respuestas sin limites"
-                            )
-                            SubTitleBenefit(text = "Mensajes ilimitados para el Asistente, todas sus dudas resueltas.")
-                        }
-                    }
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            TitleBenefit(
-                                painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
-                                text = "Sabiduría a Su Alcance"
-                            )
-                            SubTitleBenefit(text = "Acceda a consejos extraídos directamente de libros de expertos, reunidos para usted.")
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            TitleBenefit(
-                                painterResource = painterResource(id = R.drawable.subscription_star2),
-                                text = stringResource(R.string.subscription_exclusive_functions)
-                            )
-                            SubTitleBenefit(text = stringResource(id = R.string.subscription_higher_word_limit))
-                        }
+                        TitleBenefit(
+                            painterResource = painterResource(id = R.drawable.subscription_star2),
+                            text = stringResource(R.string.subscription_exclusive_functions)
+                        )
+                        SubTitleBenefit(text = stringResource(id = R.string.subscription_higher_word_limit))
                     }
                 }
             }
         }
 
-        /**
-         * Products
-         */
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            /**
+             * TRIAL
+             */
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -429,6 +460,20 @@ fun SubscriptionStateLess(
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = stringResource(R.string.subscription_private_tutor_comparation),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center
+            )
+
+
+            /**
+             * Products
+             */
             // Product 1 - Weekly
             priceSubMonthly.value?.let { price ->
                 SubscriptionCard(
@@ -533,8 +578,7 @@ fun SubscriptionStateLess(
             )
 
             val features = listOf(
-                Feature(stringResource(R.string.feature_unlimited_tokens), "-", "✓"),
-                Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
+                Feature(stringResource(R.string.feature_unlimited_tokens),stringResource(R.string.feature_3_day), "✓"),
                 Feature(
                     stringResource(R.string.feature_unlimited_camera_messages),
                     stringResource(R.string.feature_3_day), "✓"
@@ -545,7 +589,8 @@ fun SubscriptionStateLess(
                         R.string.feature_1_day
                     ), "✓"
                 ),
-                Feature(stringResource(R.string.feature_access_full_guide), "-", "✓")
+                Feature(stringResource(R.string.feature_access_full_guide), "-", "✓"),
+                Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
             )
             SubscriptionComparisonTable(features = features)
             Divider()
@@ -561,7 +606,7 @@ fun SubscriptionStateLess(
             Text(
                 text = stringResource(R.string.subscription_contact_us_at_askedaihelp_gmail_com),
                 color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium.merge(textDecoration = TextDecoration.Underline),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()

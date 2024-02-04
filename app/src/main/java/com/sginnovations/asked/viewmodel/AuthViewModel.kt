@@ -2,6 +2,7 @@ package com.sginnovations.asked.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,7 @@ import com.sginnovations.asked.auth.sign_in.data.UserData
 import com.sginnovations.asked.domain.firebase.setters.SetDefaultTokensUseCase
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -69,10 +71,13 @@ class AuthViewModel @Inject constructor(
                         continuation.resume(auth)
                         showSignInScreen.value = false
                     } else {
-                        Log.d(TAG, "else: $auth")
-                        // Sign in fails
-                        continuation.resume(null)
-                        showSignInScreen.value = true
+                        viewModelScope.launch {
+                            delay(500)
+                            Log.d(TAG, "else: $auth")
+                            // Sign in fails
+                            continuation.resume(null)
+                            showSignInScreen.value = true
+                        }
                     }
                 }
         }

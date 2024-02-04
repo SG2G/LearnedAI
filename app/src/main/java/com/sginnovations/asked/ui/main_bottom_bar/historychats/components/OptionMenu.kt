@@ -25,9 +25,11 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import com.sginnovations.asked.R
 
 @Composable
 fun OptionMenu(
@@ -53,7 +55,8 @@ fun OptionMenu(
         },
     ) {
         Box(
-            modifier = Modifier.scale(scale)
+            modifier = Modifier
+                .scale(scale)
                 .width(menuWidth)
                 .clip(RoundedCornerShape(menuRounded))
                 .blur(15.dp)
@@ -82,7 +85,7 @@ fun OptionMenu(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "Delete",
+                        stringResource(R.string.delete),
                         color = Color.Transparent,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier
@@ -150,7 +153,7 @@ fun OptionMenu(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "Delete",
+                        stringResource(R.string.delete),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier

@@ -1,5 +1,6 @@
 package com.sginnovations.asked.ui.subscription.components
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -8,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalDateTime
@@ -24,14 +27,16 @@ fun CountdownTimer(targetDate: LocalDateTime) {
 
     LaunchedEffect(key1 = timeRemaining) {
         if (!timeRemaining.isZero && !timeRemaining.isNegative) {
-            delay(1000L) // Actualiza cada segundo
+            delay(1000L)
             timeRemaining = getTimeRemaining(targetDate)
         }
     }
 
     Text(
+        modifier = Modifier.fillMaxSize(),
         text = if (timeRemaining.isZero || timeRemaining.isNegative) "Time over" else formatDuration(timeRemaining),
-        style = MaterialTheme.typography.bodyMedium
+        style = MaterialTheme.typography.titleSmall,
+        textAlign = TextAlign.Center,
     )
 }
 
@@ -40,5 +45,5 @@ fun formatDuration(duration: Duration): String {
     val hours = duration.toHours() % 24
     val minutes = duration.toMinutes() % 60
     val seconds = duration.seconds % 60
-    return "%d D %02d:%02d:%02d".format(days, hours, minutes, seconds)
+    return "%d:%02d:%02d:%02d".format(days, hours, minutes, seconds)
 }

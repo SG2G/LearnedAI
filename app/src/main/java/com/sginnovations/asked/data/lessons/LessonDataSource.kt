@@ -115,7 +115,7 @@ class LessonDataSource @Inject constructor(
             conclusion = context.getString(R.string.lesson_conclusion_2001),
             buttonText = context.getString(R.string.lesson_button_text_2001),
             questionAsked = context.getString(R.string.lesson_question_asked_2001),
-            isPremium = false, //TODO CHANGE
+            isPremium = true, //TODO CHANGE
             lessonPages = 1
         ),
         /**
@@ -133,7 +133,7 @@ class LessonDataSource @Inject constructor(
             conclusion = context.getString(R.string.lesson_conclusion_3000),
             buttonText = context.getString(R.string.lesson_button_text_3000),
             questionAsked = context.getString(R.string.lesson_question_asked_3000),
-            isPremium = false,
+            isPremium = true,
             lessonPages = 1
         ),
         /**
@@ -151,7 +151,7 @@ class LessonDataSource @Inject constructor(
             conclusion = context.getString(R.string.lesson_conclusion_3001),
             buttonText = context.getString(R.string.lesson_button_text_3001),
             questionAsked = context.getString(R.string.lesson_question_asked_3001),
-            isPremium = false,
+            isPremium = true,
             lessonPages = 1
         ),
         /**
@@ -169,7 +169,7 @@ class LessonDataSource @Inject constructor(
             conclusion = context.getString(R.string.lesson_conclusion_3002),
             buttonText = context.getString(R.string.lesson_button_text_3002),
             questionAsked = context.getString(R.string.lesson_question_asked_3002),
-            isPremium = false,
+            isPremium = true,
             lessonPages = 1
         ),
 
@@ -183,12 +183,12 @@ class LessonDataSource @Inject constructor(
             subtitle = context.getString(R.string.lesson_subtitle_4000),
             transcription = context.getString(R.string.lesson_transcription_4000),
             introduction = context.getString(R.string.lesson_introduction_4000),
-            videoId = "IBTb2C4nnbo",
+            videoId = context.getString(R.string.lesson_videoid_4000),
             reference = context.getString(R.string.lesson_reference_4000),
             conclusion = context.getString(R.string.lesson_conclusion_4000),
             buttonText = context.getString(R.string.lesson_button_text_4000),
             questionAsked = context.getString(R.string.lesson_question_asked_4000),
-            isPremium = false,
+            isPremium = true,
             lessonPages = 1
         ),
 
