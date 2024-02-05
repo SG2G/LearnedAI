@@ -19,7 +19,7 @@ class OnBoarding(
             ThirdScreen,
             FourScreen,
             FifthScreen,
-            SixthScreen
+//            SixthScreen
         )
     }
 }
@@ -74,11 +74,11 @@ object FifthScreen : OnBoardingPage {
         painterResource(id = R.drawable.onboarding_security)
     }
 }
-object SixthScreen : OnBoardingPage { //TODO DO IT
-    override fun getTitle(context: Context) = "Disfruta Asked"
-    override fun getSubTitle(context: Context) = "Un regalo para ti"
-    override fun getDescription(context: Context) = "Te doy 7 Tokens"
-    override val image: @Composable () -> Painter = {
-        painterResource(id = R.drawable.onboarding_security)
-    }
-}
+//object SixthScreen : OnBoardingPage { //TODO DO IT
+//    override fun getTitle(context: Context) = "Disfruta Asked"
+//    override fun getSubTitle(context: Context) = "Un regalo para ti"
+//    override fun getDescription(context: Context) = "Te doy 7 Tokens"
+//    override val image: @Composable () -> Painter = {
+//        painterResource(id = R.drawable.onboarding_security)
+//    }
+//}

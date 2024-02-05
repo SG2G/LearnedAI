@@ -206,7 +206,7 @@
     <string name="onboarding_description_1">¡Saludos! Es un placer darle la bienvenida a Asked, su aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en usted, para hacer su experiencia en la educación más sencilla y gratificante. \n\n Le presentamos nuestras características principales de forma breve:</string>
     <string name="onboarding_title_2">Cámara Inteligente</string>
     <string name="onboarding_subtitle_2">Resuelva Problemas Escolares</string>
-    <string name="onboarding_description_2">**Capture y Consulte:** Tome una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Reciba explicaciones detalladas para comprenderlo y la resolución el problema.\n\n**Consulta Continua:** ¿Tiene más dudas? Pregunte todo lo que necesite hasta que todo quede claro.</string>
+    <string name="onboarding_description_2">**Capture y Consulte:** Tome una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Reciba explicaciones detalladas para comprenderlo y la resolución el problema.\n\n**Cámaras Especializadas:** Utilice cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tiene más dudas? Pregunte todo lo que necesite hasta que todo quede claro.\n\n</string>
     <string name="onboarding_titlte_3">Asistente de Parentalidad</string>
     <string name="onboarding_subtitle_3">Tu Asistente Experto en Psicología Infantil y Neurociencia</string>
     <string name="onboarding_description_3">**Sus Preguntas, Nuestras Respuestas:** ¿Tiene inquietudes sobre crianza? Nuestro asistente de IA está listo para ayudarle.\n \n**Conocimiento a tu Alcance:** La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras. \n\n**Consejos Prácticos:** Desde cómo manejar rabietas hasta fomentar buenos hábitos. \n\n**Apoyo Constante**: Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre.</string>
@@ -346,5 +346,6 @@
     <string name="assistant">Asistente</string>
     <string name="guide">Guía</string>
     <string name="subscription_pvu">El Éxito de tus Hijos, tu Tranquilidad</string>
+    <string name="internet_error">Error de Conexión</string>
 
 </resources>

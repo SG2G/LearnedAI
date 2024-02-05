@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import kotlinx.coroutines.launch
 
-const val NUM_PAGES = 6
+const val NUM_PAGES = 5
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun onBoarding(
