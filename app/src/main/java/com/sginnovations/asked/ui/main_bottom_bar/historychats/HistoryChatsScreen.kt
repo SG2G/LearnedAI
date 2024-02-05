@@ -86,12 +86,13 @@ fun StateFulHistoryChats(
 
     val theme = vmPreferences.theme
 
-    SideEffect { (context as Activity).window.navigationBarColor =
-        if (!theme.value) {
-            Color(0xFFe9effd).toArgb()
-        } else {
-            Color(0xFF0C1622).toArgb()
-        }
+    SideEffect {
+        (context as Activity).window.navigationBarColor =
+            if (!theme.value) {
+                Color(0xFFe9effd).toArgb()
+            } else {
+                Color(0xFF282931).toArgb()
+            }
     }
 
     LaunchedEffect(Unit) {
@@ -215,7 +216,9 @@ fun StateLessHistoryChats(
         }
         if (conversations.value.isEmpty()) {
             item {
-                EmptyConversationsMessage()
+                EmptyConversationsMessage(
+                    message = stringResource(R.string.chat_empty_conversation)
+                )
             }
         }
 

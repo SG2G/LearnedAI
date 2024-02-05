@@ -31,9 +31,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.GrammarCategoryOCR
 import com.sginnovations.asked.data.MathCategoryOCR
@@ -51,13 +55,21 @@ import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.main_bottom_bar.camera.CheckPermissions
+import com.sginnovations.asked.ui.ui_components.camera.PremiumCameraDialog
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
+import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.viewmodel.CameraViewModel
+import com.sginnovations.asked.viewmodel.TokenViewModel
+import kotlinx.coroutines.async
 
 private const val TAG = "GalleryStateFull"
 
 @Composable
 fun GalleryStateFull(
     vmCamera: CameraViewModel,
+    vmToken: TokenViewModel,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 
     onCropNavigation: () -> Unit,
 ) {
@@ -83,6 +95,8 @@ fun GalleryStateFull(
 
     if (galleryPermissionGranted.value) {
         val context = LocalContext.current
+        val scope = rememberCoroutineScope()
+
         val bitmap = remember { mutableStateOf<Bitmap?>(null) }
         val imageUri = remember { mutableStateOf<Uri?>(null) }
 
@@ -90,6 +104,10 @@ fun GalleryStateFull(
         hasExecuted.value = false
 
         val tryClickSoon = remember { mutableIntStateOf(0) }
+
+        val tokens = vmToken.tokens
+        val showNoTokensDialog = remember { mutableStateOf(false) }
+        val showPremiumCameraDialog = remember { mutableStateOf(false) }
 
         val launcher =
             rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -106,7 +124,10 @@ fun GalleryStateFull(
                 }
             }
 
+        var isPremium by remember { mutableStateOf(false) }
+
         LaunchedEffect(bitmap.value) {
+            isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await()
             Log.d(TAG, "GalleryStateFull: ${bitmap.value}")
             if (bitmap.value != null) {
                 vmCamera.onTakePhoto(bitmap.value!!)
@@ -115,6 +136,24 @@ fun GalleryStateFull(
             }
         }
 
+        if (showPremiumCameraDialog.value) {
+            PremiumCameraDialog(
+                onDismissRequest = { showPremiumCameraDialog.value = false },
+                onSeePremiumSubscription = {
+                    showPremiumCameraDialog.value = false
+                    onNavigateSubscriptionScreen()
+                }
+            )
+        }
+        if (showNoTokensDialog.value) {
+            NoTokensDialog(
+                onDismissRequest = { showNoTokensDialog.value = false },
+                onSeePremiumSubscription = {
+                    showNoTokensDialog.value = false
+                    onNavigateSubscriptionScreen()
+                }
+            )
+        }
         /**
          * StateLess
          */
@@ -123,7 +162,6 @@ fun GalleryStateFull(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             // List of OCR categories
             val ocrCategories = listOf(
                 TextCategoryOCR to R.drawable.text_camera,
@@ -146,8 +184,30 @@ fun GalleryStateFull(
                             onClick = {
                                 if (category != Soon) {
                                     Log.d(TAG, "category: $category Soon $Soon ")
-                                    vmCamera.cameraCategoryOCR.value = category
-                                    launcher.launch("image/*")
+                                    if (isPremium) {
+                                        vmCamera.cameraCategoryOCR.value = category
+                                        launcher.launch("image/*")
+                                    } else {
+                                        when (category.prefix) {
+                                            TranslateCategoryOCR.prefix -> showPremiumCameraDialog.value = true
+                                            GrammarCategoryOCR.prefix -> showPremiumCameraDialog.value = true
+                                            SummaryCategoryOCR.prefix -> showPremiumCameraDialog.value = true
+                                            else -> {
+                                                if (isPremium) {
+                                                    vmCamera.cameraCategoryOCR.value = category
+                                                    launcher.launch("image/*")
+                                                } else {
+                                                    if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
+                                                        vmCamera.cameraCategoryOCR.value = category
+                                                        launcher.launch("image/*")
+                                                    } else {
+                                                        showNoTokensDialog.value = true
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
                                 } else {
                                     when (tryClickSoon.intValue) {
                                         0 -> showToast(

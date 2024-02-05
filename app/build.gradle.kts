@@ -64,12 +64,10 @@ dependencies {
     implementation ("io.noties.markwon:core:4.6.2")
     implementation ("io.noties.markwon:ext-latex:4.6.2")
 
-    // EU LAW //
-    implementation("com.google.android.ump:user-messaging-platform:2.1.0")
     // Payments //
     implementation("com.android.billingclient:billing-ktx:6.0.1")
     /// Firebase ///
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
     implementation("com.google.firebase:firebase-config:21.5.0")
     implementation("com.google.firebase:firebase-dynamic-links-ktx")
@@ -77,8 +75,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     // accompanist
     implementation ("com.google.accompanist:accompanist-pager:0.32.0")
-    /// admob ///
-    implementation("com.google.android.gms:play-services-ads:22.4.0")
     /// Coil ///
     implementation("io.coil-kt:coil-compose:2.2.2")
     // Import the BoM for the Firebase platform

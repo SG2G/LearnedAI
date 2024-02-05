@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.CategoryOCR
 import com.sginnovations.asked.data.GrammarCategoryOCR
@@ -39,6 +40,8 @@ import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.ui.crop.components.IsLoadingCrop
+import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
+import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.CameraViewModel
 import com.sginnovations.asked.viewmodel.ChatViewModel
@@ -49,6 +52,7 @@ import io.moyuru.cropify.rememberCropifyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -62,6 +66,8 @@ fun CropStateFul(
     vmToken: TokenViewModel,
 
     navController: NavController,
+
+    onNavigateSubscriptionScreen: () -> Unit,
 
     onNavigateChat: () -> Unit,
     onNavigateNewChat: () -> Unit,
@@ -78,6 +84,9 @@ fun CropStateFul(
 
     val instantCrop = remember { mutableStateOf(true) }
 
+    val showNoTokensDialog = remember { mutableStateOf(false) }
+    val tokens = vmToken.tokens
+
     /**
      * CropStateLess
      */
@@ -86,6 +95,9 @@ fun CropStateFul(
         navController = navController,
 
         cameraCategoryOCR = cameraCategoryOCR,
+
+        tokens = tokens,
+        showNoTokensDialog = showNoTokensDialog,
 
         isLoading = isLoading,
 
@@ -131,6 +143,15 @@ fun CropStateFul(
             )
         }
     }
+    if (showNoTokensDialog.value) {
+        NoTokensDialog(
+            onDismissRequest = { showNoTokensDialog.value = false },
+            onSeePremiumSubscription = {
+                showNoTokensDialog.value = false
+                onNavigateSubscriptionScreen()
+            }
+        )
+    }
     /**
      * IsLoading
      */
@@ -144,16 +165,16 @@ fun CropStateLess(
 
     cameraCategoryOCR: MutableState<CategoryOCR>,
 
+    tokens: StateFlow<Long>,
+    showNoTokensDialog: MutableState<Boolean>,
+
     isLoading: MutableState<Boolean>,
 
     onImageCropped: (ImageBitmap) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-
     val cropifyState = rememberCropifyState()
-
     val backgroundColor = MaterialTheme.colorScheme.background
-
     val cropifyOptions = CropifyOption(
         backgroundColor = Color(0xFF191c22),
         maskColor = Color(0xFF191c22),
@@ -167,6 +188,13 @@ fun CropStateLess(
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
     val enabled = remember { mutableStateOf(true) }
+
+    var isPremium by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await()
+    }
+
 
     /**
      * Enabled btn delay
@@ -192,7 +220,15 @@ fun CropStateLess(
             }
 
             try {
-                onImageCropped(croppedImageDeferred.await())
+                if (isPremium) {
+                    onImageCropped(croppedImageDeferred.await())
+                } else {
+                    if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
+                        onImageCropped(croppedImageDeferred.await())
+                    } else {
+                        showNoTokensDialog.value = true
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

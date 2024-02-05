@@ -35,7 +35,7 @@ fun CountdownTimer(targetDate: LocalDateTime) {
     Text(
         modifier = Modifier.fillMaxSize(),
         text = if (timeRemaining.isZero || timeRemaining.isNegative) "Time over" else formatDuration(timeRemaining),
-        style = MaterialTheme.typography.titleSmall,
+        style = MaterialTheme.typography.titleMedium,
         textAlign = TextAlign.Center,
     )
 }

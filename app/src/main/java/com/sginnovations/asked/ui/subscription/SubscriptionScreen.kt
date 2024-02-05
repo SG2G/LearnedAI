@@ -27,11 +27,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,10 +37,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -50,9 +47,8 @@ import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
 import com.sginnovations.asked.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.ui.subscription.components.Feature
-import com.sginnovations.asked.ui.subscription.components.SubTitleBenefit
+import com.sginnovations.asked.ui.subscription.components.SubscriptionBenefits
 import com.sginnovations.asked.ui.subscription.components.SubscriptionComparisonTable
-import com.sginnovations.asked.ui.subscription.components.TitleBenefit
 import com.sginnovations.asked.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.viewmodel.AuthViewModel
 import com.sginnovations.asked.viewmodel.BillingViewModel
@@ -372,12 +368,11 @@ fun SubscriptionStateLess(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "Oferta de Lanzamiento",
+                            text = stringResource(R.string.oferta_de_lanzamiento),
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
                         )
-                        CountdownTimer(targetDate = targetDate)
                         Text(
                             text = stringResource(R.string.only_until_march_31st),
                             style = MaterialTheme.typography.bodySmall,
@@ -385,6 +380,9 @@ fun SubscriptionStateLess(
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
                         )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        CountdownTimer(targetDate = targetDate)
+                        Spacer(modifier = Modifier.height(6.dp))
                     }
 
                 }
@@ -392,55 +390,7 @@ fun SubscriptionStateLess(
                 /**
                  * Benefits
                  */
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(0.5f)
-                    ) {
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
-                            text = stringResource(R.string.subscription_unlimited)
-                        )
-                        SubTitleBenefit(text = stringResource(R.string.subscription_unlimited_text))
-
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.camera_svgrepo_filled),
-                            text = stringResource(R.string.subscription_camera_title)
-                        )
-                        SubTitleBenefit(text = stringResource(R.string.subscription_camera_text))
-
-                    }
-
-                    Column {
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.sofa_svgrepo_filled),
-                            text = stringResource(R.string.subscription_assistant_title)
-                        )
-                        SubTitleBenefit(text = stringResource(R.string.subscription_assistant_text))
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.book_bookmark_svgrepo_filled),
-                            text = stringResource(R.string.subscription_guide_title)
-                        )
-                        SubTitleBenefit(text = stringResource(R.string.subscription_guide_text))
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        TitleBenefit(
-                            painterResource = painterResource(id = R.drawable.subscription_star2),
-                            text = stringResource(R.string.subscription_exclusive_functions)
-                        )
-                        SubTitleBenefit(text = stringResource(id = R.string.subscription_higher_word_limit))
-                    }
-                }
+                SubscriptionBenefits()
             }
         }
 
@@ -455,21 +405,32 @@ fun SubscriptionStateLess(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                text = stringResource(R.string.subscription_try_7_free_days_of_asked_premium),
+                text = stringResource(R.string.subscription_pvu),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
+            )
+            Divider(modifier = Modifier.padding(horizontal = 16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = stringResource(R.string.subscription_try_7_free_days_of_asked_premium),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
             )
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 text = stringResource(R.string.subscription_private_tutor_comparation),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center
             )
-
 
             /**
              * Products

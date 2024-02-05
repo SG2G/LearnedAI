@@ -60,7 +60,7 @@ fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
             painter = onBoardingPage.image(),
             contentDescription = null,
             modifier = Modifier
-                .size(300.dp)
+                .size(172.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(

@@ -245,14 +245,14 @@ class LessonDataSource @Inject constructor(
             context.getString(R.string.guide_category_description_3),
 
             ),
-        LessonCategoryDataClass(
-            4,
-            R.drawable._5,
-            context.getString(R.string.guide_category_title_4),
-            context.getString(R.string.lessons),
-            context.getString(R.string.guide_category_description_4),
-
-            ),
+//        LessonCategoryDataClass(
+//            4,
+//            R.drawable._5,
+//            context.getString(R.string.guide_category_title_4),
+//            context.getString(R.string.lessons),
+//            context.getString(R.string.guide_category_description_4),
+//
+//            ),
     )
 
     private fun defaultLesson(): LessonDataClass {

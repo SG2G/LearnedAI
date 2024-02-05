@@ -22,8 +22,10 @@ import com.sginnovations.asked.repository.ChatRepository
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
 import com.sginnovations.asked.repository.TokenRepository
+import com.sginnovations.asked.utils.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,6 +54,8 @@ class ChatViewModel @Inject constructor(
     val messages = mutableStateOf<List<MessageEntity>>(emptyList())
     val conversations = mutableStateOf<List<ConversationEntity>>(emptyList())
 
+    val isLoading = mutableStateOf(false)
+
     /**
      *  MutableList whit all the actual conversation
      */
@@ -62,6 +66,22 @@ class ChatViewModel @Inject constructor(
                 content = "You are a helpful assistant. Resolve the problems slow, step by step. Respond on language:${Locale.current.language}"
             )
         )
+
+    fun sendNewMessage(
+        message: String,
+        onNavigateChat: () -> Unit,
+    ) {
+        viewModelScope.launch {
+            isLoading.value = true
+
+            // GPT call
+            val deferred = async { sendMessageToOpenaiApi(message) }
+            deferred.await()
+
+            isLoading.value = false
+            onNavigateChat()
+        }
+    }
 
     fun setUpMessageHistory() {
         viewModelScope.launch {

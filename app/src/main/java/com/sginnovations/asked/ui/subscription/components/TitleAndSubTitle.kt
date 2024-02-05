@@ -48,7 +48,7 @@ fun SubTitleBenefit(text: String) {
     Text(
         modifier = Modifier.padding(start = 32.dp),
         text = text,
-        color = MaterialTheme.colorScheme.secondary,
+        color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.bodySmall,
 //        fontWeight = FontWeight.SemiBold
     )

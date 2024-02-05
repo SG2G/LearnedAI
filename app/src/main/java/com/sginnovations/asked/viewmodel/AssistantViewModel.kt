@@ -19,13 +19,16 @@ import com.sginnovations.asked.repository.ChatRepository
 import com.sginnovations.asked.repository.RemoteConfigRepository
 import com.sginnovations.asked.repository.RoomRepository
 import com.sginnovations.asked.repository.TokenRepository
+import com.sginnovations.asked.utils.NetworkUtils
 import com.sginnovations.asked.viewmodel.ChatViewModel.Companion.shortenString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "AssistantViewModel"
+
 @HiltViewModel
 class AssistantViewModel @Inject constructor(
     @ApplicationContext val context: Context,
@@ -34,7 +37,7 @@ class AssistantViewModel @Inject constructor(
     private val tokensRepository: TokenRepository,
 
     private val remoteConfigRepository: RemoteConfigRepository,
-    ) : ViewModel() {
+) : ViewModel() {
 
     val firstMessage = mutableStateOf<String?>("")
     val isLoading = mutableStateOf(false)
@@ -65,6 +68,22 @@ class AssistantViewModel @Inject constructor(
             )
         )
 
+    fun sendNewMessage(
+        message: String,
+        onNavigateChat: () -> Unit,
+    ) {
+        viewModelScope.launch {
+            isLoading.value = true
+
+            // GPT call
+            val deferred = async { sendMessageToOpenaiApi(message) }
+            deferred.await()
+
+            isLoading.value = false
+            onNavigateChat()
+        }
+    }
+
     fun setUpMessageHistory() {
         viewModelScope.launch {
             val lastMessages = messages.value.takeLast(5)
@@ -80,11 +99,13 @@ class AssistantViewModel @Inject constructor(
             Log.d(TAG, "setUpMessageHistory: messageHistory -> $messageHistory ")
         }
     }
+
     fun setUpNewConversation() {
         viewModelScope.launch {
             idConversation.intValue = 0
         }
     }
+
     suspend fun getConversationsFromCategory(category: String) {
         viewModelScope.launch {
             conversations.value = roomRepository.getConversationsFromCategory(category).asReversed()
@@ -196,7 +217,7 @@ class AssistantViewModel @Inject constructor(
          */
         lessTokenNewConversationAssistCheckPremium()
 
-        Log.i(TAG, "messageHistory: $messageHistory")
+        Log.i(TAG, "messageHistory end: $messageHistory")
         Log.i(TAG, "I just finished sendMessageToOpenaiApi")
     }
 

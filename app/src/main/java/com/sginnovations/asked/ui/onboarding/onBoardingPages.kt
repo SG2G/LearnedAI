@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.sginnovations.asked.R
+import com.sginnovations.asked.ui.ui_components.tokens.TokenIcon
 
 class OnBoarding(
     val context: Context,
@@ -18,6 +19,7 @@ class OnBoarding(
             ThirdScreen,
             FourScreen,
             FifthScreen,
+            SixthScreen
         )
     }
 }
@@ -68,6 +70,14 @@ object FifthScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_5)
     override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_5)
     override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_5)
+    override val image: @Composable () -> Painter = {
+        painterResource(id = R.drawable.onboarding_security)
+    }
+}
+object SixthScreen : OnBoardingPage { //TODO DO IT
+    override fun getTitle(context: Context) = "Disfruta Asked"
+    override fun getSubTitle(context: Context) = "Un regalo para ti"
+    override fun getDescription(context: Context) = "Te doy 7 Tokens"
     override val image: @Composable () -> Painter = {
         painterResource(id = R.drawable.onboarding_security)
     }

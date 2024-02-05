@@ -74,7 +74,7 @@ fun NewConversationStateFul(
     val text = remember { mutableStateOf<String?>("") }
     text.value = vmCamera.imageToText.value
 
-    val isLoading = vmCamera.isLoading
+    val isLoading = vmChat.isLoading
 
     val newConversationCostToken = vmChat.newConversationCostTokens()
     var isPremium by remember { mutableStateOf(false) }
@@ -107,12 +107,10 @@ fun NewConversationStateFul(
 
                     if (isPremium) {
                         sendNewMessage(
-                            scope,
                             context,
 
                             processText,
 
-                            vmCamera,
                             vmChat
                         ) {
                             onNavigateChat()
@@ -120,12 +118,10 @@ fun NewConversationStateFul(
                     } else {
                         if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
                             sendNewMessage(
-                                scope,
                                 context,
 
                                 processText,
 
-                                vmCamera,
                                 vmChat
                             ) {
                                 onNavigateChat()
@@ -239,28 +235,20 @@ fun NewConversationStateLess(
 
 fun sendNewMessage(
     //TODO REPEAT CROP
-    scope: CoroutineScope,
     context: Context,
-    text: String,
-    vmCamera: CameraViewModel,
+    message: String,
     vmChat: ChatViewModel,
 
     onNavigateChat: () -> Unit,
 ) {
-    scope.launch {
-        // New Message
-        if (NetworkUtils.isOnline(context)) {
-            vmCamera.isLoading.value = true
 
-            // GPT call
-            val deferred = async { vmChat.sendMessageToOpenaiApi(text) }
-            deferred.await()
+    if (NetworkUtils.isOnline(context)) {
+        vmChat.sendNewMessage(
+            message = message,
 
-            vmCamera.isLoading.value = false
-
-            onNavigateChat()
-        } else {
-            Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
-        }
+            onNavigateChat = { onNavigateChat() }
+        )
+    } else {
+        Toast.makeText(context, context.getString(R.string.internet_error), Toast.LENGTH_SHORT).show()
     }
 }

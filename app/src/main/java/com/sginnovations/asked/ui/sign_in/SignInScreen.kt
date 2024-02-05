@@ -74,14 +74,13 @@ fun LearnedAuth(
 
     val state by vmAuth.state.collectAsStateWithLifecycle()
 
-    val auth = remember { mutableStateOf<FirebaseAuth?>(null) }
+    val auth = remember { mutableStateOf(FirebaseAuth.getInstance()) }
     val userName = remember { mutableStateOf("") }
     val userPassword = remember { mutableStateOf("") }
 
     val googleAuthUiClient = vmAuth.getGoogleAuthUiClient()
 
-    LaunchedEffect(Unit) { auth.value = vmAuth.getAuth() }
-
+    LaunchedEffect(Unit) { vmAuth.getAuth()}
     LaunchedEffect(state.isSignInSuccessful) {
         Log.d(TAG, "LearnedAuth: isSignInSuccessful")
         if (state.isSignInSuccessful) {
@@ -114,17 +113,21 @@ fun LearnedAuth(
             userPassword = userPassword,
 
             onManualSignIn = {
-                auth.value!!.signInWithEmailAndPassword(userName.value, userPassword.value)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "LearnedAuth: task.isSuccessful")
-                            val user = auth.value!!.currentUser
-                            user?.let { vmAuth.setDefaultTokens(it) }
-                            onNavigationUserAlreadySigned()
-                        } else {
-                            // sign in failed
+                try {
+                    auth.value.signInWithEmailAndPassword(userName.value, userPassword.value)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "LearnedAuth: task.isSuccessful")
+                                val user = auth.value.currentUser
+                                user?.let { vmAuth.setDefaultTokens(it) }
+                                onNavigationUserAlreadySigned()
+                            } else {
+                                // sign in failed
+                            }
                         }
-                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         ) { // onSignInClick =
             scope.launch {
@@ -183,23 +186,6 @@ fun LearnedAuthStateLess(
             contentDescription = "asked_logo",
         )
         /**
-         * Sign in Image
-         */
-        Image(
-            painter = painterResource(id = R.drawable.sign_in),
-            contentDescription = "sign_in",
-            modifier = Modifier
-                .fillMaxWidth()
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onLongPress = {
-                            showAdminSignIn.value = !showAdminSignIn.value
-                        }
-                    )
-                }
-        )
-
-        /**
          * TEST MANUAL SIGN IN
          */
 
@@ -249,6 +235,23 @@ fun LearnedAuthStateLess(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
+
+        /**
+         * Sign in Image
+         */
+        Image(
+            painter = painterResource(id = R.drawable.sign_in),
+            contentDescription = "sign_in",
+            modifier = Modifier
+                .fillMaxWidth()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onLongPress = {
+                            showAdminSignIn.value = !showAdminSignIn.value
+                        }
+                    )
+                }
+        )
         /**
          * Component
          * Google Sign in Button

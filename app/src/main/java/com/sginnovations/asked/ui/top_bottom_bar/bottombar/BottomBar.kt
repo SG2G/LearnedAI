@@ -9,13 +9,19 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -32,6 +38,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -42,6 +49,7 @@ import com.sginnovations.asked.OnBoarding
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
+import com.sginnovations.asked.R
 import com.sginnovations.asked.ScreensDestinations
 
 private const val TAG = "LearnedBottomBar"
@@ -65,7 +73,7 @@ fun LearnedBottomBar(
             if (currentScreen?.route != OnBoarding.route) {
                 val items = listOf(Camera, ChatsHistory, ParentalAssist, ParentalGuidance, Profile)
                 NavigationBar(
-                    modifier = Modifier.height(64.dp),
+//                    modifier = Modifier.height(64.dp),
                 ) {
                     items.forEach { item ->
                         val isSelected = item.route == backStackEntry?.destination?.route
@@ -90,7 +98,12 @@ fun LearnedBottomBar(
                                 selectedIconColor = MaterialTheme.colorScheme.primary,
                                 indicatorColor = MaterialTheme.colorScheme.primaryContainer,
                                 unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                            ),
+                            label = { Text(
+                                text = item.getBottomName(context),
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.labelMedium
+                            ) }
                         )
                     }
                 }
@@ -109,13 +122,13 @@ fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         AnimatedIcon(item = item, isSelected = isSelected)
-        Spacer(modifier = Modifier.height(4.dp))
-        Box(
-            modifier = Modifier
-                .width(lineWidth)
-                .height(2.dp)
-                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 50))
-        )
+//        Spacer(modifier = Modifier.height(4.dp))
+//        Box(
+//            modifier = Modifier
+//                .width(lineWidth)
+//                .height(2.dp)
+//                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 50))
+//        )
     }
 }
 

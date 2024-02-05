@@ -22,7 +22,7 @@ import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
 import kotlinx.coroutines.async
 
 @Composable
-fun ProfileName(userName: String) {
+fun ProfileName(userName: String = "User Name") {
     val scope = rememberCoroutineScope()
     var isPremium by remember { mutableStateOf(false) }
 
@@ -47,13 +47,14 @@ fun ProfileName(userName: String) {
             )
         } else {
             Text(
-                text = stringResource(R.string.profile_1_premium), color = Color.Yellow,
-                style = MaterialTheme.typography.bodySmall
+                text = stringResource(R.string.profile_2_plan),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
-                text = stringResource(R.string.profile_2_plan),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onBackground,
+                text = stringResource(R.string.profile_1_premium),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleSmall
             )
         }
     }

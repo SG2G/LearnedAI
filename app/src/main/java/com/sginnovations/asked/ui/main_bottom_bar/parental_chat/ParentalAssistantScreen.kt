@@ -200,7 +200,7 @@ fun ParentalChatStateLess(
                 ) {
                     Text(
                         text = stringResource(R.string.parental_assist_button_text),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = Color.White,
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
@@ -218,7 +218,9 @@ fun ParentalChatStateLess(
 
         if (conversations.value.isEmpty()) {
             item {
-                EmptyConversationsMessage()
+                EmptyConversationsMessage(
+                    message = stringResource(R.string.assistant_empty_conversation)
+                )
             }
         }
 

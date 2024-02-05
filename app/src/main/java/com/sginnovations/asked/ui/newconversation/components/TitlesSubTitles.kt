@@ -26,12 +26,12 @@ fun TitleChatUseExample(painterResource: Painter, text: String) {
             painter = painterResource,
             contentDescription = null,
             tint = Color.Unspecified,
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text, color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleSmall
         )
     }
 }
@@ -42,6 +42,6 @@ fun SubTitleChatUseExample(text: String) {
     Text(
         modifier = Modifier.padding(4.dp),
         text = text, color = MaterialTheme.colorScheme.onSurfaceVariant,
-        style = MaterialTheme.typography.titleSmall
+        style = MaterialTheme.typography.bodyMedium
     )
 }

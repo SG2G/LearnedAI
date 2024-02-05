@@ -112,7 +112,6 @@ fun AssistantNewConversationStateFul(
 
                     if (isPremium) {
                         sendNewMessage(
-                            scope,
                             context,
 
                             processText,
@@ -124,7 +123,6 @@ fun AssistantNewConversationStateFul(
                     } else {
                         if (tokens.value >= Constants.ASSISTANT_MESSAGE_COST) {
                             sendNewMessage(
-                                scope,
                                 context,
 
                                 processText,
@@ -135,11 +133,15 @@ fun AssistantNewConversationStateFul(
                             }
                         } else {
                             showNoTokensDialog.value = true
-                            Toast.makeText(context, context.getString(R.string.snackbar_insufficient_tokens), Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context, context.getString(R.string.snackbar_insufficient_tokens), Toast.LENGTH_SHORT).show()
                         }
                     }
                 } else {
-                    Toast.makeText(context, context.getString(R.string.snackbar_no_internet_connection), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.snackbar_no_internet_connection),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -293,9 +295,9 @@ fun AssistantNewConversationStateLess(
 
 fun sendNewMessage(
     //TODO REPEAT CROP
-    scope: CoroutineScope,
     context: Context,
-    text: String,
+
+    message: String,
 
     vmAssistant: AssistantViewModel,
 
@@ -304,21 +306,15 @@ fun sendNewMessage(
     //TODO vmAssistant CHECK
 
     Log.d(TAG, "sendNewMessage: sending message")
+    if (NetworkUtils.isOnline(context)) {
+        vmAssistant.sendNewMessage(
+            message = message,
 
-    scope.launch {
-        // New Message
-        if (NetworkUtils.isOnline(context)) {
-            vmAssistant.isLoading.value = true
-
-            // GPT call
-            val deferred = async { vmAssistant.sendMessageToOpenaiApi(text) }
-            deferred.await()
-
-            vmAssistant.isLoading.value = false
-
-            onNavigateChat()
-        } else {
-            Toast.makeText(context, "Internet error", Toast.LENGTH_SHORT).show()
-        }
+            onNavigateChat = { onNavigateChat() }
+        )
+    } else {
+        Toast.makeText(context, context.getString(R.string.internet_error), Toast.LENGTH_SHORT)
+            .show()
     }
+
 }

@@ -189,7 +189,6 @@ class BillingViewModel @Inject constructor(
                     Log.d(TAG, "Purchases empty")
                     viewModelScope.launch {
                         setPremiumUseCase(false)
-
                     }
                 } else {
                     Log.d(TAG, "Have purchases $purchases")

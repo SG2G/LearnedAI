@@ -24,7 +24,7 @@ fun NewConversationSuggestions(
             .fillMaxSize()
     ) {
         ElevatedCard(
-            modifier = androidx.compose.ui.Modifier.padding(elevatedCardPadding),
+            modifier = Modifier.padding(elevatedCardPadding),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 4.dp
             )

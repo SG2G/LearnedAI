@@ -11,9 +11,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.sginnovations.asked.Constants.Companion.DEFAULT_PROFILE_URL
 
 @Composable
-fun ProfilePicture(userAuthPhotoUrl: String?) {
+fun ProfilePicture(userAuthPhotoUrl: String? = DEFAULT_PROFILE_URL) {
     Box(
         modifier = Modifier
             .size(width = 65.dp, height = 65.dp)

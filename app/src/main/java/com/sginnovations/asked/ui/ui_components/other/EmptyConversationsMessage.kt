@@ -14,11 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 
 @Composable
-fun EmptyConversationsMessage() {
+fun EmptyConversationsMessage(
+    message: String,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,12 +33,20 @@ fun EmptyConversationsMessage() {
         Image(
             painter = painterResource(id = R.drawable.thinking2),
             contentDescription = "thinking head",
-            modifier = Modifier.fillMaxWidth(0.4f)
+            modifier = Modifier.fillMaxWidth(0.4f),
         )
         Text(
             text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodyMedium
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyLarge
         )
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            textAlign = TextAlign.Center
+        )
+
     }
 }

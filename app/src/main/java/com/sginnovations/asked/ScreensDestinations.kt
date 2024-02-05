@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 interface ScreensDestinations {
     val route: String
     fun getName(context: Context): String
+    fun getBottomName(context: Context): String = ""
     val icon: Int?
         get() = null
     val selectedIcon: Int?
@@ -28,6 +29,7 @@ interface ScreensDestinations {
 object Camera : ScreensDestinations {
     override val route = "Camera"
     override fun getName(context: Context) = context.getString(R.string.bottom_bar_label_camera)
+    override fun getBottomName(context: Context) = context.getString(R.string.bottom_bar_label_camera)
     override val icon: Int = R.drawable.camera_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.camera_svgrepo_filled
 }
@@ -35,18 +37,21 @@ object Camera : ScreensDestinations {
 object ChatsHistory : ScreensDestinations {
     override val route = "ChatsHistory"
     override fun getName(context: Context) = context.getString(R.string.topbar_chats_history)
+    override fun getBottomName(context: Context) = context.getString(R.string.topbar_chats_history)
     override val icon: Int = R.drawable.chat_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.chat_svgrepo_filled
 }
 object ParentalAssist : ScreensDestinations {
     override val route = "ParentalAssist"
     override fun getName(context: Context) = context.getString(R.string.topbar_parentalassist)
+    override fun getBottomName(context: Context) = context.getString(R.string.assistant)
     override val icon: Int = R.drawable.sofa_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.sofa_svgrepo_filled
 }
 object ParentalGuidance : ScreensDestinations {
     override val route = "ParentalGuidance"
     override fun getName(context: Context) = context.getString(R.string.topbar_parental_guidance)
+    override fun getBottomName(context: Context) = context.getString(R.string.guide)
     override val icon: Int = R.drawable.book_bookmark_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.book_bookmark_svgrepo_filled
 }
@@ -54,6 +59,7 @@ object ParentalGuidance : ScreensDestinations {
 object Profile : ScreensDestinations {
     override val route = "Profile"
     override fun getName(context: Context) = context.getString(R.string.topbar_profile)
+    override fun getBottomName(context: Context) = context.getString(R.string.topbar_profile)
     override val icon: Int = R.drawable.profile_svgrepo_outlined
     override val selectedIcon: Int = R.drawable.profile_svgrepo_filled
 }

@@ -344,6 +344,8 @@ fun LearnedNavigation(
 
                     navController = navController,
 
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) },
+
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
                     onNavigateNewChat = { scope.launch { vmNavigator.navigateNewChat(navController) } }
                 )
@@ -486,6 +488,9 @@ fun LearnedNavigation(
             composable(route = Gallery.route) {
                 GalleryStateFull(
                     vmCamera = vmCamera,
+                    vmToken = vmToken,
+
+                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) },
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
             }
