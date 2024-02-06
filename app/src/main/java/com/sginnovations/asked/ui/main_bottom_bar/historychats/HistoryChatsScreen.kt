@@ -304,7 +304,7 @@ fun StateLessHistoryChats(
                                     Text(
                                         text = conversation.name,
                                         color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.titleSmall
+                                        style = MaterialTheme.typography.bodyMedium
                                     )
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Row(
@@ -312,8 +312,7 @@ fun StateLessHistoryChats(
                                         horizontalArrangement = Arrangement.Start,
                                     ) {
                                         Text(
-                                            text = stringResource(R.string.historychats_category) +
-                                                    when (conversation.category) {
+                                            text = when (conversation.category) {
                                                         TextCategoryOCR.prefix -> TextCategoryOCR.getName(context)
                                                         MathCategoryOCR.prefix -> MathCategoryOCR.getName(context)
                                                         GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getName(context)

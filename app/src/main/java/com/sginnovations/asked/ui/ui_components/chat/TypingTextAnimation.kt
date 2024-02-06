@@ -4,8 +4,10 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -27,12 +29,14 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun TypingTextAnimation(
+    isAssistant: Boolean = false,
+
     message: String,
 
     onStopTextAnimation: () -> Unit,
 ) {
     val typingState = remember { mutableStateOf("") }
-
+    val backgroundColor = MaterialTheme.colorScheme.surface
     val vibrator = LocalContext.current.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     LaunchedEffect(message) {
@@ -44,30 +48,37 @@ fun TypingTextAnimation(
             typingState.value += char
 
             // Vibration
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // For API 26 and higher
-                val effect =
-                    VibrationEffect.createOneShot(1, 5)
-                vibrator.vibrate(effect)
-            }
+            // For API 26 and higher
+            val effect =
+                VibrationEffect.createOneShot(1, 5)
+            vibrator.vibrate(effect)
 
             counter++
         }
         onStopTextAnimation()
     }
 
-    ElevatedCard(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+    Row(
+        verticalAlignment = Alignment.Top,
+        modifier = Modifier
+            .background(backgroundColor)
+            .padding(16.dp)
+            .fillMaxSize()
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(CHAT_MSG_PADDING)
+        if (isAssistant) IconAssistantMsg() else IconMsg()
+        ElevatedCard(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
-            Text(text = typingState.value)
-            Icon(Icons.Default.Info, contentDescription = null)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(CHAT_MSG_PADDING)
+            ) {
+                Text(text = typingState.value)
+                Icon(Icons.Default.Info, contentDescription = null)
+            }
         }
     }
 }

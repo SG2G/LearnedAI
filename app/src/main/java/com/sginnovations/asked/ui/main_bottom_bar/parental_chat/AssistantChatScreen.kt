@@ -72,6 +72,7 @@ import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.data.report.Report
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
+import com.sginnovations.asked.ui.chat.components.messageOptionsIcon
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.ui.ui_components.chat.ReportDialog
@@ -380,27 +381,41 @@ fun AssistantChatStateLess(
                                         .background(backgroundColor)
                                         .fillMaxSize()
                                 ) {
-
                                     if (chatAnimation.value) {
                                         // Animate the last message
                                         if (!chatPlaceHolder) {
                                             TypingTextAnimation(
+                                                true,
                                                 message.content,
                                             ) { chatAnimation.value = false }
                                         } else {
-                                            IconAssistantMsg()
-                                            ElevatedCard(
-                                                modifier = Modifier.padding(horizontal = 16.dp),
-                                                colors = CardDefaults.elevatedCardColors(
-                                                    containerColor = MaterialTheme.colorScheme.surface
-                                                )
+                                            Row(
+                                                verticalAlignment = Alignment.Top,
+                                                modifier = Modifier
+                                                    .background(backgroundColor)
+                                                    .padding(16.dp)
+                                                    .fillMaxSize()
                                             ) {
-                                                Text(
-                                                    modifier = Modifier.padding(Constants.CHAT_MSG_PADDING),
-                                                    text = message.content,
-                                                    style = MaterialTheme.typography.bodyMedium,
-                                                    color = MaterialTheme.colorScheme.onSurface
-                                                )
+                                                IconAssistantMsg()
+                                                Column {
+                                                    ElevatedCard(
+                                                        modifier = Modifier.padding(horizontal = 16.dp),
+                                                        colors = CardDefaults.elevatedCardColors(
+                                                            containerColor = MaterialTheme.colorScheme.surface
+                                                        )
+                                                    ) {
+                                                        Text(
+                                                            modifier = Modifier.padding(Constants.CHAT_MSG_PADDING),
+                                                            text = message.content,
+                                                            style = MaterialTheme.typography.bodyMedium,
+                                                            color = MaterialTheme.colorScheme.onSurface
+                                                        )
+                                                    }
+                                                    messageOptionsIcon(
+                                                        onReportMessage = {},
+                                                        onSetClip = {}
+                                                    )
+                                                }
                                             }
                                         }
                                     } else {

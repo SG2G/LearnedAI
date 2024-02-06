@@ -24,17 +24,10 @@ import androidx.compose.ui.unit.dp
  * Components
  */
 @Composable
-fun TitleBenefit(painterResource: Painter, text: String) {
+fun TitleBenefit(text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text, color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyMedium,
@@ -46,7 +39,7 @@ fun TitleBenefit(painterResource: Painter, text: String) {
 @Composable
 fun SubTitleBenefit(text: String) {
     Text(
-        modifier = Modifier.padding(start = 32.dp),
+        modifier = Modifier.padding(start = 24.dp),
         text = text,
         color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.bodySmall,

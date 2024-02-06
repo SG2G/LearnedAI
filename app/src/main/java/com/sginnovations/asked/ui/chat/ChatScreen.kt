@@ -85,6 +85,7 @@ import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.data.report.Report
 import com.sginnovations.asked.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.ui.chat.components.ConfidenceDialog
+import com.sginnovations.asked.ui.chat.components.messageOptionsIcon
 import com.sginnovations.asked.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.ui.ui_components.chat.IconMsg
 import com.sginnovations.asked.ui.ui_components.chat.NoTokensDialog
@@ -432,26 +433,43 @@ fun ChatStateLess(
                                         .background(backgroundColor)
                                         .fillMaxSize()
                                 ) {
-
                                     if (chatAnimation.value) {
                                         // Animate the last message
                                         if (!chatPlaceHolder) {
                                             TypingTextAnimation(
+                                                false,
                                                 message.content,
                                             ) { chatAnimation.value = false }
                                         } else {
-                                            ElevatedCard(
-                                                modifier = Modifier.padding(horizontal = 16.dp),
-                                                colors = CardDefaults.elevatedCardColors(
-                                                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                                                )
+                                            Row(
+                                                verticalAlignment = Alignment.Top,
+                                                modifier = Modifier
+                                                    .background(backgroundColor)
+                                                    .padding(16.dp)
+                                                    .fillMaxSize()
                                             ) {
-                                                Text(
-                                                    modifier = Modifier.padding(CHAT_MSG_PADDING),
-                                                    text = message.content,
-                                                    style = MaterialTheme.typography.bodyMedium,
-                                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                                )
+                                                IconMsg()
+                                                Column {
+                                                    ElevatedCard(
+                                                        modifier = Modifier.padding(horizontal = 16.dp),
+                                                        colors = CardDefaults.elevatedCardColors(
+                                                            containerColor = MaterialTheme.colorScheme.surface
+                                                        )
+                                                    ) {
+                                                        Text(
+                                                            modifier = Modifier.padding(
+                                                                CHAT_MSG_PADDING
+                                                            ),
+                                                            text = message.content,
+                                                            style = MaterialTheme.typography.bodyMedium,
+                                                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                                                        )
+                                                    }
+                                                    messageOptionsIcon(
+                                                        onReportMessage = {},
+                                                        onSetClip = {}
+                                                    )
+                                                }
                                             }
                                         }
                                     } else {
