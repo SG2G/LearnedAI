@@ -31,15 +31,19 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -63,6 +67,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.Constants
+import com.sginnovations.asked.Constants.Companion.PURPLE_COLOR
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.data.MathCategoryOCR
@@ -95,7 +100,7 @@ fun ParentalAssistantStateFul(
     SideEffect {
         (context as Activity).window.navigationBarColor =
             if (!theme.value) {
-                Color(0xFFe9effd).toArgb()
+                Color(0xFFeff1ff).toArgb()
             } else {
                 Color(0xFF282931).toArgb()
             }
@@ -159,52 +164,101 @@ fun ParentalChatStateLess(
         modifier = Modifier.fillMaxSize()
     ) {
         item {
-            Column(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                colors = CardDefaults.outlinedCardColors(
+                    containerColor = PURPLE_COLOR
+                ),
+                shape = RoundedCornerShape(25.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
+                TextButton(
+                    onClick = { onNavigateNewMessage() },
+                    shape = RoundedCornerShape(25.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.asked_assistant),
-                        contentDescription = "Icon",
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape),
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = stringResource(R.string.parental_assistant_title),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.titleMedium
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.asked_assistant),
+                            contentDescription = "Icon",
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape),
                         )
-                        Text(
-                            text = stringResource(R.string.parental_guidance_subtitle),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodyMedium
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.parental_assistant_title),
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = stringResource(R.string.parental_guidance_subtitle),
+                                color = Color.White,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            imageVector = Icons.Default.ArrowForwardIos,
+                            contentDescription = "Add Icon",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = { onNavigateNewMessage() },
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Constants.PURPLE_COLOR
-                    )
-                ) {
-                    Text(
-                        text = stringResource(R.string.parental_assist_button_text),
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
             }
+//            Column(
+//                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+//            ) {
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Image(
+//                        painter = painterResource(id = R.drawable.asked_assistant),
+//                        contentDescription = "Icon",
+//                        modifier = Modifier
+//                            .size(48.dp)
+//                            .clip(CircleShape),
+//                    )
+//                    Spacer(modifier = Modifier.width(16.dp))
+//                    Column {
+//                        Text(
+//                            text = stringResource(R.string.parental_assistant_title),
+//                            color = MaterialTheme.colorScheme.onSurface,
+//                            style = MaterialTheme.typography.titleMedium
+//                        )
+//                        Text(
+//                            text = stringResource(R.string.parental_guidance_subtitle),
+//                            color = MaterialTheme.colorScheme.onSurface,
+//                            style = MaterialTheme.typography.bodyMedium
+//                        )
+//                    }
+//                }
+//
+//                Spacer(modifier = Modifier.height(8.dp))
+//                Button(
+//                    onClick = { onNavigateNewMessage() },
+//                    shape = RoundedCornerShape(10.dp),
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(48.dp),
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = Constants.PURPLE_COLOR
+//                    )
+//                ) {
+//                    Text(
+//                        text = stringResource(R.string.parental_assist_button_text),
+//                        color = Color.White,
+//                        style = MaterialTheme.typography.bodyLarge
+//                    )
+//                }
+//            }
         }
 
         item {
@@ -249,9 +303,18 @@ fun ParentalChatStateLess(
                     "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId"
                 )
 
-                val elevatedCardShape = RoundedCornerShape(10.dp)
+                //val elevatedCardShape = RoundedCornerShape(10.dp)
 
-                ElevatedCard(
+                val elevatedCardShape = if (index == smallestId) {
+                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                } else {
+                    if (index == largestId) {
+                        RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
+                    } else {
+                        RoundedCornerShape(0.dp)
+                    }
+                }
+                Card(
                     shape = elevatedCardShape,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -277,9 +340,6 @@ fun ParentalChatStateLess(
                         },
                     colors = CardDefaults.elevatedCardColors(
                         containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    elevation = CardDefaults.elevatedCardElevation(
-                        defaultElevation = 1.dp
                     ),
                 ) {
                     /**

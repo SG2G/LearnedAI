@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -89,7 +90,7 @@ fun StateFulHistoryChats(
     SideEffect {
         (context as Activity).window.navigationBarColor =
             if (!theme.value) {
-                Color(0xFFe9effd).toArgb()
+                Color(0xFFeff1ff).toArgb()
             } else {
                 Color(0xFF282931).toArgb()
             }
@@ -182,21 +183,15 @@ fun StateLessHistoryChats(
                             }
                         )
                     }
-                    .animateItemPlacement(
-                        animationSpec = spring(
-                            dampingRatio = 0.8f,
-                            stiffness = 200f
-                        )
-                    )
             ) {
                 OutlinedCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
                     colors = CardDefaults.outlinedCardColors(
-                        contentColor = MaterialTheme.colorScheme.onBackground,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                         containerColor = Color.Transparent
-                    )
+                    ),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -214,6 +209,7 @@ fun StateLessHistoryChats(
                 }
             }
         }
+
         if (conversations.value.isEmpty()) {
             item {
                 EmptyConversationsMessage(
@@ -245,23 +241,24 @@ fun StateLessHistoryChats(
                 val largestId = conversations.value.size - 1
 
                 Log.d(TAG, "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId")
-                val elevatedCardShape = RoundedCornerShape(10.dp)
-//                    if (index == smallestId) {
-//                    RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
-//                } else {
-//                    if (index == largestId) {
-//                        RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
-//                    } else {
-//                        RoundedCornerShape(0.dp)
-//                    }
-//                }
+                //val elevatedCardShape = RoundedCornerShape(10.dp)
+
+                val elevatedCardShape = if (index == smallestId) {
+                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                } else {
+                    if (index == largestId) {
+                        RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
+                    } else {
+                        RoundedCornerShape(0.dp)
+                    }
+                }
 
                 Column {
-                    ElevatedCard(
+                    Card(
                         shape = elevatedCardShape,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .padding(horizontal = 8.dp, vertical = 0.dp)
                             .shadow(1.dp, elevatedCardShape)
                             .pointerInput(Unit) {
                                 detectTapGestures(
@@ -284,10 +281,10 @@ fun StateLessHistoryChats(
                         colors = CardDefaults.elevatedCardColors(
                             containerColor = MaterialTheme.colorScheme.surface
                         ),
-                        elevation = CardDefaults.elevatedCardElevation(
-                            defaultElevation = 1.dp
-                        ),
                     ) {
+                        /**
+                         * Conversation
+                         */
                         /**
                          * Conversation
                          */
@@ -349,6 +346,9 @@ fun StateLessHistoryChats(
                                         contentDescription = "options"
                                     )
                                 }
+                                /**
+                                 * Menu
+                                 */
                                 /**
                                  * Menu
                                  */

@@ -22,6 +22,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -391,6 +393,7 @@ fun SubscriptionStateLess(
                  * Benefits
                  */
                 SubscriptionBenefits()
+
             }
         }
 
@@ -539,7 +542,11 @@ fun SubscriptionStateLess(
             )
 
             val features = listOf(
-                Feature(stringResource(R.string.feature_unlimited_tokens),stringResource(R.string.feature_3_day), "✓"),
+                Feature(
+                    stringResource(R.string.feature_unlimited_tokens),
+                    stringResource(R.string.feature_3_day),
+                    "✓"
+                ),
                 Feature(
                     stringResource(R.string.feature_unlimited_camera_messages),
                     stringResource(R.string.feature_3_day), "✓"

@@ -149,8 +149,8 @@
     <string name="settings_text_size">Text Size</string>
     <string name="settings_theme">Theme</string>
     <string name="topbar_parentalchat">Parental Chat</string>
-    <string name="topbar_parental_guidance">Parental Guide</string>
-    <string name="topbar_parentalassist">Parental Assistant</string>
+    <string name="topbar_parental_guidance">Guide</string>
+    <string name="topbar_parentalassist">Assistant</string>
     <string name="profile_rate_us">Help us improve</string>
     <string name="subscription_annually">Yearly</string>
     <string name="subscription_most_popular">Most Popular</string>
@@ -327,7 +327,7 @@
     <string name="lesson_videoid_3001">sB7tcr7XARE</string>
     <string name="lesson_videoid_3002">Xl-vEhRN1tE</string>
     <string name="parental_assist_button_text">Ask Now</string>
-    <string name="parental_guidance_subtitle">Get instant parental guidance, anytime.</string>
+    <string name="parental_guidance_subtitle">Get instant parental guidance, \nanytime.</string>
     <string name="parental_assistant_title">Your pocket helper</string>
     <string name="premium_camera_title">Unlock the Full Potential of Premium!</string>
     <string name="premium_camera_text">Join other proactive parents who are elevating their capabilities. \n\nAccess exclusive photography tools designed for intelligent problem-solving, available only for Premium members.</string>
@@ -360,6 +360,9 @@
     <string name="guide">Guide</string>
     <string name="subscription_pvu">The Success of Your Children and Your Peace of Mind</string>
     <string name="internet_error">Internet error</string>
+    <string name="standard">Standard</string>
+    <string name="large">Large</string>
+    <string name="huge">Huge</string>
 
 
 </resources>

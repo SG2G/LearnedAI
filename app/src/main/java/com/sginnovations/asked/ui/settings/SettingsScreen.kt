@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -91,13 +92,13 @@ fun SettingsStateLess(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 colors = CardDefaults.cardColors(
-                    MaterialTheme.colorScheme.surfaceVariant
-                )
+                    MaterialTheme.colorScheme.surface
+                ),
+                shape = RoundedCornerShape(25.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(68.dp)
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -140,13 +141,13 @@ fun SettingsStateLess(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             colors = CardDefaults.cardColors(
-                MaterialTheme.colorScheme.surfaceVariant
-            )
+                MaterialTheme.colorScheme.surface
+            ),
+            shape = RoundedCornerShape(25.dp)
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(68.dp),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -157,8 +158,8 @@ fun SettingsStateLess(
                     )
                 ) {
                     Text(
-                        text = "aA", color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.headlineSmall
+                        text = stringResource(R.string.standard), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
                 TextButton(
@@ -168,8 +169,8 @@ fun SettingsStateLess(
                     )
                 ) {
                     Text(
-                        text = "aA", color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.headlineMedium
+                        text = stringResource(R.string.large), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -180,8 +181,8 @@ fun SettingsStateLess(
                     )
                 ) {
                     Text(
-                        text = "aA", color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.headlineLarge
+                        text = stringResource(R.string.huge), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }

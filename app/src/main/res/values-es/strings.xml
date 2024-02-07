@@ -40,8 +40,8 @@
     <string name="settings_text_size">Tamaño del texto</string>
     <string name="settings_theme">Tema</string>
     <string name="topbar_parentalchat">Chat Parental</string>
-    <string name="topbar_parental_guidance">Guía Parental</string>
-    <string name="topbar_parentalassist">Asistente Parental</string>
+    <string name="topbar_parental_guidance">Guía</string>
+    <string name="topbar_parentalassist">Asistente</string>
     <string name="profile_rate_us">Ayúdanos a mejorar</string>
     <string name="profile_email_us">Envianos un Email!</string>
     <string name="earn_token_earn_more_tokens">Gana mas Tokens!</string>
@@ -347,5 +347,8 @@
     <string name="guide">Guía</string>
     <string name="subscription_pvu">El Éxito de tus Hijos y tu Tranquilidad</string>
     <string name="internet_error">Error de Conexión</string>
+    <string name="standard">Estándar</string>
+    <string name="large">Grande</string>
+    <string name="huge">Enorme</string>
 
 </resources>

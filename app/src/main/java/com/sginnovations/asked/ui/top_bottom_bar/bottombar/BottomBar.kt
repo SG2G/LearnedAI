@@ -74,13 +74,12 @@ fun LearnedBottomBar(
                 val items = listOf(Camera, ChatsHistory, ParentalAssist, ParentalGuidance, Profile)
                 NavigationBar(
 //                    modifier = Modifier.height(64.dp),
+                    contentColor = MaterialTheme.colorScheme.background
                 ) {
                     items.forEach { item ->
                         val isSelected = item.route == backStackEntry?.destination?.route
                         NavigationBarItem(
-                            icon = {
-                                AnimatedIconWithLine(item = item, isSelected = isSelected)
-                            },
+                            icon = { AnimatedIconWithLine(item = item, isSelected = isSelected) },
                             selected = isSelected,
                             onClick = {
                                 // This is where you handle navigation

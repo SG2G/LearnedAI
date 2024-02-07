@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -104,6 +105,8 @@ fun StateLessProfile(
 
     val scrollState = rememberScrollState()
 
+    val cardShape = RoundedCornerShape(25.dp)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -113,14 +116,12 @@ fun StateLessProfile(
         /**
          * Profile User
          */
-        ElevatedCard(
+        Card(
             modifier = Modifier.padding(8.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ),
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 2.dp
-            )
+            shape = cardShape
         ) {
             Row(
                 modifier = Modifier
@@ -157,7 +158,7 @@ fun StateLessProfile(
                     }
                     Button(
                         onClick = { onNavigateSubscriptions() },
-                        shape = RoundedCornerShape(5.dp),
+                        shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )
@@ -175,14 +176,12 @@ fun StateLessProfile(
         /**
          * Profile Buttons
          */
-        ElevatedCard(
+        Card(
             modifier = Modifier.padding(8.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ),
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 2.dp
-            )
+            shape = cardShape
         ) {
             Column {
                 ProfileButton(
@@ -201,14 +200,12 @@ fun StateLessProfile(
                 )
             }
         }
-        ElevatedCard(
+        Card(
             modifier = Modifier.padding(8.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ),
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 2.dp
-            )
+            shape = cardShape
         ) {
             Column {
                 ProfileButton(

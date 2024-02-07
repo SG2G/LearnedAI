@@ -71,10 +71,11 @@ fun SubscriptionBenefits() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 16.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
@@ -91,7 +92,7 @@ fun SubscriptionBenefits() {
             }
 
         }
-
+        Spacer(modifier = Modifier.width(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -110,7 +111,7 @@ fun SubscriptionBenefits() {
                 SubTitleBenefit(text = stringResource(R.string.subscription_camera_text))
             }
         }
-
+        Spacer(modifier = Modifier.width(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -129,7 +130,7 @@ fun SubscriptionBenefits() {
                 SubTitleBenefit(text = stringResource(R.string.subscription_assistant_text))
             }
         }
-
+        Spacer(modifier = Modifier.width(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -148,7 +149,7 @@ fun SubscriptionBenefits() {
                 SubTitleBenefit(text = stringResource(R.string.subscription_guide_text))
             }
         }
-
+        Spacer(modifier = Modifier.width(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically

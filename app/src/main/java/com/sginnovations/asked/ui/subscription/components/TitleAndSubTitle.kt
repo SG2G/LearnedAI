@@ -39,7 +39,7 @@ fun TitleBenefit(text: String) {
 @Composable
 fun SubTitleBenefit(text: String) {
     Text(
-        modifier = Modifier.padding(start = 24.dp),
+        modifier = Modifier.padding(start = 0.dp),
         text = text,
         color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.bodySmall,
