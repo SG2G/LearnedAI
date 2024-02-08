@@ -1,17 +1,13 @@
 package com.sginnovations.asked
 
 import android.util.Log
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sginnovations.asked.ui.theme.LearnedAITheme
-import com.sginnovations.asked.ui.utils.UpdateScreen
-import com.sginnovations.asked.viewmodel.PreferencesViewModel
-import com.sginnovations.asked.viewmodel.RemoteConfigViewModel
+import com.sginnovations.asked.presentation.ui.theme.LearnedAITheme
+import com.sginnovations.asked.presentation.ui.utils.UpdateScreen
+import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
+import com.sginnovations.asked.presentation.viewmodel.RemoteConfigViewModel
+
 
 @Composable
 fun LearnedApp(

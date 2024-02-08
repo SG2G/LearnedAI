@@ -363,6 +363,8 @@
     <string name="standard">Standard</string>
     <string name="large">Large</string>
     <string name="huge">Huge</string>
+    <string name="published">Published:</string>
+    <string name="an_error_occurred">An error occurred: %1$s</string>
 
 
 </resources>

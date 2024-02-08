@@ -3,7 +3,7 @@ package com.sginnovations.asked
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.repository.RemoteConfigRepository
+import com.sginnovations.asked.domain.repository.RemoteConfigRepository
 import javax.inject.Inject
 
 class Constants {

@@ -3,7 +3,7 @@ package com.sginnovations.asked.di
 import android.content.Context
 import com.google.android.gms.auth.api.identity.Identity
 import com.sginnovations.asked.auth.sign_in.GoogleAuthUiClient
-import com.sginnovations.asked.domain.firebase.setters.SetDefaultTokensUseCase
+import com.sginnovations.asked.domain.usecase.firebase.setters.SetDefaultTokensUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

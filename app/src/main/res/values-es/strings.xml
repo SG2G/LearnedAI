@@ -350,5 +350,7 @@
     <string name="standard">Estándar</string>
     <string name="large">Grande</string>
     <string name="huge">Enorme</string>
+    <string name="published">Publicado:</string>
+    <string name="an_error_occurred">Ocurrió un error: %1$s</string>
 
 </resources>

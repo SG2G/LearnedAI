@@ -15,10 +15,11 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 26
         targetSdk = 33
-        versionCode = 19
-        versionName = "2.0.0"
+        versionCode = 20
+        versionName = "2.0.1"
 
-        testInstrumentationRunner = "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
+        testInstrumentationRunner =
+            "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -57,12 +58,12 @@ android {
 dependencies {
 
     // Preferences //
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
     // Youtube open source API //
-    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     // Markwon //
-    implementation ("io.noties.markwon:core:4.6.2")
-    implementation ("io.noties.markwon:ext-latex:4.6.2")
+    implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:ext-latex:4.6.2")
 
     // Payments //
     implementation("com.android.billingclient:billing-ktx:6.0.1")
@@ -74,7 +75,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     // accompanist
-    implementation ("com.google.accompanist:accompanist-pager:0.32.0")
+    implementation("com.google.accompanist:accompanist-pager:0.32.0")
     /// Coil ///
     implementation("io.coil-kt:coil-compose:2.2.2")
     // Import the BoM for the Firebase platform
@@ -90,6 +91,7 @@ dependencies {
     implementation("com.google.mlkit:vision-common:17.3.0")
     /// Cropify ///
     implementation("com.github.moyuruaizawa:cropify:0.3.1")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     testImplementation("junit:junit:4.12")
 
     /// Camera X ///
@@ -111,10 +113,24 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // ktor
+    implementation("io.ktor:ktor-client-core:2.3.6") // Use the latest version
+    implementation("io.ktor:ktor-client-cio:2.3.6") // For CIO engine, or replace with your engine of choice
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
+    implementation("io.ktor:ktor-client-serialization:2.3.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    // For Android, you might also add
+    implementation("io.ktor:ktor-client-android:2.3.6")
+    // For coroutine support
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     // Room
     val room_version = "2.5.2"
     implementation("androidx.room:room-runtime:$room_version")

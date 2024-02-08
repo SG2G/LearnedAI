@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -29,43 +28,42 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.sginnovations.asked.Constants.Companion.START_DESTINATION
-import com.sginnovations.asked.ui.chat.ChatStateFul
-import com.sginnovations.asked.ui.crop.CropStateFul
-import com.sginnovations.asked.ui.earn_points.EarnPoints
-import com.sginnovations.asked.ui.gallery.GalleryStateFull
-import com.sginnovations.asked.ui.main_bottom_bar.camera.CameraStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.historychats.StateFulHistoryChats
-import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.AssistantChatStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.AssistantNewConversationStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.parental_chat.ParentalAssistantStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.CategoryLessonsStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.LessonStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.parental_guidance.components.TranscriptStateFul
-import com.sginnovations.asked.ui.main_bottom_bar.profile.StateFulProfile
-import com.sginnovations.asked.ui.newconversation.NewConversationStateFul
-import com.sginnovations.asked.ui.onboarding.onBoarding
-import com.sginnovations.asked.ui.ref_code.ReferralCodeStateFul
-import com.sginnovations.asked.ui.settings.SettingsStateFul
-import com.sginnovations.asked.ui.sign_in.LearnedAuth
-import com.sginnovations.asked.ui.subscription.SubscriptionStateFull
-import com.sginnovations.asked.ui.top_bottom_bar.bottombar.LearnedBottomBar
-import com.sginnovations.asked.ui.top_bottom_bar.topbar.LearnedTopBar
+import com.sginnovations.asked.presentation.ui.chat.ChatStateFul
+import com.sginnovations.asked.presentation.ui.crop.CropStateFul
+import com.sginnovations.asked.presentation.ui.earn_points.EarnPoints
+import com.sginnovations.asked.presentation.ui.gallery.GalleryStateFull
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CameraStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats.StateFulHistoryChats
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_chat.AssistantChatStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_chat.AssistantNewConversationStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_chat.ParentalAssistantStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.CategoryLessonsStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.LessonStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.ParentalGuidanceStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.components.TranscriptStateFul
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.profile.StateFulProfile
+import com.sginnovations.asked.presentation.ui.newconversation.NewConversationStateFul
+import com.sginnovations.asked.presentation.ui.onboarding.onBoarding
+import com.sginnovations.asked.presentation.ui.ref_code.ReferralCodeStateFul
+import com.sginnovations.asked.presentation.ui.settings.SettingsStateFul
+import com.sginnovations.asked.presentation.ui.sign_in.LearnedAuth
+import com.sginnovations.asked.presentation.ui.subscription.SubscriptionStateFull
+import com.sginnovations.asked.presentation.ui.top_bottom_bar.bottombar.LearnedBottomBar
+import com.sginnovations.asked.presentation.ui.top_bottom_bar.topbar.LearnedTopBar
+import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
+import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
+import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
+import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
+import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
+import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
+import com.sginnovations.asked.presentation.viewmodel.LessonViewModel
+import com.sginnovations.asked.presentation.viewmodel.NavigatorViewModel
+import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
+import com.sginnovations.asked.presentation.viewmodel.ReferralViewModel
+import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
+import com.sginnovations.asked.presentation.viewmodel.RssFeedViewModel
+import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
-import com.sginnovations.asked.viewmodel.AssistantViewModel
-import com.sginnovations.asked.viewmodel.AuthViewModel
-import com.sginnovations.asked.viewmodel.BillingViewModel
-import com.sginnovations.asked.viewmodel.CameraViewModel
-import com.sginnovations.asked.viewmodel.ChatViewModel
-import com.sginnovations.asked.viewmodel.IntentViewModel
-import com.sginnovations.asked.viewmodel.LessonViewModel
-import com.sginnovations.asked.viewmodel.NavigatorViewModel
-import com.sginnovations.asked.viewmodel.PreferencesViewModel
-import com.sginnovations.asked.viewmodel.ReferralViewModel
-import com.sginnovations.asked.viewmodel.ReportViewModel
-import com.sginnovations.asked.viewmodel.TokenViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "LearnedNavigation"
@@ -111,6 +109,7 @@ fun LearnedNavigation(
     vmLesson: LessonViewModel = hiltViewModel(),
     vmAssistant: AssistantViewModel = hiltViewModel(),
     vmReport: ReportViewModel = hiltViewModel(),
+    vmRss: RssFeedViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -178,7 +177,6 @@ fun LearnedNavigation(
             LearnedTopBar(
                 vmTokens = vmToken,
                 vmCamera = vmCamera,
-                vmChat = vmChat,
                 vmLesson = vmLesson,
 
                 currentScreen = currentScreen,
@@ -278,6 +276,7 @@ fun LearnedNavigation(
             ) {
                 ParentalGuidanceStateFul(
                     vmLesson = vmLesson,
+                    vmRss = vmRss,
 
                     onNavigateCategoryLessons = { navController.navigate(route = CategoryLesson.route) }
                 )

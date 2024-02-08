@@ -15,7 +15,7 @@ import com.google.firebase.ktx.Firebase
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.data.SignInResult
 import com.sginnovations.asked.auth.sign_in.data.UserData
-import com.sginnovations.asked.domain.firebase.setters.SetDefaultTokensUseCase
+import com.sginnovations.asked.domain.usecase.firebase.setters.SetDefaultTokensUseCase
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
