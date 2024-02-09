@@ -20,6 +20,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,26 +34,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import kotlinx.coroutines.launch
 
-const val NUM_PAGES = 5
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun onBoarding(
-    onSkip: () -> Unit,
+    //onSkip: () -> Unit,
     onFinish: () -> Unit,
 ) {
     val context = LocalContext.current
     val onBoarding = OnBoarding(LocalContext.current)
 
     val onBoardingPages = onBoarding.getAllPages()
+    val onBoardingPagesNum = onBoarding.getNumberOfPages()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0.0f
-    ) { NUM_PAGES }
+    ) { onBoardingPagesNum }
     val scrollScope = rememberCoroutineScope()
 
     SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb() }
@@ -65,8 +67,8 @@ fun onBoarding(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .background(MaterialTheme.colorScheme.background),
+                .background(Color.White)
+                .padding(16.dp),
         ) {
             Box(
                 modifier = Modifier
@@ -78,13 +80,13 @@ fun onBoarding(
                  * Page body
                  */
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
-                    TextButton(
-                        onClick = { onSkip() },
-                    ) {
-                        Text(text = stringResource(R.string.skip))
-                    }
+//                    TextButton(
+//                        onClick = { onSkip() },
+//                    ) {
+//                        Text(text = stringResource(R.string.skip))
+//                    }
                     OnBoardingBodyPage(onBoardingPages[page])
                 }
 
@@ -96,65 +98,65 @@ fun onBoarding(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    Row(
-                        Modifier
-                            .wrapContentHeight()
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        repeat(pagerState.pageCount) { iteration ->
-                            val color =
-                                if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else Color.LightGray
-                            val width = if (pagerState.currentPage == iteration) 24.dp else 8.dp
+//                    Row(
+//                        Modifier
+//                            .wrapContentHeight()
+//                            .fillMaxWidth(),
+//                        horizontalArrangement = Arrangement.Center
+//                    ) {
+//                        repeat(pagerState.pageCount) { iteration ->
+//                            val color =
+//                                if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else Color.LightGray
+//                            val width = if (pagerState.currentPage == iteration) 24.dp else 8.dp
+//
+//                            Box(
+//                                modifier = Modifier
+//                                    .padding(2.dp)
+//                                    .animateContentSize()
+//                                    .size(width, 8.dp)
+//                                    .clip(
+//                                        if (pagerState.currentPage == iteration) RoundedCornerShape(
+//                                            10.dp
+//                                        ) else CircleShape
+//                                    )
+//                                    .background(color)
+//                            )
+//
+//                        }
+//                    }
+//                    Spacer(modifier = Modifier.height(16.dp))
 
-                            Box(
-                                modifier = Modifier
-                                    .padding(2.dp)
-                                    .animateContentSize()
-                                    .size(width, 8.dp)
-                                    .clip(
-                                        if (pagerState.currentPage == iteration) RoundedCornerShape(
-                                            10.dp
-                                        ) else CircleShape
-                                    )
-                                    .background(color)
-                            )
-
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    if (pagerState.currentPage == NUM_PAGES-1) {
-                        Button(
-                            onClick = { onFinish() },
-                            modifier = Modifier
-                                .fillMaxWidth(1f)
-                                .height(48.dp),
-                            shape = RoundedCornerShape(20),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.finish),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-                    } else {
-                        Button(
-                            onClick = {
-                                scrollScope.launch {
+                    Button(
+                        onClick = {
+                            when (pagerState.currentPage) {
+                                onBoardingPagesNum - 1 -> onFinish()
+                                else -> scrollScope.launch {
                                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                                 }
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .height(52.dp),
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            when (pagerState.currentPage) {
+                                0 -> MaterialTheme.colorScheme.primary
+                                else -> MaterialTheme.colorScheme.onBackground
+                            }
+
+                        )
+                    ) {
+                        Text(
+                            text = when (pagerState.currentPage) {
+                                0 -> stringResource(R.string.get_started)
+                                onBoardingPagesNum - 1 -> stringResource(R.string.finish)
+                                else -> stringResource(R.string.next)
                             },
-                            modifier = Modifier
-                                .fillMaxWidth(1f)
-                                .height(48.dp),
-                            shape = RoundedCornerShape(20),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.next),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
+                            color = MaterialTheme.colorScheme.background,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }

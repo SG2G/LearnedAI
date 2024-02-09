@@ -204,15 +204,15 @@
     <string name="subscription_month">/ Mes</string>
     <string name="onboarding_title_1">Bienvenido a Asked</string>
     <string name="onboarding_description_1">¡Saludos! Es un placer darle la bienvenida a Asked, su aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en usted, para hacer su experiencia en la educación más sencilla y gratificante. \n\n Le presentamos nuestras características principales de forma breve:</string>
-    <string name="onboarding_title_2">Cámara Inteligente</string>
-    <string name="onboarding_subtitle_2">Resuelva Problemas Escolares</string>
-    <string name="onboarding_description_2">**Capture y Consulte:** Tome una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Reciba explicaciones detalladas para comprenderlo y la resolución el problema.\n\n**Cámaras Especializadas:** Utilice cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tiene más dudas? Pregunte todo lo que necesite hasta que todo quede claro.\n\n</string>
-    <string name="onboarding_titlte_3">Asistente de Parentalidad</string>
-    <string name="onboarding_subtitle_3">Tu Asistente Experto en Psicología Infantil y Neurociencia</string>
-    <string name="onboarding_description_3">**Sus Preguntas, Nuestras Respuestas:** ¿Tiene inquietudes sobre crianza? Nuestro asistente de IA está listo para ayudarle.\n \n**Conocimiento a tu Alcance:** La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras. \n\n**Consejos Prácticos:** Desde cómo manejar rabietas hasta fomentar buenos hábitos. \n\n**Apoyo Constante**: Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre.</string>
-    <string name="onboarding_title_4">Guía Parental Profesional</string>
-    <string name="onboarding_subtitle_4">Sabiduría para un Hogar Feliz</string>
-    <string name="onboarding_description_4">**Consejos de Expertos:** Acceda a una colección de conocimientos de psicólogos, neurocientíficos y pediatras.\n\n**Estrategias Aplicables:** Encuentre consejos útiles y estrategias para mejorar la convivencia familiar.\n\n**Fomento de un Ambiente Feliz:** Aplique lo aprendido para crear un hogar más armonioso y feliz.</string>
+    <string name="onboarding_title_camera_use">Cámara Inteligente</string>
+    <string name="onboarding_subtitle_camera_use">Resuelva Problemas Escolares</string>
+    <string name="onboarding_description_camera_use">**Capture y Consulte:** Tome una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Reciba explicaciones detalladas para comprenderlo y la resolución el problema.\n\n**Cámaras Especializadas:** Utilice cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tiene más dudas? Pregunte todo lo que necesite hasta que todo quede claro.\n\n</string>
+    <string name="onboarding_title_assistant_use">Asistente de Parentalidad</string>
+    <string name="onboarding_subtitle_assistant_use">Tu Asistente Experto en Psicología Infantil</string>
+    <string name="onboarding_description_assistant_use">**Sus Preguntas, Nuestras Respuestas:** ¿Tiene inquietudes sobre crianza? Nuestro asistente de IA está listo para ayudarle.\n \n**Conocimiento a tu Alcance:** La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras. \n\n**Consejos Prácticos:** Desde cómo manejar rabietas hasta fomentar buenos hábitos. \n\n**Apoyo Constante**: Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre.</string>
+    <string name="onboarding_title_guide_use">Guía Parental Profesional</string>
+    <string name="onboarding_subtitle_guide_use">Sabiduría para un Hogar Feliz</string>
+    <string name="onboarding_description_guide_use">**Consejos de Expertos:** Acceda a una colección de conocimientos de psicólogos, neurocientíficos y pediatras.\n\n**Estrategias Aplicables:** Encuentre consejos útiles y estrategias para mejorar la convivencia familiar.\n\n**Fomento de un Ambiente Feliz:** Aplique lo aprendido para crear un hogar más armonioso y feliz.</string>
     <string name="onboarding_title_5">Compromiso con su Privacidad</string>
     <string name="onboarding_subtitle_5">" "</string>
     <string name="onboarding_description_5">**Su Privacidad, Nuestra Prioridad:** Asked no recopila datos personales.\n\n**Confidencialidad Asegurada:** Los mensajes en nuestra app son privados y no se almacenan.</string>
@@ -352,5 +352,15 @@
     <string name="huge">Enorme</string>
     <string name="published">Publicado:</string>
     <string name="an_error_occurred">Ocurrió un error: %1$s</string>
+    <string name="onboarding_description_camera_result">Visualiza el orgullo en los ojos de tu hijo con cada problema matemático resuelto.\n \nNuestra Cámara Inteligente convierte el estudio en momentos de conexión y éxito.</string>
+    <string name="onboarding_description_assistant_result">Encuentra respuestas, apoyo y consejos al momento que lo necesitas. \n\nCon nuestro Asistente Parental, nunca estás solo en tu viaje de crianza. \n\nExperimenta la tranquilidad de tener un aliado siempre disponible para guiar y apoyar en cada paso.</string>
+    <string name="onboarding_description_guide_result">Imagina un hogar lleno de risas, aprendizaje y crecimiento. \n\nCon nuestra Guía Parental, empodérate con técnicas y consejos comprobados que fomentan el bienestar físico y emocional de tus hijos, fortaleciendo los lazos familiares.</string>
+    <string name="onboarding_title_camera_result">Momentos de Aprendizaje, Lazos de Amor</string>
+    <string name="onboarding_subtitle_camera_result">Celebra cada logro académico junto a tu hijo.</string>
+    <string name="onboarding_title_assistant_result">Nunca Estás Solo en la Aventura de la Crianza</string>
+    <string name="onboarding_subtitle_assistant_result">Siente la confianza de tener el consejo perfecto al momento justo.</string>
+    <string name="onboarding_title_guide_result">Creciendo Juntos: Familia, Felicidad y Futuro</string>
+    <string name="onboarding_subtitle_guide_result">Construye un hogar lleno de felicidad, salud y crecimiento.</string>
+    <string name="get_started">Comenzar</string>
 
 </resources>

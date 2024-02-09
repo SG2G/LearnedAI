@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -36,7 +37,7 @@ fun TypingTextAnimation(
     onStopTextAnimation: () -> Unit,
 ) {
     val typingState = remember { mutableStateOf("") }
-    val backgroundColor = MaterialTheme.colorScheme.surface
+    val backgroundColor = MaterialTheme.colorScheme.background
     val vibrator = LocalContext.current.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     LaunchedEffect(message) {
@@ -77,7 +78,7 @@ fun TypingTextAnimation(
                 modifier = Modifier.padding(CHAT_MSG_PADDING)
             ) {
                 Text(text = typingState.value)
-                Icon(Icons.Default.Info, contentDescription = null)
+                Icon(Icons.Default.Circle, contentDescription = null)
             }
         }
     }

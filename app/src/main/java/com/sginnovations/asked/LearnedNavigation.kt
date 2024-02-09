@@ -124,7 +124,18 @@ fun LearnedNavigation(
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
             // User its logged - set up
-            vmNavigator.navigateAuthToX(navController, firstBottomScreen)
+            if (!firsTimeLaunch.value) {
+                vmNavigator.navigateAuthToX(
+                    navController,
+                    OnBoarding
+                )
+            } else {
+                vmNavigator.navigateAuthToX(
+                    navController,
+                    firstBottomScreen
+                )
+            }
+//            vmNavigator.navigateAuthToX(navController, firstBottomScreen)
 
             Log.i(TAG, "Calling SetUp")
             vmAuth.userJustLogged()
@@ -286,9 +297,6 @@ fun LearnedNavigation(
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) {
-                /**
-                 * ONBOARDING
-                 */
                 ParentalAssistantStateFul(
                     vmAssistant = vmAssistant,
                     vmPreferences = vmPreferences,
@@ -360,7 +368,7 @@ fun LearnedNavigation(
                 Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
                 onBoarding(
                     onFinish = { scope.launch { endOnBoarding() } },
-                    onSkip = { scope.launch { endOnBoarding() } },
+                    //onSkip = { scope.launch { endOnBoarding() } },
                 )
 
             }

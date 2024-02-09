@@ -72,6 +72,7 @@ import com.sginnovations.asked.data.database.util.Assistant
 import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.data.report.Report
 import com.sginnovations.asked.presentation.ui.chat.components.ChatSendIcon
+import com.sginnovations.asked.presentation.ui.chat.components.LoadingLottieAnimation
 import com.sginnovations.asked.presentation.ui.chat.components.messageOptionsIcon
 import com.sginnovations.asked.presentation.ui.ui_components.chat.IconAssistantMsg
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
@@ -471,15 +472,7 @@ fun AssistantChatStateLess(
                                 clipboardManager.setText(AnnotatedString(text))
                             }
                         )
-                        ChatAiMessage(
-                            assistantMessage = assistantPlaceHolder,
-                            isAssistant = true,
-
-                            onReportMessage = { onReportMessage(it) },
-                            onSetClip = { text ->
-                                clipboardManager.setText(AnnotatedString(text))
-                            }
-                        )
+                        LoadingLottieAnimation()
                     }
                 }
             }

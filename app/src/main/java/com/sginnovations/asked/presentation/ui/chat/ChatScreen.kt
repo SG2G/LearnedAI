@@ -82,6 +82,7 @@ import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.data.report.Report
 import com.sginnovations.asked.presentation.ui.chat.components.ChatSendIcon
 import com.sginnovations.asked.presentation.ui.chat.components.ConfidenceDialog
+import com.sginnovations.asked.presentation.ui.chat.components.LoadingLottieAnimation
 import com.sginnovations.asked.presentation.ui.chat.components.messageOptionsIcon
 import com.sginnovations.asked.presentation.ui.ui_components.chat.IconMsg
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
@@ -518,14 +519,15 @@ fun ChatStateLess(
                                 clipboardManager.setText(AnnotatedString(text))
                             }
                         )
-                        ChatAiMessage(
-                            assistantMessage = assistantPlaceHolder,
-
-                            onReportMessage = { onReportMessage(it) },
-                            onSetClip = { text ->
-                                clipboardManager.setText(AnnotatedString(text))
-                            }
-                        )
+                        LoadingLottieAnimation()
+//                        ChatAiMessage(
+//                            assistantMessage = assistantPlaceHolder,
+//
+//                            onReportMessage = { onReportMessage(it) },
+//                            onSetClip = { text ->
+//                                clipboardManager.setText(AnnotatedString(text))
+//                            }
+//                        )
                     }
                 }
             }

@@ -57,6 +57,9 @@ android {
 
 dependencies {
 
+    // Lottie
+    implementation ("com.airbnb.android:lottie-compose:6.3.0")
+
     // Preferences //
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     // Youtube open source API //
@@ -78,6 +81,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.32.0")
     /// Coil ///
     implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation ("io.coil-kt:coil-gif:2.2.0")
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")

@@ -2,9 +2,6 @@ package com.sginnovations.asked.presentation.ui.onboarding
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import com.sginnovations.asked.R
 
 class OnBoarding(
@@ -13,13 +10,18 @@ class OnBoarding(
 
     fun getAllPages(): List<OnBoardingPage> {
         return listOf(
-            FirstScreen,
-            SecondScreen,
-            ThirdScreen,
-            FourScreen,
-            FifthScreen,
-//            SixthScreen
+            WelcomeScreen,
+            CameraResult,
+            CameraUse,
+            AssistantResult,
+            AssistantUse,
+            GuideResult,
+            GuideUse,
+            FinalScreen
         )
+    }
+    fun getNumberOfPages(): Int {
+        return getAllPages().size
     }
 }
 
@@ -27,51 +29,77 @@ interface OnBoardingPage {
     fun getTitle(context: Context): String
     fun getSubTitle(context: Context): String
     fun getDescription(context: Context): String
-    val image: @Composable () -> Painter
+    fun getImage(context: Context): Int
 }
 
-object FirstScreen : OnBoardingPage {
+object WelcomeScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_1)
     override fun getSubTitle(context: Context) = ""
     override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_1)
-    override val image: @Composable () -> Painter = {
-        painterResource(id = R.drawable.onboarding_welcome)
-    }
+    override fun getImage(context: Context) = R.drawable.onboarding_welcome
+
+}
+object CameraResult: OnBoardingPage {
+    override fun getTitle(context: Context) =
+        context.getString(R.string.onboarding_title_camera_result)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.onboarding_subtitle_camera_result)
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_description_camera_result)
+    override fun getImage(context: Context) = R.drawable.onboarding_camera_reward
+
+}
+object CameraUse : OnBoardingPage {
+    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_camera_use)
+    override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_camera_use)
+    override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_camera_use)
+    override fun getImage(context: Context) = R.drawable.onboarding_camera
+
+}
+object AssistantResult : OnBoardingPage {
+    override fun getTitle(context: Context) =
+        context.getString(R.string.onboarding_title_assistant_result)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.onboarding_subtitle_assistant_result)
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_description_assistant_result)
+    override fun getImage(context: Context) = R.drawable.onboarding_assistant_reward
+
 }
 
-object SecondScreen : OnBoardingPage {
-    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_2)
-    override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_2)
-    override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_2)
-    override val image: @Composable () -> Painter = {
-        painterResource(id = R.drawable.onboarding_camera)
-    }
+
+object AssistantUse : OnBoardingPage {
+    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_assistant_use)
+    override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_assistant_use)
+    override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_assistant_use)
+    override fun getImage(context: Context) = R.drawable.onboarding_assistant_gif
+
 }
 
-object ThirdScreen : OnBoardingPage {
-    override fun getTitle(context: Context) = context.getString(R.string.onboarding_titlte_3)
-    override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_3)
-    override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_3)
-    override val image: @Composable () -> Painter = {
-        painterResource(id = R.drawable.onboarding_assistant)
-    }
+object GuideResult : OnBoardingPage {
+    override fun getTitle(context: Context) =
+        context.getString(R.string.onboarding_title_guide_result)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.onboarding_subtitle_guide_result)
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_description_guide_result)
+    override fun getImage(context: Context) = R.drawable.onboarding_guide_reward
+
 }
 
-object FourScreen : OnBoardingPage {
-    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_4)
-    override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_4)
-    override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_4)
-    override val image: @Composable () -> Painter = {
-        painterResource(id = R.drawable.onboarding_guide)
-    }
+object GuideUse : OnBoardingPage {
+    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_guide_use)
+    override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_guide_use)
+    override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_guide_use)
+    override fun getImage(context: Context) = R.drawable.onboarding_guide
+
 }
-object FifthScreen : OnBoardingPage {
+object FinalScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_5)
     override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_5)
     override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_5)
-    override val image: @Composable () -> Painter = {
-        painterResource(id = R.drawable.onboarding_security)
-    }
+    override fun getImage(context: Context) = R.drawable.onboarding_security
+
 }
 //object SixthScreen : OnBoardingPage { //TODO DO IT
 //    override fun getTitle(context: Context) = "Disfruta Asked"

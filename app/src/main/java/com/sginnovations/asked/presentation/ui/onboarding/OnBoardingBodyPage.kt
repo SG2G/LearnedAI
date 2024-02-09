@@ -1,6 +1,7 @@
 package com.sginnovations.asked.presentation.ui.onboarding
 
 import android.graphics.Color
+import android.os.Build.VERSION.SDK_INT
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.compose.foundation.Image
@@ -8,9 +9,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
+import coil.size.Size
 import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import io.noties.markwon.Markwon
@@ -51,18 +58,10 @@ fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            painter = onBoardingPage.image(),
-            contentDescription = null,
-            modifier = Modifier
-                .size(172.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = onBoardingPage.getTitle(context),
             style = MaterialTheme.typography.titleLarge,
@@ -80,7 +79,10 @@ fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-
+        ImageAnyFormat(
+            image = onBoardingPage.getImage(context)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         AndroidView(
             modifier = Modifier
                 .padding(Constants.CHAT_MSG_PADDING),
@@ -101,4 +103,30 @@ fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
         )
         Spacer(modifier = Modifier.height(72.dp))
     }
+}
+
+@Composable
+fun ImageAnyFormat(
+    modifier: Modifier = Modifier,
+    image: Int,
+) {
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            if (SDK_INT >= 28) {
+                add(ImageDecoderDecoder.Factory())
+            } else {
+                add(GifDecoder.Factory())
+            }
+        }
+        .build()
+    Image(
+        painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(context).data(data = image).apply(block = {
+                size(Size.ORIGINAL)
+            }).build(), imageLoader = imageLoader
+        ),
+        contentDescription = null,
+        modifier = modifier.fillMaxWidth(),
+    )
 }
