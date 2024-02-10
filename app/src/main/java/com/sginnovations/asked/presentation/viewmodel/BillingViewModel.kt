@@ -41,6 +41,7 @@ class BillingViewModel @Inject constructor(
 
     val productMonthly = mutableStateOf<ProductDetails?>(null)
     val productAnnually = mutableStateOf<ProductDetails?>(null)
+    val productAnnuallyRR = mutableStateOf<ProductDetails?>(null)
 
     val billingResponseCode = MutableLiveData<Int>()
 
@@ -87,7 +88,8 @@ class BillingViewModel @Inject constructor(
             override fun onBillingServiceDisconnected() {
                 if (reconnectionAttempts < MAX_RECONNECTION_ATTEMPTS) {
                     // Try to restart the connection on the next request to Google Play by calling the startConnection() method.
-                    billingResponseCode.value = BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
+                    billingResponseCode.value =
+                        BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
                     Log.i(TAG, "onBillingServiceDisconnected: Trying to reconnect")
                     viewModelScope.launch {
                         delay(RECONNECTION_DELAY_MILLIS)
@@ -115,24 +117,16 @@ class BillingViewModel @Inject constructor(
             QueryProductDetailsParams.Product.newBuilder()
                 .setProductId("asked_subscription_annually")
                 .setProductType(BillingClient.ProductType.SUBS)
-                .build()
+                .build(),
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId("asked_subscription_annually_discount")
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
         )
 
         val subscriptionQueryParams = QueryProductDetailsParams.newBuilder()
             .setProductList(subscriptionList)
             .build()
-
-        // Query in-app products
-//        val inAppProductList = ImmutableList.of(
-//            QueryProductDetailsParams.Product.newBuilder()
-//                .setProductId("asked_product_lifetime")
-//                .setProductType(BillingClient.ProductType.INAPP)
-//                .build()
-//        )
-//
-//        val inAppProductQueryParams = QueryProductDetailsParams.newBuilder()
-//            .setProductList(inAppProductList)
-//            .build()
 
         createProductList(subscriptionQueryParams)
     }
@@ -140,7 +134,7 @@ class BillingViewModel @Inject constructor(
     private suspend fun createProductList(
         queryProductDetailsParams: QueryProductDetailsParams,
     ) {
-        Log.i(TAG, "createProductList 1")
+        Log.i(TAG, "createProductList")
         billingClient.queryProductDetailsAsync(queryProductDetailsParams) {
                 billingResult,
                 productDetailsList,
@@ -148,8 +142,25 @@ class BillingViewModel @Inject constructor(
             // check billingResult
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
-                productAnnually.value = productDetailsList[0]
-                productMonthly.value = productDetailsList[1]
+                // Clear or reset previous values if necessary
+                productAnnually.value = null
+                productMonthly.value = null
+                productAnnuallyRR.value = null
+
+                // Assign products based on their SKUs
+                for (productDetails in productDetailsList) {
+                    when (productDetails.productId) {
+                        "asked_subscription_annually" -> productAnnually.value = productDetails
+                        "asked_subscription_monthly" -> productMonthly.value = productDetails
+                        "asked_subscription_annually_discount" -> productAnnuallyRR.value =
+                            productDetails
+                    }
+                }
+                // Log to verify the assignments (optional)
+                Log.i(
+                    TAG,
+                    "Annual: ${productAnnually.value?.productId}, Monthly: ${productMonthly.value?.productId}, Annual RR: ${productAnnuallyRR.value?.productId}"
+                )
             }
         }
     }
@@ -168,7 +179,7 @@ class BillingViewModel @Inject constructor(
                         // handle error
                         Log.e(TAG, "Error checking subscriptions", e)
                     }
-                    delay(20000) // 5 min //TODO AUMENTAR
+                    delay(20000 * 4) // 5 min
                 }
             } else {
                 //is not connected to google play
@@ -178,7 +189,7 @@ class BillingViewModel @Inject constructor(
 
     }
 
-    private suspend fun checkSubscriptions()= suspendCoroutine { continuation ->
+    private suspend fun checkSubscriptions() = suspendCoroutine { continuation ->
         viewModelScope.launch {
             val params = QueryPurchasesParams.newBuilder()
                 .setProductType(BillingClient.ProductType.SUBS)

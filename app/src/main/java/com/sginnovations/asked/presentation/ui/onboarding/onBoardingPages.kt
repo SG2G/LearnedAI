@@ -34,7 +34,7 @@ interface OnBoardingPage {
 
 object WelcomeScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_1)
-    override fun getSubTitle(context: Context) = ""
+    override fun getSubTitle(context: Context) = context.getString(R.string.subscription_pvu)
     override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_1)
     override fun getImage(context: Context) = R.drawable.onboarding_welcome
 

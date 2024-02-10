@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +41,7 @@ import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 @Composable
 fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
     val markwon = remember {
         Markwon.builder(context)
@@ -58,7 +61,8 @@ fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sginnovations.asked.Constants.Companion.KEY_FIRST_TIME
 import com.sginnovations.asked.Constants.Companion.KEY_FONT_SIZE_MULTIPLIER
+import com.sginnovations.asked.Constants.Companion.KEY_OFFER
 import com.sginnovations.asked.Constants.Companion.KEY_THEME
 import com.sginnovations.asked.data.preferences.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ class PreferencesViewModel @Inject constructor(
 ) : ViewModel() {
 
     val firstTimeLaunch = mutableStateOf(false)
+    val showSubOffer = mutableStateOf(false)
     val theme = mutableStateOf(false)
     val fontSizeIncrease = mutableFloatStateOf(1f)
 
@@ -27,11 +29,24 @@ class PreferencesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getIfIsFirstTime()
+            getShowSubOffer()
             getTheme()
             getFontSizeIncrease()
 
             readLessons.value = preferences.getReadLessons()
         }
+    }
+
+    /**
+     * Show Subscription Offer
+     */
+    private suspend fun getShowSubOffer() {
+        showSubOffer.value = preferences.getShowSubOffer(KEY_OFFER)
+    }
+
+    suspend fun setShowSubOffer() {
+        preferences.setShowSubOffer(KEY_OFFER)
+        getShowSubOffer()
     }
 
     /**

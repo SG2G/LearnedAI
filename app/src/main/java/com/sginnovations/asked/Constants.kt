@@ -9,8 +9,6 @@ import javax.inject.Inject
 class Constants {
 
     companion object {
-        // Learned Navigation
-        val START_DESTINATION = Auth.route
         // Billing ViewModel
         const val MAX_RECONNECTION_ATTEMPTS = 25 // Maximum number of reconnection attempts
         const val RECONNECTION_DELAY_MILLIS = 250L // Delay between reconnection attempts in milliseconds
@@ -31,19 +29,13 @@ class Constants {
         const val USERS_NAME = "users"
         // Chat image
         const val DEFAULT_PROFILE_URL = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-        // ADS
-        const val REWARD_AD_UNIT_DEBUG = "ca-app-pub-3940256099942544/5224354917"
-        const val REWARD_AD_UNIT_RELEASE = "ca-app-pub-8452230076174340/9855375573"
-
-        const val INTERSTITIAL_AD_UNIT_DEBUG = "ca-app-pub-3940256099942544/1033173712"
-        const val INTERSTITIAL_AD_UNIT_RELEASE = "ca-app-pub-8452230076174340/1738896617"
 
         const val IS_PREMIUM = "isPremium"
 
         const val KEY_FIRST_TIME = "firstTime"
         const val KEY_THEME = "theme"
         const val KEY_FONT_SIZE_MULTIPLIER =  "fontMultiplier"
-        const val KEY_READ_LESSONS =  "readLessons"
+        const val KEY_OFFER =  "showOffer"
 
         const val TEXT_SIZE_NORMAL = 0f
         const val TEXT_SIZE_BIG = 2f

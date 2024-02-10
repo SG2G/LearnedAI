@@ -1,6 +1,8 @@
 package com.sginnovations.asked.presentation.ui.subscription.components
 
+import android.graphics.Paint.Style
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.delay
 import java.time.Duration
@@ -22,7 +25,10 @@ fun getTimeRemaining(targetDate: LocalDateTime): Duration {
 }
 
 @Composable
-fun CountdownTimer(targetDate: LocalDateTime) {
+fun CountdownTimer(
+    targetDate: LocalDateTime,
+    style: TextStyle
+) {
     var timeRemaining by remember { mutableStateOf(getTimeRemaining(targetDate)) }
 
     LaunchedEffect(key1 = timeRemaining) {
@@ -33,9 +39,9 @@ fun CountdownTimer(targetDate: LocalDateTime) {
     }
 
     Text(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         text = if (timeRemaining.isZero || timeRemaining.isNegative) "Time over" else formatDuration(timeRemaining),
-        style = MaterialTheme.typography.titleMedium,
+        style = style,
         textAlign = TextAlign.Center,
     )
 }

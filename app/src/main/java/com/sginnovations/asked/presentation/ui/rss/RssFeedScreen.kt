@@ -113,7 +113,7 @@ fun ArticleItem(article: Article) {
                 contentScale = ContentScale.Crop
             )
             Column(
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
                 // Title
                 Text(
@@ -126,7 +126,7 @@ fun ArticleItem(article: Article) {
                 // Publication Date
                 Text(
                     text = stringResource(R.string.published) +" "+ article.pubDate,
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp)
                 )

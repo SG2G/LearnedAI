@@ -33,7 +33,7 @@ fun EmptyConversationsMessage(
         Image(
             painter = painterResource(id = R.drawable.thinking2),
             contentDescription = "thinking head",
-            modifier = Modifier.fillMaxWidth(1f),
+            modifier = Modifier.fillMaxWidth(0.4f),
         )
         Text(
             text = stringResource(R.string.chats_history_hmm_it_seems_like_there_s_nothing_here),

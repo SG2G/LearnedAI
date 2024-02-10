@@ -10,18 +10,27 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -48,6 +57,7 @@ import com.sginnovations.asked.presentation.ui.ref_code.ReferralCodeStateFul
 import com.sginnovations.asked.presentation.ui.settings.SettingsStateFul
 import com.sginnovations.asked.presentation.ui.sign_in.LearnedAuth
 import com.sginnovations.asked.presentation.ui.subscription.SubscriptionStateFull
+import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionGift
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.topbar.LearnedTopBar
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
@@ -124,7 +134,7 @@ fun LearnedNavigation(
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
             // User its logged - set up
-            if (!firsTimeLaunch.value) {
+            if (firsTimeLaunch.value) {
                 vmNavigator.navigateAuthToX(
                     navController,
                     OnBoarding
@@ -489,6 +499,7 @@ fun LearnedNavigation(
                     vmBilling = vmBilling,
                     vmIntent = vmIntent,
                     vmAuth = vmAuth,
+                    vmPreferences = vmPreferences,
 
                     onNavigateUp = { navController.navigateUp() }
                 )

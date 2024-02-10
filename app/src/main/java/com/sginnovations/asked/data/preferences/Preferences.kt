@@ -41,6 +41,23 @@ class Preferences @Inject constructor(
             preferences[READ_LESSONS_KEY] = lessonsString
         }
     }
+
+    /**
+     * Show Sub Offer
+     */
+    suspend fun setShowSubOffer(key: String) {
+        val preferenceKey = booleanPreferencesKey(key)
+        context.dataStore.edit { preferences ->
+            preferences[preferenceKey] = false
+        }
+    }
+    suspend fun getShowSubOffer(key: String): Boolean {
+        val preferenceKey = booleanPreferencesKey(key)
+        val showSubOffer = context.dataStore.data.first()[preferenceKey] ?: true
+        Log.d(PREFERENCES_NAME, "getShowSubOffer: $showSubOffer")
+        return showSubOffer
+    }
+
     /**
      * Text Size
      */
