@@ -163,7 +163,7 @@ fun StateLessProfile(
                         )
                     ) {
                         Text(
-                            text = stringResource(R.string.profile_upgrade),
+                            text = stringResource(R.string.premium),
                             color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )

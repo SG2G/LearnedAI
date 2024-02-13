@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +21,7 @@ import com.sginnovations.asked.R
 
 @Composable
 fun EmptyConversationsMessage(
+    painter: Painter,
     message: String,
 ) {
     Column(
@@ -31,7 +33,7 @@ fun EmptyConversationsMessage(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.thinking2),
+            painter = painter,
             contentDescription = "thinking head",
             modifier = Modifier.fillMaxWidth(0.4f),
         )
@@ -42,7 +44,7 @@ fun EmptyConversationsMessage(
         )
         Text(
             text = message,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
             textAlign = TextAlign.Center

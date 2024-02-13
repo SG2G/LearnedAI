@@ -210,6 +210,7 @@ fun LearnedNavigation(
 
         bottomBar = {
             LearnedBottomBar(
+                vmPreferences = vmPreferences,
                 navController = navController,
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
@@ -229,7 +230,7 @@ fun LearnedNavigation(
                 ) {
                     scope.launch {
                         // IMPORTANT
-                        if (firsTimeLaunch.value) {
+                        if (firsTimeLaunch.value) { //TODO DELETE !
                             vmNavigator.navigateAuthToX(
                                 navController,
                                 OnBoarding
@@ -247,9 +248,6 @@ fun LearnedNavigation(
                         vmReferral.handleDynamicLink(intent)
                         vmBilling.connectToGooglePlay()
 
-//                        if (!checkIsPremium()) {
-//                            navController.navigate(route = Subscription.route)
-//                        }
                     }
                 }
             }
@@ -373,7 +371,7 @@ fun LearnedNavigation(
             ) {
                 suspend fun endOnBoarding() {
                     vmPreferences.setNotFirstTime()
-                    vmNavigator.navigateAuthToX(navController, firstBottomScreen)
+                    vmNavigator.navigateAuthToShowSubscription(navController)
                 }
                 Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
                 onBoarding(
@@ -427,7 +425,6 @@ fun LearnedNavigation(
                 AssistantChatStateFul(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
-                    vmAuth = vmAuth,
                     vmReport = vmReport,
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
@@ -447,7 +444,6 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     vmChat = vmChat,
                     vmToken = vmToken,
-                    vmAuth = vmAuth,
                     vmReport = vmReport,
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }

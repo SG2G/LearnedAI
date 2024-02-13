@@ -3,8 +3,6 @@ package com.sginnovations.asked.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sginnovations.asked.Constants.Companion.ONE_LESS_TOKEN
-import com.sginnovations.asked.domain.repository.RemoteConfigRepository
 import com.sginnovations.asked.domain.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +15,6 @@ private const val TAG = "TokenViewModel"
 @HiltViewModel
 class TokenViewModel @Inject constructor(
     private val tokenRepository: TokenRepository,
-
-    private val remoteConfigRepository: RemoteConfigRepository,
 ) : ViewModel() {
 
     private val _tokens = MutableStateFlow<Long>(0)

@@ -19,7 +19,7 @@ val onPrimaryContainer = Color(0xFFDEE0FF)
 val background = Color(0xFF151516)
 val onBackground = Color(0xFFECECEC)
 
-val surface = Color(0xFF1B1B1F)
+val surface = Color(0xFF282932)
 val onSurface = Color(0xFFE4E1E6)
 
 val surfaceVariant = Color(0xFF46464F)
@@ -41,8 +41,7 @@ val onPrimaryContainerL = Color(0xFF000F5C)
 //val secondaryContainerL = Color(0xFF93C0FF)
 //val onSecondaryContainerL = Color(0xFF002452)
 
-//val backgroundL = Color(0xFFFFFBFF)
-val backgroundL = Color(0xFFEEEEEE)
+val backgroundL = Color(0xFFF5F5F5)
 val onBackgroundL = Color(0xFF070707)
 
 val surfaceL = Color(0xFFFFFFFF)

@@ -15,11 +15,11 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 26
         targetSdk = 33
-        versionCode = 20
-        versionName = "2.0.1"
+        versionCode = 29
+        versionName = "2.0.2"
 
-        testInstrumentationRunner =
-            "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
+//        testInstrumentationRunner =
+//            "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -28,6 +28,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

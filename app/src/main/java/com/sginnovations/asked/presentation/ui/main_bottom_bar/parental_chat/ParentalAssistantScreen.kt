@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -53,6 +54,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.Constants
+import com.sginnovations.asked.Constants.Companion.DARK_NAVIGATION_BAR_COLOR
 import com.sginnovations.asked.Constants.Companion.PURPLE_COLOR
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.Assistant
@@ -82,9 +85,9 @@ fun ParentalAssistantStateFul(
     SideEffect {
         (context as Activity).window.navigationBarColor =
             if (!theme.value) {
-                Color(0xFFeff1ff).toArgb()
+                Constants.LIGHT_NAVIGATION_BAR_COLOR.toArgb()
             } else {
-                Color(0xFF282931).toArgb()
+                DARK_NAVIGATION_BAR_COLOR.toArgb()
             }
     }
 
@@ -161,7 +164,7 @@ fun ParentalChatStateLess(
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(8.dp)
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.asked_assistant),
@@ -179,10 +182,11 @@ fun ParentalChatStateLess(
                                 color = Color.White,
                                 style = MaterialTheme.typography.titleMedium
                             )
+                            Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = stringResource(R.string.parental_guidance_subtitle),
                                 color = Color.White,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodySmall
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
@@ -195,59 +199,13 @@ fun ParentalChatStateLess(
                     }
                 }
             }
-//            Column(
-//                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-//            ) {
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.asked_assistant),
-//                        contentDescription = "Icon",
-//                        modifier = Modifier
-//                            .size(48.dp)
-//                            .clip(CircleShape),
-//                    )
-//                    Spacer(modifier = Modifier.width(16.dp))
-//                    Column {
-//                        Text(
-//                            text = stringResource(R.string.parental_assistant_title),
-//                            color = MaterialTheme.colorScheme.onSurface,
-//                            style = MaterialTheme.typography.titleMedium
-//                        )
-//                        Text(
-//                            text = stringResource(R.string.parental_guidance_subtitle),
-//                            color = MaterialTheme.colorScheme.onSurface,
-//                            style = MaterialTheme.typography.bodyMedium
-//                        )
-//                    }
-//                }
-//
-//                Spacer(modifier = Modifier.height(8.dp))
-//                Button(
-//                    onClick = { onNavigateNewMessage() },
-//                    shape = RoundedCornerShape(10.dp),
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(48.dp),
-//                    colors = ButtonDefaults.buttonColors(
-//                        containerColor = Constants.PURPLE_COLOR
-//                    )
-//                ) {
-//                    Text(
-//                        text = stringResource(R.string.parental_assist_button_text),
-//                        color = Color.White,
-//                        style = MaterialTheme.typography.bodyLarge
-//                    )
-//                }
-//            }
         }
 
         item {
             Text(
                 text = stringResource(R.string.parental_assist_previous_chats),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
             )
         }
@@ -255,6 +213,7 @@ fun ParentalChatStateLess(
         if (conversations.value.isEmpty()) {
             item {
                 EmptyConversationsMessage(
+                    painter = painterResource(id = R.drawable.empty_messages),
                     message = stringResource(R.string.assistant_empty_conversation)
                 )
             }

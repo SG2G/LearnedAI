@@ -11,6 +11,7 @@ import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ScreensDestinations
+import com.sginnovations.asked.Subscription
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -85,6 +86,22 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    suspend fun navigateAuthToShowSubscription(navController: NavController) {
+        withContext(Dispatchers.Main) {
+            if (navController.currentDestination?.route != NewConversation.route) {
+                Log.i(TAG, "Navigating navigateNewChat")
+
+                navController.navigate(ParentalAssist.route) {
+                    // This ensures that the previous screen is removed from the backstack
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+                navController.navigate(Subscription.route)
             }
         }
     }

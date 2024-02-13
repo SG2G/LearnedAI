@@ -19,7 +19,6 @@ class Constants {
         const val ROLE_USER = "user"
         const val ROLE_ASSISTANT = "assistant"
         // Chat
-        const val ONE_LESS_TOKEN = -1
         const val CONFIDENCE_RATE_LIMIT = 0.5
         const val MATH_PREFIX_PROMPT = "Resolve step by step, print Math expressions in Markdown syntax."
         const val TEXT_PREFIX_PROMPT = ""
@@ -32,23 +31,28 @@ class Constants {
 
         const val IS_PREMIUM = "isPremium"
 
+        // Remote Config IDs
         const val KEY_FIRST_TIME = "firstTime"
         const val KEY_THEME = "theme"
         const val KEY_FONT_SIZE_MULTIPLIER =  "fontMultiplier"
         const val KEY_OFFER =  "showOffer"
 
-        const val TEXT_SIZE_NORMAL = 0f
+        // Settings - Text Size
+        const val TEXT_SIZE_NORMAL = 1f
         const val TEXT_SIZE_BIG = 2f
         const val TEXT_SIZE_BIGGER = 4f
-
+        // Tokens Chat Cost
         const val ASSISTANT_MESSAGE_COST = 2
         const val CAMERA_MESSAGE_COST = 1
-        // CHAT LIMIT - FEATURE
+        // Chats Text Limit - FEATURE
         const val CHAT_LIMIT_DEFAULT = 500
         const val CHAT_LIMIT_PREMIUM = 4000
 
+        // Other
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
-        val PURPLE_COLOR = Color(0xFFA161F1)
+        val PURPLE_COLOR = Color(0xFFBD98F8)
+        val LIGHT_NAVIGATION_BAR_COLOR = Color(0xFFF0EDED)
+        val DARK_NAVIGATION_BAR_COLOR = Color(0xFF282931)
 
     }
 }

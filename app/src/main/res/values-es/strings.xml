@@ -83,7 +83,6 @@
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">Hay actualizaciones críticas disponibles. Actualice la aplicación para aplicar estos cambios.</string>
     <string name="update_btn_update">Actualizar</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Mhmm, parece que no hay nada aquí.</string>
-    <string name="chat_thinking">Pensando…</string>
     <string name="sign_in_title_sign_in">Inicia sesión en Asked</string>
     <string name="newchat_placeholder_enter_your_text">Introduce tu texto, pregunta a Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked puede cometer errores. Verifica información importante.</string>
@@ -152,7 +151,7 @@
     <string name="subscription_most_popular">Más popular</string>
     <string name="tabs_lessons">Lecciones</string>
     <string name="tabs_content">Contenido</string>
-    <string name="parental_assist_previous_chats">Chats anteriores</string>
+    <string name="parental_assist_previous_chats">Chats</string>
     <string name="no_tokens_dialog_tittle">Tokens insuficientes</string>
     <string name="no_tokens_dialog_subtitle">No tienes suficientes tokens para hoy.\n\nVuelve a intentarlo mañana o actualiza a Premium.</string>
     <string name="no_tokens_dialog_view_premium_subscription">Ver suscripción premium</string>
@@ -203,7 +202,7 @@
     <string name="subscription_year">/ Año</string>
     <string name="subscription_month">/ Mes</string>
     <string name="onboarding_title_1">Bienvenido a Asked</string>
-    <string name="onboarding_description_1">¡Saludos! Es un placer darte la bienvenida a Asked, tu aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en ti, para hacer tu experiencia en la educación más sencilla y gratificante. \n\n Te presentamos nuestras características principales de forma breve:</string>
+    <string name="onboarding_description_1">¡Hola! Es un placer darte la bienvenida a Asked, tu aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en ti, para hacer tu experiencia en la educación más sencilla y gratificante. \n\n Te presentamos nuestras características principales de forma breve:</string>
     <string name="onboarding_title_camera_use">Cámara Inteligente</string>
     <string name="onboarding_subtitle_camera_use">Resuelve Problemas Escolares</string>
     <string name="onboarding_description_camera_use">**Captura y Consulta:** Toma una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Recibe explicaciones detalladas para comprender y resolver los problemas.\n\n**Cámaras Especializadas:** Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro.\n\n</string>
@@ -336,7 +335,7 @@
     <string name="subscription_assistant_text">Mensajes ilimitados, dudas resueltas.</string>
     <string name="subscription_guide_title">Sabiduría a Su Alcance</string>
     <string name="subscription_guide_text">Lecciones de libros escritos por expertos.</string>
-    <string name="subscription_private_tutor_comparation">Por el costo de 9 horas con un tutor de 10€/hora, puedes desbloquear un año completo de Asked. —El compañero educativo 24/7 de tu hijo y tuyo.</string>
+    <string name="subscription_private_tutor_comparation">Por el costo de 8 horas con un tutor de 10€/hora, puedes desbloquear un año completo de Asked. —El compañero educativo 24/7 de tu hijo y tuyo.</string>
     <string name="only_until_march_31st">Solo hasta el 31 de Marzo!</string>
     <string name="feature_all_cameras">Todas las camaras</string>
     <string name="delete">Borrar</string>
@@ -383,5 +382,9 @@
     <string name="was">(era</string>
     <string name="claim_now">¡Reclama ahora!</string>
     <string name="reject_offer">Rechazar oferta</string>
+    <string name="onboarding_finalscreen_description">"Felicidades por dar el primer paso con Asked hacia el futuro de tus hijos. \n\nTu elección te distingue como un padre o madre excepcional, buscando siempre lo mejor para ellos. \n\nAdmiramos tu compromiso con su educación y bienestar. \n\nEstamos aquí para potenciar ese esfuerzo y asegurar un futuro de oportunidades. "</string>
+    <string name="onboarding_finalscreen_title">Un futuro brillante comienza hoy</string>
+    <string name="onboarding_finalscreen_subtitle">Únete a la comunidad de padres que transforman el amor en aprendizaje y éxito para sus hijos</string>
+    <string name="more_lessons_coming_soon">Más lecciones próximamente...</string>
 
 </resources>

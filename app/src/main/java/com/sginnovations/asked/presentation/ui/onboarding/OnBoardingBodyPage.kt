@@ -1,5 +1,6 @@
 package com.sginnovations.asked.presentation.ui.onboarding
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Build.VERSION.SDK_INT
 import android.text.method.LinkMovementMethod
@@ -17,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +41,9 @@ import io.noties.markwon.ext.latex.JLatexMathPlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 
 @Composable
-fun OnBoardingBodyPage(onBoardingPage: OnBoardingPage) {
+fun OnBoardingBodyPage(
+    onBoardingPage: OnBoardingPage
+) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
@@ -131,6 +135,6 @@ fun ImageAnyFormat(
             }).build(), imageLoader = imageLoader
         ),
         contentDescription = null,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(0.9f),
     )
 }

@@ -17,6 +17,7 @@ class OnBoarding(
             AssistantUse,
             GuideResult,
             GuideUse,
+            PrivacyScreen,
             FinalScreen
         )
     }
@@ -94,18 +95,21 @@ object GuideUse : OnBoardingPage {
     override fun getImage(context: Context) = R.drawable.onboarding_guide
 
 }
-object FinalScreen : OnBoardingPage {
+object PrivacyScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_5)
     override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_5)
     override fun getDescription(context: Context) = context.getString(R.string.onboarding_description_5)
     override fun getImage(context: Context) = R.drawable.onboarding_security
 
 }
-//object SixthScreen : OnBoardingPage { //TODO DO IT
-//    override fun getTitle(context: Context) = "Disfruta Asked"
-//    override fun getSubTitle(context: Context) = "Un regalo para ti"
-//    override fun getDescription(context: Context) = "Te doy 7 Tokens"
-//    override val image: @Composable () -> Painter = {
-//        painterResource(id = R.drawable.onboarding_security)
-//    }
-//}
+
+object FinalScreen : OnBoardingPage {
+    override fun getTitle(context: Context) =
+        context.getString(R.string.onboarding_finalscreen_title)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.onboarding_finalscreen_subtitle)
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_finalscreen_description)
+    override fun getImage(context: Context) = R.drawable.happy_family_end
+
+}

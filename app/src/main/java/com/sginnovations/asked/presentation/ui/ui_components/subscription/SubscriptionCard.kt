@@ -98,7 +98,7 @@ fun SubscriptionCard(
                 },
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.outlinedCardColors(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             border = BorderStroke(2.dp, color = borderColor)
         ) {
@@ -213,7 +213,7 @@ fun SubscriptionCard(
         Box(modifier = Modifier.padding(start = 32.dp, top = 4.dp)) {
             Row(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(24.dp)
                     .padding(start = 8.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically

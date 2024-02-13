@@ -38,6 +38,13 @@ class AssistantViewModel @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
 ) : ViewModel() {
 
+
+    val writeMessage = mutableStateOf("")
+    val userPlaceHolder = mutableStateOf("")
+    val chatAnimation = mutableStateOf(false)
+    val chatPlaceHolder = mutableStateOf(false)
+
+    //Old
     val firstMessage = mutableStateOf<String?>("")
     val isLoading = mutableStateOf(false)
 
@@ -66,6 +73,14 @@ class AssistantViewModel @Inject constructor(
                         "Your guidance should help foster a positive and nurturing family environment. Respond on language:${Locale.current.language}"
             )
         )
+
+    fun messageSent() {
+        userPlaceHolder.value = writeMessage.value
+        chatAnimation.value = true
+        chatPlaceHolder.value = true
+
+        writeMessage.value = ""
+    }
 
     fun sendNewMessage(
         message: String,

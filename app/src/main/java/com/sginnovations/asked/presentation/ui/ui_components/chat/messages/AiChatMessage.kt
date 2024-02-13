@@ -71,7 +71,7 @@ fun ChatAiMessage(
         Log.d(TAG, "message: $assistantMessage")
         val markdownText = replaceMathOneBackslashSymbols(assistantMessage)
 
-        val textColor = MaterialTheme.colorScheme.onPrimaryContainer.toArgb()
+        val textColor = MaterialTheme.colorScheme.onSurface.toArgb()
         val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
 
         Column {

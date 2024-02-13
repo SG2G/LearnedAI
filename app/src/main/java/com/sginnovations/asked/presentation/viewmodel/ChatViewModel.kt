@@ -39,9 +39,14 @@ class ChatViewModel @Inject constructor(
     private val tokensRepository: TokenRepository,
 
     private val remoteConfigRepository: RemoteConfigRepository,
+) : ViewModel() {
 
-    ) : ViewModel() {
+    val writeMessage = mutableStateOf("")
+    val userPlaceHolder = mutableStateOf("")
+    val chatAnimation = mutableStateOf(false)
+    val chatPlaceHolder = mutableStateOf(false)
 
+    //Old
     val idConversation = mutableIntStateOf(0)
     val categoryOCR = mutableStateOf<CategoryOCR>(TextCategoryOCR)
 
@@ -66,6 +71,14 @@ class ChatViewModel @Inject constructor(
                 content = "You are a helpful assistant. Resolve the problems slow, step by step. Respond on language:${Locale.current.language}"
             )
         )
+
+    fun messageSent() {
+        userPlaceHolder.value = writeMessage.value
+        chatAnimation.value = true
+        chatPlaceHolder.value = true
+
+        writeMessage.value = ""
+    }
 
     fun sendNewMessage(
         message: String,
@@ -139,6 +152,7 @@ class ChatViewModel @Inject constructor(
             tokensRepository.lessTokenCheckPremium(costTokens.toInt())
         }
     }
+
 
     /**
      * Call to GPT

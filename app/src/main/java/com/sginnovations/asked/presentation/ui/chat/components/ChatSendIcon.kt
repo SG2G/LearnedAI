@@ -31,19 +31,19 @@ fun NewChatSendIcon(
 }
 @Composable
 fun ChatSendIcon(
-    text: MutableState<String>,
+    writeMessage: MutableState<String>,
 
     sendMessage: (MutableState<String>) -> Unit,
 ) {
     IconButton(
-        onClick = { sendMessage(text) },
+        onClick = { sendMessage(writeMessage) },
         modifier = Modifier.size(36.dp)
     ) {
         Icon(
             Icons.Default.Send,
             contentDescription = "Send",
             modifier = Modifier.size(24.dp),
-            tint = if (text.value == "") MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary
+            tint = if (writeMessage.value == "") MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary
         )
     }
 }

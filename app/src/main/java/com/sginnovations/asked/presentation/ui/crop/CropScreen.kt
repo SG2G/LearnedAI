@@ -7,11 +7,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -122,23 +127,23 @@ fun CropStateFul(
 
                 onNavigateConversation = {
                     Log.d(TAG, "onNavigateConversation. instantCrop -> $instantCrop")
-                        scope.launch {
-                            /**
-                             * Send message instant crop
-                             */
-                            sendNewMessage(
-                                context,
+                    scope.launch {
+                        /**
+                         * Send message instant crop
+                         */
+                        sendNewMessage(
+                            context,
 
-                                vmCamera,
-                                vmChat,
+                            vmCamera,
+                            vmChat,
 
-                                cameraCategoryOCR,
-                                text,
+                            cameraCategoryOCR,
+                            text,
 
-                                onNavigateChat = { onNavigateChat() },
-                                onNavigateNewChat = { onNavigateNewChat() }
-                            )
-                        }
+                            onNavigateChat = { onNavigateChat() },
+                            onNavigateNewChat = { onNavigateNewChat() }
+                        )
+                    }
                 }
             )
         }
@@ -204,7 +209,7 @@ fun CropStateLess(
             delay(1000)
             enabled.value = true
         } else {
-            enabled.value  = false
+            enabled.value = false
         }
     }
 
@@ -262,7 +267,10 @@ fun CropStateLess(
     ) {
         Box(
             modifier = Modifier
-                .background(backgroundColor.copy(alpha = 0.6f), RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)),
+                .background(
+                    backgroundColor.copy(alpha = 0.6f),
+                    RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
+                ),
         ) {
             Text(
                 text = when (cameraCategoryOCR.value) {
@@ -275,6 +283,7 @@ fun CropStateLess(
                 textAlign = TextAlign.Center
             )
         }
+        Spacer(modifier = Modifier.height(8.dp))
     }
 
     /**
@@ -312,17 +321,25 @@ fun CropStateLess(
             onClick = { cropifyState.crop() },
 
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                containerColor = MaterialTheme.colorScheme.primary,
             ),
             shape = RoundedCornerShape(25.dp),
             enabled = enabled.value
         ) {
-            Text(
-                text = stringResource(R.string.crop_crop),
-                modifier = Modifier.padding(4.dp),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.crop_crop),
+                    modifier = Modifier.padding(4.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.starts),
+                    contentDescription = null,
+                )
+            }
         }
     }
 }
@@ -348,7 +365,9 @@ suspend fun sendNewMessage(
     // 5 seconds waiting for some number
     val startTime = System.currentTimeMillis()
     val timeoutMillis: Long = 5000
-    while (text.value.isEmpty() && System.currentTimeMillis() - startTime < timeoutMillis) { delay(100) }
+    while (text.value.isEmpty() && System.currentTimeMillis() - startTime < timeoutMillis) {
+        delay(100)
+    }
 
     Log.d(TAG, "text 1: ${text.value}")
 //    delay(5000)
@@ -367,7 +386,7 @@ suspend fun sendNewMessage(
                 val languageTranslate = vmCamera.translateLanguage.value
 
                 val prefix = when (cameraCategoryOCR.value.prefix) {
-                    TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context) + languageTranslate+": "
+                    TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getPrefix(context) + languageTranslate + ": "
                     SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getPrefix(context)
                     GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getPrefix(context)
                     else -> ""

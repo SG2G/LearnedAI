@@ -57,13 +57,22 @@ fun SubscriptionComparisonTable(features: List<Feature>) {
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(2f)
                 )
-                Text(
-                    feature.basic,
-                    style = MaterialTheme.typography.bodySmall,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.weight(1f)
-                )
+                if (feature.basic.isEmpty()) {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "Check",
+                        tint = Color(0xFF469C29),
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    Text(
+                        feature.basic,
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.weight(1f)
+                    )
+            }
                 Icon(
                     imageVector = Icons.Outlined.Check,
                     contentDescription = "Check",

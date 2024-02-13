@@ -54,6 +54,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.Constants
+import com.sginnovations.asked.Constants.Companion.DARK_NAVIGATION_BAR_COLOR
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.GrammarCategoryOCR
@@ -87,9 +89,9 @@ fun StateFulHistoryChats(
     SideEffect {
         (context as Activity).window.navigationBarColor =
             if (!theme.value) {
-                Color(0xFFeff1ff).toArgb()
+                Constants.LIGHT_NAVIGATION_BAR_COLOR.toArgb()
             } else {
-                Color(0xFF282931).toArgb()
+                DARK_NAVIGATION_BAR_COLOR.toArgb()
             }
     }
 
@@ -210,6 +212,7 @@ fun StateLessHistoryChats(
         if (conversations.value.isEmpty()) {
             item {
                 EmptyConversationsMessage(
+                    painterResource(id = R.drawable.empty_messages),
                     message = stringResource(R.string.chat_empty_conversation)
                 )
             }
@@ -235,15 +238,20 @@ fun StateLessHistoryChats(
                 )
             ) {
                 val smallestId = 0
-                val largestId = conversations.value.size - 1
+                val highestIndex = remember { mutableStateOf(0) }
 
-                Log.d(TAG, "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId")
-                //val elevatedCardShape = RoundedCornerShape(10.dp)
+                LaunchedEffect(index) {
+                    if (index > highestIndex.value) {
+                        highestIndex.value = index
+                    }
+                }
+
+                Log.d(TAG, "Index -> $index/ smallestId-> $smallestId/ highestIndex-> ${highestIndex.value}")
 
                 val elevatedCardShape = if (index == smallestId) {
                     RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
                 } else {
-                    if (index == largestId) {
+                    if (index == highestIndex.value) {
                         RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
                     } else {
                         RoundedCornerShape(0.dp)
@@ -279,9 +287,6 @@ fun StateLessHistoryChats(
                             containerColor = MaterialTheme.colorScheme.surface
                         ),
                     ) {
-                        /**
-                         * Conversation
-                         */
                         /**
                          * Conversation
                          */

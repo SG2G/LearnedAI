@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-
 package com.sginnovations.asked.presentation.ui.chat
 
 import android.app.Activity
@@ -7,99 +5,57 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableDoubleState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.compose.ui.zIndex
 import com.sginnovations.asked.Constants
-import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_DEFAULT
-import com.sginnovations.asked.Constants.Companion.CHAT_LIMIT_PREMIUM
-import com.sginnovations.asked.Constants.Companion.CHAT_MSG_PADDING
 import com.sginnovations.asked.Constants.Companion.CONFIDENCE_RATE_LIMIT
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.database.entities.MessageEntity
-import com.sginnovations.asked.data.database.util.Assistant
-import com.sginnovations.asked.data.database.util.User
 import com.sginnovations.asked.data.report.Report
-import com.sginnovations.asked.presentation.ui.chat.components.ChatSendIcon
+import com.sginnovations.asked.presentation.ui.chat.components.ChatTextField
+import com.sginnovations.asked.presentation.ui.chat.components.ChatsSnackBar
 import com.sginnovations.asked.presentation.ui.chat.components.ConfidenceDialog
-import com.sginnovations.asked.presentation.ui.chat.components.LoadingLottieAnimation
-import com.sginnovations.asked.presentation.ui.chat.components.messageOptionsIcon
-import com.sginnovations.asked.presentation.ui.ui_components.chat.IconMsg
+import com.sginnovations.asked.presentation.ui.chat.components.LaunchedEffectScreenFollowChatBot
+import com.sginnovations.asked.presentation.ui.chat.components.LaunchedEffectSnackBarAnimation
+import com.sginnovations.asked.presentation.ui.chat.components.MessagesDisplay
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.presentation.ui.ui_components.chat.ReportDialog
-import com.sginnovations.asked.presentation.ui.ui_components.chat.TokenCostDisplay
-import com.sginnovations.asked.presentation.ui.ui_components.chat.TypingTextAnimation
-import com.sginnovations.asked.presentation.ui.ui_components.chat.messages.ChatAiMessage
-import com.sginnovations.asked.presentation.ui.ui_components.chat.messages.ChatUserMessage
-import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
-import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
+import com.sginnovations.asked.utils.CheckIsPremium
 import com.sginnovations.asked.utils.NetworkUtils
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -110,7 +66,6 @@ fun ChatStateFul(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
     vmToken: TokenViewModel,
-    vmAuth: AuthViewModel,
     vmReport: ReportViewModel,
 
     onNavigateSubscriptionScreen: () -> Unit,
@@ -118,26 +73,32 @@ fun ChatStateFul(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val showNoTokensDialog = remember { mutableStateOf(false) }
-
     val listState = rememberLazyListState()
-
-    val messages = vmChat.messages
-    val chatAnimation = remember { mutableStateOf(false) }
-
-    val userAuth = vmAuth.userAuth.collectAsState() //TODO IMPROVE IT
-    val userName = userAuth.value?.userName
-    val userProfileUrl = userAuth.value?.profilePictureUrl
-
-    val tokens = vmToken.tokens
+    val clipboardManager = LocalClipboardManager.current
 
     val textConfidence = vmCamera.textConfidence
-    val showConfidenceDialog = remember { mutableStateOf(false) }
+
+    val tokens = vmToken.tokens
+    val messages = vmChat.messages
+
+    val writeMessage = vmChat.writeMessage
+
+    val userPlaceHolder = vmChat.userPlaceHolder
+    val chatAnimation = vmChat.chatAnimation
+    val chatPlaceHolder = vmChat.chatPlaceHolder
+
+
+    val isPremium = remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { isPremium.value = scope.async { CheckIsPremium.checkIsPremium() }.await() }
 
     val reportText = remember { mutableStateOf("") }
+
+    val showNoTokensDialog = remember { mutableStateOf(false) }
     val showReportDialog = remember { mutableStateOf(false) }
 
-    // Change navigator bar color
+    val showConfidenceDialog = remember { mutableStateOf(false) }
+
+    // Change Navigation Bar Color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
     SideEffect { (context as Activity).window.navigationBarColor = navigationBarColor }
 
@@ -147,36 +108,13 @@ fun ChatStateFul(
         if (messages.value.isNotEmpty()) {
             listState.scrollToItem(messages.value.size - 1)
         }
-        Log.i(TAG, messages.value.toString())
+
+        Log.i(TAG, "All Messages -> " + messages.value.toString())
     }
 
-    ChatStateLess(
-        messages = messages,
-        chatAnimation = chatAnimation,
-        listState = listState,
-
-        showNoTokensDialog = showNoTokensDialog,
-
-        textConfidence = textConfidence,
-        resetTextConfidence = { scope.launch { vmCamera.resetTextConfidence() } },
-
-        tokens = tokens,
-
-        userName = userName,
-        userProfileUrl = userProfileUrl,
-
-        onReportMessage = { text ->
-            reportText.value = text
-            showReportDialog.value = true
-        },
-
-        onShowConfidenceDialog = { showConfidenceDialog.value = true },
-        sendMessageToChatbot = { message ->
-            scope.launch {
-                vmChat.sendMessageToOpenaiApi(message)
-            }
-        },
-    )
+    /**
+     * Dialog
+     */
     if (showConfidenceDialog.value) {
         ConfidenceDialog(onDismiss = { showConfidenceDialog.value = false })
     }
@@ -202,74 +140,99 @@ fun ChatStateFul(
             }
         )
     }
+
+    ChatStateLess(
+        messages = messages,
+        writeMessage = writeMessage,
+
+        userPlaceHolder = userPlaceHolder,
+        chatAnimation = chatAnimation,
+        chatPlaceHolder = chatPlaceHolder,
+
+        isPremium = isPremium,
+
+        listState = listState,
+
+        textConfidence = textConfidence,
+        resetTextConfidence = { scope.launch { vmCamera.resetTextConfidence() } },
+
+        onReportMessage = { text ->
+            reportText.value = text
+            showReportDialog.value = true
+        },
+        onSetClip = { text ->
+            clipboardManager.setText(AnnotatedString(text))
+        },
+
+        onShowConfidenceDialog = { showConfidenceDialog.value = true },
+
+        onSendMessage = { message ->
+            if (message.isNotEmpty()) {
+                if (NetworkUtils.isOnline(context)) {
+                    if (isPremium.value) {
+                        scope.launch { vmChat.sendMessageToOpenaiApi(message) }
+
+                        vmChat.messageSent()
+                    } else {
+                        // No Premium
+                        if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
+                            scope.launch { vmChat.sendMessageToOpenaiApi(message) }
+
+                            vmChat.messageSent()
+                        } else {
+                            // No Tokens
+                            showNoTokensDialog.value = true
+                        }
+                    }
+                } else {
+                    // Internet Error
+                }
+            } else {
+                // Empty Message
+            }
+        }
+    )
 }
 
 @Composable
 fun ChatStateLess(
     messages: MutableState<List<MessageEntity>>,
-    chatAnimation: MutableState<Boolean>,
-    listState: LazyListState,
+    writeMessage: MutableState<String>,
 
-    showNoTokensDialog: MutableState<Boolean>,
+    userPlaceHolder: MutableState<String>,
+    chatAnimation: MutableState<Boolean>,
+    chatPlaceHolder: MutableState<Boolean>,
+
+    isPremium: MutableState<Boolean>,
+
+    listState: LazyListState,
 
     textConfidence: MutableDoubleState,
     resetTextConfidence: () -> Unit,
 
-    tokens: StateFlow<Long>,
-
-    userName: String?,
-    userProfileUrl: String?,
-
     onReportMessage: (String) -> Unit,
+    onSetClip: (String) -> Unit,
 
     onShowConfidenceDialog: () -> Unit,
-    sendMessageToChatbot: (String) -> Unit,
+
+    onSendMessage: (String) -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val clipboardManager = LocalClipboardManager.current
-    val text = remember { mutableStateOf("") }
-
-    var lastItemVisible by remember { mutableStateOf(false) }
-    var lastIndex by remember { mutableIntStateOf(0) }
-
-    var chatPlaceHolder by remember { mutableStateOf(false) }
-    var userPlaceHolder by remember { mutableStateOf("") }
-    val assistantPlaceHolder = stringResource(R.string.chat_thinking)
-
-    var isPremium by remember { mutableStateOf(false) }
+    var lastIndex = remember { mutableIntStateOf(0) }
 
     val snackbarOffset = remember { Animatable(0f) }
 
-    val backgroundColor = MaterialTheme.colorScheme.background
 
     /**
-     * SnackBarAnimation
+     * LaunchedEffectSnackBarAnimation
      */
-    LaunchedEffect(snackbarHostState.currentSnackbarData) { //TODO DUPLICATE CODE
-        if (snackbarHostState.currentSnackbarData != null) {
-            // Animate snackbar in
-            snackbarOffset.animateTo(
-                targetValue = 1f,
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = LinearOutSlowInEasing
-                )
-            )
-        } else {
-            // Animate snackbar out
-            snackbarOffset.animateTo(
-                targetValue = 0f,
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutLinearInEasing
-                )
-            )
-        }
-    }
+    LaunchedEffectSnackBarAnimation(
+        snackbarHostState = snackbarHostState,
+        snackbarOffset = snackbarOffset,
+    )
 
     /**
      * TextConfidence snackbar
@@ -284,56 +247,17 @@ fun ChatStateLess(
     /**
      * Screen follow the chatbot writing going down
      */
-    LaunchedEffect(messages.value.size) {
-        isPremium = scope.async { checkIsPremium() }.await()
-        if (messages.value.isNotEmpty()) {
-            lastIndex = messages.value.size - 1
-            chatPlaceHolder = false
-            while (chatAnimation.value) {
-                listState.animateScrollToItem(lastIndex)
-            }
-        }
-    }
+    LaunchedEffectScreenFollowChatBot(
+        messages = messages,
 
-    /**
-     * SEND MESSAGE
-     */
-    fun sendMessage(message: MutableState<String>) {
-        if (text.value.isNotEmpty()) {
-            if (NetworkUtils.isOnline(context)) {
+        listState = listState,
 
-                if (isPremium) {
-                    sendMessageToChatbot(message.value)
+        lastIndex = lastIndex,
 
-                    userPlaceHolder = message.value
-                    chatAnimation.value = true
-                    chatPlaceHolder = true
+        chatPlaceHolder = chatPlaceHolder,
+        chatAnimation = chatAnimation,
+    )
 
-                    message.value = ""
-                } else {
-                    if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
-                        sendMessageToChatbot(message.value)
-
-                        userPlaceHolder = message.value
-                        chatAnimation.value = true
-                        chatPlaceHolder = true
-
-                        message.value = ""
-                    } else {
-                        showNoTokensDialog.value = true
-                    }
-                }
-
-            } else {
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.snackbar_no_internet_connection),
-                        duration = SnackbarDuration.Short
-                    )
-                }
-            }
-        }
-    }
 
     Scaffold(
         modifier = Modifier
@@ -353,277 +277,54 @@ fun ChatStateLess(
                     .zIndex(14f)
                     .offset(y = snackbarOffset.value * (-75).dp),
                 snackbar = { data ->
-                    Snackbar(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .background(Color.Transparent)
-                            .zIndex(15f),
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        shape = RoundedCornerShape(10.dp),
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.warning_svgrepo_com),
-                                contentDescription = "WarningAmber",
-                                tint = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Spacer(Modifier.width(8.dp))
-                            Text(
-                                text = data.visuals.message,
-                                color = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.weight(1f)
-                            )
-                            data.visuals.actionLabel?.let { actionLabel ->
-                                IconButton(onClick = {
-                                    when (actionLabel) {
-                                        context.getString(R.string.snackbar_why) -> {
-                                            onShowConfidenceDialog()
-                                        }
 
-                                        else -> {
-                                            data.dismiss()
-                                        }
-                                    }
-                                }) {
-                                    Text(
-                                        text = actionLabel,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        style = MaterialTheme.typography.titleSmall
-                                    )
+                    ChatsSnackBar(
+                        data = data,
+
+                        onClickSnackBar = { actionLabel ->
+                            when (actionLabel) {
+                                context.getString(R.string.snackbar_why) -> {
+                                    onShowConfidenceDialog()
                                 }
+                                else -> { data.dismiss() }
                             }
-                        }
-                    }
+                        },
+                    )
+
                 }
             )
         }
 
-        Column(
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(bottom = 116.dp)
-        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f),
-                //.imePadding(),
-                state = listState,
-            ) {
-                itemsIndexed(
-                    items = messages.value
-                ) { index, message ->
-                    if (index == lastIndex) {
-                        Box(Modifier.onGloballyPositioned {
-                            lastItemVisible = listState.layoutInfo.visibleItemsInfo.any {
-                                it.index == lastIndex
-                            }
-                        }
-                        ) {
-                            if (message.role == Assistant.role) {
-                                // Last AI message
-                                Row(
-                                    verticalAlignment = Alignment.Top,
-                                    modifier = Modifier
-                                        .background(backgroundColor)
-                                        .fillMaxSize()
-                                ) {
-                                    if (chatAnimation.value) {
-                                        // Animate the last message
-                                        if (!chatPlaceHolder) {
-                                            TypingTextAnimation(
-                                                false,
-                                                message.content,
-                                            ) { chatAnimation.value = false }
-                                        } else {
-                                            Row(
-                                                verticalAlignment = Alignment.Top,
-                                                modifier = Modifier
-                                                    .background(backgroundColor)
-                                                    .padding(16.dp)
-                                                    .fillMaxSize()
-                                            ) {
-                                                IconMsg()
-                                                Column {
-                                                    ElevatedCard(
-                                                        modifier = Modifier.padding(horizontal = 16.dp),
-                                                        colors = CardDefaults.elevatedCardColors(
-                                                            containerColor = MaterialTheme.colorScheme.surface
-                                                        )
-                                                    ) {
-                                                        Text(
-                                                            modifier = Modifier.padding(
-                                                                CHAT_MSG_PADDING
-                                                            ),
-                                                            text = message.content,
-                                                            style = MaterialTheme.typography.bodyMedium,
-                                                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                                                        )
-                                                    }
-                                                    messageOptionsIcon(
-                                                        onReportMessage = {},
-                                                        onSetClip = {}
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        // Message static last AI msg
-                                        ChatAiMessage(
-                                            assistantMessage = message.content,
+        /**
+         * Chat History
+         */
+        MessagesDisplay(
+            isAssistant = false,
 
-                                            onReportMessage = { onReportMessage(it) },
-                                            onSetClip = { text ->
-                                                Log.d(TAG, "clipboardManager: text-> $text ")
-                                                clipboardManager.setText(AnnotatedString(text))
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        if (message.role == User.role) {
-                            // Other user msg
-                            ChatUserMessage(
-                                userName,
-                                userProfileUrl,
-                                message.content,
+            messages = messages,
 
-                                onSetClip = { text ->
-                                    clipboardManager.setText(AnnotatedString(text))
-                                }
-                            )
-                        } else {
-                            // Other AI msg
-                            ChatAiMessage(
-                                assistantMessage = message.content,
+            listState = listState,
+            lastIndex = lastIndex,
 
-                                onReportMessage = { onReportMessage(it) },
-                                onSetClip = { text ->
-                                    clipboardManager.setText(AnnotatedString(text))
-                                }
-                            )
-                        }
-                    }
-                }
-                item {
-                    if (chatPlaceHolder) {
-                        ChatUserMessage(
-                            userName,
-                            userProfileUrl,
-                            userPlaceHolder,
+            userPlaceHolder = userPlaceHolder,
+            chatAnimation = chatAnimation,
+            chatPlaceHolder = chatPlaceHolder,
 
-                            onSetClip = { text ->
-                                clipboardManager.setText(AnnotatedString(text))
-                            }
-                        )
-                        LoadingLottieAnimation()
-//                        ChatAiMessage(
-//                            assistantMessage = assistantPlaceHolder,
-//
-//                            onReportMessage = { onReportMessage(it) },
-//                            onSetClip = { text ->
-//                                clipboardManager.setText(AnnotatedString(text))
-//                            }
-//                        )
-                    }
-                }
-            }
-        }
+            onReportMessage = { onReportMessage(it) },
+            onSetClip = { onSetClip(it) },
+        )
 
         /**
          * TextField
          */
-        Column(
-            verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier
-                .fillMaxSize(),
-        ) {
-            Column(
-                modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.background,
-                        RoundedCornerShape(
-                            topStart = 25.dp,
-                            topEnd = 25.dp
-                        ) //TODO PREMIUM CANT SEE IT
-                    )
-            ) {
-//                Button(onClick = { textConfidence.doubleValue = 0.3435678 }) { //TODO DELETE
-//                    Text(text = "Testing")
-//                }
-                if (!isPremium) {
-                    TokenCostDisplay(
-                        tokenCost = "-1"
-                    )
-                }
+        ChatTextField(
+            writeMessage = writeMessage,
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    OutlinedTextField(
-                        value = text.value,
-                        onValueChange = {
-                            if (isPremium) {
-                                if (it.length <= CHAT_LIMIT_PREMIUM) {
-                                    text.value = it
-                                }
-                            } else {
-                                if (it.length <= CHAT_LIMIT_DEFAULT) {
-                                    text.value = it
-                                }
-                            }
-                        },
-                        trailingIcon = {
-                            Text(
-                                "${text.value.length}/" +
-                                        if (isPremium) CHAT_LIMIT_PREMIUM else CHAT_LIMIT_DEFAULT,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                        },
+            conversationCostToken = "-1",
 
-                        modifier = Modifier
-                            .weight(1f)
-                            .imePadding(),
-                        placeholder = {
-                            Text(
-                                text = stringResource(R.string.enter_your_text),
-                                fontSize = 14.sp
-                            )
-                        },
-                        textStyle = TextStyle(fontSize = 14.sp),
-                        shape = RoundedCornerShape(20.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-                        ),
-                        maxLines = Int.MAX_VALUE,
+            isPremium = isPremium
 
-                        )
-                    ChatSendIcon(
-                        text = text,
-                    ) { sendMessage(it) }
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.chat_supported_asked_can_make_mistakes_consider_checking_important_information),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
-            }
-        } // Column Free msg + Textfield
+        ) { onSendMessage(it) } //onSendMessage
     }
 
 }

@@ -79,7 +79,6 @@
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">There are critical updates available. Please update the app to apply these changes.</string>
     <string name="update_btn_update">Update</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Hmm, it seems like there\'s nothing here.</string>
-    <string name="chat_thinking">Thinking…</string>
     <string name="sign_in_title_sign_in">Log in to Asked</string>
     <string name="newchat_placeholder_enter_your_text">Enter your text, ask Asked.</string>
     <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked can make mistakes. Verify important information.</string>
@@ -156,7 +155,7 @@
     <string name="subscription_most_popular">Most Popular</string>
     <string name="tabs_lessons">Lessons</string>
     <string name="tabs_content">Content</string>
-    <string name="parental_assist_previous_chats">Previous Chats</string>
+    <string name="parental_assist_previous_chats">Chats</string>
     <string name="no_tokens_dialog_tittle">Insufficient Tokens</string>
     <string name="no_tokens_dialog_view_premium_subscription">View Premium Subscription</string>
     <string name="no_tokens_dialog_cancel">I will wait until tomorrow</string>
@@ -349,7 +348,7 @@
     <string name="subscription_assistant_text">Unlimited messages, solve all your questions.</string>
     <string name="subscription_guide_title">Wisdom at Your Fingertips</string>
     <string name="subscription_guide_text">Lessons from books written by experts.</string>
-    <string name="subscription_private_tutor_comparation">For the cost of 9 hours with a $10/hour tutor, unlock a full year of Asked. —Your child\'s and your 24/7 educational companion.</string>
+    <string name="subscription_private_tutor_comparation">For the cost of 8 hours with a $10/hour tutor, unlock a full year of Asked. —Your child\'s and your 24/7 educational companion.</string>
     <string name="only_until_march_31st">Only until March 31st!</string>
     <string name="feature_all_cameras">All Cameras</string>
     <string name="delete">Delete</string>
@@ -398,6 +397,11 @@
     <string name="was">(was</string>
     <string name="claim_now">Claim Now!</string>
     <string name="reject_offer">Reject Offer</string>
+    <string name="premium" translatable="false">Premium</string>
+    <string name="onboarding_finalscreen_description">Congratulations on taking the first step with Asked towards your children\'s future. \n\nYour choice sets you apart as an exceptional parent, always seeking the best for them. \n\nWe admire your commitment to their education and well-being. \n\nWe\'re here to enhance that effort and ensure a future full of opportunities.</string>
+    <string name="onboarding_finalscreen_title">A Bright Future Starts Today</string>
+    <string name="onboarding_finalscreen_subtitle">Join the community of parents transforming love into learning and success for their children</string>
+    <string name="more_lessons_coming_soon">More Lessons Coming Soon...</string>
 
 
 </resources>

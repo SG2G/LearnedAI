@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -57,7 +58,8 @@ fun onBoarding(
     ) { onBoardingPagesNum }
     val scrollScope = rememberCoroutineScope()
 
-    SideEffect { (context as Activity).window.navigationBarColor = Color(0xFF161718).toArgb() }
+    val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
+    SideEffect { (context as Activity).window.navigationBarColor = navigationBarColor }
 
     HorizontalPager(
         //TODO TUTORIAL END IT
@@ -67,7 +69,6 @@ fun onBoarding(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
                 .padding(16.dp),
         ) {
             Box(

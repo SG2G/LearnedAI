@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "RssFeedViewModel"
+
 @HiltViewModel
 class RssFeedViewModel @Inject constructor(
     private val getArticlesUseCase: GetArticlesUseCase

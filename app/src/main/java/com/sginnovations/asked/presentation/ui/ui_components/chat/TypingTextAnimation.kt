@@ -77,8 +77,12 @@ fun TypingTextAnimation(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(CHAT_MSG_PADDING)
             ) {
-                Text(text = typingState.value)
-                Icon(Icons.Default.Circle, contentDescription = null)
+                Text(
+                    text = typingState.value,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+//                Icon(Icons.Default.Circle, contentDescription = null)
             }
         }
     }

@@ -16,7 +16,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Subscription
 
@@ -55,7 +57,7 @@ fun ChatsHistoryTopBar(
                     }
             ) {
                 Text(
-                    text = "Premium", color = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(R.string.premium), color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)
                 )
