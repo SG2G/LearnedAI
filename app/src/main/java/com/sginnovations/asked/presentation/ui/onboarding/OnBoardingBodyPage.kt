@@ -1,6 +1,5 @@
 package com.sginnovations.asked.presentation.ui.onboarding
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Build.VERSION.SDK_INT
 import android.text.method.LinkMovementMethod
@@ -8,22 +7,28 @@ import android.widget.TextView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -42,7 +47,7 @@ import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 
 @Composable
 fun OnBoardingBodyPage(
-    onBoardingPage: OnBoardingPage
+    onBoardingPage: OnBoardingPage,
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -91,24 +96,65 @@ fun OnBoardingBodyPage(
             image = onBoardingPage.getImage(context)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        AndroidView(
-            modifier = Modifier
-                .padding(Constants.CHAT_MSG_PADDING),
-            factory = { ctx ->
-                TextView(ctx).apply {
-                    setBackgroundColor(Color.TRANSPARENT)
-                    setTextColor(textColor)
-                    textSize = textSizee
-                    typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
-                    movementMethod = LinkMovementMethod.getInstance()
+        if (!onBoardingPage.getDescription(context).isNullOrEmpty()) {
+            AndroidView(
+                modifier = Modifier
+                    .padding(Constants.CHAT_MSG_PADDING),
+                factory = { ctx ->
+                    TextView(ctx).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        setTextColor(textColor)
+                        textSize = textSizee
+                        typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
+                        movementMethod = LinkMovementMethod.getInstance()
+                    }
+                },
+                update = { view ->
+                    val node = onBoardingPage.getDescription(context)?.let { markwon.parse(it) }
+                    val renderedMarkdown = node?.let { markwon.render(it) }
+                    if (renderedMarkdown != null) {
+                        markwon.setParsedMarkdown(view, renderedMarkdown)
+                    }
                 }
-            },
-            update = { view ->
-                val node = markwon.parse(onBoardingPage.getDescription(context))
-                val renderedMarkdown = markwon.render(node)
-                markwon.setParsedMarkdown(view, renderedMarkdown)
+            )
+        } else {
+            val features = onBoardingPage.getFeatures(context)
+
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (features != null) {
+                    for (feature in features) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                painter = painterResource(id = feature.icon),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Column {
+                                Text(
+                                    text = feature.title,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = feature.subtitle,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
             }
-        )
+        }
         Spacer(modifier = Modifier.height(72.dp))
     }
 }

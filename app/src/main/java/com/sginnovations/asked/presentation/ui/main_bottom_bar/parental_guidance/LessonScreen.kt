@@ -43,6 +43,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
+import com.appsflyer.AFInAppEventParameterName
+import com.appsflyer.AFInAppEventType
+import com.appsflyer.AppsFlyerLib
+import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.sginnovations.asked.Constants
@@ -129,6 +133,7 @@ fun LessonStateLess(
 
     onLessonReadAndFinish: () -> Unit,
 ) {
+    val context = LocalContext.current
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
@@ -190,8 +195,31 @@ fun LessonStateLess(
                     onClick = {
                         if (page == lesson.lessonPages) {
                             // page actual == page count
-                            onLessonReadAndFinish()
 
+                            val eventValues = HashMap<String, Any>()
+                            eventValues.put(AFInAppEventParameterName.LEVEL, lesson.idLesson)
+
+                            AppsFlyerLib.getInstance().logEvent(
+                                context,
+                                AFInAppEventType.LEVEL_ACHIEVED,
+                                eventValues,
+                                object : AppsFlyerRequestListener {
+                                    override fun onSuccess() {
+                                        Log.d(TAG, "Event sent successfully")
+                                        Log.d(TAG, "Event Values: $eventValues")
+                                    }
+
+                                    override fun onError(errorCode: Int, errorDesc: String) {
+                                        Log.d(
+                                            TAG, "Launch failed to be sent:\n" +
+                                                    "Error code: " + errorCode + "\n"
+                                                    + "Error description: " + errorDesc
+                                        )
+                                    }
+                                }
+                            )
+
+                            onLessonReadAndFinish()
                         } else {
                             scope.launch {
                                 pagerState.scrollToPage(pagerState.currentPage + 1 % pagerState.pageCount)

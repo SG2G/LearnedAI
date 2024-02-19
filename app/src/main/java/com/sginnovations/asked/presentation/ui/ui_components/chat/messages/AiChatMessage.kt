@@ -70,6 +70,7 @@ fun ChatAiMessage(
         //val assistantMessageMarkdown = assistantMessage.replace("\n", "<br>")
         Log.d(TAG, "message: $assistantMessage")
         val markdownText = replaceMathOneBackslashSymbols(assistantMessage)
+        val markdownText2 = markdownText
 
         val textColor = MaterialTheme.colorScheme.onSurface.toArgb()
         val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
@@ -94,7 +95,7 @@ fun ChatAiMessage(
                         }
                     },
                     update = { view ->
-                        val node = markwon.parse(markdownText)
+                        val node = markwon.parse(markdownText2)
                         val renderedMarkdown = markwon.render(node)
                         markwon.setParsedMarkdown(view, renderedMarkdown)
                     }

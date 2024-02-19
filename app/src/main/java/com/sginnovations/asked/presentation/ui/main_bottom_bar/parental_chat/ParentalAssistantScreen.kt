@@ -236,31 +236,25 @@ fun ParentalChatStateLess(
                     animationSpec = tween(300)
                 )
             ) {
-                val smallestId = 0
-                val largestId = conversations.value.size - 1
+                val isFirstVisible = conversations.value.indexOfFirst { it.visible } == index
+                val isLastVisible = conversations.value.indexOfLast { it.visible } == index
+
+                val cardShape = when {
+                    isFirstVisible -> RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                    isLastVisible -> RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
+                    else -> RoundedCornerShape(0.dp)
+                }
 
                 Log.d(
                     TAG,
-                    "Index -> $index/ smallestId-> $smallestId/ largestId-> $largestId"
+                    "Index -> $index/ firstVisibleIndex-> $isFirstVisible/ lastVisibleIndex-> $isLastVisible"
                 )
 
-                //val elevatedCardShape = RoundedCornerShape(10.dp)
-
-                val elevatedCardShape = if (index == smallestId) {
-                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
-                } else {
-                    if (index == largestId) {
-                        RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
-                    } else {
-                        RoundedCornerShape(0.dp)
-                    }
-                }
                 Card(
-                    shape = elevatedCardShape,
+                    shape = cardShape,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp)
-                        .shadow(1.dp, elevatedCardShape)
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = {

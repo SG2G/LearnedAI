@@ -115,7 +115,7 @@ class LessonDataSource @Inject constructor(
             conclusion = context.getString(R.string.lesson_conclusion_2001),
             buttonText = context.getString(R.string.lesson_button_text_2001),
             questionAsked = context.getString(R.string.lesson_question_asked_2001),
-            isPremium = true, //TODO CHANGE
+            isPremium = true,
             lessonPages = 1
         ),
         /**
@@ -298,7 +298,7 @@ class LessonDataSource @Inject constructor(
         // Return a default LessonDataClass object
         return LessonCategoryDataClass(
             -1,
-            R.drawable.lesson_0, //TODO DEFAULT PHOTO
+            R.drawable._1,
             "Default Title",
             "Default Subtitle",
             "Default Description",

@@ -440,7 +440,6 @@ fun SubscriptionStateLess(
                  * CountDown
                  */
                     if (!showOffer.value) {
-                        Spacer(modifier = Modifier.height(8.dp))
                         Row(
                             modifier = Modifier
                                 .padding(horizontal = 8.dp),
@@ -451,16 +450,17 @@ fun SubscriptionStateLess(
                             ) {
                                 Text(
                                     text = stringResource(R.string.oferta_de_lanzamiento),
-                                    style = MaterialTheme.typography.titleSmall,
+                                    style = MaterialTheme.typography.titleMedium,
                                     modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
                                 Text(
                                     text = stringResource(R.string.only_until_march_31st),
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Center,
                                 )
                                 CountdownTimer(
                                     targetDate = targetDate,
@@ -484,10 +484,11 @@ fun SubscriptionStateLess(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Benefits",
+                        text = stringResource(R.string.benefits),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleSmall,
                         textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(start = 16.dp)
                     )
 
                     SubscriptionBenefits()
@@ -506,7 +507,7 @@ fun SubscriptionStateLess(
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
+                                .padding(horizontal = 32.dp),
                             text = stringResource(R.string.subscription_pvu),
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleMedium,
@@ -617,7 +618,7 @@ fun SubscriptionStateLess(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Bottom
                     ) {
-                        if (userOption.value != Option.OptionMonthly) {
+                        if (userOption.value != Option.OptionMonthly && !priceSubAnnuallyDiscount.value.isNullOrEmpty()) {
                             Text(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 text = stringResource(R.string.subscription_first_year_at) + " " + priceSubAnnuallyDiscount.value + stringResource(

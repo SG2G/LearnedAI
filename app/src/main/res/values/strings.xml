@@ -272,7 +272,7 @@
     <string name="onboarding_description_1">Greetings! It is a pleasure to welcome you to Asked, your ally in the beautiful task of parenting. \n\nWe have created this application with you in mind, to make your experience in education simpler and more rewarding.\n\n We briefly present our main features:</string>
     <string name="onboarding_title_camera_use">Smart Camera</string>
     <string name="onboarding_subtitle_camera_use">Solve School Problems</string>
-    <string name="onboarding_description_camera_use">**Capture and Consult:** Take a picture of any school problem.\n\n**Step-by-Step Solutions:** Receive detailed explanations to understand and solve the problem.\n\n**Specialized Cameras:** Use specific cameras for Translating, Summarizing, and Spelling Correction.\n\n**Continuous Consultation:** Have more questions? Ask anything you need until everything is clear.</string>
+    <string name="onboarding_description_camera_use">### Capture and Consult --- Take picture of any school problem\n\n### Step-by-Step Solutions\n\nReceive cletailed explanations to understand and solve the problem\n\n### Specialized Cameras\n\nUse specific cameras for Translating, Summarizing, and Spelling Correction\n\n### Continuous Consultation\n\nHave more questions? Ask anything you need until everything is clear</string>
     <string name="onboarding_title_assistant_use">Parenting Assistant</string>
     <string name="onboarding_subtitle_assistant_use">Your Expert Assistant in Child Psychology</string>
     <string name="onboarding_description_assistant_use">**Your Questions, Our Answers:** Do you have concerns about parenting? Our AI assistant is ready to help you.\n\n**Knowledge at Your Fingertips:** The AI has information extracted from books and articles by psychologists, neuroscientists, and pediatricians.\n\n**Practical Advice:** From handling tantrums to encouraging good habits.\n\n**Constant Support**: Available 24 hours a day, every day, to provide guidance and advice in your role as a parent.</string>
@@ -401,7 +401,35 @@
     <string name="onboarding_finalscreen_description">Congratulations on taking the first step with Asked towards your children\'s future. \n\nYour choice sets you apart as an exceptional parent, always seeking the best for them. \n\nWe admire your commitment to their education and well-being. \n\nWe\'re here to enhance that effort and ensure a future full of opportunities.</string>
     <string name="onboarding_finalscreen_title">A Bright Future Starts Today</string>
     <string name="onboarding_finalscreen_subtitle">Join the community of parents transforming love into learning and success for their children</string>
-    <string name="more_lessons_coming_soon">More Lessons Coming Soon...</string>
+    <string name="more_lessons_coming_soon">More Lessons Coming Soon…</string>
+    <string name="benefits">Benefits</string>
+    <string name="onboarding_camera_title_1">Capture and Consult</string>
+    <string name="onboarding_camera_title_2">Step-by-Step Solutions</string>
+    <string name="onboarding_camera_title_3">Specialized Cameras</string>
+    <string name="onboarding_camera_title_4">Continuous Consultation</string>
+    <string name="onboarding_assistant_title_1">Your Questions, Our Answers</string>
+    <string name="onboarding_assistant_title_2">Knowledge at Your Fingertips</string>
+    <string name="onboarding_assistant_title_3">Practical Advice</string>
+    <string name="onboarding_assistant_title_4">Constant Support</string>
+    <string name="onboarding_guide_title_1">Expert Advice</string>
+    <string name="onboarding_guide_title_2">Applicable Strategies</string>
+    <string name="onboarding_guide_title_3">Fostering a Happy Environment</string>
+    <string name="onboarding_privacy_title_1">Your Privacy, Our Priority</string>
+    <string name="onboarding_privacy_title_2">Assured Confidentiality</string>
+    <string name="onboarding_camera_subtitle_1">Take picture of any school problem</string>
+    <string name="onboarding_camera_subtitle_2">Receive detailed explanations to understand and solve the problem</string>
+    <string name="onboarding_camera_subtitle_3">Use specific cameras for Translating, Summarizing, and Spelling Correction</string>
+    <string name="onboarding_camera_subtitle_4">Have more questions? Ask anything you need until everything is clear</string>
+    <string name="onboarding_assistant_subtitle_1">Do you have concerns about parenting? Our AI assistant is ready to help you</string>
+    <string name="onboarding_assistant_subtitle_2">The AI has information extracted from books and articles by psychologists, neuroscientists, and pediatricians</string>
+    <string name="onboarding_assistant_subtitle_3">From handling tantrums to encouraging good habits</string>
+    <string name="onboarding_assistant_subtitle_4">Available 24 hours a day, every day, to provide guidance and advice in your role as a parent</string>
+    <string name="onboarding_guide_subtitle_1">Access a collection of knowledge from psychologists, neuroscientists, and pediatricians</string>
+    <string name="onboarding_guide_subtitle_2">Find useful tips and strategies to improve family life</string>
+    <string name="onboarding_guide_subtitle_3">Apply what you\'ve learned to create a more harmonious and happy home</string>
+    <string name="onboarding_privacy_subtitle_1">Asked does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored</string>
+    <string name="onboarding_privacy_subtitle_2">Messages in our app are private and are not stored</string>
+    <string name="see_more">See more</string>
 
 
 </resources>

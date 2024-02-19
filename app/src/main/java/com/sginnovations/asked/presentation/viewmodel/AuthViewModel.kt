@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.appsflyer.AppsFlyerLib
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -79,6 +80,14 @@ class AuthViewModel @Inject constructor(
 
     fun userJustLogged() {
         _userAuth.value = googleAuthUiClient.getSignedInUser()
+
+        try {
+            Log.d(TAG, "userJustLogged: Customer Id Successfully Set")
+            AppsFlyerLib.getInstance().setCustomerUserId(_userAuth.value?.userId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d(TAG, "userJustLogged: Customer Id Not Set")
+        }
 
         Log.i(TAG, "userJustLogged: ${userAuth.value}")
     }

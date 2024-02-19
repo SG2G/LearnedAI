@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "AssistantViewModel"
+private const val GPT_MODEL = "gpt-3.5-turbo"
 
 @HiltViewModel
 class AssistantViewModel @Inject constructor(
@@ -176,7 +177,7 @@ class AssistantViewModel @Inject constructor(
         messageHistory.add(userMessage)
 
         val chatCompletionRequest = ChatCompletionRequest(
-            model = "gpt-3.5-turbo-1106",
+            model = GPT_MODEL,
             messages = messageHistory
         )
 

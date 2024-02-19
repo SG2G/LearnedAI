@@ -27,6 +27,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.appsflyer.AFInAppEventParameterName
+import com.appsflyer.AFInAppEventType
+import com.appsflyer.AppsFlyerLib
+import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -120,6 +124,30 @@ fun CameraCarousel(
             ) {
                 if (isSelected) {
                     if (isPremium) {
+                        Log.d(TAG, "CameraCarousel: sliderList[item].prefix -> ${sliderList[item].prefix}")
+
+                        val eventValues = HashMap<String, Any>()
+                        eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, sliderList[item].prefix)
+
+                        AppsFlyerLib.getInstance().logEvent(
+                            context,
+                            AFInAppEventType.CONTENT_VIEW,
+                            eventValues,
+                            object : AppsFlyerRequestListener {
+                                override fun onSuccess() {
+                                    Log.d(TAG, "Event sent successfully")
+                                }
+
+                                override fun onError(errorCode: Int, errorDesc: String) {
+                                    Log.d(
+                                        TAG, "Launch failed to be sent:\n" +
+                                                "Error code: " + errorCode + "\n"
+                                                + "Error description: " + errorDesc
+                                    )
+                                }
+                            }
+                        )
+
                         onPhotoTaken(it)
                     } else {
                         when (sliderList[pagerState.currentPage].prefix) {
@@ -127,6 +155,30 @@ fun CameraCarousel(
                             GrammarCategoryOCR.prefix -> showPremiumCameraDialog.value = true
                             SummaryCategoryOCR.prefix -> showPremiumCameraDialog.value = true
                             else -> {
+                                Log.d(TAG, "CameraCarousel: sliderList[item].prefix -> ${sliderList[item].prefix}")
+
+                                val eventValues = HashMap<String, Any>()
+                                eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, sliderList[item].prefix)
+
+                                AppsFlyerLib.getInstance().logEvent(
+                                    context,
+                                    AFInAppEventType.CONTENT_VIEW,
+                                    eventValues,
+                                    object : AppsFlyerRequestListener {
+                                        override fun onSuccess() {
+                                            Log.d(TAG, "Event sent successfully")
+                                        }
+
+                                        override fun onError(errorCode: Int, errorDesc: String) {
+                                            Log.d(
+                                                TAG, "Launch failed to be sent:\n" +
+                                                        "Error code: " + errorCode + "\n"
+                                                        + "Error description: " + errorDesc
+                                            )
+                                        }
+                                    }
+                                )
+
                                 onPhotoTaken(it)
                             }
                         }

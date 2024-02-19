@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "ChatViewModel"
+private const val GPT_MODEL = "gpt-3.5-turbo"
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
@@ -68,7 +69,7 @@ class ChatViewModel @Inject constructor(
         mutableListOf(
             Message(
                 role = "system",
-                content = "You are a helpful assistant. Resolve the problems slow, step by step. Respond on language:${Locale.current.language}"
+                content = "You are a helpful assistant. Respond on language:${Locale.current.language}"
             )
         )
 
@@ -190,7 +191,7 @@ class ChatViewModel @Inject constructor(
         messageHistory.add(userMessage)
 
         val chatCompletionRequest = ChatCompletionRequest(
-            model = "gpt-3.5-turbo-1106",
+            model = GPT_MODEL,
             messages = messageHistory
         )
 

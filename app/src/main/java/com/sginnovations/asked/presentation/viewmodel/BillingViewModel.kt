@@ -17,6 +17,10 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
+import com.appsflyer.AFInAppEventParameterName
+import com.appsflyer.AFInAppEventType
+import com.appsflyer.AppsFlyerLib
+import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.google.common.collect.ImmutableList
 import com.sginnovations.asked.Constants.Companion.MAX_RECONNECTION_ATTEMPTS
 import com.sginnovations.asked.Constants.Companion.RECONNECTION_DELAY_MILLIS
@@ -39,6 +43,9 @@ class BillingViewModel @Inject constructor(
     private val setPremiumUseCase: SetPremiumUseCase,
 ) : ViewModel() {
 
+    private var currentProductSKU: String? = null
+    private var currentProductPrice: String? = null
+
     val productMonthly = mutableStateOf<ProductDetails?>(null)
     val productAnnually = mutableStateOf<ProductDetails?>(null)
     val productAnnuallyRR = mutableStateOf<ProductDetails?>(null)
@@ -49,8 +56,9 @@ class BillingViewModel @Inject constructor(
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
         viewModelScope.launch {
+            // This code block is executed when a purchase is completed
             Log.d(TAG, "purchasesUpdatedListener ")
-            onPurchasesUpdated(billingResult, purchases)
+            onPurchasesUpdated(billingResult, purchases, appContext)
         }
     }
 
@@ -74,12 +82,6 @@ class BillingViewModel @Inject constructor(
 
                     viewModelScope.launch { loadQueryProductsDetails() }
                     billingResponseCode.value = BillingClient.BillingResponseCode.OK
-                    // Set the PurchasesUpdatedListener
-                    PurchasesUpdatedListener { billingResult, purchases ->
-                        viewModelScope.launch {
-                            onPurchasesUpdated(billingResult, purchases)
-                        }
-                    }
                 } else {
                     connectionDeferred.complete(false)
                 }
@@ -216,11 +218,12 @@ class BillingViewModel @Inject constructor(
     private suspend fun onPurchasesUpdated(
         billingResult: BillingResult,
         purchases: List<Purchase>?,
+        appContext: Context,
     ) {
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             Log.d(TAG, "onPurchasesUpdated: BillingClient.BillingResponseCode.OK")
             for (purchase in purchases) {
-                verifySubPurchase(purchase)
+                verifySubPurchase(purchase, appContext)
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             // Handle an error caused by a user cancelling the purchase flow.
@@ -231,7 +234,7 @@ class BillingViewModel @Inject constructor(
         }
     }
 
-    private suspend fun verifySubPurchase(purchase: Purchase) {
+    private suspend fun verifySubPurchase(purchase: Purchase, applicationContext: Context) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             // Grant entitlement to the user, then acknowledge the purchase
             if (!purchase.isAcknowledged) {
@@ -242,6 +245,32 @@ class BillingViewModel @Inject constructor(
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                         Log.d(TAG, "verifySubPurchase: Purchase acknowledged successfully")
                         // Purchase acknowledged successfully, grant entitlement to the user
+                        // Log the purchase event with AppsFlyer
+                        val eventValues = HashMap<String, Any>()
+                        eventValues.put(AFInAppEventParameterName.CONTENT_ID, currentProductSKU ?: "")
+                        eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, "subscription")
+                        eventValues.put(AFInAppEventParameterName.REVENUE, currentProductSKU?.toInt() ?: 44.99)
+                        eventValues.put(AFInAppEventParameterName.CURRENCY, "USD")
+
+                        AppsFlyerLib.getInstance().logEvent(
+                            applicationContext,
+                            AFInAppEventType.SUBSCRIBE,
+                            eventValues,
+                            object : AppsFlyerRequestListener {
+                                override fun onSuccess() {
+                                    Log.d(TAG, "Event sent successfully")
+                                }
+
+                                override fun onError(errorCode: Int, errorDesc: String) {
+                                    Log.d(
+                                        TAG, "Launch failed to be sent:\n" +
+                                                "Error code: " + errorCode + "\n"
+                                                + "Error description: " + errorDesc
+                                    )
+                                }
+                            }
+                        )
+
                         viewModelScope.launch {
                             setPremiumUseCase(true)
                         }
@@ -261,6 +290,15 @@ class BillingViewModel @Inject constructor(
         if (!subscriptionOfferDetails.isNullOrEmpty()) {
 
             val selectedOfferToken = subscriptionOfferDetails[0].offerToken
+
+            // Store SKU and price for later use
+            currentProductSKU = productDetails.productId // This is your SKU
+            val priceAmountMicros = subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].priceAmountMicros
+            val priceInUnits = priceAmountMicros / 1_000_000.0
+            currentProductPrice = priceInUnits.toString()
+
+            Log.d(TAG, "launchBillingFlowSubs: currentProductSKU -> $currentProductSKU \n" +
+                    "currentProductPrice -> $currentProductPrice")
 
             val productDetailsParamsList = listOf(
                 BillingFlowParams.ProductDetailsParams.newBuilder()
@@ -285,24 +323,5 @@ class BillingViewModel @Inject constructor(
         }
     }
 
-//    suspend fun launchBillingFlowInApp(activity: Activity, productDetails: ProductDetails) {
-//        val productDetailsParams = BillingFlowParams.ProductDetailsParams.newBuilder()
-//            .setProductDetails(productDetails)
-//            .build()
-//
-//        val billingFlowParams = BillingFlowParams.newBuilder()
-//            .setProductDetailsParamsList(listOf(productDetailsParams))
-//            .build()
-//
-//        // Launch the billing flow
-//        val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
-//
-//        // Check the result
-//        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-//            Log.i(TAG, "Billing flow launched successfully")
-//        } else {
-//            Log.e(TAG, "Failed to launch billing flow: ${billingResult.debugMessage}")
-//        }
-//    }
 
 }

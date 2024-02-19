@@ -15,8 +15,8 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 26
         targetSdk = 33
-        versionCode = 29
-        versionName = "2.0.2"
+        versionCode = 32
+        versionName = "2.0.3"
 
 //        testInstrumentationRunner =
 //            "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
@@ -58,6 +58,10 @@ android {
 
 dependencies {
 
+    //AppsFlyer
+    implementation ("com.appsflyer:af-android-sdk:6.12.2")
+    implementation ("com.android.installreferrer:installreferrer:2.2")
+    implementation ("com.miui.referrer:homereferrer:1.0.0.6")
     // Lottie
     implementation ("com.airbnb.android:lottie-compose:6.3.0")
 

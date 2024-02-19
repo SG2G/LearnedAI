@@ -190,7 +190,7 @@ fun OpenLinkButton(url: String) {
             modifier = Modifier
                 .padding(top = 8.dp),
         ) {
-            Text("See more")
+            Text(stringResource(R.string.see_more))
         }
     }
 

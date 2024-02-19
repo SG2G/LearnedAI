@@ -237,34 +237,27 @@ fun StateLessHistoryChats(
                     animationSpec = tween(300)
                 )
             ) {
-                val smallestId = 0
-                val highestIndex = remember { mutableStateOf(0) }
+                val isFirstVisible = conversations.value.indexOfFirst { it.visible } == index
+                val isLastVisible = conversations.value.indexOfLast { it.visible } == index
 
-                LaunchedEffect(index) {
-                    if (index > highestIndex.value) {
-                        highestIndex.value = index
-                    }
+                val cardShape = when {
+                    isFirstVisible -> RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                    isLastVisible -> RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
+                    else -> RoundedCornerShape(0.dp)
                 }
 
-                Log.d(TAG, "Index -> $index/ smallestId-> $smallestId/ highestIndex-> ${highestIndex.value}")
-
-                val elevatedCardShape = if (index == smallestId) {
-                    RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
-                } else {
-                    if (index == highestIndex.value) {
-                        RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)
-                    } else {
-                        RoundedCornerShape(0.dp)
-                    }
-                }
+                Log.d(
+                    TAG,
+                    "Index -> $index/ firstVisibleIndex-> $isFirstVisible/ lastVisibleIndex-> $isLastVisible"
+                )
 
                 Column {
                     Card(
-                        shape = elevatedCardShape,
+                        shape = cardShape,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 0.dp)
-                            .shadow(1.dp, elevatedCardShape)
+                            .shadow(1.dp, cardShape)
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
@@ -312,13 +305,28 @@ fun StateLessHistoryChats(
                                     ) {
                                         Text(
                                             text = when (conversation.category) {
-                                                        TextCategoryOCR.prefix -> TextCategoryOCR.getName(context)
-                                                        MathCategoryOCR.prefix -> MathCategoryOCR.getName(context)
-                                                        GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getName(context)
-                                                        TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getName(context)
-                                                        SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getName(context)
-                                                        else -> TextCategoryOCR.getName(context)
-                                                    },
+                                                TextCategoryOCR.prefix -> TextCategoryOCR.getName(
+                                                    context
+                                                )
+
+                                                MathCategoryOCR.prefix -> MathCategoryOCR.getName(
+                                                    context
+                                                )
+
+                                                GrammarCategoryOCR.prefix -> GrammarCategoryOCR.getName(
+                                                    context
+                                                )
+
+                                                TranslateCategoryOCR.prefix -> TranslateCategoryOCR.getName(
+                                                    context
+                                                )
+
+                                                SummaryCategoryOCR.prefix -> SummaryCategoryOCR.getName(
+                                                    context
+                                                )
+
+                                                else -> TextCategoryOCR.getName(context)
+                                            },
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             style = MaterialTheme.typography.labelSmall
                                         )

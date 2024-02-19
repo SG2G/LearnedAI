@@ -205,7 +205,7 @@
     <string name="onboarding_description_1">¡Hola! Es un placer darte la bienvenida a Asked, tu aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en ti, para hacer tu experiencia en la educación más sencilla y gratificante. \n\n Te presentamos nuestras características principales de forma breve:</string>
     <string name="onboarding_title_camera_use">Cámara Inteligente</string>
     <string name="onboarding_subtitle_camera_use">Resuelve Problemas Escolares</string>
-    <string name="onboarding_description_camera_use">**Captura y Consulta:** Toma una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Recibe explicaciones detalladas para comprender y resolver los problemas.\n\n**Cámaras Especializadas:** Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro.\n\n</string>
+    <string name="onboarding_description_camera_use">**Captura y Consulta:** Toma una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Recibe explicaciones detalladas para comprender y resolver los problemas.\n\n**Cámaras Especializadas** Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro.\n\n</string>
     <string name="onboarding_title_assistant_use">Asistente de Parentalidad</string>
     <string name="onboarding_subtitle_assistant_use">Tu Asistente Experto en Psicología Infantil</string>
     <string name="onboarding_description_assistant_use">**Tus Preguntas, Nuestras Respuestas:** ¿Tienes cualquier inquietud? Nuestro asistente de IA está listo para ayudarle.\n \n**Conocimiento a tu Alcance:** La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras. \n\n**Consejos Prácticos:** Desde cómo manejar rabietas hasta fomentar buenos hábitos. \n\n**Apoyo Constante**: Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre.</string>
@@ -386,5 +386,33 @@
     <string name="onboarding_finalscreen_title">Un futuro brillante comienza hoy</string>
     <string name="onboarding_finalscreen_subtitle">Únete a la comunidad de padres que transforman el amor en aprendizaje y éxito para sus hijos</string>
     <string name="more_lessons_coming_soon">Más lecciones próximamente...</string>
+    <string name="benefits">Beneficios</string>
+    <string name="onboarding_camera_title_1">Captura y Consulta</string>
+    <string name="onboarding_camera_title_2">Soluciones Paso a Paso</string>
+    <string name="onboarding_camera_title_3">Cámaras Especializadas</string>
+    <string name="onboarding_camera_title_4">Consulta Continua</string>
+    <string name="onboarding_assistant_title_1">Tus Preguntas, Nuestras Respuestas</string>
+    <string name="onboarding_assistant_title_2">Conocimiento a tu Alcance</string>
+    <string name="onboarding_assistant_title_3">Consejos Prácticos</string>
+    <string name="onboarding_assistant_title_4">Apoyo Constante</string>
+    <string name="onboarding_guide_title_1">Consejos de Expertos</string>
+    <string name="onboarding_guide_title_2">Estrategias Aplicables</string>
+    <string name="onboarding_guide_title_3">Fomento de un Ambiente Feliz</string>
+    <string name="onboarding_privacy_title_1">Su Privacidad, Nuestra Prioridad</string>
+    <string name="onboarding_privacy_title_2">Confidencialidad Asegurada</string>
+    <string name="onboarding_camera_subtitle_1">Toma una foto de cualquier problema escolar</string>
+    <string name="onboarding_camera_subtitle_2">Recibe explicaciones detalladas para comprender y resolver los problemas</string>
+    <string name="onboarding_camera_subtitle_3">Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía</string>
+    <string name="onboarding_camera_subtitle_4">¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro</string>
+    <string name="onboarding_assistant_subtitle_1">¿Tienes cualquier inquietud? Nuestro asistente de IA está listo para ayudarle</string>
+    <string name="onboarding_assistant_subtitle_2">La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras</string>
+    <string name="onboarding_assistant_subtitle_3">Desde cómo manejar rabietas hasta fomentar buenos hábitos</string>
+    <string name="onboarding_assistant_subtitle_4">Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre</string>
+    <string name="onboarding_guide_subtitle_1">Accede a una colección de conocimientos de psicólogos, neurocientíficos y pediatras</string>
+    <string name="onboarding_guide_subtitle_2">" Encuentra consejos útiles y estrategias para mejorar la convivencia familiar"</string>
+    <string name="onboarding_guide_subtitle_3">Aplica lo aprendido para crear un hogar más armonioso y feliz</string>
+    <string name="onboarding_privacy_subtitle_1">Asked no recopila datos personales</string>
+    <string name="onboarding_privacy_subtitle_2">Los mensajes en nuestra app son privados y no se almacenan</string>
+    <string name="see_more">Ver más</string>
 
 </resources>
