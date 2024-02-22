@@ -439,41 +439,41 @@ fun SubscriptionStateLess(
                 /**
                  * CountDown
                  */
-                    if (!showOffer.value) {
-                        Row(
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp),
-                            horizontalArrangement = Arrangement.Center
+                if (!showOffer.value) {
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Column(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.oferta_de_lanzamiento),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                                Text(
-                                    text = stringResource(R.string.only_until_march_31st),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                )
-                                CountdownTimer(
-                                    targetDate = targetDate,
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                                Spacer(modifier = Modifier.height(6.dp))
-                            }
+                            Text(
+                                text = stringResource(R.string.oferta_de_lanzamiento),
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Text(
+                                text = stringResource(R.string.only_until_march_31st),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                            )
+                            CountdownTimer(
+                                targetDate = targetDate,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
                         }
                     }
+                }
 
-                    /**
-                     * Benefits
-                     */
+                /**
+                 * Benefits
+                 */
                 Card(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     colors = CardDefaults.cardColors(
@@ -494,50 +494,12 @@ fun SubscriptionStateLess(
                     SubscriptionBenefits()
 
                     Spacer(modifier = Modifier.height(8.dp))
-                }
 
-                    Column(
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        /**
-                         * TRIAL
-                         */
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp),
-                            text = stringResource(R.string.subscription_pvu),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
-                            text = stringResource(R.string.subscription_private_tutor_comparation),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
 
                     /**
                      * Products
                      */
-                Card(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    colors = CardDefaults.cardColors(
-                        MaterialTheme.colorScheme.surface
-                    ),
-                    shape = RoundedCornerShape(25.dp)
-                ) {
+
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         modifier = Modifier
@@ -676,6 +638,36 @@ fun SubscriptionStateLess(
                     textAlign = TextAlign.Center
                 )
 
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    /**
+                     * TRIAL
+                     */
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp),
+                        text = stringResource(R.string.subscription_pvu),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center
+                    )
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        text = stringResource(R.string.subscription_private_tutor_comparation),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
                 val features = listOf(
                     Feature(
                         "No Ads",
@@ -700,6 +692,7 @@ fun SubscriptionStateLess(
                     Feature(stringResource(R.string.feature_access_full_guide), "-", "✓"),
                     Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
                 )
+
                 SubscriptionComparisonTable(features = features)
                 Divider()
                 Spacer(modifier = Modifier.height(8.dp))

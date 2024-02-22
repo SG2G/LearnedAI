@@ -44,7 +44,7 @@ class BillingViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var currentProductSKU: String? = null
-    private var currentProductPrice: String? = null
+    private var currentProductPrice: Double? = null
 
     val productMonthly = mutableStateOf<ProductDetails?>(null)
     val productAnnually = mutableStateOf<ProductDetails?>(null)
@@ -246,32 +246,37 @@ class BillingViewModel @Inject constructor(
                         Log.d(TAG, "verifySubPurchase: Purchase acknowledged successfully")
                         // Purchase acknowledged successfully, grant entitlement to the user
                         // Log the purchase event with AppsFlyer
-                        val eventValues = HashMap<String, Any>()
-                        eventValues.put(AFInAppEventParameterName.CONTENT_ID, currentProductSKU ?: "")
-                        eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, "subscription")
-                        eventValues.put(AFInAppEventParameterName.REVENUE, currentProductSKU?.toInt() ?: 44.99)
-                        eventValues.put(AFInAppEventParameterName.CURRENCY, "USD")
-
-                        AppsFlyerLib.getInstance().logEvent(
-                            applicationContext,
-                            AFInAppEventType.SUBSCRIBE,
-                            eventValues,
-                            object : AppsFlyerRequestListener {
-                                override fun onSuccess() {
-                                    Log.d(TAG, "Event sent successfully")
-                                }
-
-                                override fun onError(errorCode: Int, errorDesc: String) {
-                                    Log.d(
-                                        TAG, "Launch failed to be sent:\n" +
-                                                "Error code: " + errorCode + "\n"
-                                                + "Error description: " + errorDesc
-                                    )
-                                }
-                            }
-                        )
-
                         viewModelScope.launch {
+                            val eventValues = HashMap<String, Any>()
+                            eventValues.put(
+                                AFInAppEventParameterName.CONTENT_ID,
+                                currentProductSKU ?: ""
+                            )
+                            eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, "subscription")
+                            eventValues.put(
+                                AFInAppEventParameterName.REVENUE,
+                                currentProductPrice ?: 44.99
+                            )
+                            eventValues.put(AFInAppEventParameterName.CURRENCY, "USD")
+
+                            AppsFlyerLib.getInstance().logEvent(
+                                applicationContext,
+                                AFInAppEventType.SUBSCRIBE,
+                                eventValues,
+                                object : AppsFlyerRequestListener {
+                                    override fun onSuccess() {
+                                        Log.d(TAG, "Event sent successfully")
+                                    }
+
+                                    override fun onError(errorCode: Int, errorDesc: String) {
+                                        Log.d(
+                                            TAG, "Launch failed to be sent:\n" +
+                                                    "Error code: " + errorCode + "\n"
+                                                    + "Error description: " + errorDesc
+                                        )
+                                    }
+                                }
+                            )
                             setPremiumUseCase(true)
                         }
                     } else {
@@ -293,12 +298,15 @@ class BillingViewModel @Inject constructor(
 
             // Store SKU and price for later use
             currentProductSKU = productDetails.productId // This is your SKU
-            val priceAmountMicros = subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].priceAmountMicros
+            val priceAmountMicros =
+                subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].priceAmountMicros
             val priceInUnits = priceAmountMicros / 1_000_000.0
-            currentProductPrice = priceInUnits.toString()
+            currentProductPrice = priceInUnits
 
-            Log.d(TAG, "launchBillingFlowSubs: currentProductSKU -> $currentProductSKU \n" +
-                    "currentProductPrice -> $currentProductPrice")
+            Log.d(
+                TAG, "launchBillingFlowSubs: currentProductSKU -> $currentProductSKU \n" +
+                        "currentProductPrice -> $currentProductPrice"
+            )
 
             val productDetailsParamsList = listOf(
                 BillingFlowParams.ProductDetailsParams.newBuilder()
