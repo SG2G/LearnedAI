@@ -47,6 +47,7 @@ class Constants {
         // Chats Text Limit - FEATURE
         const val CHAT_LIMIT_DEFAULT = 500
         const val CHAT_LIMIT_PREMIUM = 4000
+        const val DEV_ID = "K2Hr8qLCZaJfBb4KBLFz55"
 
         // Other
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
