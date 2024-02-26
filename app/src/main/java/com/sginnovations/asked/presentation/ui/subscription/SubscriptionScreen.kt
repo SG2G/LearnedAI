@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -487,14 +488,15 @@ fun SubscriptionStateLess(
                         text = stringResource(R.string.benefits),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleSmall,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(start = 16.dp)
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     SubscriptionBenefits()
 
                     Spacer(modifier = Modifier.height(8.dp))
-
 
                     /**
                      * Products
@@ -508,7 +510,7 @@ fun SubscriptionStateLess(
                         text = stringResource(R.string.subscription_try_7_free_days_of_asked_premium),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
                     // Product 1 - Weekly
@@ -598,10 +600,8 @@ fun SubscriptionStateLess(
                         /**
                          * Button
                          */
-                        Row(
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
                         ) {
                             Button(
                                 onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } },
@@ -620,10 +620,23 @@ fun SubscriptionStateLess(
                                     style = MaterialTheme.typography.titleMedium
                                 )
                             }
+                            TextButton(
+                                onClick = { onNavigateUp() },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.reject_offer),
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 /**
                  * Small Letter
