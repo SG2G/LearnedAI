@@ -74,9 +74,6 @@ class RemoteConfigViewModel @Inject constructor(
         })
     }
 
-    fun getAdRewardTokens(): String {
-        return remoteConfigRepository.getAdRewardTokens()
-    }
     fun getInviteRewardTokens(): String {
         return remoteConfigRepository.getInviteRewardTokens()
     }

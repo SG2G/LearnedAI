@@ -120,7 +120,6 @@ fun SubscriptionStateFull(
     val userOption = remember { mutableStateOf(Option.OptionMonthly) }
     val showComposable = remember { mutableStateOf(false) }
 
-
     val productMonthly = vmBilling.productMonthly
     val productAnnually = vmBilling.productAnnually
     val productAnnuallyRR = vmBilling.productAnnuallyRR
@@ -245,7 +244,10 @@ fun SubscriptionStateFull(
 
     if (showComposable.value) { //TODO CHANGE
         SubscriptionStateLess(
+            vmPreferences,
+
             showOffer,
+            showSubscriptionGift,
 
             productMonthly,
             productAnnually,
@@ -348,7 +350,10 @@ fun SubscriptionStateFull(
 
 @Composable
 fun SubscriptionStateLess(
+    vmPreferences: PreferencesViewModel,
+
     showOffer: MutableState<Boolean>,
+    showSubscriptionGift: MutableState<Boolean>,
 
     productMonthly: MutableState<ProductDetails?>,
     productAnnually: MutableState<ProductDetails?>,
@@ -405,7 +410,13 @@ fun SubscriptionStateLess(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    IconButton(onClick = { onNavigateUp() }) {
+                    IconButton(onClick = {
+                        if (vmPreferences.showSubOffer.value) {
+                            showSubscriptionGift.value = true
+                        } else {
+                            onNavigateUp()
+                        }
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Cancel,
                             contentDescription = "Cancel"
@@ -604,7 +615,15 @@ fun SubscriptionStateLess(
                             modifier = Modifier.fillMaxWidth(),
                         ) {
                             Button(
-                                onClick = { selectedPlan.value.value?.let { onLaunchPurchaseFlow(it) } },
+                                onClick = {
+                                    if (vmPreferences.showSubOffer.value) {
+                                        showSubscriptionGift.value = true
+                                    } else {
+                                        selectedPlan.value.value?.let {
+                                            onLaunchPurchaseFlow(it)
+                                        }
+                                    }
+                                },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
                                 ),
@@ -621,7 +640,13 @@ fun SubscriptionStateLess(
                                 )
                             }
                             TextButton(
-                                onClick = { onNavigateUp() },
+                                onClick = {
+                                    if (vmPreferences.showSubOffer.value) {
+                                        showSubscriptionGift.value = true
+                                    } else {
+                                        onNavigateUp()
+                                    }
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -654,7 +679,6 @@ fun SubscriptionStateLess(
                 Column(
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Spacer(modifier = Modifier.height(8.dp))
                     /**
                      * TRIAL
                      */

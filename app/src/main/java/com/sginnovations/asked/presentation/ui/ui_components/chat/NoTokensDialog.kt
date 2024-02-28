@@ -1,8 +1,12 @@
 package com.sginnovations.asked.presentation.ui.ui_components.chat
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -11,8 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenIcon
@@ -32,12 +38,11 @@ fun NoTokensDialog(
             )
         },
         text = {
-            Row(
+            Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                ResetDailyTokens()
                 Text(text = stringResource(R.string.no_tokens_dialog_subtitle))
-                Spacer(modifier = Modifier.width(8.dp))
-                TokenIcon()
             }
         },
         dismissButton = {
@@ -49,7 +54,8 @@ fun NoTokensDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.no_tokens_dialog_cancel), color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    text = stringResource(R.string.no_tokens_dialog_cancel),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -63,11 +69,36 @@ fun NoTokensDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.no_tokens_dialog_view_premium_subscription), color = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(R.string.no_tokens_dialog_view_premium_subscription),
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         },
     )
 
+}
+
+@Composable
+fun ResetDailyTokens() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(R.string.if_you_fall_below_3_tokens),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center
+        )
+    }
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(R.string.they_reset_to_3_daily),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Center
+    )
+    Spacer(modifier = Modifier.height(16.dp))
 }

@@ -414,5 +414,7 @@
     <string name="onboarding_privacy_subtitle_1">Asked no recopila datos personales</string>
     <string name="onboarding_privacy_subtitle_2">Los mensajes en nuestra app son privados y no se almacenan</string>
     <string name="see_more">Ver más</string>
+    <string name="if_you_fall_below_3_tokens">Si caes bajo 3 tokens</string>
+    <string name="they_reset_to_3_daily">se resetean a 3 diariamente.</string>
 
 </resources>

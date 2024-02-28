@@ -430,6 +430,8 @@
     <string name="onboarding_privacy_subtitle_1">Asked does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored</string>
     <string name="onboarding_privacy_subtitle_2">Messages in our app are private and are not stored</string>
     <string name="see_more">See more</string>
+    <string name="if_you_fall_below_3_tokens">If you fall below 3 tokens</string>
+    <string name="they_reset_to_3_daily">they reset to 3 daily.</string>
 
 
 </resources>

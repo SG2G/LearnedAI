@@ -10,11 +10,13 @@ import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 
 @Composable
-fun TokenIcon() {
+fun TokenIcon(
+    modifier: Modifier = Modifier.scale(MaterialTheme.typography.titleMedium.fontSize.value/17),
+) {
     Icon(
         painter = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.scale(MaterialTheme.typography.titleMedium.fontSize.value/17)
+        modifier = modifier
     )
 }

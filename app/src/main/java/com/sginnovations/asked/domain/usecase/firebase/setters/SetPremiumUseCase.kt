@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sginnovations.asked.Constants.Companion.IS_PREMIUM
 import com.sginnovations.asked.Constants.Companion.USERS_NAME
+import com.sginnovations.asked.domain.repository.RemoteConfigRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
@@ -13,6 +14,8 @@ private const val TAG = "SetPremiumUseCase"
 class SetPremiumUseCase @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth,
+
+    private val remoteConfigRepository: RemoteConfigRepository,
 ) {
     suspend operator fun invoke(value: Boolean) {
         val user = firebaseAuth.currentUser
@@ -22,8 +25,14 @@ class SetPremiumUseCase @Inject constructor(
         }
 
         Log.d(TAG, "invoke Adding IS_PREMIUM ")
-        if (user.uid != "P635nMFvPJVI05RqiQ9jvpuR8Vp2") {
-            firestore.collection(USERS_NAME).document(user.uid).update(mapOf(IS_PREMIUM to value))
+
+        val premiumUserUids  = remoteConfigRepository.getPremiumUserUids()
+        Log.d(TAG, "premium uid $premiumUserUids")
+        premiumUserUids.forEach { uid ->
+            if (user.uid != uid) {
+                firestore.collection(USERS_NAME).document(user.uid)
+                    .update(mapOf(IS_PREMIUM to value))
+            }
         }
     }
 }
