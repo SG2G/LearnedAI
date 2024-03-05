@@ -26,13 +26,20 @@ class SetPremiumUseCase @Inject constructor(
 
         Log.d(TAG, "invoke Adding IS_PREMIUM ")
 
-        val premiumUserUids  = remoteConfigRepository.getPremiumUserUids()
+        val premiumUserUids = remoteConfigRepository.getPremiumUserUids()
         Log.d(TAG, "premium uid $premiumUserUids")
-        premiumUserUids.forEach { uid ->
-            if (user.uid != uid) {
-                firestore.collection(USERS_NAME).document(user.uid)
-                    .update(mapOf(IS_PREMIUM to value))
+
+        // Check if user.uid is in the premiumUserUids list
+        val isUserPremium = premiumUserUids.contains(user.uid)
+
+        // Update the document for user.uid based on whether it is in the list
+        firestore.collection(USERS_NAME).document(user.uid)
+            .update(mapOf(IS_PREMIUM to isUserPremium))
+            .addOnSuccessListener {
+                Log.d(TAG, "User premium status updated successfully")
             }
-        }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error updating user premium status", e)
+            }
     }
 }

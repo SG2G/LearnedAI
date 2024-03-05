@@ -158,12 +158,6 @@ fun SubscriptionStateFull(
 
     val activity = context.getActivity()
 
-    LaunchedEffect(Unit) {
-        if (vmPreferences.showSubOffer.value) {
-            delay(7000)
-            showSubscriptionGift.value = true
-        }
-    }
     /**
      * No prices? No screen
      */
@@ -313,6 +307,7 @@ fun SubscriptionStateFull(
             }
         }
     }
+
     if (showOffer.value) {
         if (showSubscriptionGift.value) {
             SubscriptionGift(

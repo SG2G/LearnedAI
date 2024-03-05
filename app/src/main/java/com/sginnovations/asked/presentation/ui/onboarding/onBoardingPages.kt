@@ -2,8 +2,6 @@ package com.sginnovations.asked.presentation.ui.onboarding
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
 import com.sginnovations.asked.R
 
 data class OnBoardingFeatures(
@@ -11,6 +9,15 @@ data class OnBoardingFeatures(
     val title: String,
     val subtitle: String,
 )
+data class OnBoardingFinalQuestions(
+    val question: String,
+)
+
+data class OnBoardingOptions(
+    val optionText: String,
+)
+
+enum class OnBoardingType { Default, GenderSelect, SingleSelect, MultipleSelect, Quote, Personalization }
 
 class OnBoarding(
     val context: Context,
@@ -19,6 +26,11 @@ class OnBoarding(
     fun getAllPages(): List<OnBoardingPage> {
         return listOf(
             WelcomeScreen,
+
+            GenderScreen,
+            AgeSelect,
+            InterestSelect,
+
             CameraResult,
             CameraUse,
             AssistantResult,
@@ -26,7 +38,9 @@ class OnBoarding(
             GuideResult,
             GuideUse,
             PrivacyScreen,
-            FinalScreen
+
+            FinalScreen,
+            CreatingPersonalization,
         )
     }
 
@@ -36,12 +50,14 @@ class OnBoarding(
 }
 
 interface OnBoardingPage {
+    fun getType(context: Context): OnBoardingType = OnBoardingType.Default
     fun getTitle(context: Context): String
     fun getSubTitle(context: Context): String
     fun getDescription(context: Context): String? = null
-    fun getImage(context: Context): Int
-
+    fun getImage(context: Context): Int? = null
     fun getFeatures(context: Context): List<OnBoardingFeatures>? = null
+    fun getQuestions(context: Context): List<OnBoardingFinalQuestions>? = null
+    fun getOptions(context: Context): List<OnBoardingOptions>? = null
 }
 
 object WelcomeScreen : OnBoardingPage {
@@ -50,6 +66,47 @@ object WelcomeScreen : OnBoardingPage {
     override fun getDescription(context: Context) =
         context.getString(R.string.onboarding_description_1)
 
+    override fun getImage(context: Context) = R.drawable.onboarding_welcome
+
+}
+
+object GenderScreen : OnBoardingPage {
+    override fun getType(context: Context): OnBoardingType = OnBoardingType.GenderSelect
+    override fun getTitle(context: Context) = "Select your gender"
+    override fun getSubTitle(context: Context) = ""
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_description_1)
+
+    override fun getImage(context: Context) = R.drawable.onboarding_welcome
+    override fun getOptions(context: Context): List<OnBoardingOptions> = listOf(
+        OnBoardingOptions(
+            optionText = ""
+        ),
+        OnBoardingOptions(
+            optionText = ""
+        ),
+        OnBoardingOptions(
+            optionText = ""
+        ),
+    )
+}
+
+object AgeSelect : OnBoardingPage {
+    override fun getType(context: Context): OnBoardingType = OnBoardingType.SingleSelect
+    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_1)
+    override fun getSubTitle(context: Context) = context.getString(R.string.subscription_pvu)
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_description_1)
+
+    override fun getImage(context: Context) = R.drawable.onboarding_welcome
+
+}
+object InterestSelect : OnBoardingPage {
+    override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
+    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_1)
+    override fun getSubTitle(context: Context) = context.getString(R.string.subscription_pvu)
+    override fun getDescription(context: Context) =
+        context.getString(R.string.onboarding_description_1)
     override fun getImage(context: Context) = R.drawable.onboarding_welcome
 
 }
@@ -74,9 +131,6 @@ object CameraUse : OnBoardingPage {
 
     override fun getSubTitle(context: Context) =
         context.getString(R.string.onboarding_subtitle_camera_use)
-
-    //override fun getDescription(context: Context) =
-        //context.getString(R.string.onboarding_description_camera_use)
 
     override fun getImage(context: Context) = R.drawable.onboarding_camera
 
@@ -127,9 +181,6 @@ object AssistantUse : OnBoardingPage {
     override fun getSubTitle(context: Context) =
         context.getString(R.string.onboarding_subtitle_assistant_use)
 
-    //override fun getDescription(context: Context) =
-      //  context.getString(R.string.onboarding_description_assistant_use)
-
     override fun getImage(context: Context) = R.drawable.onboarding_assistant_gif
 
     override fun getFeatures(context: Context) = listOf(
@@ -175,9 +226,6 @@ object GuideUse : OnBoardingPage {
     override fun getSubTitle(context: Context) =
         context.getString(R.string.onboarding_subtitle_guide_use)
 
-    //override fun getDescription(context: Context) =
-      //  context.getString(R.string.onboarding_description_guide_use)
-
     override fun getImage(context: Context) = R.drawable.onboarding_guide
 
     override fun getFeatures(context: Context) = listOf(
@@ -203,8 +251,6 @@ object GuideUse : OnBoardingPage {
 object PrivacyScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_5)
     override fun getSubTitle(context: Context) = context.getString(R.string.onboarding_subtitle_5)
-    //override fun getDescription(context: Context) =
-      //  context.getString(R.string.onboarding_description_5)
 
     override fun getImage(context: Context) = R.drawable.onboarding_security
 
@@ -222,6 +268,26 @@ object PrivacyScreen : OnBoardingPage {
     )
 }
 
+object QuoteOneScreen : OnBoardingPage {
+    override fun getType(context: Context): OnBoardingType = OnBoardingType.Quote
+    override fun getTitle(context: Context) = ""
+
+    override fun getSubTitle(context: Context) = ""
+
+    override fun getDescription(context: Context) = ""
+
+}
+
+object QuoteTwoScreen : OnBoardingPage {
+    override fun getType(context: Context): OnBoardingType = OnBoardingType.Quote
+    override fun getTitle(context: Context) = ""
+
+    override fun getSubTitle(context: Context) = ""
+
+    override fun getDescription(context: Context) = ""
+
+}
+
 object FinalScreen : OnBoardingPage {
     override fun getTitle(context: Context) =
         context.getString(R.string.onboarding_finalscreen_title)
@@ -233,5 +299,30 @@ object FinalScreen : OnBoardingPage {
         context.getString(R.string.onboarding_finalscreen_description)
 
     override fun getImage(context: Context) = R.drawable.happy_family_end
+
+}
+
+object CreatingPersonalization : OnBoardingPage {
+    override fun getType(context: Context): OnBoardingType = OnBoardingType.Personalization
+    override fun getTitle(context: Context) = ""
+
+    override fun getSubTitle(context: Context) = ""
+
+    override fun getDescription(context: Context) = ""
+
+    override fun getQuestions(context: Context) = listOf(
+        OnBoardingFinalQuestions(
+            question = ""
+        ),
+        OnBoardingFinalQuestions(
+            question = ""
+        ),
+        OnBoardingFinalQuestions(
+            question = ""
+        ),
+        OnBoardingFinalQuestions(
+            question = ""
+        ),
+    )
 
 }

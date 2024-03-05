@@ -432,6 +432,11 @@
     <string name="see_more">See more</string>
     <string name="if_you_fall_below_3_tokens">If you fall below 3 tokens</string>
     <string name="they_reset_to_3_daily">they reset to 3 daily.</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="select_your_gender">Select your Gender</string>
+    <string name="select_your_age_range">Select Your Age Range</string>
 
 
 </resources>
