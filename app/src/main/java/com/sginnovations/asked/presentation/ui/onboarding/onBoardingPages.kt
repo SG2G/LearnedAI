@@ -74,10 +74,6 @@ object GenderScreen : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.GenderSelect
     override fun getTitle(context: Context) = "Select your gender"
     override fun getSubTitle(context: Context) = ""
-    override fun getDescription(context: Context) =
-        context.getString(R.string.onboarding_description_1)
-
-    override fun getImage(context: Context) = R.drawable.onboarding_welcome
     override fun getOptions(context: Context): List<OnBoardingOptions> = listOf(
         OnBoardingOptions(
             optionText = ""
@@ -103,10 +99,8 @@ object AgeSelect : OnBoardingPage {
 }
 object InterestSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
-    override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_1)
-    override fun getSubTitle(context: Context) = context.getString(R.string.subscription_pvu)
-    override fun getDescription(context: Context) =
-        context.getString(R.string.onboarding_description_1)
+    override fun getTitle(context: Context) = context.getString(R.string.what_are_your_goals)
+    override fun getSubTitle(context: Context) = context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
     override fun getImage(context: Context) = R.drawable.onboarding_welcome
 
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,7 +60,6 @@ fun InterestSelection(
 ) {
     val scrollState = rememberScrollState()
 
-    // Determina si se ha alcanzado el límite de selección.
     val selectionLimitReached = selectedInterests.size >= 3
 
     Column(
@@ -95,7 +97,8 @@ fun InterestSelection(
                     Icon(
                         painter = painterResource(id = interest.icon),
                         contentDescription = "Icon for ${interest.name}",
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(28.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(Modifier.width(16.dp))
                     Text(interest.name, style = MaterialTheme.typography.bodyMedium)
@@ -115,30 +118,31 @@ fun InterestSelection(
 }
 
 @Composable
-fun InterestSelectorScreen(
+fun OnBoardingInterest(
     onBoardingPage: OnBoardingPage,
 ) {
+    val context = LocalContext.current
 
     val interests = remember {
         listOf(
-            SelectableInterest("Art", R.drawable.language_camera),
-            SelectableInterest("Music", R.drawable.language_camera),
-            SelectableInterest("Sports", R.drawable.language_camera),
-            SelectableInterest("dqw", R.drawable.language_camera),
-            SelectableInterest("dqwqw", R.drawable.language_camera),
-            SelectableInterest("412da", R.drawable.language_camera)
+            SelectableInterest(context.getString(R.string.emotional_understanding), R.drawable.lightbulb_bolt_svgrepo_com),
+            SelectableInterest(context.getString(R.string.building_a_united_family), R.drawable.home_with_a_heart_svgrepo_com),
+            SelectableInterest(context.getString(R.string.parental_peace_of_mind), R.drawable.sofa_svgrepo_filled),
+            SelectableInterest(context.getString(R.string.study_support), R.drawable.camera_svgrepo_filled),
+            SelectableInterest(context.getString(R.string.quality_information), R.drawable.book_bookmark_svgrepo_filled),
+            SelectableInterest(context.getString(R.string.guidance_and_teaching), R.drawable.compass_svgrepo_com),
         )
     }
     // State to keep track of selected interests.
     var selectedInterests by remember { mutableStateOf(listOf<SelectableInterest>()) }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Interest",
+            text = onBoardingPage.getTitle(context),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
@@ -146,13 +150,11 @@ fun InterestSelectorScreen(
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "select x",
+            text = onBoardingPage.getSubTitle(context),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
-
-        Spacer(modifier = Modifier.weight(1f))
 
         InterestSelection(
             interests = interests,
@@ -162,14 +164,11 @@ fun InterestSelectorScreen(
             val currentlySelected = selectedInterest.selected
             val newList: List<SelectableInterest>
             if (currentlySelected) {
-                // If already selected, we deselect it.
                 newList = selectedInterests - selectedInterest
             } else {
-                // If not selected, add it to the list if less than 3 are selected.
                 if (selectedInterests.size < 3) {
                     newList = selectedInterests + selectedInterest
                 } else {
-                    // If we already have 3 selected, return to not select new.
                     return@InterestSelection
                 }
             }
@@ -181,15 +180,16 @@ fun InterestSelectorScreen(
     }
 }
 
-object InterestSelect : OnBoardingPage {
-    override fun getType(context: Context): OnBoardingType = OnBoardingType.SingleSelect
-    override fun getTitle(context: Context) = "Interest"
-    override fun getSubTitle(context: Context) = "Select x interest max 3"
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewInterestSelectorScreen() {
-    InterestSelectorScreen(InterestSelect)
-}
+//object InterestSelect : OnBoardingPage {
+//    override fun getType(context: Context): OnBoardingType = OnBoardingType.SingleSelect
+//    override fun getTitle(context: Context) = context.getString(R.string.what_are_your_goals)
+//    override fun getSubTitle(context: Context) =
+//        context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
+//
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewInterestSelectorScreen() {
+//    OnBoardingInterest(InterestSelect)
+//}

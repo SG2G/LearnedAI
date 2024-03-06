@@ -437,6 +437,15 @@
     <string name="other">Other</string>
     <string name="select_your_gender">Select your Gender</string>
     <string name="select_your_age_range">Select Your Age Range</string>
+    <string name="what_are_your_goals">What are your goals?</string>
+    <string name="select_up_to_3_goals_for_more_accurate_customization">Select up to 3 goals for more accurate customization.</string>
+    <string name="do_you_agree_with_this_statement">Do you agree with this statement?</string>
+    <string name="emotional_understanding">Emotional Understanding</string>
+    <string name="building_a_united_family">Building a United Family</string>
+    <string name="parental_peace_of_mind">Parental Peace of Mind</string>
+    <string name="study_support">Study Support</string>
+    <string name="quality_information">Quality Information</string>
+    <string name="guidance_and_teaching">Guidance and Teaching</string>
 
 
 </resources>

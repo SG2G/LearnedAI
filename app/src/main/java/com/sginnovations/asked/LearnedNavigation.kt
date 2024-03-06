@@ -47,6 +47,8 @@ import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingScreen
 import com.sginnovations.asked.presentation.ui.ref_code.ReferralCodeStateFul
 import com.sginnovations.asked.presentation.ui.settings.SettingsStateFul
 import com.sginnovations.asked.presentation.ui.sign_in.LearnedAuth
+import com.sginnovations.asked.presentation.ui.subscription.FirstOfferStateFul
+import com.sginnovations.asked.presentation.ui.subscription.SecondOfferStateFul
 import com.sginnovations.asked.presentation.ui.subscription.SubscriptionStateFull
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.topbar.LearnedTopBar
@@ -179,6 +181,9 @@ fun LearnedNavigation(
 
             CategoryLesson.route -> CategoryLesson
 
+            FirstOfferScreen.route -> FirstOfferScreen
+            SecondOfferScreen.route -> SecondOfferScreen
+
             else -> null
         }
 
@@ -257,7 +262,10 @@ fun LearnedNavigation(
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
 
                     onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
-                    onCropNavigation = { navController.navigate(route = Crop.route) },
+                    onCropNavigation = {
+                        navController.navigate(route = Crop.route)
+                        navController.navigate(route = SecondOfferScreen.route)
+                    },
                 )
                 EarnPoints(vmToken, navController)
             }
@@ -486,7 +494,14 @@ fun LearnedNavigation(
                     vmAuth = vmAuth,
                     vmPreferences = vmPreferences,
 
-                    onNavigateUp = { navController.navigateUp() }
+//                    onNavigateUp = { navController.navigateUp() }
+                    onNavigateUpAndOffer = {
+                        scope.launch {
+                            vmNavigator.navigateUpAndOffer(
+                                navController
+                            )
+                        }
+                    }
                 )
             }
             composable(route = Gallery.route) {
@@ -503,6 +518,28 @@ fun LearnedNavigation(
                     vmPreferences = vmPreferences
                 )
             }
+            composable(route = FirstOfferScreen.route) {
+                FirstOfferStateFul(
+                    vmBilling = vmBilling,
+                    vmPreference = vmPreferences,
+
+                    onDismissRequest = {
+                        navController.navigateUp()
+                        scope.launch { vmPreferences.setShowSubOffer() }
+                    }
+                )
+            }
+            composable(route = SecondOfferScreen.route) {
+                SecondOfferStateFul(
+                    vmBilling = vmBilling,
+                    vmPreference = vmPreferences,
+
+                    onDismissRequest = {
+                        navController.navigateUp()
+                    }
+                )
+            }
         }
     }
 }
+

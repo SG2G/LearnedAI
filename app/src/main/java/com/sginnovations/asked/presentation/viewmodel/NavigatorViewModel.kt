@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.sginnovations.asked.AssistantChat
 import com.sginnovations.asked.AssistantNewConversation
-import com.sginnovations.asked.Camera
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
+import com.sginnovations.asked.FirstOfferScreen
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ScreensDestinations
@@ -73,6 +73,17 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                 }
                 navController.navigate(NewConversation.route)
             }
+        }
+    }
+    suspend fun navigateUpAndOffer(navController: NavController) {
+        withContext(Dispatchers.Main) {
+            navController.navigate(ParentalAssist.route) {
+                // This ensures that the previous screen is removed from the backstack
+                popUpTo(navController.graph.id) {
+                    inclusive = true
+                }
+            }
+            navController.navigate(FirstOfferScreen.route)
         }
     }
     suspend fun navigateAuthToX(navController: NavController, screen: ScreensDestinations) {

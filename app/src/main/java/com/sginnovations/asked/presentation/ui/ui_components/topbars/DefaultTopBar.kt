@@ -2,6 +2,7 @@
 
 package com.sginnovations.asked.presentation.ui.ui_components.topbars
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ fun DefaultTopBar(
 
     navigateUp: () -> Unit,
 ) {
+    Log.d("DefaultTopBar", "DefaultTopBar: $currentScreenTitle")
     TopAppBar(
         title = {
             Row(

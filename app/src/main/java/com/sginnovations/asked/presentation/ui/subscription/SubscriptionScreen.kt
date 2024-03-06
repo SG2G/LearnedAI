@@ -20,12 +20,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,11 +49,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
-import com.sginnovations.asked.presentation.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.presentation.ui.subscription.components.Feature
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionBenefits
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionComparisonTable
-import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionGift
 import com.sginnovations.asked.presentation.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
@@ -113,7 +111,8 @@ fun SubscriptionStateFull(
     vmAuth: AuthViewModel,
     vmPreferences: PreferencesViewModel,
 
-    onNavigateUp: () -> Unit,
+//    onNavigateUp: () -> Unit,
+    onNavigateUpAndOffer: () -> Unit,
 ) {
     val userAuth = vmAuth.userAuth.collectAsState()
 
@@ -260,7 +259,7 @@ fun SubscriptionStateFull(
 
             userOption,
 
-            onNavigateUp,
+            onNavigateUpAndOffer,
 
             onSendEmail = { vmIntent.sendEmail(context, userAuth) },
 
@@ -290,7 +289,7 @@ fun SubscriptionStateFull(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        IconButton(onClick = { onNavigateUp() }) {
+                        IconButton(onClick = { onNavigateUpAndOffer() }) {
                             Icon(
                                 imageVector = Icons.Filled.Cancel,
                                 contentDescription = "Cancel"
@@ -305,40 +304,6 @@ fun SubscriptionStateFull(
                     }
                 }
             }
-        }
-    }
-
-    if (showOffer.value) {
-        if (showSubscriptionGift.value) {
-            SubscriptionGift(
-                priceFull = priceSubAnnually,
-                priceDiscount = priceSubAnnuallyRR,
-
-                priceAnnualMonthly = priceMicrosSubAnnuallyRR.value?.let { micro ->
-                    priceCurrencySubAnnually.value?.let { currency ->
-                        formatPriceAnnualToMonthly(
-                            micro,
-                            currency
-                        )
-                    }
-                },
-
-                onLaunchPurchaseFlow = {
-                    if (activity != null) {
-                        productAnnuallyRR.value?.let { productAnnuallyRR ->
-                            onLaunchPurchaseFlow(
-                                vmBilling = vmBilling,
-
-                                scope = scope,
-                                activity = activity,
-
-                                productDetails = productAnnuallyRR,
-                            )
-                        }
-                    }
-                }
-
-            ) { scope.launch { vmPreferences.setShowSubOffer() } }
         }
     }
 }
@@ -367,7 +332,7 @@ fun SubscriptionStateLess(
 
     userOption: MutableState<Option>,
 
-    onNavigateUp: () -> Unit,
+    onNavigateUpAndOffer: () -> Unit,
 
     onSendEmail: () -> Unit,
 
@@ -405,15 +370,9 @@ fun SubscriptionStateLess(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    IconButton(onClick = {
-                        if (vmPreferences.showSubOffer.value) {
-                            showSubscriptionGift.value = true
-                        } else {
-                            onNavigateUp()
-                        }
-                    }) {
+                    IconButton(onClick = { onNavigateUpAndOffer() }) {
                         Icon(
-                            imageVector = Icons.Filled.Cancel,
+                            imageVector = Icons.Rounded.Close,
                             contentDescription = "Cancel"
                         )
                     }
@@ -446,37 +405,37 @@ fun SubscriptionStateLess(
                 /**
                  * CountDown
                  */
-                if (!showOffer.value) {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = stringResource(R.string.oferta_de_lanzamiento),
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            Text(
-                                text = stringResource(R.string.only_until_march_31st),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                            )
-                            CountdownTimer(
-                                targetDate = targetDate,
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Spacer(modifier = Modifier.height(6.dp))
-                        }
-                    }
-                }
+//                if (!showOffer.value) {
+//                    Row(
+//                        modifier = Modifier
+//                            .padding(horizontal = 8.dp),
+//                        horizontalArrangement = Arrangement.Center
+//                    ) {
+//                        Column(
+//                            modifier = Modifier.fillMaxWidth()
+//                        ) {
+//                            Text(
+//                                text = stringResource(R.string.oferta_de_lanzamiento),
+//                                style = MaterialTheme.typography.titleMedium,
+//                                modifier = Modifier.fillMaxWidth(),
+//                                textAlign = TextAlign.Center,
+//                                color = MaterialTheme.colorScheme.onBackground
+//                            )
+//                            Text(
+//                                text = stringResource(R.string.only_until_march_31st),
+//                                style = MaterialTheme.typography.labelMedium,
+//                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                                modifier = Modifier.fillMaxWidth(),
+//                                textAlign = TextAlign.Center,
+//                            )
+//                            CountdownTimer(
+//                                targetDate = targetDate,
+//                                style = MaterialTheme.typography.titleMedium
+//                            )
+//                            Spacer(modifier = Modifier.height(6.dp))
+//                        }
+//                    }
+//                }
 
                 /**
                  * Benefits
@@ -635,13 +594,7 @@ fun SubscriptionStateLess(
                                 )
                             }
                             TextButton(
-                                onClick = {
-                                    if (vmPreferences.showSubOffer.value) {
-                                        showSubscriptionGift.value = true
-                                    } else {
-                                        onNavigateUp()
-                                    }
-                                },
+                                onClick = { onNavigateUpAndOffer },
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {

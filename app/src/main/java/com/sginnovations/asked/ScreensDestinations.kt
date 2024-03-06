@@ -126,3 +126,11 @@ object AssistantChat : ScreensDestinations {
     override val route = "AssistantChat"
     override fun getName(context: Context) = context.getString(R.string.topbar_assistant_chat)
 }
+object FirstOfferScreen : ScreensDestinations {
+    override val route = "FirstOfferScreen"
+    override fun getName(context: Context) = "FirstOfferScreen"
+}
+object SecondOfferScreen : ScreensDestinations {
+    override val route = "SecondOfferScreen"
+    override fun getName(context: Context) = "SecondOfferScreen"
+}

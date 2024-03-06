@@ -10,12 +10,14 @@ import com.sginnovations.asked.CategoryLesson
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
+import com.sginnovations.asked.FirstOfferScreen
 import com.sginnovations.asked.Gallery
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ParentalGuidance
 import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
+import com.sginnovations.asked.SecondOfferScreen
 import com.sginnovations.asked.Subscription
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.CameraTopBar
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.CategoryTopBar
@@ -69,7 +71,6 @@ fun LearnedTopBar(
             ParentalAssist.getName(context),
         )
 
-
         Profile.route -> ProfileTopBar(
             Profile.getName(context),
         ) { onNavigate(it) }
@@ -110,6 +111,8 @@ fun LearnedTopBar(
         )
 
         Subscription.route -> {}
+        FirstOfferScreen.route -> {}
+        SecondOfferScreen.route -> {}
 
         CategoryLesson.route -> CategoryTopBar(
             vmLesson,

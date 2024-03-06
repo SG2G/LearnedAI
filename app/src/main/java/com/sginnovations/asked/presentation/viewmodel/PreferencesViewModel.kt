@@ -29,7 +29,7 @@ class PreferencesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getIfIsFirstTime()
-            getShowSubOffer()
+//            getShowSubOffer()
             getTheme()
             getFontSizeIncrease()
 

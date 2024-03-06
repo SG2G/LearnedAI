@@ -49,6 +49,7 @@ class BillingViewModel @Inject constructor(
     val productMonthly = mutableStateOf<ProductDetails?>(null)
     val productAnnually = mutableStateOf<ProductDetails?>(null)
     val productAnnuallyRR = mutableStateOf<ProductDetails?>(null)
+    val productAnnuallyRR2 = mutableStateOf<ProductDetails?>(null)
 
     val billingResponseCode = MutableLiveData<Int>()
 
@@ -124,6 +125,10 @@ class BillingViewModel @Inject constructor(
                 .setProductId("asked_subscription_annually_discount")
                 .setProductType(BillingClient.ProductType.SUBS)
                 .build(),
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId("asked_subscription_annually_discount2")
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
         )
 
         val subscriptionQueryParams = QueryProductDetailsParams.newBuilder()
@@ -148,14 +153,15 @@ class BillingViewModel @Inject constructor(
                 productAnnually.value = null
                 productMonthly.value = null
                 productAnnuallyRR.value = null
+                productAnnuallyRR2.value = null
 
                 // Assign products based on their SKUs
                 for (productDetails in productDetailsList) {
                     when (productDetails.productId) {
                         "asked_subscription_annually" -> productAnnually.value = productDetails
                         "asked_subscription_monthly" -> productMonthly.value = productDetails
-                        "asked_subscription_annually_discount" -> productAnnuallyRR.value =
-                            productDetails
+                        "asked_subscription_annually_discount" -> productAnnuallyRR.value = productDetails
+                        "asked_subscription_annually_discount2" -> productAnnuallyRR2.value = productDetails
                     }
                 }
                 // Log to verify the assignments (optional)

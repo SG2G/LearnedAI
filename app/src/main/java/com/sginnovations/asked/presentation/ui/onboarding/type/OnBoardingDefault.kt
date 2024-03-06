@@ -19,6 +19,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,9 +65,7 @@ fun OnBoardingDefault(
     val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
+        modifier = Modifier.verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -73,7 +73,8 @@ fun OnBoardingDefault(
             text = onBoardingPage.getTitle(context),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
         if (!onBoardingPage.getSubTitle(context).isNullOrEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -117,7 +118,8 @@ fun OnBoardingDefault(
             val features = onBoardingPage.getFeatures(context)
 
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .padding(Constants.CHAT_MSG_PADDING),
             ) {
                 if (features != null) {
                     for (feature in features) {
@@ -151,6 +153,5 @@ fun OnBoardingDefault(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(72.dp))
     }
 }
