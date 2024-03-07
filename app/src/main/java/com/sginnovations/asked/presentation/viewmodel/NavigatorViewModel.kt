@@ -11,6 +11,7 @@ import com.sginnovations.asked.FirstOfferScreen
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ScreensDestinations
+import com.sginnovations.asked.SecondOfferScreen
 import com.sginnovations.asked.Subscription
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +46,7 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                 }
             }
             navController.navigate(AssistantChat.route)
+            navController.navigate(SecondOfferScreen.route)
         }
     }
     suspend fun navigateAssistantNewChat(navController: NavController) {
@@ -72,6 +74,7 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                     }
                 }
                 navController.navigate(NewConversation.route)
+                navController.navigate(SecondOfferScreen.route)
             }
         }
     }

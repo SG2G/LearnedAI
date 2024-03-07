@@ -403,41 +403,6 @@ fun SubscriptionStateLess(
                 }
 
                 /**
-                 * CountDown
-                 */
-//                if (!showOffer.value) {
-//                    Row(
-//                        modifier = Modifier
-//                            .padding(horizontal = 8.dp),
-//                        horizontalArrangement = Arrangement.Center
-//                    ) {
-//                        Column(
-//                            modifier = Modifier.fillMaxWidth()
-//                        ) {
-//                            Text(
-//                                text = stringResource(R.string.oferta_de_lanzamiento),
-//                                style = MaterialTheme.typography.titleMedium,
-//                                modifier = Modifier.fillMaxWidth(),
-//                                textAlign = TextAlign.Center,
-//                                color = MaterialTheme.colorScheme.onBackground
-//                            )
-//                            Text(
-//                                text = stringResource(R.string.only_until_march_31st),
-//                                style = MaterialTheme.typography.labelMedium,
-//                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-//                                modifier = Modifier.fillMaxWidth(),
-//                                textAlign = TextAlign.Center,
-//                            )
-//                            CountdownTimer(
-//                                targetDate = targetDate,
-//                                style = MaterialTheme.typography.titleMedium
-//                            )
-//                            Spacer(modifier = Modifier.height(6.dp))
-//                        }
-//                    }
-//                }
-
-                /**
                  * Benefits
                  */
                 Card(

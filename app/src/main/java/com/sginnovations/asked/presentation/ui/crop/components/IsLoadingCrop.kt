@@ -39,25 +39,25 @@ fun IsLoadingCrop() {
     )
 
     Log.d("IsLoadingCrop", "CircularProgressIndicator")
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .zIndex(10f),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                ),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-//            CircularProgressIndicator()
-//            RotatingText()
-        }
-    }
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .zIndex(10f),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(
+//                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+//                ),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+////            CircularProgressIndicator()
+////            RotatingText()
+//        }
+//    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +67,7 @@ fun IsLoadingCrop() {
         LottieAnimation(
             composition = composition,
             progress = { progress },
-            modifier = Modifier.size(154.dp)
+            modifier = Modifier.size(224.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
     }

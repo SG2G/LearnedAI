@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -119,12 +120,15 @@ fun LearnedNavigation(
     val scope = rememberCoroutineScope()
 
     val intent = remember { (context as Activity).intent }
+    val isPremium = remember { mutableStateOf(false) }
 
     val firstBottomScreen = ParentalAssist
     val firsTimeLaunch = vmPreferences.firstTimeLaunch
 
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
+            isPremium.value = checkIsPremium()
+
             // User its logged - set up
             if (firsTimeLaunch.value) {
                 vmNavigator.navigateAuthToX(
@@ -136,6 +140,9 @@ fun LearnedNavigation(
                     navController,
                     firstBottomScreen
                 )
+                if (!isPremium.value) {
+                    navController.navigate(FirstOfferScreen.route)
+                }
             }
 //            vmNavigator.navigateAuthToX(navController, firstBottomScreen)
 
@@ -235,6 +242,9 @@ fun LearnedNavigation(
                                 navController,
                                 firstBottomScreen
                             )
+                            if (!isPremium.value) {
+                                navController.navigate(FirstOfferScreen.route)
+                            }
                         }
 
                         Log.i(TAG, "Calling SetUp when sign in")
@@ -261,13 +271,11 @@ fun LearnedNavigation(
 
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
 
+                    onNavigateFirstOffer = { navController.navigate(route = FirstOfferScreen.route) },
                     onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
-                    onCropNavigation = {
-                        navController.navigate(route = Crop.route)
-                        navController.navigate(route = SecondOfferScreen.route)
-                    },
+                    onCropNavigation = { navController.navigate(route = Crop.route) },
                 )
-                EarnPoints(vmToken, navController)
+//                EarnPoints(vmToken, navController)
             }
 
             composable(
@@ -329,7 +337,7 @@ fun LearnedNavigation(
                     onNavigateRefCode = { navController.navigate(route = RefCode.route) },
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) }
                 )
-                EarnPoints(vmToken, navController)
+//                EarnPoints(vmToken, navController)
             }
             /**
              * Category Lessons
@@ -360,8 +368,12 @@ fun LearnedNavigation(
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) },
 
-                    onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
-                    onNavigateNewChat = { scope.launch { vmNavigator.navigateNewChat(navController) } }
+                    onNavigateChat = {
+                        scope.launch { vmNavigator.navigateChat(navController) }
+                    },
+                    onNavigateNewChat = {
+                        scope.launch { vmNavigator.navigateNewChat(navController) }
+                    }
                 )
             }
             composable(
@@ -409,7 +421,7 @@ fun LearnedNavigation(
                     },
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
-                EarnPoints(vmToken, navController)
+//                EarnPoints(vmToken, navController)
             }
             /**
              * AssistantChat
@@ -426,7 +438,7 @@ fun LearnedNavigation(
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
-                EarnPoints(vmToken, navController)
+//                EarnPoints(vmToken, navController)
             }
 
             /**
@@ -445,7 +457,7 @@ fun LearnedNavigation(
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
                 )
-                EarnPoints(vmToken, navController)
+//                EarnPoints(vmToken, navController)
             }
 
             composable(
@@ -497,9 +509,13 @@ fun LearnedNavigation(
 //                    onNavigateUp = { navController.navigateUp() }
                     onNavigateUpAndOffer = {
                         scope.launch {
-                            vmNavigator.navigateUpAndOffer(
-                                navController
-                            )
+                            if (!isPremium.value) {
+                                vmNavigator.navigateUpAndOffer(
+                                    navController
+                                )
+                            } else {
+                                navController.navigateUp()
+                            }
                         }
                     }
                 )

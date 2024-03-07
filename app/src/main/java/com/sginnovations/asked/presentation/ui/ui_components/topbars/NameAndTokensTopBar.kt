@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.sginnovations.asked.FirstOfferScreen
+import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 
@@ -28,6 +30,7 @@ fun NameAndTokensTopBar(
 
     currentScreen: String?,
 
+    onNavigateFirstOffer: () -> Unit,
     navigateUp: () -> Unit,
 ) {
     val tokens = vmTokens.tokens.collectAsState()
@@ -58,10 +61,11 @@ fun NameAndTokensTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
             ) {
-                TokenDisplay(
-                    tokens = tokens,
-                    showPlus = false
-                ) { vmTokens.switchPointsVisibility() }
+                GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
+//                TokenDisplay(
+//                    tokens = tokens,
+//                    showPlus = false
+//                ) { vmTokens.switchPointsVisibility() }
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(

@@ -46,6 +46,7 @@ import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components.other.CameraExamplesDialog
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components.top.MathExamples
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components.top.TranslateSelector
+import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
@@ -59,6 +60,7 @@ fun CameraStateFul(
 
     onNavigateSubscriptions: () -> Unit,
 
+    onNavigateFirstOffer: () -> Unit,
     onGetPhotoGallery: () -> Unit,
     onCropNavigation: () -> Unit,
 ) {
@@ -98,7 +100,7 @@ fun CameraStateFul(
             },
 
             onNavigateSubscriptionScreen = { onNavigateSubscriptions() },
-
+            onNavigateFirstOffer = { onNavigateFirstOffer() },
             onChangeTranslateLanguage = { language ->
                 vmCamera.translateLanguage.value = language
             }
@@ -133,6 +135,7 @@ fun CameraStateLess(
     onShowCategoryExamples: () -> Unit,
 
     onNavigateSubscriptionScreen: () -> Unit,
+    onNavigateFirstOffer: () -> Unit,
 
     onChangeTranslateLanguage: (String) -> Unit,
     onChangeCategory: (CategoryOCR) -> Unit,
@@ -147,7 +150,6 @@ fun CameraStateLess(
             )
         }
     }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -179,7 +181,7 @@ fun CameraStateLess(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            TokenDisplay(tokens = tokens, showPlus = false) { vmToken.switchPointsVisibility() }
+            GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
         }
 
         /**
@@ -265,6 +267,5 @@ fun CameraStateLess(
                 }
             }
         }
-
     }
 }

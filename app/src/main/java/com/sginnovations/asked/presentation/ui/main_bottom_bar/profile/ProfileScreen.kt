@@ -139,11 +139,11 @@ fun StateLessProfile(
                             modifier = Modifier.padding(horizontal = 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            TokenDisplay(
-                                modifier = Modifier.scale(0.8f),
-                                tokens = tokens,
-                                showPlus = false
-                            ) { vmToken.switchPointsVisibility() }
+//                            TokenDisplay(
+//                                modifier = Modifier.scale(0.8f),
+//                                tokens = tokens,
+//                                showPlus = false
+//                            ) { vmToken.switchPointsVisibility() }
 
                             Text(
                                 modifier = Modifier.clickable {

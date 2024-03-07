@@ -8,6 +8,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 private const val TAG = "EnsureMinimumTokensUseCase"
+private const val DAILY_TOKENS = 2
 class EnsureMinimumTokensUseCase @Inject constructor() {
 
     suspend operator fun invoke(documentReference: DocumentReference) {
@@ -17,14 +18,14 @@ class EnsureMinimumTokensUseCase @Inject constructor() {
             val currentTokens = documentSnapshot.getLong(Constants.TOKENS_NAME) ?: 0
             val lastUpdateDate = documentSnapshot.getString("lastTokensUpdate")
 
-            if (today != lastUpdateDate && currentTokens < 3) {
+            if (today != lastUpdateDate && currentTokens < DAILY_TOKENS) {
                 val updates = mapOf(
-                    Constants.TOKENS_NAME to 3,
+                    Constants.TOKENS_NAME to DAILY_TOKENS,
                     LAST_TOKEN_UPDATE to today
                 )
                 documentReference.update(updates)
                     .addOnSuccessListener {
-                        Log.i(TAG, "Tokens set to 3 for the new day.")
+                        Log.i(TAG, "Tokens set to 2 for the new day.")
                     }
                     .addOnFailureListener { e ->
                         Log.i(TAG, "Error updating tokens: ${e.printStackTrace()}")

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.sharp.CardGiftcard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,12 +52,12 @@ fun TokenDisplay(
     onNavigatePoints: () -> Unit,
 ) {
     val scale: MutableState<Float> = remember { mutableFloatStateOf(1f) }
-    val scope = rememberCoroutineScope()
-    var isPremium by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        isPremium = scope.async { checkIsPremium() }.await()
-    }
+//    val scope = rememberCoroutineScope()
+//    var isPremium by remember { mutableStateOf(false) }
+//
+//    LaunchedEffect(Unit) {
+//        isPremium = scope.async { checkIsPremium() }.await()
+//    }
 
     Box(
         modifier = modifier
@@ -85,31 +86,42 @@ fun TokenDisplay(
                 .padding(vertical = 8.dp, horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (showPlus) {
-//                Box(
-//                    modifier = Modifier
-//                        .padding(end = 4.dp)
-//                        .background(Color.LightGray, RoundedCornerShape(5.dp))
-//                        .size(16.dp),
-//                    contentAlignment = Alignment.Center,
-//                ) {
-                    Icon(
-                        modifier = Modifier.size(MaterialTheme.typography.titleMedium.fontSize.value.dp*3/2).padding(end = 6.dp),
-                        painter = painterResource(id = R.drawable.add_square_svgrepo_com),
-                        contentDescription = "Add Icon",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-            }
-
+            Icon(
+                painterResource(id = R.drawable.lock_svgrepo_com),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
             Text(
-                text = if (isPremium) stringResource(R.string.infinite) else tokens.value.toString(),
-                modifier = Modifier
-                    .padding(bottom = if (isPremium) 4.dp else 0.dp),
-                color = MaterialTheme.colorScheme.primary,
+                text = "Gift for you",
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.width(2.dp))
-            TokenIcon()
+//            if (showPlus) {
+////                Box(
+////                    modifier = Modifier
+////                        .padding(end = 4.dp)
+////                        .background(Color.LightGray, RoundedCornerShape(5.dp))
+////                        .size(16.dp),
+////                    contentAlignment = Alignment.Center,
+////                ) {
+//                    Icon(
+//                        modifier = Modifier.size(MaterialTheme.typography.titleMedium.fontSize.value.dp*3/2).padding(end = 6.dp),
+//                        painter = painterResource(id = R.drawable.add_square_svgrepo_com),
+//                        contentDescription = "Add Icon",
+//                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+//                    )
+//            }
+//
+//            Text(
+//                text = if (isPremium) stringResource(R.string.infinite) else tokens.value.toString(),
+//                modifier = Modifier
+//                    .padding(bottom = if (isPremium) 4.dp else 0.dp),
+//                color = MaterialTheme.colorScheme.primary,
+//                style = MaterialTheme.typography.titleMedium
+//            )
+//            Spacer(modifier = Modifier.width(2.dp))
+//            TokenIcon()
         }
     }
 }

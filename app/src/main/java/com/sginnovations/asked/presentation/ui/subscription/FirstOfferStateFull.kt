@@ -23,24 +23,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +45,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -60,9 +53,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.subscription.components.CountdownTimer
+import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -77,6 +70,8 @@ fun FirstOfferStateFul(
 
     onDismissRequest: () -> Unit,
 ) {
+    val showComposable = remember { mutableStateOf(false) }
+
     val productMonthly = vmBilling.productMonthly
     val productAnnually = vmBilling.productAnnually
     val productAnnuallyRR = vmBilling.productAnnuallyRR
@@ -185,6 +180,10 @@ fun FirstOfferStateFul(
             )
 
             attempts++
+        }
+        // Check if priceInApp is not null before setting showComposable to true
+        if (priceSubAnnually.value != null && priceSubMonthly.value != null && priceSubAnnuallyRR.value != null) {
+            showComposable.value = true
         }
     }
 
@@ -357,78 +356,63 @@ fun FirstOfferStateLess(
                             HappyLottieAnimation()
                         }
 
-                        Row(
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(
-                                modifier = Modifier.fillMaxWidth(),
+                            Card(
+                                shape = RoundedCornerShape(5.dp),
+                                colors = CardDefaults.cardColors(
+                                    MaterialTheme.colorScheme.primary
+                                )
                             ) {
-
                                 Text(
-                                    text = stringResource(R.string.only) + " " + priceAnnualMonthly + " " + stringResource(
-                                        id = R.string.subscription_month
-                                    ),
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier.padding(16.dp),
+                                    text = stringResource(R.string.save) + " " + "40%",
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = MaterialTheme.typography.titleLarge,
                                     textAlign = TextAlign.Center
                                 )
-                                Row(
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.total) + " " + priceDiscount.value + stringResource(
-                                            id = R.string.subscription_year
-                                        ),
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        style = MaterialTheme.typography.titleLarge,
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.was) + " " + priceFull.value + stringResource(
-                                            id = R.string.subscription_year
-                                        ) + ")",
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        textDecoration = TextDecoration.LineThrough,
-                                    )
-                                }
-                                Text(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp),
-                                    text = stringResource(R.string.subscription_try_7_free_days_of_asked_premium),
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
                             }
-                        }
-
-
-                        Button(
-                            onClick = { onLaunchPurchaseFlow() },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(58.dp),
-                            shape = RoundedCornerShape(30.dp)
-                        ) {
+                            Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = stringResource(R.string.claim_now),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                style = MaterialTheme.typography.titleMedium
+                                text = priceAnnualMonthly + " " + stringResource(id = R.string.subscription_month),
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
                             )
+
+                            Text(
+                                text = stringResource(R.string.only) + " " + priceDiscount.value + stringResource(
+                                    id = R.string.subscription_year
+                                ),
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.titleLarge,
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = stringResource(R.string.was) + " " + priceFull.value + stringResource(
+                                    id = R.string.subscription_year
+                                ) + ")",
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.bodyMedium,
+                                textDecoration = TextDecoration.LineThrough,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
                         }
+
+                        /**
+                         * Claim Offer
+                         */
+                        SubscriptionButton(
+                            onLaunchPurchaseFlow = { onLaunchPurchaseFlow() }
+                        )
+
+                        /**
+                         * Reject Offer
+                         */
                         Spacer(modifier = Modifier.height(8.dp))
                         TextButton(
                             onClick = { onDismissRequest() },

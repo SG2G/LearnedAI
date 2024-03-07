@@ -51,6 +51,8 @@ class BillingViewModel @Inject constructor(
     val productAnnuallyRR = mutableStateOf<ProductDetails?>(null)
     val productAnnuallyRR2 = mutableStateOf<ProductDetails?>(null)
 
+    val subsLoaded = mutableStateOf<Boolean>(false)
+
     val billingResponseCode = MutableLiveData<Int>()
 
     private var reconnectionAttempts = 0 // Counter for tracking reconnection attempts
@@ -164,6 +166,7 @@ class BillingViewModel @Inject constructor(
                         "asked_subscription_annually_discount2" -> productAnnuallyRR2.value = productDetails
                     }
                 }
+                subsLoaded.value = true
                 // Log to verify the assignments (optional)
                 Log.i(
                     TAG,

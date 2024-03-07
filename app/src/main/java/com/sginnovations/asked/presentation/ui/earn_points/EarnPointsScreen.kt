@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokensCard
 import com.sginnovations.asked.presentation.viewmodel.RemoteConfigViewModel
@@ -34,95 +35,96 @@ import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 
 private const val TAG = "EarnPointsStateFul"
 
-@Composable
-fun EarnPointsStateFul(
-    vmToken: TokenViewModel,
-
-    onNavigateSubscriptions: () -> Unit,
-    onNavigateRefCode: () -> Unit,
-) {
-    val tokens = vmToken.tokens.collectAsState()
-
-    EarnPointsStateLess(
-        tokens = tokens,
-
-        onNavigateSubscriptions = { onNavigateSubscriptions() },
-        onNavigateRefCode = { onNavigateRefCode() },
-        onSwitchVisibility = { vmToken.switchPointsVisibility() },
-    )
-}
-
-@Composable
-fun EarnPointsStateLess(
-    vmRemoteConfig: RemoteConfigViewModel = hiltViewModel(), //TODO REMOTE CONFIG VM
-
-    tokens: State<Long>,
-
-    onNavigateSubscriptions: () -> Unit,
-    onNavigateRefCode: () -> Unit,
-
-    onSwitchVisibility: () -> Unit,
-) {
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp / 5
-
-    ModalBottomSheet(
-        sheetState = sheetState,
-        onDismissRequest = { onSwitchVisibility() },
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = screenHeight),
-        containerColor = MaterialTheme.colorScheme.surface,
-    ) {
-        Card(
-            modifier = Modifier.fillMaxSize(),
-            colors = CardDefaults.cardColors(
-                MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TokenDisplay(
-                        tokens = tokens,
-                        showPlus = false
-                    ) {}
-                    Text(
-                        text = stringResource(R.string.earn_token_earn_more_tokens),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                TokensCard(
-                    num = stringResource(R.string.infinite),
-                    text = stringResource(R.string.earn_token_unlimited_points),
-                    buttonText = stringResource(R.string.earn_token_see_more),
-                    borderColor = MaterialTheme.colorScheme.primary,
-                    buttonColor = MaterialTheme.colorScheme.primary,
-                    cardContainerColor = MaterialTheme.colorScheme.background,
-                    onClick = { onNavigateSubscriptions() }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                TokensCard(
-                    num = "+" + vmRemoteConfig.getInviteRewardTokens(),
-                    text = stringResource(R.string.earn_token_invite_friends),
-                    buttonText = stringResource(R.string.earn_token_button_invite),
-                    borderColor = Color.Transparent,
-                    buttonColor = MaterialTheme.colorScheme.secondary,
-                    cardContainerColor = MaterialTheme.colorScheme.background,
-                    onClick = { onNavigateRefCode() }
-                )
-            }
-        }
-    } // ModalBottom
-}
+//@Composable
+//fun EarnPointsStateFul( TODO DELETE
+//    vmToken: TokenViewModel,
+//
+//    onNavigateSubscriptions: () -> Unit,
+//    onNavigateRefCode: () -> Unit,
+//) {
+//    val tokens = vmToken.tokens.collectAsState()
+//
+//    EarnPointsStateLess(
+//        tokens = tokens,
+//
+//        onNavigateSubscriptions = { onNavigateSubscriptions() },
+//        onNavigateRefCode = { onNavigateRefCode() },
+//        onSwitchVisibility = { vmToken.switchPointsVisibility() },
+//    )
+//}
+//
+//@Composable
+//fun EarnPointsStateLess(
+//    vmRemoteConfig: RemoteConfigViewModel = hiltViewModel(), //TODO REMOTE CONFIG VM
+//
+//    tokens: State<Long>,
+//
+//    onNavigateSubscriptions: () -> Unit,
+//    onNavigateRefCode: () -> Unit,
+//
+//    onSwitchVisibility: () -> Unit,
+//) {
+//    val sheetState = rememberModalBottomSheetState(
+//        skipPartiallyExpanded = true
+//    )
+//    val screenHeight = LocalConfiguration.current.screenHeightDp.dp / 5
+//
+//    ModalBottomSheet(
+//        sheetState = sheetState,
+//        onDismissRequest = { onSwitchVisibility() },
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(top = screenHeight),
+//        containerColor = MaterialTheme.colorScheme.surface,
+//    ) {
+//        Card(
+//            modifier = Modifier.fillMaxSize(),
+//            colors = CardDefaults.cardColors(
+//                MaterialTheme.colorScheme.surface
+//            )
+//        ) {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize(),
+//                horizontalAlignment = Alignment.CenterHorizontally,
+//            ) {
+//                Row(
+//                    modifier = Modifier.padding(16.dp),
+//                    horizontalArrangement = Arrangement.Center,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+////                    GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
+////                    TokenDisplay(
+////                        tokens = tokens,
+////                        showPlus = false
+////                    ) {}
+////                    Text(
+////                        text = stringResource(R.string.earn_token_earn_more_tokens),
+////                        color = MaterialTheme.colorScheme.onBackground,
+////                        style = MaterialTheme.typography.titleMedium
+////                    )
+//                }
+//                Spacer(modifier = Modifier.height(16.dp))
+//                TokensCard(
+//                    num = stringResource(R.string.infinite),
+//                    text = stringResource(R.string.earn_token_unlimited_points),
+//                    buttonText = stringResource(R.string.earn_token_see_more),
+//                    borderColor = MaterialTheme.colorScheme.primary,
+//                    buttonColor = MaterialTheme.colorScheme.primary,
+//                    cardContainerColor = MaterialTheme.colorScheme.background,
+//                    onClick = { onNavigateSubscriptions() }
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//                TokensCard(
+//                    num = "+" + vmRemoteConfig.getInviteRewardTokens(),
+//                    text = stringResource(R.string.earn_token_invite_friends),
+//                    buttonText = stringResource(R.string.earn_token_button_invite),
+//                    borderColor = Color.Transparent,
+//                    buttonColor = MaterialTheme.colorScheme.secondary,
+//                    cardContainerColor = MaterialTheme.colorScheme.background,
+//                    onClick = { onNavigateRefCode() }
+//                )
+//            }
+//        }
+//    } // ModalBottom
+//}

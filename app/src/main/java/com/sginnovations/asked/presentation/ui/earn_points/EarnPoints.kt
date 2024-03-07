@@ -13,13 +13,13 @@ fun EarnPoints(
 
     navController: NavHostController,
 ) {
-    val pointsScreenVisible = vmToken.pointsScreenVisible.collectAsStateWithLifecycle()
-
-    if (pointsScreenVisible.value) {
-        EarnPointsStateFul(
-            vmToken = vmToken,
-            onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
-            onNavigateRefCode = { navController.navigate(route = RefCode.route) }
-        )
-    }
+//    val pointsScreenVisible = vmToken.pointsScreenVisible.collectAsStateWithLifecycle()
+// TODO DELETE
+//    if (pointsScreenVisible.value) {
+//        EarnPointsStateFul(
+//            vmToken = vmToken,
+//            onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
+//            onNavigateRefCode = { navController.navigate(route = RefCode.route) }
+//        )
+//    }
 }

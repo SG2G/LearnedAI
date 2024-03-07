@@ -54,8 +54,8 @@ fun LearnedTopBar(
          * 4
          */
         Camera.route -> CameraTopBar(
-            vmTokens,
-        )
+            vmTokens
+        ) { onNavigate(FirstOfferScreen) }
 
         ChatsHistory.route -> ChatsHistoryTopBar(
             ChatsHistory.getName(context)
@@ -88,21 +88,25 @@ fun LearnedTopBar(
         Chat.route -> NameAndTokensTopBar(
             vmTokens,
             currentScreen.getName(context),
+            { onNavigate(FirstOfferScreen) },
             navigateUp
         )
         NewConversation.route -> NameAndTokensTopBar(
             vmTokens,
             currentScreen.getName(context),
+            { onNavigate(FirstOfferScreen) },
             navigateUp
         )
         AssistantNewConversation.route -> NameAndTokensTopBar(
             vmTokens,
             currentScreen.getName(context),
+            { onNavigate(FirstOfferScreen) },
             navigateUp
         )
         AssistantChat.route -> NameAndTokensTopBar(
             vmTokens,
             currentScreen.getName(context),
+            { onNavigate(FirstOfferScreen) },
             navigateUp
         )
 

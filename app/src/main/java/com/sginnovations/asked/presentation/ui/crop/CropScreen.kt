@@ -360,8 +360,6 @@ suspend fun sendNewMessage(
     onNavigateChat: () -> Unit,
     onNavigateNewChat: () -> Unit,
 ) {
-    while (vmCamera.isLoading.value) delay(200)
-
     // 5 seconds waiting for some number
     val startTime = System.currentTimeMillis()
     val timeoutMillis: Long = 5000

@@ -25,26 +25,26 @@ fun SubscriptionBenefits() {
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                TitleBenefit(
-                    text = stringResource(R.string.subscription_unlimited)
-                )
-                SubTitleBenefit(text = stringResource(R.string.subscription_unlimited_text))
-            }
-
-        }
-        Spacer(modifier = Modifier.width(8.dp))
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
+//                contentDescription = null,
+//                tint = MaterialTheme.colorScheme.primary,
+//                modifier = Modifier.size(24.dp)
+//            )
+//            Spacer(modifier = Modifier.width(8.dp))
+//            Column {
+//                TitleBenefit(
+//                    text = stringResource(R.string.subscription_unlimited)
+//                )
+//                SubTitleBenefit(text = stringResource(R.string.subscription_unlimited_text))
+//            }
+//
+//        }
+//        Spacer(modifier = Modifier.width(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically

@@ -16,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 
 @Composable
 fun CameraTopBar(
     vmTokens: TokenViewModel,
+
+    onNavigateFirstOffer: () -> Unit,
 ) {
-    val tokens = vmTokens.tokens.collectAsState()
+//    val tokens = vmTokens.tokens.collectAsState()
 
     TopAppBar(
         title = {},
@@ -34,7 +37,8 @@ fun CameraTopBar(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                TokenDisplay(tokens = tokens, showPlus = false) { vmTokens.switchPointsVisibility() }
+                GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
+//                TokenDisplay(tokens = tokens, showPlus = false) { vmTokens.switchPointsVisibility() }
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(

@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,32 +13,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,18 +40,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.subscription.components.CountdownTimer
+import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -77,6 +60,8 @@ fun SecondOfferStateFul(
 
     onDismissRequest: () -> Unit,
 ) {
+    val showComposable = remember { mutableStateOf(false) }
+
     val productMonthly = vmBilling.productMonthly
     val productAnnually = vmBilling.productAnnually
     val productAnnuallyRR = vmBilling.productAnnuallyRR2
@@ -91,7 +76,6 @@ fun SecondOfferStateFul(
     val priceMicrosSubMonthly = remember { mutableStateOf<Long?>(null) }
 
     val priceCurrencySubAnnually = remember { mutableStateOf<String?>(null) }
-
 
     Log.d(
         TAG,
@@ -185,6 +169,11 @@ fun SecondOfferStateFul(
             )
 
             attempts++
+        }
+
+        // Check if priceInApp is not null before setting showComposable to true
+        if (priceSubAnnually.value != null && priceSubMonthly.value != null && priceSubAnnuallyRR.value != null) {
+            showComposable.value = true
         }
     }
 
@@ -367,14 +356,7 @@ fun SecondOfferStateLess(
                                     textAlign = TextAlign.Center
                                 )
                             }
-
-                            Text(
-                                text = stringResource(R.string.only) + " " + priceDiscount.value + stringResource(
-                                    id = R.string.subscription_year
-                                ),
-                                color = MaterialTheme.colorScheme.onBackground,
-                                style = MaterialTheme.typography.titleLarge,
-                            )
+                            Spacer(modifier = Modifier.height(16.dp))
                             Text(
                                 text = priceAnnualMonthly + " " + stringResource(id = R.string.subscription_month),
                                 color = MaterialTheme.colorScheme.onBackground,
@@ -403,24 +385,18 @@ fun SecondOfferStateLess(
                         }
                     }
 
+                    /**
+                     * Confirm Button
+                     */
+                    SubscriptionButton(
+                        onLaunchPurchaseFlow = { onLaunchPurchaseFlow() }
+                    )
 
-                    Button(
-                        onClick = { onLaunchPurchaseFlow() },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(58.dp),
-                        shape = RoundedCornerShape(30.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.claim_now),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
                     Spacer(modifier = Modifier.height(8.dp))
+
+                    /**
+                     * Reject Offer
+                     */
                     TextButton(
                         onClick = { onDismissRequest() },
                         modifier = Modifier
