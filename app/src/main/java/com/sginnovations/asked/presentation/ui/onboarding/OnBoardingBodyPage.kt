@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingAge
+import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingCrafting
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingDefault
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingGender
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingInterest
@@ -24,6 +25,7 @@ fun OnBoardingBodyPage(
         OnBoardingType.SingleSelect -> OnBoardingAge(onBoardingPage)
         OnBoardingType.MultipleSelect -> OnBoardingInterest(onBoardingPage)
         OnBoardingType.Quote -> OnBoardingQuote(onBoardingPage)
+        OnBoardingType.Personalization -> OnBoardingCrafting()
         else -> OnBoardingDefault(onBoardingPage)
     }
 }

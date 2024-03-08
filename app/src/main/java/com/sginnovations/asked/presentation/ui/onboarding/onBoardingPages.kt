@@ -39,6 +39,9 @@ class OnBoarding(
             GuideUse,
             PrivacyScreen,
 
+            QuoteOneScreen,
+            QuoteTwoScreen,
+
             FinalScreen,
             CreatingPersonalization,
         )

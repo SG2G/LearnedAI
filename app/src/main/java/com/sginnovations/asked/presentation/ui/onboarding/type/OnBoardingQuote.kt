@@ -53,8 +53,6 @@ fun OnBoardingQuote(
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.weight(1f))
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()

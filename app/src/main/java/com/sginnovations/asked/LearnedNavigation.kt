@@ -130,7 +130,7 @@ fun LearnedNavigation(
             isPremium.value = checkIsPremium()
 
             // User its logged - set up
-            if (firsTimeLaunch.value) {
+            if (!firsTimeLaunch.value) {
                 vmNavigator.navigateAuthToX(
                     navController,
                     OnBoarding
