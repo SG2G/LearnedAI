@@ -72,7 +72,7 @@ fun AgeSelection(
         AgeRange("+55"),
     )
 
-    var selectedAgeRange by remember { mutableStateOf<AgeRange?>(ageRanges.first()) }
+    var selectedAgeRange by remember { mutableStateOf<AgeRange?>(null) }
 
     Column(
         modifier = Modifier

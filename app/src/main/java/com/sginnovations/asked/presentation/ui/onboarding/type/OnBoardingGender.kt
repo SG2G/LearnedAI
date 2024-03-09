@@ -67,7 +67,7 @@ fun GenderSelection(
         GenderOption(stringResource(R.string.other), R.drawable.other)
     )
 
-    var selectedGender by remember { mutableStateOf<GenderOption?>(genders.first()) }
+    var selectedGender by remember { mutableStateOf<GenderOption?>(null) }
 
     Row(
         modifier = Modifier
@@ -83,15 +83,14 @@ fun GenderSelection(
                     .clickable {
                         selectedGender = gender
                     },
-                elevation = CardDefaults.elevatedCardElevation(4.dp),
                 shape = RoundedCornerShape(10.dp),
                 border = if (selectedGender == gender) BorderStroke(
                     2.dp,
                     Color(0xFF155CE9)
-                ) else null,
+                ) else BorderStroke(1.dp, Color.LightGray),
                 colors = CardDefaults.cardColors(
                     MaterialTheme.colorScheme.surface
-                )
+                ),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,

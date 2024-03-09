@@ -142,7 +142,7 @@ fun OnBoardingInterest(
             fontWeight = FontWeight.Bold
         )
         Text(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(32.dp),
             text = onBoardingPage.getSubTitle(context),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

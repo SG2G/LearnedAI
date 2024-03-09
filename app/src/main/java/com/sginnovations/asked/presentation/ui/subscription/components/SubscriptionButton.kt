@@ -31,6 +31,7 @@ import com.sginnovations.asked.R
 
 @Composable
 fun SubscriptionButton(
+    textButton: String,
     onLaunchPurchaseFlow: () -> Unit,
 ) {
     val animationColor = MaterialTheme.colorScheme.primary
@@ -101,7 +102,7 @@ fun SubscriptionButton(
             shape = RoundedCornerShape(30.dp)
         ) {
             Text(
-                text = stringResource(R.string.claim_offer),
+                text = textButton,
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleMedium
             )

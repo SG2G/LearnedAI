@@ -51,6 +51,7 @@ import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.subscription.components.Feature
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionBenefits
+import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionComparisonTable
 import com.sginnovations.asked.presentation.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
@@ -454,39 +455,12 @@ fun SubscriptionStateLess(
                         ) { userOption.value = Option.OptionMonthly }
                     }
                     // Product 2 - LifeTime
-                    if (!showOffer.value) {
-                        priceSubAnnuallyRR.value?.let { discountPrice ->
-                            priceSubAnnually.value?.let { allPrice ->
-                                SubscriptionCard(
-                                    subscriptionDuration = stringResource(R.string.subscription_annually),
-                                    allPrice = allPrice,
-                                    priceWithDiscount = discountPrice,
-                                    priceAnnualMonthly = priceMicrosSubAnnuallyRR.value?.let { micro ->
-                                        priceCurrencySubAnnually.value?.let { currency ->
-                                            formatPriceAnnualToMonthly(
-                                                micro,
-                                                currency
-                                            )
-                                        }
-                                    },
-                                    savingsPercentage = priceMicrosSubMonthly.value?.let { microsMonth ->
-                                        priceMicrosSubAnnuallyRR.value?.let { microsAnnual ->
-                                            calculateSavingsPercentage(
-                                                microsMonth, microsAnnual
-                                            )
-                                        }
-                                    },
-                                    subscriptionOption = Option.OptionAnnually,
-                                    userOption = userOption.value
-                                ) { userOption.value = Option.OptionAnnually }
-                            }
-                        }
-                    } else {
-                        priceSubAnnually.value?.let { price ->
+                    priceSubAnnually.value?.let { discountPrice ->
+                        priceSubAnnually.value?.let { allPrice ->
                             SubscriptionCard(
                                 subscriptionDuration = stringResource(R.string.subscription_annually),
-                                allPrice = price,
-                                priceWithDiscount = priceSubAnnuallyDiscount.value,
+                                allPrice = allPrice,
+                                priceWithDiscount = discountPrice,
                                 priceAnnualMonthly = priceMicrosSubAnnually.value?.let { micro ->
                                     priceCurrencySubAnnually.value?.let { currency ->
                                         formatPriceAnnualToMonthly(
@@ -506,164 +480,150 @@ fun SubscriptionStateLess(
                                 userOption = userOption.value
                             ) { userOption.value = Option.OptionAnnually }
                         }
-                    }
 
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Bottom
-                    ) {
-                        if (userOption.value != Option.OptionMonthly && !priceSubAnnuallyDiscount.value.isNullOrEmpty()) {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                text = stringResource(R.string.subscription_first_year_at) + " " + priceSubAnnuallyDiscount.value + stringResource(
-                                    id = R.string.subscription_year
-                                ) + ", " + stringResource(
-                                    R.string.then
-                                ) + " " + priceSubAnnually.value + stringResource(id = R.string.subscription_year) + ". " + stringResource(
-                                    R.string.subscription_automatic_renewal_easy_cancellation
-                                ),
-                                color = MaterialTheme.colorScheme.onBackground,
-                                style = MaterialTheme.typography.labelMedium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        /**
-                         * Button
-                         */
+
                         Column(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Bottom
                         ) {
-                            Button(
-                                onClick = {
-                                    if (vmPreferences.showSubOffer.value) {
-                                        showSubscriptionGift.value = true
-                                    } else {
+                            if (userOption.value != Option.OptionMonthly && !priceSubAnnuallyDiscount.value.isNullOrEmpty()) {
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    text = stringResource(R.string.subscription_first_year_at) + " " + priceSubAnnuallyDiscount.value + stringResource(
+                                        id = R.string.subscription_year
+                                    ) + ", " + stringResource(
+                                        R.string.then
+                                    ) + " " + priceSubAnnually.value + stringResource(id = R.string.subscription_year) + ". " + stringResource(
+                                        R.string.subscription_automatic_renewal_easy_cancellation
+                                    ),
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            /**
+                             * Button
+                             */
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                SubscriptionButton(
+                                    textButton = stringResource(R.string.subscription_unlock_asked_ai_pro),
+                                    onLaunchPurchaseFlow = {
                                         selectedPlan.value.value?.let {
                                             onLaunchPurchaseFlow(it)
                                         }
                                     }
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                                    .height(58.dp),
-                                shape = RoundedCornerShape(30.dp)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.subscription_unlock_asked_ai_pro),
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    style = MaterialTheme.typography.titleMedium
                                 )
+
+                                TextButton(
+                                    onClick = { onNavigateUpAndOffer() },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.reject_offer),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
                             }
-                            TextButton(
-                                onClick = { onNavigateUpAndOffer },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.reject_offer),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
+                            Spacer(modifier = Modifier.height(8.dp))
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    /**
+                     * Small Letter
+                     */
+                    val smallLetterPadding =
+                        PaddingValues(bottom = 8.dp, start = 20.dp, end = 20.dp)
+
+                    Text(
+                        modifier = Modifier.padding(smallLetterPadding),
+                        text = stringResource(R.string.subscription_info_policy),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.labelMedium,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Column(
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        /**
+                         * TRIAL
+                         */
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp),
+                            text = stringResource(R.string.subscription_pvu),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            text = stringResource(R.string.subscription_private_tutor_comparation),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
-                }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                    val features = listOf(
+                        Feature(
+                            "No Ads",
+                            "",
+                            "✓"
+                        ),
+                        Feature(
+                            stringResource(R.string.feature_unlimited_tokens),
+                            stringResource(R.string.feature_3_day),
+                            "✓"
+                        ),
+                        Feature(
+                            stringResource(R.string.feature_unlimited_camera_messages),
+                            stringResource(R.string.feature_3_day), "✓"
+                        ),
+                        Feature(
+                            stringResource(R.string.feature_unlimited_assistant_messages),
+                            stringResource(
+                                R.string.feature_1_day
+                            ), "✓"
+                        ),
+                        Feature(stringResource(R.string.feature_access_full_guide), "-", "✓"),
+                        Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
+                    )
 
-                /**
-                 * Small Letter
-                 */
-                val smallLetterPadding = PaddingValues(bottom = 8.dp, start = 20.dp, end = 20.dp)
-
-                Text(
-                    modifier = Modifier.padding(smallLetterPadding),
-                    text = stringResource(R.string.subscription_info_policy),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.labelMedium,
-                    textAlign = TextAlign.Center
-                )
-
-                Column(
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    /**
-                     * TRIAL
-                     */
+                    SubscriptionComparisonTable(features = features)
+                    Divider()
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp),
-                        text = stringResource(R.string.subscription_pvu),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center
+                        text = stringResource(R.string.subscription_having_issues_with_your_subscription),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
+                        text = stringResource(R.string.subscription_contact_us_at_askedaihelp_gmail_com),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelMedium.merge(textDecoration = TextDecoration.Underline),
+                        textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        text = stringResource(R.string.subscription_private_tutor_comparation),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodySmall,
-                        textAlign = TextAlign.Center
+                            .clickable { onSendEmail() },
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
-
-                val features = listOf(
-                    Feature(
-                        "No Ads",
-                        "",
-                        "✓"
-                    ),
-                    Feature(
-                        stringResource(R.string.feature_unlimited_tokens),
-                        stringResource(R.string.feature_3_day),
-                        "✓"
-                    ),
-                    Feature(
-                        stringResource(R.string.feature_unlimited_camera_messages),
-                        stringResource(R.string.feature_3_day), "✓"
-                    ),
-                    Feature(
-                        stringResource(R.string.feature_unlimited_assistant_messages),
-                        stringResource(
-                            R.string.feature_1_day
-                        ), "✓"
-                    ),
-                    Feature(stringResource(R.string.feature_access_full_guide), "-", "✓"),
-                    Feature(stringResource(R.string.feature_all_cameras_categories), "-", "✓"),
-                )
-
-                SubscriptionComparisonTable(features = features)
-                Divider()
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.subscription_having_issues_with_your_subscription),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = stringResource(R.string.subscription_contact_us_at_askedaihelp_gmail_com),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelMedium.merge(textDecoration = TextDecoration.Underline),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onSendEmail() },
-                )
-                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }

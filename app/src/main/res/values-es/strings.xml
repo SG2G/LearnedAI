@@ -416,5 +416,33 @@
     <string name="see_more">Ver más</string>
     <string name="if_you_fall_below_3_tokens">Si caes bajo 3 tokens</string>
     <string name="they_reset_to_3_daily">se resetean a 3 diariamente.</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+    <string name="other">Otro</string>
+    <string name="select_your_gender">Selecciona tu género</string>
+    <string name="select_your_age_range">Selecciona tu rango de edad</string>
+    <string name="what_are_your_goals">¿Cuáles son tus objetivos?</string>
+    <string name="select_up_to_3_goals_for_more_accurate_customization">Selecciona hasta 3 objetivos para una personalización más precisa</string>
+    <string name="do_you_agree_with_this_statement">¿Estás de acuerdo con esta afirmación?</string>
+    <string name="emotional_understanding">Comprensión emocional</string>
+    <string name="building_a_united_family">Construir una familia unida</string>
+    <string name="parental_peace_of_mind">Tranquilidad para los padres</string>
+    <string name="study_support">Apoyo para el estudio</string>
+    <string name="quality_information">Información de calidad</string>
+    <string name="guidance_and_teaching">Orientación y enseñanza</string>
+    <string name="claim_offer">Reclamar oferta</string>
+    <string name="gift_for_you">Regalo para ti</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="pb_text_1">Estableciendo objetivos</string>
+    <string name="pb_text_2">Adaptando áreas de crecimiento</string>
+    <string name="pb_text_3">Seleccionando contenido</string>
+    <string name="pb_question_1">¿Sueles reflexionar?</string>
+    <string name="pb_question_2">¿Quieres rendirte cuando las cosas se ponen difíciles?</string>
+    <string name="pb_question_3">¿Tienes tendencia a terminar lo que empiezas?</string>
+    <string name="to_move_forward_specify">Para avanzar, especifica</string>
+    <string name="crafting_title">Estamos creando una experiencia personalizada para ti</string>
+    <string name="quote_1">La paternidad no se trata de perfección; se trata de crecer juntos y aprender de cada error</string>
+    <string name="quote_2">La alegría de ser padres proviene de ver a tu hijo desarrollar su propia identidad y camino en la vida</string>
 
 </resources>

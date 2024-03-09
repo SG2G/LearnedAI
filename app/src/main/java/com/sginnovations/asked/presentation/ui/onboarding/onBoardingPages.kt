@@ -271,7 +271,7 @@ object QuoteOneScreen : OnBoardingPage {
 
     override fun getSubTitle(context: Context) = ""
 
-    override fun getDescription(context: Context) = ""
+    override fun getDescription(context: Context) = context.getString(R.string.quote_1)
 
 }
 
@@ -281,7 +281,7 @@ object QuoteTwoScreen : OnBoardingPage {
 
     override fun getSubTitle(context: Context) = ""
 
-    override fun getDescription(context: Context) = ""
+    override fun getDescription(context: Context) = context.getString(R.string.quote_2)
 
 }
 
@@ -306,20 +306,5 @@ object CreatingPersonalization : OnBoardingPage {
     override fun getSubTitle(context: Context) = ""
 
     override fun getDescription(context: Context) = ""
-
-    override fun getQuestions(context: Context) = listOf(
-        OnBoardingFinalQuestions(
-            question = ""
-        ),
-        OnBoardingFinalQuestions(
-            question = ""
-        ),
-        OnBoardingFinalQuestions(
-            question = ""
-        ),
-        OnBoardingFinalQuestions(
-            question = ""
-        ),
-    )
 
 }

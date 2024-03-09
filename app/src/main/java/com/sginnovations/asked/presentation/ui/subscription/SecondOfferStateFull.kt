@@ -389,6 +389,7 @@ fun SecondOfferStateLess(
                      * Confirm Button
                      */
                     SubscriptionButton(
+                        textButton = stringResource(R.string.claim_offer),
                         onLaunchPurchaseFlow = { onLaunchPurchaseFlow() }
                     )
 

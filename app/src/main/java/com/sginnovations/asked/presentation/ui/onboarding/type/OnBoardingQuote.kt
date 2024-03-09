@@ -1,18 +1,13 @@
 package com.sginnovations.asked.presentation.ui.onboarding.type
 
 import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -38,25 +33,28 @@ fun OnBoardingQuote(
     onBoardingPage: OnBoardingPage,
 ) {
     val context = LocalContext.current
-    val scrollState = rememberScrollState()
 
     Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize(),
     ) {
-        Text(
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-            text = stringResource(R.string.do_you_agree_with_this_statement),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
-        )
+        Box(
+            contentAlignment = Alignment.TopCenter
+        ) {
+            Text(
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                text = stringResource(R.string.do_you_agree_with_this_statement),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
+                .fillMaxSize()
+                .padding(horizontal = 32.dp),
+            contentAlignment = Alignment.Center
         ) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -66,7 +64,9 @@ fun OnBoardingQuote(
                 )
             ) {
                 Icon(
-                    modifier = Modifier.height(32.dp).padding(start = 16.dp, top = 16.dp),
+                    modifier = Modifier
+                        .height(32.dp)
+                        .padding(start = 16.dp, top = 16.dp),
                     painter = painterResource(id = R.drawable.quotes_end_svgrepo_com),
                     contentDescription = null,
                     tint = Color(0xFF3C5AFA)

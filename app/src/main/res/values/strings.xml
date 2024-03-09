@@ -448,6 +448,18 @@
     <string name="guidance_and_teaching">Guidance and Teaching</string>
     <string name="claim_offer">Claim Offer</string>
     <string name="gift_for_you">Gift for you</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="pb_text_1">Setting Goals</string>
+    <string name="pb_text_2">Adapting growth areas</string>
+    <string name="pb_text_3">Picking content</string>
+    <string name="pb_question_1">Do you self-reflect?</string>
+    <string name="pb_question_2">Do you want to give up when things get hard?</string>
+    <string name="pb_question_3">Are you inclined to finish what you start?</string>
+    <string name="to_move_forward_specify">To move forward, specify</string>
+    <string name="crafting_title">We are creating a personalized experience for you</string>
+    <string name="quote_1">Parenting is not about perfection; it\'s about growing together and learning from each mistake.</string>
+    <string name="quote_2">The joy of parenting comes from watching your child develop their own unique identity and path in life</string>
 
 
 </resources>

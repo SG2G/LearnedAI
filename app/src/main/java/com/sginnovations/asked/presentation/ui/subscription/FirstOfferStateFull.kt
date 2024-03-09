@@ -407,6 +407,7 @@ fun FirstOfferStateLess(
                          * Claim Offer
                          */
                         SubscriptionButton(
+                            textButton = stringResource(R.string.claim_offer),
                             onLaunchPurchaseFlow = { onLaunchPurchaseFlow() }
                         )
 

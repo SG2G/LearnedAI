@@ -61,6 +61,7 @@ import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
 import com.sginnovations.asked.presentation.viewmodel.LessonViewModel
 import com.sginnovations.asked.presentation.viewmodel.NavigatorViewModel
+import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReferralViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
@@ -113,6 +114,7 @@ fun LearnedNavigation(
     vmAssistant: AssistantViewModel = hiltViewModel(),
     vmReport: ReportViewModel = hiltViewModel(),
     vmRss: RssFeedViewModel = hiltViewModel(),
+    vmOnBoarding: OnBoardingViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -130,7 +132,7 @@ fun LearnedNavigation(
             isPremium.value = checkIsPremium()
 
             // User its logged - set up
-            if (!firsTimeLaunch.value) {
+            if (firsTimeLaunch.value) { //TODO CHANGE IT
                 vmNavigator.navigateAuthToX(
                     navController,
                     OnBoarding
@@ -385,6 +387,7 @@ fun LearnedNavigation(
                 }
                 Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
                 OnBoardingScreen(
+                    vmOnBoarding = vmOnBoarding,
                     onFinish = { scope.launch { endOnBoarding() } },
                 )
 
