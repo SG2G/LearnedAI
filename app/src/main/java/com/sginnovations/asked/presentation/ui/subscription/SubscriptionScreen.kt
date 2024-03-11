@@ -292,7 +292,7 @@ fun SubscriptionStateFull(
                     ) {
                         IconButton(onClick = { onNavigateUpAndOffer() }) {
                             Icon(
-                                imageVector = Icons.Filled.Cancel,
+                                imageVector = Icons.Rounded.Close,
                                 contentDescription = "Cancel"
                             )
                         }

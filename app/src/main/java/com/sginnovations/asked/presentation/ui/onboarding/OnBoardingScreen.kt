@@ -55,7 +55,7 @@ fun OnBoardingScreen(
         //TODO TUTORIAL END IT
         modifier = Modifier.fillMaxSize(),
         state = pagerState,
-        userScrollEnabled = false,
+        userScrollEnabled = true,
         verticalAlignment = Alignment.CenterVertically
     ) { page ->
         val quoteType = onBoardingPages[page].getType(context) == OnBoardingType.Quote
@@ -72,9 +72,10 @@ fun OnBoardingScreen(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .height(if (quoteType) 92.dp else 48.dp)
+                    .height(if (quoteType) 128.dp else 48.dp)
             ) {
                 OnBoardingButton(
+                    vmOnBoarding,
                     onBoardingPages[page],
                     pagerState,
                     onBoardingPagesNum,

@@ -32,16 +32,18 @@ fun NoTokensDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.no_tokens_dialog_tittle),
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
             )
         },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                ResetDailyTokens()
+                //ResetDailyTokens()
                 Text(text = stringResource(R.string.no_tokens_dialog_subtitle))
             }
         },
@@ -93,12 +95,12 @@ fun ResetDailyTokens() {
             textAlign = TextAlign.Center
         )
     }
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(R.string.they_reset_to_3_daily),
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center
-    )
+//    Text(
+//        modifier = Modifier.fillMaxWidth(),
+//        text = stringResource(R.string.they_reset_to_3_daily),
+//        style = MaterialTheme.typography.bodySmall,
+//        color = MaterialTheme.colorScheme.onSurfaceVariant,
+//        textAlign = TextAlign.Center
+//    )
     Spacer(modifier = Modifier.height(16.dp))
 }

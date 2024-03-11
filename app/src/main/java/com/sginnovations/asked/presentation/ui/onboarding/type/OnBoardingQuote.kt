@@ -41,7 +41,7 @@ fun OnBoardingQuote(
             contentAlignment = Alignment.TopCenter
         ) {
             Text(
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.do_you_agree_with_this_statement),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -73,9 +73,9 @@ fun OnBoardingQuote(
                 )
                 onBoardingPage.getDescription(context)?.let { text ->
                     Text(
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 8.dp),
                         text = text,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }

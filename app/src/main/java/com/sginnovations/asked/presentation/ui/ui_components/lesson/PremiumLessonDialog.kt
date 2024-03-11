@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import com.sginnovations.asked.R
 
 @Composable
@@ -21,9 +22,11 @@ fun PremiumLessonDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.lesson_dialog_title),
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
             )
         },
         text = {

@@ -10,6 +10,8 @@ import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingDefault
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingGender
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingInterest
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingQuote
+import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingResponse
+import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingSection
 import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -30,6 +32,8 @@ fun OnBoardingBodyPage(
         OnBoardingType.SingleSelect -> OnBoardingAge(onBoardingPage)
         OnBoardingType.MultipleSelect -> OnBoardingInterest(onBoardingPage)
         OnBoardingType.Quote -> OnBoardingQuote(onBoardingPage)
+        OnBoardingType.Response -> OnBoardingResponse(vmOnBoarding, onBoardingPage)
+        OnBoardingType.Section -> OnBoardingSection(onBoardingPage)
         OnBoardingType.Personalization -> {
             OnBoardingCrafting(vmOnBoarding, pagerState)
         }

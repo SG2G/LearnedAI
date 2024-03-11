@@ -1,6 +1,5 @@
 package com.sginnovations.asked.presentation.ui.onboarding.type
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,14 +12,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,20 +39,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingMultipleSelection
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingPage
-
-data class SelectableInterest(
-    val name: String,
-    @DrawableRes val icon: Int,
-    var selected: Boolean = false
-)
 
 @Composable
 fun InterestSelection(
-    interests: List<SelectableInterest>,
-    selectedInterests: List<SelectableInterest>,
-    onSelectionChange: (SelectableInterest) -> Unit
+    interests: List<OnBoardingMultipleSelection>,
+    selectedInterests: List<OnBoardingMultipleSelection>,
+    onSelectionChange: (OnBoardingMultipleSelection) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -94,40 +91,50 @@ fun InterestSelection(
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(Modifier.width(16.dp))
-                    Text(interest.name, style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.weight(1f))
-                    Checkbox(
-                        modifier = Modifier.padding(end = 8.dp),
-                        checked = isSelected,
-                        onCheckedChange = null,
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = Color(0xFF155CE9)
-                        )
+                    Text(interest.name, style = MaterialTheme.typography.bodyMedium,modifier = Modifier.weight(1f).wrapContentWidth(Alignment.Start))
+//                    Spacer(modifier = Modifier.weight(1f))
+                    CircleCheckbox(
+                        selected = isSelected,
+                        onChecked = { null }
                     )
+//                    Checkbox(
+//                        modifier = Modifier.padding(end = 8.dp),
+//                        checked = isSelected,
+//                        onCheckedChange = null,
+//                        colors = CheckboxDefaults.colors(
+//                            checkedColor = Color(0xFF155CE9)
+//                        )
+//                    )
                 }
             }
         }
     }
 }
+@Composable
+fun CircleCheckbox(selected: Boolean, enabled: Boolean = true, onChecked: () -> Unit) {
 
+    val color = MaterialTheme.colorScheme
+    val imageVector = if (selected) Icons.Filled.CheckCircle else Icons.Outlined.Circle
+    val tint = if (selected) color.primary else Color(0xFFCCCCCC)
+    val background = if (selected) Color.Transparent else Color.Transparent //Color(0xFFF8F8F8)
+
+    IconButton(onClick = { onChecked() },
+        enabled = enabled
+    ) {
+        Icon(imageVector = imageVector, tint = tint,
+            modifier = Modifier.background(background, shape = CircleShape),
+            contentDescription = "checkbox")
+    }
+}
 @Composable
 fun OnBoardingInterest(
     onBoardingPage: OnBoardingPage,
 ) {
     val context = LocalContext.current
 
-    val interests = remember {
-        listOf(
-            SelectableInterest(context.getString(R.string.emotional_understanding), R.drawable.lightbulb_bolt_svgrepo_com),
-            SelectableInterest(context.getString(R.string.building_a_united_family), R.drawable.home_with_a_heart_svgrepo_com),
-            SelectableInterest(context.getString(R.string.parental_peace_of_mind), R.drawable.sofa_svgrepo_filled),
-            SelectableInterest(context.getString(R.string.study_support), R.drawable.camera_svgrepo_filled),
-            SelectableInterest(context.getString(R.string.quality_information), R.drawable.book_bookmark_svgrepo_filled),
-            SelectableInterest(context.getString(R.string.guidance_and_teaching), R.drawable.compass_svgrepo_com),
-        )
-    }
-    // State to keep track of selected interests.
-    var selectedInterests by remember { mutableStateOf(listOf<SelectableInterest>()) }
+    val options = remember { onBoardingPage.getMultipleOptions(context) }
+
+    var selectedOptions by remember { mutableStateOf(listOf<OnBoardingMultipleSelection>()) }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -142,33 +149,35 @@ fun OnBoardingInterest(
             fontWeight = FontWeight.Bold
         )
         Text(
-            modifier = Modifier.fillMaxWidth().padding(32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
             text = onBoardingPage.getSubTitle(context),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
 
-        InterestSelection(
-            interests = interests,
-            selectedInterests = selectedInterests
-        ) { selectedInterest ->
-            // Toggle the selected state.
-            val currentlySelected = selectedInterest.selected
-            val newList: List<SelectableInterest>
-            if (currentlySelected) {
-                newList = selectedInterests - selectedInterest
-            } else {
-                if (selectedInterests.size < 3) {
-                    newList = selectedInterests + selectedInterest
+        if (options != null) {
+            InterestSelection(
+                interests = options,
+                selectedInterests = selectedOptions
+            ) { selectedInterest ->
+                // Toggle the selected state.
+                val currentlySelected = selectedInterest.selected
+                val newList: List<OnBoardingMultipleSelection>
+                if (currentlySelected) {
+                    newList = selectedOptions - selectedInterest
                 } else {
-                    return@InterestSelection
+                    if (selectedOptions.size < 3) {
+                        newList = selectedOptions + selectedInterest
+                    } else {
+                        return@InterestSelection
+                    }
                 }
+                // Update the list for UI.
+                selectedOptions = newList
+                // Update the individual interest selected state.
+                options.find { it.name == selectedInterest.name }?.selected = !currentlySelected
             }
-            // Update the list for UI.
-            selectedInterests = newList
-            // Update the individual interest selected state.
-            interests.find { it.name == selectedInterest.name }?.selected = !currentlySelected
         }
     }
 }

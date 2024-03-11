@@ -152,8 +152,8 @@
     <string name="tabs_lessons">Lecciones</string>
     <string name="tabs_content">Contenido</string>
     <string name="parental_assist_previous_chats">Chats</string>
-    <string name="no_tokens_dialog_tittle">Tokens insuficientes</string>
-    <string name="no_tokens_dialog_subtitle">No tienes suficientes tokens para hoy.\n\nVuelve a intentarlo mañana o actualiza a Premium.</string>
+    <string name="no_tokens_dialog_tittle">Límite de Mensajes Alcanzado</string>
+    <string name="no_tokens_dialog_subtitle">Límite de mensajes alcanzado hoy. \n\nPara continuar enviando, vuelve mañana o actualiza a Premium para tener mensajes ilimitados.</string>
     <string name="no_tokens_dialog_view_premium_subscription">Ver suscripción premium</string>
     <string name="no_tokens_dialog_cancel">Esperaré hasta mañana</string>
     <string name="profile_manage_subscription">Administrar suscripción</string>
@@ -401,7 +401,7 @@
     <string name="onboarding_privacy_title_1">Su Privacidad, Nuestra Prioridad</string>
     <string name="onboarding_privacy_title_2">Confidencialidad Asegurada</string>
     <string name="onboarding_camera_subtitle_1">Toma una foto de cualquier problema escolar</string>
-    <string name="onboarding_camera_subtitle_2">Recibe explicaciones detalladas para comprender y resolver los problemas</string>
+    <string name="onboarding_camera_subtitle_2">Recibe explicaciones detalladas</string>
     <string name="onboarding_camera_subtitle_3">Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía</string>
     <string name="onboarding_camera_subtitle_4">¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro</string>
     <string name="onboarding_assistant_subtitle_1">¿Tienes cualquier inquietud? Nuestro asistente de IA está listo para ayudarle</string>
@@ -409,19 +409,19 @@
     <string name="onboarding_assistant_subtitle_3">Desde cómo manejar rabietas hasta fomentar buenos hábitos</string>
     <string name="onboarding_assistant_subtitle_4">Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre</string>
     <string name="onboarding_guide_subtitle_1">Accede a una colección de conocimientos de psicólogos, neurocientíficos y pediatras</string>
-    <string name="onboarding_guide_subtitle_2">" Encuentra consejos útiles y estrategias para mejorar la convivencia familiar"</string>
+    <string name="onboarding_guide_subtitle_2">"Encuentra consejos útiles y estrategias para mejorar la convivencia familiar"</string>
     <string name="onboarding_guide_subtitle_3">Aplica lo aprendido para crear un hogar más armonioso y feliz</string>
     <string name="onboarding_privacy_subtitle_1">Asked no recopila datos personales</string>
     <string name="onboarding_privacy_subtitle_2">Los mensajes en nuestra app son privados y no se almacenan</string>
     <string name="see_more">Ver más</string>
-    <string name="if_you_fall_below_3_tokens">Si caes bajo 3 tokens</string>
+    <string name="if_you_fall_below_3_tokens">Límite de mensajes alcanzado hoy. Para continuar enviando,\n\nvuelve mañana o actualiza a Premium.</string>
     <string name="they_reset_to_3_daily">se resetean a 3 diariamente.</string>
     <string name="male">Masculino</string>
     <string name="female">Femenino</string>
     <string name="other">Otro</string>
     <string name="select_your_gender">Selecciona tu género</string>
     <string name="select_your_age_range">Selecciona tu rango de edad</string>
-    <string name="what_are_your_goals">¿Cuáles son tus objetivos?</string>
+    <string name="what_are_your_goals">¿Cuáles son tus metas?</string>
     <string name="select_up_to_3_goals_for_more_accurate_customization">Selecciona hasta 3 objetivos para una personalización más precisa</string>
     <string name="do_you_agree_with_this_statement">¿Estás de acuerdo con esta afirmación?</string>
     <string name="emotional_understanding">Comprensión emocional</string>
@@ -444,5 +444,17 @@
     <string name="crafting_title">Estamos creando una experiencia personalizada para ti</string>
     <string name="quote_1">La paternidad no se trata de perfección; se trata de crecer juntos y aprender de cada error</string>
     <string name="quote_2">La alegría de ser padres proviene de ver a tu hijo desarrollar su propia identidad y camino en la vida</string>
+    <string name="goal_1">Sentirme apoyado/a en cada paso</string>
+    <string name="goal_2">Acompañar el crecimiento emocional de mi hijo/a</string>
+    <string name="goal_3">Enfrentar con confianza los retos parentales</string>
+    <string name="goal_4">Compartir momentos de calidad en familia</string>
+    <string name="goal_5">Encontrar respuestas a mis dudas de crianza</string>
+    <string name="goal_6">Vivir la parentalidad con menos estrés</string>
+    <string name="goal_7">Crear un ambiente de amor y respeto mutuo</string>
+    <string name="goal_8">Reforzar la confianza en mis decisiones de crianza</string>
+    <string name="good_response_1">¡Maravilloso! Tu dedicación es el motor que impulsará el futuro de tus hijos. Aquí en Asked, te ofrecemos las herramientas para convertir ese deseo en realidad. ¡Vamos juntos en este viaje!</string>
+    <string name="bad_response_1">Ser padre o madre viene con sus desafíos, y está bien tener dudas. Aquí en Asked, estamos listos para ayudarte a encontrar formas de apoyar el futuro de tus hijos. Estás en buena compañía.</string>
+    <string name="quote_3">Estoy comprometido a hacer lo que sea necesario para asegurar un futuro más brillante para mis hijos</string>
+    <string name="together_in_every_step">Juntos en Cada Paso</string>
 
 </resources>

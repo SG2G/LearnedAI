@@ -156,11 +156,11 @@
     <string name="tabs_lessons">Lessons</string>
     <string name="tabs_content">Content</string>
     <string name="parental_assist_previous_chats">Chats</string>
-    <string name="no_tokens_dialog_tittle">Insufficient Tokens</string>
+    <string name="no_tokens_dialog_tittle">Message Limit Reached</string>
     <string name="no_tokens_dialog_view_premium_subscription">View Premium Subscription</string>
     <string name="no_tokens_dialog_cancel">I will wait until tomorrow</string>
     <string name="profile_manage_subscription">Manage subscription</string>
-    <string name="no_tokens_dialog_subtitle">You do not have enough tokens for today.\n\nTry again tomorrow or upgrade to Premium.</string>
+    <string name="no_tokens_dialog_subtitle">Message limit reached for today. \n\nTo keep sending, come back tomorrow or upgrade to Premium for unlimited messages.</string>
     <string name="lesson_description_if_you_have_any_problem_watch_it_on">"If you have any problem watch it on "</string>
     <string name="lesson_description_youtube" translatable="false">YouTube</string>
     <string name="lesson_description_or_you_can_see_the">" or you can see the "</string>
@@ -417,7 +417,7 @@
     <string name="onboarding_privacy_title_1">Your Privacy, Our Priority</string>
     <string name="onboarding_privacy_title_2">Assured Confidentiality</string>
     <string name="onboarding_camera_subtitle_1">Take picture of any school problem</string>
-    <string name="onboarding_camera_subtitle_2">Receive detailed explanations to understand and solve the problem</string>
+    <string name="onboarding_camera_subtitle_2">Receive detailed explanations</string>
     <string name="onboarding_camera_subtitle_3">Use specific cameras for Translating, Summarizing, and Spelling Correction</string>
     <string name="onboarding_camera_subtitle_4">Have more questions? Ask anything you need until everything is clear</string>
     <string name="onboarding_assistant_subtitle_1">Do you have concerns about parenting? Our AI assistant is ready to help you</string>
@@ -430,7 +430,7 @@
     <string name="onboarding_privacy_subtitle_1">Asked does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored</string>
     <string name="onboarding_privacy_subtitle_2">Messages in our app are private and are not stored</string>
     <string name="see_more">See more</string>
-    <string name="if_you_fall_below_3_tokens">If you fall below 3 tokens</string>
+    <string name="if_you_fall_below_3_tokens">Message limit reached for today. To keep sending, \n\ncome back tomorrow or upgrade to Premium.</string>
     <string name="they_reset_to_3_daily">they reset to 3 daily.</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -438,7 +438,7 @@
     <string name="select_your_gender">Select your Gender</string>
     <string name="select_your_age_range">Select Your Age Range</string>
     <string name="what_are_your_goals">What are your goals?</string>
-    <string name="select_up_to_3_goals_for_more_accurate_customization">Select up to 3 goals for more accurate customization.</string>
+    <string name="select_up_to_3_goals_for_more_accurate_customization">Select up to 3 goals for more accurate customization</string>
     <string name="do_you_agree_with_this_statement">Do you agree with this statement?</string>
     <string name="emotional_understanding">Emotional Understanding</string>
     <string name="building_a_united_family">Building a United Family</string>
@@ -460,6 +460,20 @@
     <string name="crafting_title">We are creating a personalized experience for you</string>
     <string name="quote_1">Parenting is not about perfection; it\'s about growing together and learning from each mistake.</string>
     <string name="quote_2">The joy of parenting comes from watching your child develop their own unique identity and path in life</string>
+    <string name="goal_1">Feel supported at every step</string>
+    <string name="goal_2">Accompany my child\'s emotional growth</string>
+    <string name="goal_3">Face parenting challenges with confidence</string>
+    <string name="goal_4">Share quality moments with my family</string>
+    <string name="goal_5">Find answers to my parenting questions</string>
+    <string name="goal_6">Experience parenting with less stress</string>
+    <string name="goal_7">Create an environment of love and mutual respect</string>
+    <string name="goal_8">Strengthen confidence in my parenting decisions</string>
+    <string name="good_response_1">Wonderful! Your dedication is the driving force that will propel your children\'s future. Here at Asked, we offer you the tools to turn that wish into reality. Let\'s go on this journey together!</string>
+    <string name="bad_response_1">Being a parent comes with its challenges, and it\'s okay to have doubts. Here at Asked, we\'re ready to help you find ways to support your children\'s future. You\'re in good company.</string>
+    <string name="quote_3">I am committed to doing whatever it takes to ensure a brighter future for my children</string>
+    <string name="together_in_every_step">Together in Every Step</string>
+    <string name="personalize_title">Customize Your Journey</string>
+    <string name="personalize_subtitle">Tailored for your family, for a unique journey together</string>
 
 
 </resources>

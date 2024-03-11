@@ -3,6 +3,7 @@ package com.sginnovations.asked.presentation.ui.onboarding.components
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -33,11 +35,13 @@ import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingPage
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingType
+import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingButton(
+    vmOnBoarding: OnBoardingViewModel,
     onBoardingPages: OnBoardingPage,
     pagerState: PagerState,
     onBoardingPagesNum: Int,
@@ -48,6 +52,8 @@ fun OnBoardingButton(
 ) {
     val context = LocalContext.current
     val scrollScope = rememberCoroutineScope()
+
+    val responseQuote = onBoardingPages.getDescription(context) == context.getString(R.string.quote_3)
 
     if (onBoardingPages.getType(context) == OnBoardingType.Quote) {
         Row(
@@ -62,6 +68,9 @@ fun OnBoardingButton(
                             page = pagerState.currentPage + 1,
                             animationSpec = tween(1000)
                         )
+                        if (responseQuote) {
+                            vmOnBoarding.quoteResponse.value = false
+                        }
                     }
                 },
                 modifier = Modifier
@@ -96,23 +105,29 @@ fun OnBoardingButton(
                             page = pagerState.currentPage + 1,
                             animationSpec = tween(1000)
                         )
+                        if (responseQuote) {
+                            vmOnBoarding.quoteResponse.value = true
+                        }
                     }
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .height(124.dp),
+                    .height(158.dp),
                 shape = RoundedCornerShape(20),
                 colors = ButtonDefaults.buttonColors(
                     Color.White
                 ),
                 border = BorderStroke(1.dp, Color.LightGray)
             ) {
-                Column {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Icon(
                         imageVector = Icons.Rounded.Done,
                         contentDescription = null,
                         tint = Color(0xFF469C29),
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(38.dp)
                     )
                     Text(
                         text = stringResource(R.string.yes),

@@ -22,9 +22,11 @@ fun PremiumCameraDialog(
         onDismissRequest = { onDismissRequest() },
         title = {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.premium_camera_title),
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
             )
         },
         text = {

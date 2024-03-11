@@ -14,5 +14,7 @@ class OnBoardingViewModel @Inject constructor(
 
     val btnEnable = mutableStateOf(true)
     val currentPage = mutableIntStateOf(0)
+    val quoteResponse = mutableStateOf<Boolean?>(null)
+
 
 }

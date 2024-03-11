@@ -132,7 +132,7 @@ fun LearnedNavigation(
             isPremium.value = checkIsPremium()
 
             // User its logged - set up
-            if (firsTimeLaunch.value) { //TODO CHANGE IT
+            if (!firsTimeLaunch.value) { //TODO CHANGE IT
                 vmNavigator.navigateAuthToX(
                     navController,
                     OnBoarding
@@ -354,7 +354,7 @@ fun LearnedNavigation(
                     vmPreferences = vmPreferences,
 
                     onNavigateLesson = { navController.navigate(route = Lesson.route) },
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
             }
             /**
@@ -368,7 +368,7 @@ fun LearnedNavigation(
 
                     navController = navController,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) },
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) },
 
                     onNavigateChat = {
                         scope.launch { vmNavigator.navigateChat(navController) }
@@ -404,7 +404,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
 
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
             }
             /**
@@ -422,7 +422,7 @@ fun LearnedNavigation(
                             vmNavigator.navigateAssistantChat(navController)
                         }
                     },
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -439,7 +439,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
                     vmReport = vmReport,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -458,7 +458,7 @@ fun LearnedNavigation(
                     vmToken = vmToken,
                     vmReport = vmReport,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) }
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -528,7 +528,7 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     vmToken = vmToken,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = Subscription.route) },
+                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) },
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
             }
