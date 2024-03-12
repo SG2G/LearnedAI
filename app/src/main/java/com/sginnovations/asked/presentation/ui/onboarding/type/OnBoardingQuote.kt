@@ -27,12 +27,32 @@ import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingPage
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingType
+import kotlin.random.Random
+
+private const val BACKGROUND = "background"
+private const val QUOTES = "quotes"
 
 @Composable
 fun OnBoardingQuote(
     onBoardingPage: OnBoardingPage,
 ) {
     val context = LocalContext.current
+
+    val colorSets = listOf(
+        mapOf(
+            BACKGROUND to Color(0xFFE6E8F4),
+            QUOTES to Color(0xFF3C5AFA)
+        ),
+        mapOf(
+            BACKGROUND to Color(0xFFFFEDE1),
+            QUOTES to Color(0xFFfd8528)
+        )
+    )
+
+    val chosenSet = colorSets.random()
+
+    val backgroundColor = chosenSet[BACKGROUND] ?: Color(0xFFE6E8F4)
+    val quotesColor = chosenSet[QUOTES] ?: Color(0xFF3C5AFA)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -59,9 +79,7 @@ fun OnBoardingQuote(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(10.dp),
-                colors = CardDefaults.cardColors(
-                    Color(0xFFE6E8F4)
-                )
+                colors = CardDefaults.cardColors( backgroundColor )
             ) {
                 Icon(
                     modifier = Modifier
@@ -69,11 +87,16 @@ fun OnBoardingQuote(
                         .padding(start = 16.dp, top = 16.dp),
                     painter = painterResource(id = R.drawable.quotes_end_svgrepo_com),
                     contentDescription = null,
-                    tint = Color(0xFF3C5AFA)
+                    tint = quotesColor
                 )
                 onBoardingPage.getDescription(context)?.let { text ->
                     Text(
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 8.dp),
+                        modifier = Modifier.padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 16.dp,
+                            top = 8.dp
+                        ),
                         text = text,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,

@@ -302,12 +302,12 @@
     <string name="introduction">Introduction</string>
     <string name="subscription_try_7_free_days_of_asked_premium">Try 7 Free Days of Asked Premium</string>
     <string name="subscription_automatic_renewal_easy_cancellation">Automatic renewal. Easy cancellation.</string>
-    <string name="feature_unlimited_tokens">Unlimited Tokens</string>
+    <string name="feature_unlimited_tokens">Unlimited Messages</string>
     <string name="feature_all_cameras_categories">All cameras categories</string>
     <string name="feature_unlimited_camera_messages">Unlimited camera messages</string>
     <string name="feature_unlimited_assistant_messages">Unlimited assistant messages</string>
     <string name="feature_access_full_guide">Access Full Guide</string>
-    <string name="feature_3_day">3/day</string>
+    <string name="feature_2_day">2/day</string>
     <string name="feature_1_day">1/day</string>
     <string name="subscription_first_year_at">First year at</string>
     <string name="then">then</string>
@@ -438,6 +438,7 @@
     <string name="select_your_gender">Select your Gender</string>
     <string name="select_your_age_range">Select Your Age Range</string>
     <string name="what_are_your_goals">What are your goals?</string>
+    <string name="what_are_your_interest">What are your interest?</string>
     <string name="select_up_to_3_goals_for_more_accurate_customization">Select up to 3 goals for more accurate customization</string>
     <string name="do_you_agree_with_this_statement">Do you agree with this statement?</string>
     <string name="emotional_understanding">Emotional Understanding</string>
@@ -474,6 +475,15 @@
     <string name="together_in_every_step">Together in Every Step</string>
     <string name="personalize_title">Customize Your Journey</string>
     <string name="personalize_subtitle">Tailored for your family, for a unique journey together</string>
+    <string name="secured_with_play_store">Secured with Play Store</string>
+    <string name="sub_card_title_1">Set your goals</string>
+    <string name="sub_card_title_2">Today: Free full access starts</string>
+    <string name="sub_card_title_3">Day 5: Get a reminder</string>
+    <string name="sub_card_title_4">Day 7: Free trial ends</string>
+    <string name="sub_card_description_1">You took personalizing quiz and successfully created your profile</string>
+    <string name="sub_card_description_2">Begin achieving your parenting goals with personalized advice</string>
+    <string name="sub_card_description_3">We will notify you about the end date of your free trial</string>
+    <string name="sub_card_description_4">We will notify you about the end date of your free trial</string>
 
 
 </resources>

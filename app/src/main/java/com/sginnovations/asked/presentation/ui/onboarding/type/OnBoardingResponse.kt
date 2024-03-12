@@ -32,9 +32,9 @@ fun OnBoardingResponse(
     val context = LocalContext.current
     val text = remember { mutableStateOf("") }
 
-    if (vmOnBoarding.quoteResponse.value == true) {
+    if (vmOnBoarding.quoteResponse.value) {
         text.value = onBoardingPage.getResponses(context)?.yesText ?: ""
-    } else if (vmOnBoarding.quoteResponse.value == false) {
+    } else if (!vmOnBoarding.quoteResponse.value) {
         text.value = onBoardingPage.getResponses(context)?.noText ?: ""
     }
 

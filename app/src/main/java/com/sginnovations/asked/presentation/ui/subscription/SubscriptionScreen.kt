@@ -15,12 +15,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.sharp.GppGood
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -29,6 +32,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -53,6 +57,7 @@ import com.sginnovations.asked.presentation.ui.subscription.components.Feature
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionBenefits
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionComparisonTable
+import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionFlow
 import com.sginnovations.asked.presentation.ui.ui_components.subscription.SubscriptionCard
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
@@ -340,9 +345,8 @@ fun SubscriptionStateLess(
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    //Define the target date here
-    val targetDate =
-        LocalDateTime.of(2024, 3, 31, 0, 0) // Example: 31 March
+
+    val firstTimeLaunch = vmPreferences.firstTimeLaunch.value
 
     val selectedPlan = remember { mutableStateOf(productAnnually) }
 
@@ -374,7 +378,7 @@ fun SubscriptionStateLess(
                     IconButton(onClick = { onNavigateUpAndOffer() }) {
                         Icon(
                             imageVector = Icons.Rounded.Close,
-                            contentDescription = "Cancel"
+                            contentDescription = null
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
@@ -397,7 +401,7 @@ fun SubscriptionStateLess(
                     IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Filled.Cancel,
-                            contentDescription = "Cancel2",
+                            contentDescription = null,
                             tint = Color.Transparent
                         )
                     }
@@ -413,26 +417,28 @@ fun SubscriptionStateLess(
                     ),
                     shape = RoundedCornerShape(25.dp)
                 ) {
-                    Spacer(modifier = Modifier.height(8.dp))
+//                    Text(
+//                        text = stringResource(R.string.benefits),
+//                        color = MaterialTheme.colorScheme.onBackground,
+//                        style = MaterialTheme.typography.titleSmall,
+//                        textAlign = TextAlign.Center,
+//                        modifier = Modifier.fillMaxWidth()
+//                    )
+//
+//                    Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
-                        text = stringResource(R.string.benefits),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleSmall,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    SubscriptionBenefits()
-
-                    Spacer(modifier = Modifier.height(8.dp))
+                    /**
+                     * Benefits
+                     */
+                    if (firstTimeLaunch) SubscriptionBenefits()
+                    /**
+                     * Subscription Flow
+                     */
+                    if (!firstTimeLaunch) SubscriptionFlow()
 
                     /**
                      * Products
                      */
-
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         modifier = Modifier
@@ -535,6 +541,26 @@ fun SubscriptionStateLess(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     /**
+                     * Secure by
+                     */
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        OutlinedCard {
+                            Row(
+                                modifier = Modifier.padding(4.dp)
+                            ) {
+                                Icon(imageVector = Icons.Sharp.GppGood, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(text = stringResource(R.string.secured_with_play_store), style = MaterialTheme.typography.labelLarge)
+                            }
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    /**
                      * Small Letter
                      */
                     val smallLetterPadding =
@@ -548,34 +574,35 @@ fun SubscriptionStateLess(
                         textAlign = TextAlign.Center
                     )
 
-                    Column(
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        /**
-                         * TRIAL
-                         */
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp),
-                            text = stringResource(R.string.subscription_pvu),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
-                            text = stringResource(R.string.subscription_private_tutor_comparation),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
+
+//                    Column(
+//                        verticalArrangement = Arrangement.Center
+//                    ) {
+//                        /**
+//                         * TRIAL
+//                         */
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                        Text(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(horizontal = 32.dp),
+//                            text = stringResource(R.string.subscription_pvu),
+//                            color = MaterialTheme.colorScheme.onBackground,
+//                            style = MaterialTheme.typography.titleMedium,
+//                            textAlign = TextAlign.Center
+//                        )
+//                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+//                        Text(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(horizontal = 16.dp),
+//                            text = stringResource(R.string.subscription_private_tutor_comparation),
+//                            color = MaterialTheme.colorScheme.onSurface,
+//                            style = MaterialTheme.typography.bodySmall,
+//                            textAlign = TextAlign.Center
+//                        )
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                    }
 
                     val features = listOf(
                         Feature(
@@ -585,17 +612,17 @@ fun SubscriptionStateLess(
                         ),
                         Feature(
                             stringResource(R.string.feature_unlimited_tokens),
-                            stringResource(R.string.feature_3_day),
+                            stringResource(R.string.feature_2_day),
                             "✓"
                         ),
                         Feature(
                             stringResource(R.string.feature_unlimited_camera_messages),
-                            stringResource(R.string.feature_3_day), "✓"
+                            stringResource(R.string.feature_2_day), "✓"
                         ),
                         Feature(
                             stringResource(R.string.feature_unlimited_assistant_messages),
                             stringResource(
-                                R.string.feature_1_day
+                                R.string.feature_2_day
                             ), "✓"
                         ),
                         Feature(stringResource(R.string.feature_access_full_guide), "-", "✓"),

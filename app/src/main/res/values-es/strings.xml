@@ -258,12 +258,12 @@
     <string name="introduction">Introducción</string>
     <string name="subscription_try_7_free_days_of_asked_premium">Prueba 7 días gratis de Asked Premium</string>
     <string name="subscription_automatic_renewal_easy_cancellation">Renovación Automática. Cancelación fácil.</string>
-    <string name="feature_unlimited_tokens">Tokens ilimitados</string>
+    <string name="feature_unlimited_tokens">Mensajes ilimitados</string>
     <string name="feature_all_cameras_categories">Todas las Categorías de la Cámara</string>
     <string name="feature_unlimited_camera_messages">Mensajes de Cámara ilimitados</string>
     <string name="feature_unlimited_assistant_messages">Mensajes del Asistente ilimitados</string>
     <string name="feature_access_full_guide">Acceso a la Guía Completa</string>
-    <string name="feature_3_day">3/día</string>
+    <string name="feature_2_day">2/día</string>
     <string name="feature_1_day">1/día</string>
     <string name="subscription_first_year_at">Primer año a</string>
     <string name="then">después</string>
@@ -422,6 +422,7 @@
     <string name="select_your_gender">Selecciona tu género</string>
     <string name="select_your_age_range">Selecciona tu rango de edad</string>
     <string name="what_are_your_goals">¿Cuáles son tus metas?</string>
+    <string name="what_are_your_interest">¿Cuales son tus intereses?</string>
     <string name="select_up_to_3_goals_for_more_accurate_customization">Selecciona hasta 3 objetivos para una personalización más precisa</string>
     <string name="do_you_agree_with_this_statement">¿Estás de acuerdo con esta afirmación?</string>
     <string name="emotional_understanding">Comprensión emocional</string>

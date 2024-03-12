@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.presentation.ui.onboarding.components.OnBoardingButton
 import com.sginnovations.asked.presentation.ui.onboarding.components.OnBoardingTimeLine
 import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
+import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 
 private const val TAG = "OnBoardingScreen"
 

@@ -132,7 +132,7 @@ fun LearnedNavigation(
             isPremium.value = checkIsPremium()
 
             // User its logged - set up
-            if (!firsTimeLaunch.value) { //TODO CHANGE IT
+            if (firsTimeLaunch.value) { //TODO CHANGE IT
                 vmNavigator.navigateAuthToX(
                     navController,
                     OnBoarding
@@ -336,8 +336,9 @@ fun LearnedNavigation(
                         navController.popBackStack(route = Profile.route, true)
                         navController.navigate(route = Auth.route)
                     },
-                    onNavigateRefCode = { navController.navigate(route = RefCode.route) },
-                    onNavigateSubscriptions = { navController.navigate(route = Subscription.route) }
+                    onNavigateSubscriptions = {
+                        navController.navigate(route = Subscription.route)
+                    }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -382,7 +383,6 @@ fun LearnedNavigation(
                 route = OnBoarding.route
             ) {
                 suspend fun endOnBoarding() {
-                    vmPreferences.setNotFirstTime()
                     vmNavigator.navigateAuthToShowSubscription(navController)
                 }
                 Log.d(TAG, "LearnedNavigation: ${vmPreferences.firstTimeLaunch.value}")
@@ -512,6 +512,7 @@ fun LearnedNavigation(
 //                    onNavigateUp = { navController.navigateUp() }
                     onNavigateUpAndOffer = {
                         scope.launch {
+                            vmPreferences.setNotFirstTime() //TODO ALWAYS WRITE
                             if (!isPremium.value) {
                                 vmNavigator.navigateUpAndOffer(
                                     navController

@@ -34,10 +34,7 @@ fun OnBoardingBodyPage(
         OnBoardingType.Quote -> OnBoardingQuote(onBoardingPage)
         OnBoardingType.Response -> OnBoardingResponse(vmOnBoarding, onBoardingPage)
         OnBoardingType.Section -> OnBoardingSection(onBoardingPage)
-        OnBoardingType.Personalization -> {
-            OnBoardingCrafting(vmOnBoarding, pagerState)
-        }
-
+        OnBoardingType.Personalization -> OnBoardingCrafting(vmOnBoarding, pagerState)
         else -> OnBoardingDefault(onBoardingPage)
     }
 }
