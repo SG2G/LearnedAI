@@ -1,6 +1,8 @@
 package com.sginnovations.asked
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.util.Log
 import androidx.annotation.Keep
 import com.appsflyer.AppsFlyerLib
@@ -18,6 +20,20 @@ class MyApp: Application() {
     override fun onCreate() {
         super.onCreate()
 
+        /**
+         * Notification
+         */
+        val notificationChannel= NotificationChannel(
+            "asked_notification",
+            "Asked",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        val notificationManager=getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(notificationChannel)
+
+        /**
+         * AF
+         */
         val afInstance = AppsFlyerLib.getInstance()
 
         //afInstance.setDebugLog(true) //TODO DELETE

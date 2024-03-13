@@ -290,8 +290,6 @@ fun AssistantChatStateLess(
         ChatTextField(
             writeMessage = writeMessage,
 
-            conversationCostToken = conversationCostToken,
-
             isPremium = isPremium
 
         ) { onSendMessage(it) } //onSendMessage

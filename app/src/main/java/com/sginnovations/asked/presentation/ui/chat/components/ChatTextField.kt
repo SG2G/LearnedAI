@@ -29,8 +29,6 @@ import com.sginnovations.asked.presentation.ui.ui_components.chat.TokenCostDispl
 fun ChatTextField(
     writeMessage: MutableState<String>,
 
-    conversationCostToken: String,
-
     isPremium: MutableState<Boolean>,
 
     onSendMessage: (String) -> Unit,
@@ -50,12 +48,6 @@ fun ChatTextField(
                     ) //TODO PREMIUM CANT SEE IT
                 )
         ) {
-            if (!isPremium.value) {
-                TokenCostDisplay(
-                    tokenCost = conversationCostToken
-                )
-            }
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

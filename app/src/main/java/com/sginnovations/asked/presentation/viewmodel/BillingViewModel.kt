@@ -24,6 +24,7 @@ import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.google.common.collect.ImmutableList
 import com.sginnovations.asked.Constants.Companion.MAX_RECONNECTION_ATTEMPTS
 import com.sginnovations.asked.Constants.Companion.RECONNECTION_DELAY_MILLIS
+import com.sginnovations.asked.data.AskedNotificationService
 import com.sginnovations.asked.domain.usecase.firebase.setters.SetPremiumUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -35,12 +36,14 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 private const val TAG = "BillingViewModel"
-
+private const val FIVE_DAYS = 5 * 24 * 60 * 60 * 1000L
+private const val MINUTE = 1 * 60 * 1000L
 @HiltViewModel
 class BillingViewModel @Inject constructor(
     @ApplicationContext appContext: Context,
 
     private val setPremiumUseCase: SetPremiumUseCase,
+    private val askedNotificationService: AskedNotificationService,
 ) : ViewModel() {
 
     private var currentProductSKU: String? = null
@@ -231,6 +234,9 @@ class BillingViewModel @Inject constructor(
     ) {
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             Log.d(TAG, "onPurchasesUpdated: BillingClient.BillingResponseCode.OK")
+            val fiveDaysInMillis = FIVE_DAYS
+            askedNotificationService.scheduleNotification(fiveDaysInMillis)
+
             for (purchase in purchases) {
                 verifySubPurchase(purchase, appContext)
             }

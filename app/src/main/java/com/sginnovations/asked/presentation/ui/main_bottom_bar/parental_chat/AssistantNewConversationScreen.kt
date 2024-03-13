@@ -235,7 +235,6 @@ fun AssistantNewConversationStateLess(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-
         Column(
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.background,
@@ -247,11 +246,11 @@ fun AssistantNewConversationStateLess(
                     text.value = suggestedText
                 }
             )
-            if (!isPremium) {
-                TokenCostDisplay(
-                    tokenCost = newConversationCostToken
-                )
-            }
+//            if (!isPremium) {
+//                TokenCostDisplay(
+//                    tokenCost = newConversationCostToken
+//                )
+//            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

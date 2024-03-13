@@ -61,6 +61,7 @@ import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
 import com.sginnovations.asked.presentation.viewmodel.LessonViewModel
 import com.sginnovations.asked.presentation.viewmodel.NavigatorViewModel
+import com.sginnovations.asked.presentation.viewmodel.NotificationViewModel
 import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReferralViewModel
@@ -115,6 +116,7 @@ fun LearnedNavigation(
     vmReport: ReportViewModel = hiltViewModel(),
     vmRss: RssFeedViewModel = hiltViewModel(),
     vmOnBoarding: OnBoardingViewModel = hiltViewModel(),
+    vmNotification: NotificationViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -328,7 +330,7 @@ fun LearnedNavigation(
                 exitTransition = { ExitTransition.None }
             ) {
                 StateFulProfile(
-                    vmToken = vmToken,
+                    vmNotification = vmNotification,
                     vmAuth = vmAuth,
                     vmIntent = vmIntent,
 

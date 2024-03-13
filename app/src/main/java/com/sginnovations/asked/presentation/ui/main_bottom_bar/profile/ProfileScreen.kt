@@ -1,5 +1,7 @@
 package com.sginnovations.asked.presentation.ui.main_bottom_bar.profile
 
+import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.RingVolume
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.Button
@@ -25,6 +28,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,12 +41,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.data.UserData
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CheckPermissions
 import com.sginnovations.asked.presentation.ui.ui_components.profile.LogOutButton
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfileButton
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfileName
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfilePicture
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
+import com.sginnovations.asked.presentation.viewmodel.NotificationViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
@@ -49,7 +56,7 @@ private const val TAG = "StateFulProfile"
 
 @Composable
 fun StateFulProfile(
-    vmToken: TokenViewModel,
+    vmNotification: NotificationViewModel,
     vmAuth: AuthViewModel,
     vmIntent: IntentViewModel,
 
@@ -63,8 +70,7 @@ fun StateFulProfile(
     val userAuth = vmAuth.userAuth.collectAsState()
 
     StateLessProfile(
-        vmToken = vmToken,
-
+        vmNotification = vmNotification,
         userAuth = userAuth,
 
         onSignOut = {
@@ -84,8 +90,7 @@ fun StateFulProfile(
 
 @Composable
 fun StateLessProfile(
-    vmToken: TokenViewModel,
-
+    vmNotification: NotificationViewModel,
     userAuth: State<UserData?>,
 
     onSignOut: () -> Unit,
@@ -150,11 +155,47 @@ fun StateLessProfile(
             ),
             shape = cardShape
         ) {
-            ProfileButton(
-                text = stringResource(R.string.premium),
-                painterResource = painterResource(id = R.drawable.premium_svgrepo_com),
-                onClick = { onNavigateSubscriptions() }
-            )
+            Column {
+                ProfileButton(
+                    text = stringResource(R.string.premium),
+                    painterResource = painterResource(id = R.drawable.premium_svgrepo_com),
+                    onClick = { onNavigateSubscriptions() }
+                )
+//                Divider(
+//                    modifier = Modifier.padding(horizontal = 16.dp),
+//                    color = Color.DarkGray
+//                )
+//                val showCheckNotificationPermission = remember { mutableStateOf(false) }
+//                val notificationPermissionGranted = remember { mutableStateOf(false) }
+//
+//
+//                ProfileButton(
+//                    text = "Notification",
+//                    imageVector = Icons.Filled.RingVolume,
+//                    onClick = {
+//                        if (notificationPermissionGranted.value) {
+//                            vmNotification.showBasicNotification()
+//                        } else {
+//                            showCheckNotificationPermission.value = true
+//                        }
+//                    }
+//                )
+//                if (showCheckNotificationPermission.value) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                        CheckPermissions(
+//                            permsAsked = Manifest.permission.POST_NOTIFICATIONS,
+//                            permName = "Notification", //TODO TRANSLATE
+//                            onPermissionGranted = {
+//                                notificationPermissionGranted.value = true
+//                                vmNotification.scheduleWaterReminder()
+//                            }
+//                        )
+//                    } else {
+//                        notificationPermissionGranted.value = true
+//                        vmNotification.scheduleWaterReminder()
+//                    }
+//                }
+            }
         }
 
         Card(

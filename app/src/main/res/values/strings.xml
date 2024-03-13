@@ -484,6 +484,10 @@
     <string name="sub_card_description_2">Begin achieving your parenting goals with personalized advice</string>
     <string name="sub_card_description_3">We will notify you about the end date of your free trial</string>
     <string name="sub_card_description_4">We will notify you about the end date of your free trial</string>
+    <string name="camera">Camera</string>
+    <string name="permission_required">%1$s Permission Required</string>
+    <string name="this_app_requires_access_to_your">This app requires access to your %1$s</string>
+    <string name="notifications">Notifications</string>
 
 
 </resources>

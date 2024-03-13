@@ -1,8 +1,10 @@
 package com.sginnovations.asked.presentation.ui.subscription
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Build
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,6 +55,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
+import com.sginnovations.asked.domain.usecase.checkPermissionAndRequest
+import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CheckPermissions
 import com.sginnovations.asked.presentation.ui.subscription.components.Feature
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionBenefits
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
@@ -356,6 +360,18 @@ fun SubscriptionStateLess(
         Option.OptionAnnuallyRR -> selectedPlan.value = productAnnuallyRR
     }
 
+    val context = LocalContext.current
+
+    fun Context.getActivity(): Activity? {
+        return when (this) {
+            is Activity -> this
+            is ContextWrapper -> baseContext.getActivity()
+            else -> null
+        }
+    }
+
+    val activity = context.getActivity()
+
     Log.i(TAG, "userOption -> ${userOption.value} selectedPlan -> ${selectedPlan.value}")
 
     Column(
@@ -428,13 +444,9 @@ fun SubscriptionStateLess(
 //                    Spacer(modifier = Modifier.height(8.dp))
 
                     /**
-                     * Benefits
+                     * Benefits and Subscription Flow
                      */
-                    if (firstTimeLaunch) SubscriptionBenefits()
-                    /**
-                     * Subscription Flow
-                     */
-                    if (!firstTimeLaunch) SubscriptionFlow()
+                    if (firstTimeLaunch) SubscriptionFlow() else SubscriptionBenefits()
 
                     /**
                      * Products
@@ -516,9 +528,29 @@ fun SubscriptionStateLess(
                                 SubscriptionButton(
                                     textButton = stringResource(R.string.subscription_unlock_asked_ai_pro),
                                     onLaunchPurchaseFlow = {
-                                        selectedPlan.value.value?.let {
-                                            onLaunchPurchaseFlow(it)
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                            if (activity != null) {
+                                                Log.d(TAG, "SubscriptionStateLess: checkPermissionAndRequest")
+                                                checkPermissionAndRequest(
+                                                    activity = activity,
+                                                    context = context,
+                                                    permission = Manifest.permission.POST_NOTIFICATIONS,
+                                                    permName = context.getString(R.string.notifications),
+                                                    onPermissionGranted = {
+                                                        selectedPlan.value.value?.let {
+                                                            Log.d(TAG, "SubscriptionStateLess: 1 onLaunchPurchaseFlow")
+                                                            onLaunchPurchaseFlow(it)
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                        } else {
+                                            Log.d(TAG, "SubscriptionStateLess: 2 onLaunchPurchaseFlow")
+                                            selectedPlan.value.value?.let {
+                                                onLaunchPurchaseFlow(it)
+                                            }
                                         }
+
                                     }
                                 )
 

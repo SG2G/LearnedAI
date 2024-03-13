@@ -320,8 +320,6 @@ fun ChatStateLess(
         ChatTextField(
             writeMessage = writeMessage,
 
-            conversationCostToken = "-1",
-
             isPremium = isPremium
 
         ) { onSendMessage(it) } //onSendMessage

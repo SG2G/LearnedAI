@@ -68,7 +68,7 @@ fun CameraStateFul(
     val cameraPermissionGranted = remember { mutableStateOf(false) }
     CheckPermissions(
         permsAsked = android.Manifest.permission.CAMERA,
-        permName = "Camera", //TODO TRANSLATE
+        permName = stringResource(R.string.camera),
         onPermissionGranted = {
             cameraPermissionGranted.value = true
         }

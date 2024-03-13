@@ -184,11 +184,11 @@ fun NewConversationStateLess(
                 RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
             )
         ) {
-            if (!isPremium) {
-                TokenCostDisplay(
-                    tokenCost = newConversationCostToken
-                )
-            }
+//            if (!isPremium) {
+//                TokenCostDisplay(
+//                    tokenCost = newConversationCostToken
+//                )
+//            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
