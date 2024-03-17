@@ -1,7 +1,5 @@
 package com.sginnovations.asked.presentation.ui.main_bottom_bar.profile
 
-import android.Manifest
-import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.RingVolume
 import androidx.compose.material.icons.filled.StarRate
-import androidx.compose.material.icons.filled.WorkspacePremium
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -26,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.data.UserData
-import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CheckPermissions
 import com.sginnovations.asked.presentation.ui.ui_components.profile.LogOutButton
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfileButton
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfileName
@@ -49,7 +43,8 @@ import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfilePict
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
 import com.sginnovations.asked.presentation.viewmodel.NotificationViewModel
-import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
+import com.sginnovations.asked.utils.CheckIsPremium
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 private const val TAG = "StateFulProfile"
@@ -101,6 +96,10 @@ fun StateLessProfile(
     onNavigateSubscriptions: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+
+    val isPremium = remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { isPremium.value = scope.async { CheckIsPremium.checkIsPremium() }.await() }
 
     val cardShape = RoundedCornerShape(25.dp)
 
@@ -133,14 +132,16 @@ fun StateLessProfile(
                     ) {
                         ProfileName(userAuth.value?.userName.toString())
                     }
-                    Text(
-                        modifier = Modifier.clickable {
-                            onManageSubscription()
-                        },
-                        text = stringResource(R.string.profile_manage_subscription),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.labelMedium
-                    )
+                    if (isPremium.value) {
+                        Text(
+                            modifier = Modifier.clickable {
+                                onManageSubscription()
+                            },
+                            text = stringResource(R.string.profile_manage_subscription),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
                 }
             }
         }

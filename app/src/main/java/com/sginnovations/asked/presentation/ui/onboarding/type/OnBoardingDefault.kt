@@ -49,22 +49,6 @@ fun OnBoardingDefault(
 ) {
     val context = LocalContext.current
 
-    val markwon = remember {
-        Markwon.builder(context)
-            .usePlugin(MarkwonInlineParserPlugin.create())
-            .usePlugin(
-                JLatexMathPlugin.create(
-                    42f,
-                    JLatexMathPlugin.BuilderConfigure { builder ->
-                        builder.inlinesEnabled(true)
-                    }
-                )
-            )
-            .build()
-    }
-    val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
-    val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -99,26 +83,19 @@ fun OnBoardingDefault(
         }
         Spacer(modifier = Modifier.height(16.dp))
         if (!onBoardingPage.getDescription(context).isNullOrEmpty()) {
-            AndroidView(
+            Column(
                 modifier = Modifier
                     .padding(Constants.CHAT_MSG_PADDING),
-                factory = { ctx ->
-                    TextView(ctx).apply {
-                        setBackgroundColor(Color.TRANSPARENT)
-                        setTextColor(textColor)
-                        textSize = textSizee
-                        typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
-                        movementMethod = LinkMovementMethod.getInstance()
-                    }
-                },
-                update = { view ->
-                    val node = onBoardingPage.getDescription(context)?.let { markwon.parse(it) }
-                    val renderedMarkdown = node?.let { markwon.render(it) }
-                    if (renderedMarkdown != null) {
-                        markwon.setParsedMarkdown(view, renderedMarkdown)
-                    }
+            ) {
+                onBoardingPage.getDescription(context)?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
-            )
+            }
         } else {
             val features = onBoardingPage.getFeatures(context)
 
@@ -160,3 +137,39 @@ fun OnBoardingDefault(
         }
     }
 }
+
+//val markwon = remember {
+//        Markwon.builder(context)
+//            .usePlugin(MarkwonInlineParserPlugin.create())
+//            .usePlugin(
+//                JLatexMathPlugin.create(
+//                    42f,
+//                    JLatexMathPlugin.BuilderConfigure { builder ->
+//                        builder.inlinesEnabled(true)
+//                    }
+//                )
+//            )
+//            .build()
+//    }
+//    val textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+//    val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
+//AndroidView(
+//                modifier = Modifier
+//                    .padding(Constants.CHAT_MSG_PADDING),
+//                factory = { ctx ->
+//                    TextView(ctx).apply {
+//                        setBackgroundColor(Color.TRANSPARENT)
+//                        setTextColor(textColor)
+//                        textSize = textSizee
+//                        typeface = ResourcesCompat.getFont(ctx, R.font.monasans_regular)
+//                        movementMethod = LinkMovementMethod.getInstance()
+//                    }
+//                },
+//                update = { view ->
+//                    val node = onBoardingPage.getDescription(context)?.let { markwon.parse(it) }
+//                    val renderedMarkdown = node?.let { markwon.render(it) }
+//                    if (renderedMarkdown != null) {
+//                        markwon.setParsedMarkdown(view, renderedMarkdown)
+//                    }
+//                }
+//            )

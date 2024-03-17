@@ -58,14 +58,14 @@ fun ProgressBar(vmOnBoarding: OnBoardingViewModel, pagerState: PagerState) {
             modifier = Modifier
                 .height(4.dp)
                 .background(Color.LightGray, shape = RoundedCornerShape(4.dp))
-                .width(224.dp)
+                .width(248.dp)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(fraction = progressFraction)
                     .background(
-                        MaterialTheme.colorScheme.onBackground,
+                        MaterialTheme.colorScheme.primary,
                         shape = RoundedCornerShape(4.dp)
                     )
             )

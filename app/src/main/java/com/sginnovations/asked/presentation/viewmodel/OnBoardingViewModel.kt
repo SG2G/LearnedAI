@@ -16,4 +16,6 @@ class OnBoardingViewModel @Inject constructor(
     val currentPage = mutableIntStateOf(0)
     val quoteResponse = mutableStateOf(true)
 
+    val childName = mutableStateOf("")
+
 }

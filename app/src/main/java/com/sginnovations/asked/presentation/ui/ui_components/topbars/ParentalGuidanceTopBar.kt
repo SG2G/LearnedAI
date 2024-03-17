@@ -13,10 +13,16 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.FirstOfferScreen
+import com.sginnovations.asked.ScreensDestinations
+import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParentalGuidanceTopBar(
     currentScreenTitle: String,
+
+    onNavigateFirstOffer: (ScreensDestinations) -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -29,6 +35,11 @@ fun ParentalGuidanceTopBar(
                     style = MaterialTheme.typography.titleLarge,
                 )
             }
+        },
+        actions = {
+            GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer(
+                FirstOfferScreen
+            ) })
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,

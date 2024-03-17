@@ -87,7 +87,6 @@ fun ChatStateFul(
     val chatAnimation = vmChat.chatAnimation
     val chatPlaceHolder = vmChat.chatPlaceHolder
 
-
     val isPremium = remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { isPremium.value = scope.async { CheckIsPremium.checkIsPremium() }.await() }
 
@@ -224,7 +223,6 @@ fun ChatStateLess(
     var lastIndex = remember { mutableIntStateOf(0) }
 
     val snackbarOffset = remember { Animatable(0f) }
-
 
     /**
      * LaunchedEffectSnackBarAnimation

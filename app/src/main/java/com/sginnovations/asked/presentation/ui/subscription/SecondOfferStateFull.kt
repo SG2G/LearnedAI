@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.ui.subscription.components.AskedSubscriptionTitle
 import com.sginnovations.asked.presentation.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
@@ -245,7 +246,8 @@ fun SecondOfferStateLess(
             modifier = Modifier.fillMaxSize(),
             colors = CardDefaults.cardColors(
                 MaterialTheme.colorScheme.surface
-            )
+            ),
+            shape = RoundedCornerShape(bottomStart = 0.dp, bottomEnd = 0.dp, topStart = 15.dp, topEnd = 15.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -253,42 +255,10 @@ fun SecondOfferStateLess(
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    IconButton(onClick = { onDismissRequest() }) {
-                        Icon(
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = "Cancel"
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Asked",
-                            style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            text = " Premium",
-                            style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = "Cancel2",
-                            tint = Color.Transparent
-                        )
-                    }
-                }
+                /**
+                 * Title
+                 */
+                AskedSubscriptionTitle(onDismissRequest)
                 /**
                  * CountDown
                  */
@@ -320,14 +290,7 @@ fun SecondOfferStateLess(
                             targetDate = targetDate,
                             style = MaterialTheme.typography.headlineSmall
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = stringResource(id = R.string.subscription_pvu),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
+                        Spacer(modifier = Modifier.height(8.dp))
                         Divider(modifier = Modifier.padding(horizontal = 16.dp))
                         HappyLottieAnimation()
                     }
@@ -411,11 +374,11 @@ fun SecondOfferStateLess(
                     }
 
                     val smallLetterPadding =
-                        PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                        PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp, top = 16.dp)
 
                     Text(
-                        modifier = Modifier.padding(smallLetterPadding),
-                        text = stringResource(R.string.subscription_info_policy),
+                        modifier = Modifier.fillMaxWidth().padding(smallLetterPadding),
+                        text = stringResource(R.string.you_can_cancel_at_any_time_billing_is_annual),
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.labelMedium,
                         textAlign = TextAlign.Center

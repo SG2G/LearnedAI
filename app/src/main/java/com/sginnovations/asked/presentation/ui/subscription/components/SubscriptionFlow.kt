@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -133,8 +134,8 @@ fun VerticalFadeDivider(index: Int) {
         .size(width = 1.dp, height = 16.dp)) {
         drawLine(
             brush = brush,
-            start = Offset(x = 0f, y = -20f),
-            end = Offset(x = 0f, y = size.height + 20f),
+            start = Offset(x = 0f, y = -60f),
+            end = Offset(x = 0f, y = size.height + 60f),
             strokeWidth = 2.dp.toPx()
         )
     }
@@ -153,6 +154,7 @@ fun CardWithTitleAndIcon(
         modifier = modifier
             .width(44.dp)
             .height(44.dp)
+            .alpha(2f)
             .border(
                 width = 2.dp,
                 color =

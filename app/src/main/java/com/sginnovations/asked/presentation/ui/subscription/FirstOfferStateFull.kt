@@ -54,6 +54,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.ui.subscription.components.AskedSubscriptionTitle
 import com.sginnovations.asked.presentation.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
@@ -72,26 +73,21 @@ fun FirstOfferStateFul(
 ) {
     val showComposable = remember { mutableStateOf(false) }
 
-    val productMonthly = vmBilling.productMonthly
     val productAnnually = vmBilling.productAnnually
     val productAnnuallyRR = vmBilling.productAnnuallyRR
 
     val priceSubAnnually = remember { mutableStateOf<String?>(null) }
     val priceSubAnnuallyDiscount = remember { mutableStateOf<String?>(null) }
     val priceSubAnnuallyRR = remember { mutableStateOf<String?>(null) }
-    val priceSubMonthly = remember { mutableStateOf<String?>(null) }
 
     val priceMicrosSubAnnually = remember { mutableStateOf<Long?>(null) }
     val priceMicrosSubAnnuallyRR = remember { mutableStateOf<Long?>(null) }
-    val priceMicrosSubMonthly = remember { mutableStateOf<Long?>(null) }
 
     val priceCurrencySubAnnually = remember { mutableStateOf<String?>(null) }
 
 
     Log.d(
-        TAG,
-        "productMonthly-> ${productMonthly.value.toString()} \n\n" +
-                "productAnnually-> ${productAnnually.value.toString()} \n\n" +
+        TAG, "productAnnually-> ${productAnnually.value.toString()} \n\n" +
                 "productAnually RR -> ${productAnnuallyRR.value.toString()}"
     )
 
@@ -115,9 +111,8 @@ fun FirstOfferStateFul(
      */
     LaunchedEffect(Unit) {
         var attempts = 0
-        while (priceSubAnnually.value == null && priceSubMonthly.value == null && priceSubAnnuallyRR.value == null && attempts < 20) { // try up to 20 times
-            delay(200)
-            Log.d(TAG, "size: ${productAnnually.value?.subscriptionOfferDetails?.size} ")
+        while (priceSubAnnually.value == null && priceSubAnnuallyRR.value == null && attempts < 25) { // try up to 20 times
+            delay(500)
 
             priceSubAnnuallyRR.value =
                 productAnnuallyRR.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
@@ -163,17 +158,8 @@ fun FirstOfferStateFul(
                         ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
             }
 
-            priceSubMonthly.value =
-                productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
-                    ?.firstOrNull { it.priceAmountMicros > 0 }?.formattedPrice
-
-            priceMicrosSubMonthly.value =
-                productMonthly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
-                    ?.firstOrNull { it.priceAmountMicros > 0 }?.priceAmountMicros
-
             Log.i(
                 TAG,
-                "$attempts priceSubMonthly -> $priceSubMonthly \n" +
                         "\n priceSubAnnually -> $priceSubAnnually \n" +
                         "\n priceDiscountSubAnnually -> ${priceSubAnnuallyDiscount.value} \n" +
                         "\npriceAnnualRR -> $priceSubAnnuallyRR"
@@ -182,41 +168,48 @@ fun FirstOfferStateFul(
             attempts++
         }
         // Check if priceInApp is not null before setting showComposable to true
-        if (priceSubAnnually.value != null && priceSubMonthly.value != null && priceSubAnnuallyRR.value != null) {
+        if (priceSubAnnually.value != null && priceSubAnnuallyRR.value != null) {
             showComposable.value = true
         }
     }
 
-    FirstOfferStateLess(
-        vmPreference = vmPreference,
-        priceFull = priceSubAnnually,
-        priceDiscount = priceSubAnnuallyRR,
+    if (showComposable.value) {
+        FirstOfferStateLess(
+            vmPreference = vmPreference,
+            priceFull = priceSubAnnually,
+            priceDiscount = priceSubAnnuallyRR,
 
-        priceAnnualMonthly = priceMicrosSubAnnuallyRR.value?.let { micro ->
-            priceCurrencySubAnnually.value?.let { currency ->
-                formatPriceAnnualToMonthly(
-                    micro,
-                    currency
-                )
-            }
-        },
-
-        onLaunchPurchaseFlow = {
-            if (activity != null) {
-                productAnnuallyRR.value?.let { productAnnuallyRR ->
-                    onLaunchPurchaseFlow(
-                        vmBilling = vmBilling,
-
-                        scope = scope,
-                        activity = activity,
-
-                        productDetails = productAnnuallyRR,
+            priceAnnualMonthly = priceMicrosSubAnnuallyRR.value?.let { micro ->
+                priceCurrencySubAnnually.value?.let { currency ->
+                    formatPriceAnnualToMonthly(
+                        micro,
+                        currency
                     )
                 }
-            }
-        }
+            },
 
-    ) { onDismissRequest() }
+            onLaunchPurchaseFlow = {
+                if (activity != null) {
+                    productAnnuallyRR.value?.let { productAnnuallyRR ->
+                        onLaunchPurchaseFlow(
+                            vmBilling = vmBilling,
+
+                            scope = scope,
+                            activity = activity,
+
+                            productDetails = productAnnuallyRR,
+                        )
+                    }
+                }
+            }
+
+        ) { onDismissRequest() }
+    } else {
+        /**
+         * Title
+         */
+        AskedSubscriptionTitle(onDismissRequest)
+    }
 }
 
 @Composable
@@ -255,7 +248,8 @@ fun FirstOfferStateLess(
             modifier = Modifier.fillMaxSize(),
             colors = CardDefaults.cardColors(
                 MaterialTheme.colorScheme.surface
-            )
+            ),
+            shape = RoundedCornerShape(bottomStart = 0.dp, bottomEnd = 0.dp, topStart = 15.dp, topEnd = 15.dp)
         ) {
 
             if (!showGiftContent.value) {
@@ -277,42 +271,10 @@ fun FirstOfferStateLess(
                         .verticalScroll(scrollState),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
-                    ) {
-                        IconButton(onClick = { onDismissRequest() }) {
-                            Icon(
-                                imageVector = Icons.Rounded.Close,
-                                contentDescription = "Cancel"
-                            )
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Asked",
-                                style = MaterialTheme.typography.displayMedium,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            Text(
-                                text = " Premium",
-                                style = MaterialTheme.typography.displayMedium,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        IconButton(onClick = { }) {
-                            Icon(
-                                imageVector = Icons.Filled.Cancel,
-                                contentDescription = "Cancel2",
-                                tint = Color.Transparent
-                            )
-                        }
-                    }
+                    /**
+                     * Title
+                     */
+                    AskedSubscriptionTitle(onDismissRequest)
                     /**
                      * CountDown
                      */
@@ -428,11 +390,11 @@ fun FirstOfferStateLess(
                         }
 
                         val smallLetterPadding =
-                            PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                            PaddingValues(bottom = 8.dp, start = 16.dp, end = 16.dp, top = 16.dp)
 
                         Text(
-                            modifier = Modifier.padding(smallLetterPadding),
-                            text = stringResource(R.string.subscription_info_policy),
+                            modifier = Modifier.fillMaxWidth().padding(smallLetterPadding),
+                            text = stringResource(R.string.you_can_cancel_at_any_time_billing_is_annual),
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.labelMedium,
                             textAlign = TextAlign.Center

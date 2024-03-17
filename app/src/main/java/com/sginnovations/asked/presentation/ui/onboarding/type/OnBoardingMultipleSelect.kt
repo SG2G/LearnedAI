@@ -36,17 +36,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingMultipleSelection
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingPage
+import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
 
 @Composable
 fun InterestSelection(
     interests: List<OnBoardingMultipleSelection>,
     selectedInterests: List<OnBoardingMultipleSelection>,
-    onSelectionChange: (OnBoardingMultipleSelection) -> Unit
+    onSelectionChange: (OnBoardingMultipleSelection) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -79,7 +82,6 @@ fun InterestSelection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(72.dp)
-                        // Cambia el color de fondo aquí.
                         .background(if (isSelected) Color(0xFFE6E8F4) else if (selectionLimitReached && !isSelected) Color.LightGray else Color.Transparent)
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -88,15 +90,23 @@ fun InterestSelection(
                         painter = painterResource(id = interest.icon),
                         contentDescription = "Icon for ${interest.name}",
                         modifier = Modifier.size(28.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(Modifier.width(16.dp))
-                    Text(interest.name, style = MaterialTheme.typography.bodyMedium,modifier = Modifier.weight(1f).wrapContentWidth(Alignment.Start))
+                    Text(
+                        interest.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.Start),
+                        fontWeight = FontWeight.SemiBold
+                    )
 //                    Spacer(modifier = Modifier.weight(1f))
                     CircleCheckbox(
-                        selected = isSelected,
-                        onChecked = { null }
-                    )
+                        interest = interest,
+                        selected = isSelected
+
+                    ) { onSelectionChange(it) }
 //                    Checkbox(
 //                        modifier = Modifier.padding(end = 8.dp),
 //                        checked = isSelected,
@@ -110,27 +120,41 @@ fun InterestSelection(
         }
     }
 }
+
 @Composable
-fun CircleCheckbox(selected: Boolean, enabled: Boolean = true, onChecked: () -> Unit) {
+fun CircleCheckbox(
+    interest: OnBoardingMultipleSelection,
+    selected: Boolean,
+    enabled: Boolean = true,
+
+    onSelectionChange: (OnBoardingMultipleSelection) -> Unit,
+) {
 
     val color = MaterialTheme.colorScheme
     val imageVector = if (selected) Icons.Filled.CheckCircle else Icons.Outlined.Circle
     val tint = if (selected) color.primary else Color(0xFFCCCCCC)
     val background = if (selected) Color.Transparent else Color.Transparent //Color(0xFFF8F8F8)
 
-    IconButton(onClick = { onChecked() },
+    IconButton(
+        onClick = { onSelectionChange(interest) },
         enabled = enabled
     ) {
-        Icon(imageVector = imageVector, tint = tint,
+        Icon(
+            imageVector = imageVector, tint = tint,
             modifier = Modifier.background(background, shape = CircleShape),
-            contentDescription = "checkbox")
+            contentDescription = "checkbox"
+        )
     }
 }
+
 @Composable
-fun OnBoardingInterest(
+fun OnBoardingMultipleSelect(
+    vmOnBoarding: OnBoardingViewModel,
     onBoardingPage: OnBoardingPage,
 ) {
     val context = LocalContext.current
+
+    val childName = vmOnBoarding.childName
 
     val options = remember { onBoardingPage.getMultipleOptions(context) }
 
@@ -141,15 +165,27 @@ fun OnBoardingInterest(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = onBoardingPage.getTitle(context),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            text =
+            if (onBoardingPage.getTitle(context) == context.getString(R.string.child_interest_title)) {
+                context.getString(
+                    R.string.child_interest_title,
+                    childName.value.ifEmpty { stringResource(R.string.your_child) }
+                )
+            } else {
+                onBoardingPage.getTitle(context)
+            },
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
         )
         Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
             text = onBoardingPage.getSubTitle(context),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

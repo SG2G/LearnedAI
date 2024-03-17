@@ -26,8 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.sharp.GppGood
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -56,7 +54,7 @@ import androidx.compose.ui.unit.dp
 import com.android.billingclient.api.ProductDetails
 import com.sginnovations.asked.R
 import com.sginnovations.asked.domain.usecase.checkPermissionAndRequest
-import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CheckPermissions
+import com.sginnovations.asked.presentation.ui.subscription.components.AskedSubscriptionTitle
 import com.sginnovations.asked.presentation.ui.subscription.components.Feature
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionBenefits
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
@@ -71,7 +69,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
-import java.time.LocalDateTime
 import java.util.Currency
 import kotlin.math.roundToInt
 
@@ -294,24 +291,10 @@ fun SubscriptionStateFull(
                 Column(
                     verticalArrangement = Arrangement.Top
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        IconButton(onClick = { onNavigateUpAndOffer() }) {
-                            Icon(
-                                imageVector = Icons.Rounded.Close,
-                                contentDescription = "Cancel"
-                            )
-                        }
-                        Text(
-                            text = "Asked Premium",
-                            style = MaterialTheme.typography.displayMedium,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                        IconButton(onClick = { }) {}
-                    }
+                    /**
+                     * Title
+                     */
+                    AskedSubscriptionTitle(onDismissRequest = {})
                 }
             }
         }
@@ -386,42 +369,11 @@ fun SubscriptionStateLess(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    IconButton(onClick = { onNavigateUpAndOffer() }) {
-                        Icon(
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = null
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Asked",
-                            style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            text = " Premium",
-                            style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = null,
-                            tint = Color.Transparent
-                        )
-                    }
-                }
+                /**
+                 * Title
+                 */
+                AskedSubscriptionTitle(onNavigateUpAndOffer)
+
 
                 /**
                  * Benefits
@@ -530,7 +482,10 @@ fun SubscriptionStateLess(
                                     onLaunchPurchaseFlow = {
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                             if (activity != null) {
-                                                Log.d(TAG, "SubscriptionStateLess: checkPermissionAndRequest")
+                                                Log.d(
+                                                    TAG,
+                                                    "SubscriptionStateLess: checkPermissionAndRequest"
+                                                )
                                                 checkPermissionAndRequest(
                                                     activity = activity,
                                                     context = context,
@@ -538,14 +493,20 @@ fun SubscriptionStateLess(
                                                     permName = context.getString(R.string.notifications),
                                                     onPermissionGranted = {
                                                         selectedPlan.value.value?.let {
-                                                            Log.d(TAG, "SubscriptionStateLess: 1 onLaunchPurchaseFlow")
+                                                            Log.d(
+                                                                TAG,
+                                                                "SubscriptionStateLess: 1 onLaunchPurchaseFlow"
+                                                            )
                                                             onLaunchPurchaseFlow(it)
                                                         }
                                                     }
                                                 )
                                             }
                                         } else {
-                                            Log.d(TAG, "SubscriptionStateLess: 2 onLaunchPurchaseFlow")
+                                            Log.d(
+                                                TAG,
+                                                "SubscriptionStateLess: 2 onLaunchPurchaseFlow"
+                                            )
                                             selectedPlan.value.value?.let {
                                                 onLaunchPurchaseFlow(it)
                                             }
@@ -583,15 +544,22 @@ fun SubscriptionStateLess(
                             Row(
                                 modifier = Modifier.padding(4.dp)
                             ) {
-                                Icon(imageVector = Icons.Sharp.GppGood, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Icon(
+                                    imageVector = Icons.Sharp.GppGood,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text(text = stringResource(R.string.secured_with_play_store), style = MaterialTheme.typography.labelLarge)
+                                Text(
+                                    text = stringResource(R.string.secured_with_play_store),
+                                    style = MaterialTheme.typography.labelLarge
+                                )
                             }
                         }
                     }
-                    
+
                     Spacer(modifier = Modifier.height(8.dp))
-                    
+
                     /**
                      * Small Letter
                      */

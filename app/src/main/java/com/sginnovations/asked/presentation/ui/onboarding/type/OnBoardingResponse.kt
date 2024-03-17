@@ -79,6 +79,7 @@ fun OnBoardingResponse(
                 text = text.value,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.SemiBold
             )
         }
     }

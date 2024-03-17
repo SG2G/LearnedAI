@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Asked</string>
+    <string name="app_name" translatable="false">ParentsPeak</string>
     <string name="home" translatable="false">home</string>
     <string name="web_client_id" translatable="false">477579889386-m4sdcc2t8qkcodl1f4nhd2foobkugvb2.apps.googleusercontent.com</string>
 
@@ -22,7 +22,7 @@
     <string name="subscription_higher_word_limit">Higher Word Limit</string>
     <string name="subscription_billed_once">Billed once</string>
     <string name="subscription_start_free_trial_plan"><![CDATA[Start Free Trial & Plan]]></string>
-    <string name="subscription_unlock_asked_ai_pro">Unlock Asked AI Pro</string>
+    <string name="subscription_unlock_asked_ai_pro">Unlock ParentsPeak Premium</string>
     <string name="subscription_cancel_anytime">Cancel Anytime</string>
     <string name="subscription_no_payment_now">No Payment Now</string>
     <string name="permissions_this_app_requires_access_to_your_please_enable_the_permission_in_your_device_settings">This app requires access to your %1$s. Please enable the %2$s permission in your device settings.</string>
@@ -47,7 +47,7 @@
     <string name="share_invite">Invite</string>
     <string name="share_how_to_earn_the_rewards">How to earn the rewards?</string>
     <string name="share_share_the_invitation_link_by_clicking_invite_when_your_friend_creates_an_account_both_of_you_will_receive_the_reward_as_simple_as_that">Share the invitation link by clicking \'Invite.\' When your friend creates an account, both of you will receive the reward, as simple as that</string>
-    <string name="sharemsg_join_asked_the_best_app_for_easy_learning_use_my_referral_link">Join Asked! The best app for easy learning. Use my referral link: %1$s</string>
+    <string name="sharemsg_join_asked_the_best_app_for_easy_learning_use_my_referral_link">Join ParentsPeak! The best app for easy learning. Use my referral link: %1$s</string>
     <string name="log_out_button_confirm_action">Confirm Action</string>
     <string name="log_out_button_are_you_sure_you_want_to_log_out">Are you sure you want to Log Out?</string>
     <string name="log_out_button_log_out">Log out</string>
@@ -79,9 +79,9 @@
     <string name="update_there_are_critical_updates_avaliable_please_update_the_app_to_apply_these_changes">There are critical updates available. Please update the app to apply these changes.</string>
     <string name="update_btn_update">Update</string>
     <string name="chats_history_hmm_it_seems_like_there_s_nothing_here">Hmm, it seems like there\'s nothing here.</string>
-    <string name="sign_in_title_sign_in">Log in to Asked</string>
-    <string name="newchat_placeholder_enter_your_text">Enter your text, ask Asked.</string>
-    <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">Asked can make mistakes. Verify important information.</string>
+    <string name="sign_in_title_sign_in">Log in to ParentsPeak</string>
+    <string name="newchat_placeholder_enter_your_text">Enter your text, ask ParentsPeak.</string>
+    <string name="chat_supported_asked_can_make_mistakes_consider_checking_important_information">ParentsPeak can make mistakes. Verify important information.</string>
     <string name="camera_examples_example_of_text_based_problems">Examples of text problems that could be scanned</string>
     <string name="camera_examples_example_of_math_problems">Examples of math problems that could be scanned</string>
     <string name="copy_copied">Copied!</string>
@@ -268,8 +268,8 @@
     <string name="subscription_info_policy">Cancel at any time in the Play Store at no additional cost; the subscription will automatically renew after the current or trial period, unless cancelled 24 hours before the renewal at the latest. After the trial period, if not cancelled, the selected plan will be charged.</string>
     <string name="subscription_year">/ Year</string>
     <string name="subscription_month">/ Month</string>
-    <string name="onboarding_title_1">Welcome to Asked</string>
-    <string name="onboarding_description_1">Greetings! It is a pleasure to welcome you to Asked, your ally in the beautiful task of parenting. \n\nWe have created this application with you in mind, to make your experience in education simpler and more rewarding.\n\n We briefly present our main features:</string>
+    <string name="onboarding_title_1">Welcome to ParentsPeak</string>
+    <string name="onboarding_description_1">Greetings! It is a pleasure to welcome you to ParentsPeak, your ally in the beautiful task of parenting. \n\nWe have created this application with you in mind, to make your experience in education simpler and more rewarding.\n\n We briefly present our main features:</string>
     <string name="onboarding_title_camera_use">Smart Camera</string>
     <string name="onboarding_subtitle_camera_use">Solve School Problems</string>
     <string name="onboarding_description_camera_use">### Capture and Consult --- Take picture of any school problem\n\n### Step-by-Step Solutions\n\nReceive cletailed explanations to understand and solve the problem\n\n### Specialized Cameras\n\nUse specific cameras for Translating, Summarizing, and Spelling Correction\n\n### Continuous Consultation\n\nHave more questions? Ask anything you need until everything is clear</string>
@@ -280,7 +280,7 @@
     <string name="onboarding_subtitle_guide_use">Wisdom for a Happy Home</string>
     <string name="onboarding_description_guide_use">**Expert Advice:** Access a collection of knowledge from psychologists, neuroscientists, and pediatricians.\n\n**Applicable Strategies:** Find useful tips and strategies to improve family life.\n\n**Fostering a Happy Environment:** Apply what you\'ve learned to create a more harmonious and happy home.</string>
     <string name="onboarding_title_5">Commitment to Your Privacy</string>
-    <string name="onboarding_description_5">**Your Privacy, Our Priority:** Asked does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored.\n\n**Assured Confidentiality:** Messages in our app are private and are not stored.</string>
+    <string name="onboarding_description_5">**Your Privacy, Our Priority:** ParentsPeak does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored.\n\n**Assured Confidentiality:** Messages in our app are private and are not stored.</string>
     <string name="onboarding_subtitle_5">" "</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
@@ -300,7 +300,7 @@
     <string name="lesson_subtitle_3002">The Power of Sleep in Children</string>
     <string name="lesson_introduction_1002">Did you know that the way you talk to your children can influence their confidence and future success? Discover how effective communication can be your most powerful tool as a parent.</string>
     <string name="introduction">Introduction</string>
-    <string name="subscription_try_7_free_days_of_asked_premium">Try 7 Free Days of Asked Premium</string>
+    <string name="subscription_try_7_free_days_of_asked_premium">Try 7 Free Days of ParentsPeak Premium</string>
     <string name="subscription_automatic_renewal_easy_cancellation">Automatic renewal. Easy cancellation.</string>
     <string name="feature_unlimited_tokens">Unlimited Messages</string>
     <string name="feature_all_cameras_categories">All cameras categories</string>
@@ -348,7 +348,7 @@
     <string name="subscription_assistant_text">Unlimited messages, solve all your questions.</string>
     <string name="subscription_guide_title">Wisdom at Your Fingertips</string>
     <string name="subscription_guide_text">Lessons from books written by experts.</string>
-    <string name="subscription_private_tutor_comparation">For the cost of 8 hours with a $10/hour tutor, unlock a full year of Asked. —Your child\'s and your 24/7 educational companion.</string>
+    <string name="subscription_private_tutor_comparation">For the cost of 8 hours with a $10/hour tutor, unlock a full year of ParentsPeak. —Your child\'s and your 24/7 educational companion.</string>
     <string name="only_until_march_31st">Only until March 31st!</string>
     <string name="feature_all_cameras">All Cameras</string>
     <string name="delete">Delete</string>
@@ -398,7 +398,7 @@
     <string name="claim_now">Claim Now!</string>
     <string name="reject_offer">Reject Offer</string>
     <string name="premium" translatable="false">Premium</string>
-    <string name="onboarding_finalscreen_description">Congratulations on taking the first step with Asked towards your children\'s future. \n\nYour choice sets you apart as an exceptional parent, always seeking the best for them. \n\nWe admire your commitment to their education and well-being. \n\nWe\'re here to enhance that effort and ensure a future full of opportunities.</string>
+    <string name="onboarding_finalscreen_description">Congratulations on taking the first step with ParentsPeak towards your children\'s future. \n\nYour choice sets you apart as an exceptional parent, always seeking the best for them. \n\nWe admire your commitment to their education and well-being. \n\nWe\'re here to enhance that effort and ensure a future full of opportunities.</string>
     <string name="onboarding_finalscreen_title">A Bright Future Starts Today</string>
     <string name="onboarding_finalscreen_subtitle">Join the community of parents transforming love into learning and success for their children</string>
     <string name="more_lessons_coming_soon">More Lessons Coming Soon…</string>
@@ -427,7 +427,7 @@
     <string name="onboarding_guide_subtitle_1">Access a collection of knowledge from psychologists, neuroscientists, and pediatricians</string>
     <string name="onboarding_guide_subtitle_2">Find useful tips and strategies to improve family life</string>
     <string name="onboarding_guide_subtitle_3">Apply what you\'ve learned to create a more harmonious and happy home</string>
-    <string name="onboarding_privacy_subtitle_1">Asked does not collect personal data. Assured Confidentiality: Messages in our app are private and are not stored</string>
+    <string name="onboarding_privacy_subtitle_1">ParentsPeak does not collect personal data</string>
     <string name="onboarding_privacy_subtitle_2">Messages in our app are private and are not stored</string>
     <string name="see_more">See more</string>
     <string name="if_you_fall_below_3_tokens">Message limit reached for today. To keep sending, \n\ncome back tomorrow or upgrade to Premium.</string>
@@ -469,8 +469,8 @@
     <string name="goal_6">Experience parenting with less stress</string>
     <string name="goal_7">Create an environment of love and mutual respect</string>
     <string name="goal_8">Strengthen confidence in my parenting decisions</string>
-    <string name="good_response_1">Wonderful! Your dedication is the driving force that will propel your children\'s future. Here at Asked, we offer you the tools to turn that wish into reality. Let\'s go on this journey together!</string>
-    <string name="bad_response_1">Being a parent comes with its challenges, and it\'s okay to have doubts. Here at Asked, we\'re ready to help you find ways to support your children\'s future. You\'re in good company.</string>
+    <string name="good_response_1">Wonderful! Your dedication is the driving force that will propel your children\'s future. Here at ParentsPeak, we offer you the tools to turn that wish into reality. Let\'s go on this journey together!</string>
+    <string name="bad_response_1">Being a parent comes with its challenges, and it\'s okay to have doubts. Here at ParentsPeak, we\'re ready to help you find ways to support your children\'s future. You\'re in good company.</string>
     <string name="quote_3">I am committed to doing whatever it takes to ensure a brighter future for my children</string>
     <string name="together_in_every_step">Together in Every Step</string>
     <string name="personalize_title">Customize Your Journey</string>
@@ -483,11 +483,46 @@
     <string name="sub_card_description_1">You took personalizing quiz and successfully created your profile</string>
     <string name="sub_card_description_2">Begin achieving your parenting goals with personalized advice</string>
     <string name="sub_card_description_3">We will notify you about the end date of your free trial</string>
-    <string name="sub_card_description_4">We will notify you about the end date of your free trial</string>
+    <string name="sub_card_description_4">You will get unlimited access to ParentsPeak. Cancel in advance to avoid payment</string>
     <string name="camera">Camera</string>
     <string name="permission_required">%1$s Permission Required</string>
     <string name="this_app_requires_access_to_your">This app requires access to your %1$s</string>
     <string name="notifications">Notifications</string>
+    <string name="child_interest_title">In which areas would you like %1$s to excel and grow?</string>
+    <string name="goal_reach_feeling_1">Empowered as a parent</string>
+    <string name="goal_reach_feeling_2">Connected with my family</string>
+    <string name="goal_reach_feeling_3">Free of stress and relaxed</string>
+    <string name="goal_reach_feeling_4">Confident in my decisions</string>
+    <string name="goal_reach_feeling_5">Full of joy and satisfaction</string>
+    <string name="goal_reach_feeling_6">Proud of our progress</string>
+    <string name="goal_reach_title">After reaching your goals, how would you see yourself?</string>
+    <string name="goal_reach_reward_title">After reaching your goals, how would you reward yourself?</string>
+    <string name="whats_your_child_name">Whats your Child Name?</string>
+    <string name="goal_reach_reward_1">Take a Day for Myself</string>
+    <string name="goal_reach_reward_2">Gift Myself a Spa Day</string>
+    <string name="goal_reach_reward_3">Indulge in My Favorite Hobby</string>
+    <string name="goal_reach_reward_4">Enjoy a Movie Night</string>
+    <string name="goal_reach_reward_5">Dine at a Desired Restaurant</string>
+    <string name="goal_reach_reward_6">Plan a Weekend Getaway</string>
+    <string name="goal_reach_reward_7">Buy Something Special for Myself</string>
+    <string name="casual">Casual</string>
+    <string name="regular">Regular</string>
+    <string name="serious">Serious</string>
+    <string name="tireless">Tireless</string>
+    <string name="minutes_day_5">5 minutes a day</string>
+    <string name="minutes_day_10">10 minutes a day</string>
+    <string name="minutes_day_15">15 minutes a day</string>
+    <string name="minutes_day_20">20 minutes a day</string>
+    <string name="your_child">your child</string>
+    <string name="child_interest_1">Improve Academically</string>
+    <string name="child_interest_2">Develop Creative Talents</string>
+    <string name="child_interest_3">Cultivate Emotional Intelligence</string>
+    <string name="child_interest_4">Promote Physical Health</string>
+    <string name="child_interest_5">Enhance Critical Thinking</string>
+    <string name="child_interest_6">Boost Leadership Qualities</string>
+    <string name="select_your_goal">Select your Goal</string>
+    <string name="select_your_child_s_age">Select your child\'s age:</string>
+    <string name="you_can_cancel_at_any_time_billing_is_annual">You can cancel at any time, billing is annual</string>
 
 
 </resources>

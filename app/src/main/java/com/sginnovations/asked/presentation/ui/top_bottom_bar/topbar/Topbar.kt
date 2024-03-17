@@ -66,10 +66,11 @@ fun LearnedTopBar(
          */
         ParentalGuidance.route -> ParentalGuidanceTopBar(
             ParentalGuidance.getName(context),
-        )
+        ) { onNavigate(it) }
+
         ParentalAssist.route -> ParentalGuidanceTopBar(
             ParentalAssist.getName(context),
-        )
+        ) { onNavigate(it) }
 
         Profile.route -> ProfileTopBar(
             Profile.getName(context),
