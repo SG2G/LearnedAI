@@ -4,73 +4,68 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.viewmodel.OnBoardingViewModel
+import java.util.Locale
 
 data class OnBoardingFeatures(
     val icon: Int,
     val title: String,
     val subtitle: String,
 )
+
 data class OnBoardingOneSelection(
     val text1: String,
     val text2: String? = null,
-    var selected: Boolean = false
+    var selected: Boolean = false,
 )
+
 data class OnBoardingMultipleSelection(
     val name: String,
     @DrawableRes val icon: Int,
-    var selected: Boolean = false
+    var selected: Boolean = false,
 )
+
 data class OnBoardingResponses(
     val yesText: String,
     val noText: String,
 )
 
-enum class OnBoardingType { Default, GenderSelect, SingleSelect, MultipleSelect, Quote, Personalization, Response, Section, ChildName }
+enum class OnBoardingType { Default, GenderSelect, SingleSelect, MultipleSelect,
+    Quote, Personalization, Response, Section, ChildName, Animation }
 
 class OnBoarding(
     val context: Context,
 ) : AppCompatActivity() {
 
-    fun getAllPages(): List<OnBoardingPage> {
-        return listOf(
-            WelcomeScreen,
-            //CameraResult,
-            CameraUse,
-            //AssistantResult,
-            AssistantUse,
-            //GuideResult,
-            GuideUse,
-//            PrivacyScreen,
+    private val listFor0 = listOf(WelcomeScreen,CameraUse,AssistantUse, GuideUse, KidAgeSelect, ChildNameSelect,
+        ChildInterestSelect, InterestSelect, TimeGoalSelect, AgeSelect, GenderScreen, GoalsSelect,
+        QuoteOneScreen, QuoteTwoScreen, QuoteThreeScreen, QuoteResponse, FeelingReachingGoalsSelect,
+        RewardAfterReachingGoalsSelect, FinalScreen, CreatingPersonalization,)
 
-//            PersonalizationScreen,
+    private val listFor1 = listOf(WelcomeScreen,CameraUse,AssistantUse, GuideUse, EmotionScreen, KidAgeSelect,
+        ChildNameSelect, ChildInterestSelect, TimeScreen, InterestSelect, TimeGoalSelect, AgeSelect, GenderScreen,
+        GoalsSelect, HomeworkScreen, QuoteOneScreen, QuoteTwoScreen, QuoteThreeScreen, QuoteResponse,
+        FeelingReachingGoalsSelect, RewardAfterReachingGoalsSelect, FinalScreen, CreatingPersonalization)
 
-            KidAgeSelect,
-            ChildNameSelect,
-            InterestSelect,
-            ChildInterestSelect,
-            TimeGoalSelect,
+    private val listFor2 = listOf(WelcomeScreen,TimeScreen, HomeworkScreen, EmotionScreen, KidAgeSelect,
+        ChildNameSelect, ChildInterestSelect, InterestSelect, TimeGoalSelect, AgeSelect, GenderScreen, GoalsSelect,
+        QuoteOneScreen, QuoteTwoScreen, QuoteThreeScreen, QuoteResponse, FeelingReachingGoalsSelect,
+        RewardAfterReachingGoalsSelect, FinalScreen, CreatingPersonalization)
 
-            AgeSelect,
-            GenderScreen,
+    fun getAllPages(experimentNum: String): List<OnBoardingPage> {
+        return when (experimentNum) {
+            "0" -> listFor0
 
-            GoalsSelect,
+            "1" -> listFor1
 
-            QuoteOneScreen,
-            QuoteTwoScreen,
-            QuoteThreeScreen,
-            QuoteResponse,
+            "2" -> listFor2
 
-            FeelingReachingGoalsSelect,
-            RewardAfterReachingGoalsSelect,
+            else -> listFor0
+        }
 
-            FinalScreen,
-            CreatingPersonalization,
-        )
     }
 
-    fun getNumberOfPages(): Int {
-        return getAllPages().size
-    }
+    fun getNumberOfPages(experimentNum: String) = getAllPages(experimentNum).size
 }
 
 interface OnBoardingPage {
@@ -85,10 +80,29 @@ interface OnBoardingPage {
     fun getResponses(context: Context): OnBoardingResponses? = null
 }
 
-object PersonalizationScreen : OnBoardingPage {
-    override fun getType(context: Context) = OnBoardingType.Section
-    override fun getTitle(context: Context) = context.getString(R.string.personalize_title)
-    override fun getSubTitle(context: Context) = context.getString(R.string.personalize_subtitle)
+/**
+ * Option 2
+ */
+object TimeScreen : OnBoardingPage {
+    override fun getType(context: Context) = OnBoardingType.Animation
+    override fun getTitle(context: Context) = context.getString(R.string.time_screen_title)
+    override fun getSubTitle(context: Context) = context.getString(R.string.time_screen_subtitle)
+    override fun getImage(context: Context) = R.raw.save_time_animation
+
+}
+object HomeworkScreen : OnBoardingPage {
+    override fun getType(context: Context) = OnBoardingType.Animation
+    override fun getTitle(context: Context) = context.getString(R.string.homework_screen_title)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.homework_screen_subtitle)
+    override fun getImage(context: Context) = R.raw.homework_help_animation
+
+}
+object EmotionScreen : OnBoardingPage {
+    override fun getType(context: Context) = OnBoardingType.Animation
+    override fun getTitle(context: Context) = context.getString(R.string.emotion_screen_title)
+    override fun getSubTitle(context: Context) = context.getString(R.string.emotion_screen_subtitle)
+    override fun getImage(context: Context) = R.raw.family_love_animation
 
 }
 
@@ -104,6 +118,7 @@ object WelcomeScreen : OnBoardingPage {
     override fun getImage(context: Context) = R.drawable.onboarding_welcome
 
 }
+
 object CameraUse : OnBoardingPage {
     override fun getTitle(context: Context) =
         context.getString(R.string.onboarding_title_camera_use)
@@ -137,6 +152,7 @@ object CameraUse : OnBoardingPage {
     )
 
 }
+
 object AssistantUse : OnBoardingPage {
     override fun getTitle(context: Context) =
         context.getString(R.string.onboarding_title_assistant_use)
@@ -144,7 +160,11 @@ object AssistantUse : OnBoardingPage {
     override fun getSubTitle(context: Context) =
         context.getString(R.string.onboarding_subtitle_assistant_use)
 
-    override fun getImage(context: Context) = R.drawable.onboarding_assistant_gif
+    override fun getImage(context: Context) = if (Locale.getDefault().language == "es") {
+        R.drawable.onboarding_assistant_esp
+    } else {
+        R.drawable.onboarding_assistant_eng
+    }
 
     override fun getFeatures(context: Context) = listOf(
         OnBoardingFeatures(
@@ -169,6 +189,7 @@ object AssistantUse : OnBoardingPage {
         ),
     )
 }
+
 object GuideUse : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.onboarding_title_guide_use)
     override fun getSubTitle(context: Context) =
@@ -204,6 +225,7 @@ object GenderScreen : OnBoardingPage {
     override fun getTitle(context: Context) = context.getString(R.string.select_your_gender)
     override fun getSubTitle(context: Context) = ""
 }
+
 object AgeSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.SingleSelect
     override fun getTitle(context: Context) = context.getString(R.string.select_your_age_range)
@@ -217,6 +239,7 @@ object AgeSelect : OnBoardingPage {
         OnBoardingOneSelection(text1 = "+55", text2 = null),
     )
 }
+
 object KidAgeSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.SingleSelect
     override fun getTitle(context: Context) = context.getString(R.string.select_your_child_s_age)
@@ -231,24 +254,33 @@ object KidAgeSelect : OnBoardingPage {
         OnBoardingOneSelection(text1 = "+16", text2 = null),
     )
 }
+
 object TimeGoalSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.SingleSelect
     override fun getTitle(context: Context) = context.getString(R.string.select_your_goal)
-    override fun getSubTitle(context: Context) = ""
+    override fun getSubTitle(context: Context) = context.getString(R.string.goal_subtitle)
 
     override fun getOneOptions(context: Context) = listOf(
-        OnBoardingOneSelection(text1 = context.getString(R.string.casual), text2 = context.getString(
-            R.string.minutes_day_5
-        )),
-        OnBoardingOneSelection(text1 = context.getString(R.string.regular), text2 = context.getString(
-            R.string.minutes_day_10
-        )),
-        OnBoardingOneSelection(text1 = context.getString(R.string.serious), text2 = context.getString(
-            R.string.minutes_day_15
-        )),
-        OnBoardingOneSelection(text1 = context.getString(R.string.tireless), text2 = context.getString(
-            R.string.minutes_day_20
-        )),
+        OnBoardingOneSelection(
+            text1 = context.getString(R.string.casual), text2 = context.getString(
+                R.string.minutes_day_5
+            )
+        ),
+        OnBoardingOneSelection(
+            text1 = context.getString(R.string.regular), text2 = context.getString(
+                R.string.minutes_day_10
+            )
+        ),
+        OnBoardingOneSelection(
+            text1 = context.getString(R.string.serious), text2 = context.getString(
+                R.string.minutes_day_15
+            )
+        ),
+        OnBoardingOneSelection(
+            text1 = context.getString(R.string.tireless), text2 = context.getString(
+                R.string.minutes_day_20
+            )
+        ),
     )
 }
 
@@ -280,6 +312,7 @@ object QuoteTwoScreen : OnBoardingPage {
     override fun getDescription(context: Context) = context.getString(R.string.quote_2)
 
 }
+
 object QuoteThreeScreen : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.Quote
     override fun getTitle(context: Context) = ""
@@ -290,7 +323,7 @@ object QuoteThreeScreen : OnBoardingPage {
 
 }
 
-object QuoteResponse: OnBoardingPage {
+object QuoteResponse : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.Response
     override fun getTitle(context: Context) = context.getString(R.string.together_in_every_step)
 
@@ -310,71 +343,179 @@ object QuoteResponse: OnBoardingPage {
 object InterestSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
     override fun getTitle(context: Context) = context.getString(R.string.what_are_your_interest)
-    override fun getSubTitle(context: Context) = context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
+
     override fun getMultipleOptions(context: Context): List<OnBoardingMultipleSelection>? = listOf(
-        OnBoardingMultipleSelection(context.getString(R.string.emotional_understanding), R.drawable.lightbulb_bolt_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.building_a_united_family), R.drawable.home_with_a_heart_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.parental_peace_of_mind), R.drawable.sofa_svgrepo_filled),
-        OnBoardingMultipleSelection(context.getString(R.string.study_support), R.drawable.camera_svgrepo_filled),
-        OnBoardingMultipleSelection(context.getString(R.string.quality_information), R.drawable.book_bookmark_svgrepo_filled),
-        OnBoardingMultipleSelection(context.getString(R.string.guidance_and_teaching), R.drawable.compass_svgrepo_com),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.emotional_understanding),
+            R.drawable.lightbulb_bolt_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.building_a_united_family),
+            R.drawable.home_with_a_heart_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.parental_peace_of_mind),
+            R.drawable.sofa_svgrepo_filled
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.study_support),
+            R.drawable.camera_svgrepo_filled
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.quality_information),
+            R.drawable.book_bookmark_svgrepo_filled
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.guidance_and_teaching),
+            R.drawable.compass_svgrepo_com
+        ),
     )
 }
+
 object ChildInterestSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
     override fun getTitle(context: Context) = context.getString(R.string.child_interest_title)
-    override fun getSubTitle(context: Context) = context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
-    override fun getMultipleOptions(context: Context): List<OnBoardingMultipleSelection> = listOf(
-        OnBoardingMultipleSelection(context.getString(R.string.child_interest_1), R.drawable.book_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.child_interest_2), R.drawable.brain_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.child_interest_3), R.drawable.paint_palette_painting_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.child_interest_4), R.drawable.dumbbell_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.child_interest_5), R.drawable.lightbulb_bolt_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.child_interest_6), R.drawable.compass_svgrepo_com),
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
 
-    )
+    override fun getMultipleOptions(context: Context): List<OnBoardingMultipleSelection> = listOf(
+        OnBoardingMultipleSelection(
+            context.getString(R.string.child_interest_1),
+            R.drawable.book_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.child_interest_2),
+            R.drawable.brain_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.child_interest_3),
+            R.drawable.paint_palette_painting_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.child_interest_4),
+            R.drawable.dumbbell_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.child_interest_5),
+            R.drawable.lightbulb_bolt_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.child_interest_6),
+            R.drawable.compass_svgrepo_com
+        ),
+
+        )
 }
 
 object GoalsSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
     override fun getTitle(context: Context) = context.getString(R.string.what_are_your_goals)
-    override fun getSubTitle(context: Context) = context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
+    override fun getSubTitle(context: Context) =
+        context.getString(R.string.select_up_to_3_goals_for_more_accurate_customization)
+
     override fun getMultipleOptions(context: Context) = listOf(
-        OnBoardingMultipleSelection(context.getString(R.string.goal_1), R.drawable.support_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_2),R.drawable.growth_report_graph_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_3), R.drawable.shield_alt_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_4), R.drawable.heart_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_5), R.drawable.lightbulb_bolt_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_6), R.drawable.happy_face_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_7), R.drawable.home_with_a_heart_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_8), R.drawable.compass_svgrepo_com),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_1),
+            R.drawable.support_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_2),
+            R.drawable.growth_report_graph_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_3),
+            R.drawable.shield_alt_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_4),
+            R.drawable.heart_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_5),
+            R.drawable.lightbulb_bolt_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_6),
+            R.drawable.happy_face_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_7),
+            R.drawable.home_with_a_heart_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_8),
+            R.drawable.compass_svgrepo_com
+        ),
     )
 }
+
 object FeelingReachingGoalsSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
     override fun getTitle(context: Context) = context.getString(R.string.goal_reach_title)
     override fun getSubTitle(context: Context) = ""
     override fun getMultipleOptions(context: Context) = listOf(
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_feeling_1), R.drawable.rocket_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_feeling_2), R.drawable.growing_plant_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_feeling_3), R.drawable.book_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_feeling_4), R.drawable.compass_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_feeling_5), R.drawable.star_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_feeling_6), R.drawable.subscription_infinite),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_feeling_1),
+            R.drawable.rocket_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_feeling_2),
+            R.drawable.growing_plant_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_feeling_3),
+            R.drawable.book_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_feeling_4),
+            R.drawable.compass_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_feeling_5),
+            R.drawable.star_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_feeling_6),
+            R.drawable.subscription_infinite
+        ),
     )
 }
+
 object RewardAfterReachingGoalsSelect : OnBoardingPage {
     override fun getType(context: Context): OnBoardingType = OnBoardingType.MultipleSelect
     override fun getTitle(context: Context) = context.getString(R.string.goal_reach_reward_title)
     override fun getSubTitle(context: Context) = ""
     override fun getMultipleOptions(context: Context) = listOf(
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_1), R.drawable.beach_chair_summer_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_2), R.drawable.lotus_yoga_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_3), R.drawable.paint_palette_painting_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_4), R.drawable.popcorn_movie_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_5), R.drawable.fork_and_knife_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_6), R.drawable.suitcase_transport_svgrepo_com),
-        OnBoardingMultipleSelection(context.getString(R.string.goal_reach_reward_7), R.drawable.shopping_bag_svgrepo_com),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_1),
+            R.drawable.beach_chair_summer_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_2),
+            R.drawable.lotus_yoga_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_3),
+            R.drawable.paint_palette_painting_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_4),
+            R.drawable.popcorn_movie_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_5),
+            R.drawable.fork_and_knife_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_6),
+            R.drawable.suitcase_transport_svgrepo_com
+        ),
+        OnBoardingMultipleSelection(
+            context.getString(R.string.goal_reach_reward_7),
+            R.drawable.shopping_bag_svgrepo_com
+        ),
     )
 }
 
@@ -467,5 +608,11 @@ object PrivacyScreen : OnBoardingPage {
 //        context.getString(R.string.onboarding_description_guide_result)
 //
 //    override fun getImage(context: Context) = R.drawable.onboarding_guide_reward
+//
+//}
+//object PersonalizationTransitionScreen : OnBoardingPage {
+//    override fun getType(context: Context) = OnBoardingType.Section
+//    override fun getTitle(context: Context) = context.getString(R.string.personalize_title)
+//    override fun getSubTitle(context: Context) = context.getString(R.string.personalize_subtitle)
 //
 //}

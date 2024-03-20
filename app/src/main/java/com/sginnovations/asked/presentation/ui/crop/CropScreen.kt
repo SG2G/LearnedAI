@@ -46,6 +46,7 @@ import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.presentation.ui.crop.components.IsLoadingCrop
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
@@ -69,6 +70,7 @@ fun CropStateFul(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
     vmToken: TokenViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     navController: NavController,
 
@@ -120,7 +122,6 @@ fun CropStateFul(
             getTextFromCroppedImage(
                 vmCamera,
                 vmChat,
-                vmToken,
 
                 croppedImage,
                 cameraCategoryOCR,
@@ -136,6 +137,7 @@ fun CropStateFul(
 
                             vmCamera,
                             vmChat,
+                            vmAppsFlyer,
 
                             cameraCategoryOCR,
                             text,
@@ -353,6 +355,7 @@ suspend fun sendNewMessage(
 
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     cameraCategoryOCR: MutableState<CategoryOCR>,
     text: MutableState<String>,
@@ -380,6 +383,8 @@ suspend fun sendNewMessage(
             // New Message
             if (NetworkUtils.isOnline(context)) {
                 vmCamera.isLoading.value = true
+
+                vmAppsFlyer.logPhotoCropEvent(cameraCategoryOCR.value.prefix) // Event
 
                 val languageTranslate = vmCamera.translateLanguage.value
 
@@ -411,7 +416,6 @@ suspend fun sendNewMessage(
 suspend fun getTextFromCroppedImage(
     vmCamera: CameraViewModel,
     vmChat: ChatViewModel,
-    vmToken: TokenViewModel,
 
     croppedImage: ImageBitmap,
     cameraCategoryOCR: MutableState<CategoryOCR>,

@@ -49,6 +49,7 @@ import com.sginnovations.asked.presentation.ui.chat.components.LaunchedEffectSna
 import com.sginnovations.asked.presentation.ui.chat.components.MessagesDisplay
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.presentation.ui.ui_components.chat.ReportDialog
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
@@ -67,6 +68,7 @@ fun ChatStateFul(
     vmChat: ChatViewModel,
     vmToken: TokenViewModel,
     vmReport: ReportViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     onNavigateSubscriptionScreen: () -> Unit,
 ) {
@@ -169,12 +171,14 @@ fun ChatStateFul(
             if (message.isNotEmpty()) {
                 if (NetworkUtils.isOnline(context)) {
                     if (isPremium.value) {
+                        vmAppsFlyer.logChatPhotoEvent()
                         scope.launch { vmChat.sendMessageToOpenaiApi(message) }
 
                         vmChat.messageSent()
                     } else {
                         // No Premium
                         if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
+                            vmAppsFlyer.logChatPhotoEvent()
                             scope.launch { vmChat.sendMessageToOpenaiApi(message) }
 
                             vmChat.messageSent()

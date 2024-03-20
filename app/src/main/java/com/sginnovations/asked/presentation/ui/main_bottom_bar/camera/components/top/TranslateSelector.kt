@@ -57,9 +57,10 @@ fun TranslateSelector(
             shape = RoundedCornerShape(10.dp),
         ) {
             Text(
-                text = stringResource(R.string.language_translate_to) + languageName(
+                text = stringResource(R.string.language_translate_to) + " " + languageName(
                     context,
                     selectedLanguage
+
                 ),
                 modifier = Modifier.clickable { expanded = true }.padding(8.dp),
                 color = MaterialTheme.colorScheme.onBackground,

@@ -1,12 +1,6 @@
 package com.sginnovations.asked.presentation.ui.onboarding.type
 
-import android.graphics.Color
-import android.text.method.LinkMovementMethod
-import android.widget.TextView
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,32 +10,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.res.ResourcesCompat
 import com.sginnovations.asked.Constants
 import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingPage
 import com.sginnovations.asked.presentation.ui.onboarding.components.ImageAnyFormat
-import io.noties.markwon.Markwon
-import io.noties.markwon.ext.latex.JLatexMathPlugin
-import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 
 @Composable
 fun OnBoardingDefault(
@@ -76,6 +61,7 @@ fun OnBoardingDefault(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
+        if (onBoardingPage.getTitle(context) == context.getString(R.string.onboarding_title_assistant_use)) Spacer(modifier = Modifier.height(32.dp))
         onBoardingPage.getImage(context)?.let {
             ImageAnyFormat(
                 image = it

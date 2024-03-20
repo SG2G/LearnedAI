@@ -40,6 +40,7 @@ import com.sginnovations.asked.presentation.ui.chat.components.NewChatSendIcon
 import com.sginnovations.asked.presentation.ui.newconversation.components.NewConversationSuggestions
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.presentation.ui.ui_components.chat.TokenCostDisplay
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
@@ -54,6 +55,7 @@ fun NewConversationStateFul(
     vmChat: ChatViewModel,
     vmCamera: CameraViewModel,
     vmToken: TokenViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     onNavigateChat: () -> Unit,
 
@@ -100,22 +102,25 @@ fun NewConversationStateFul(
 
                     if (isPremium) {
                         sendNewMessage(
+                            vmChat,
+                            vmAppsFlyer,
+
                             context,
 
                             processText,
-
-                            vmChat
                         ) {
                             onNavigateChat()
                         }
                     } else {
                         if (tokens.value >= Constants.CAMERA_MESSAGE_COST) {
                             sendNewMessage(
+                                vmChat,
+                                vmAppsFlyer,
+
                                 context,
 
                                 processText,
 
-                                vmChat
                             ) {
                                 onNavigateChat()
                             }
@@ -228,14 +233,18 @@ fun NewConversationStateLess(
 
 fun sendNewMessage(
     //TODO REPEAT CROP
-    context: Context,
-    message: String,
     vmChat: ChatViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
+
+    context: Context,
+
+    message: String,
 
     onNavigateChat: () -> Unit,
 ) {
 
     if (NetworkUtils.isOnline(context)) {
+        vmAppsFlyer.logStartMessagePhotoEvent()
         vmChat.sendNewMessage(
             message = message,
 

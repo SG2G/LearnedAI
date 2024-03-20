@@ -53,6 +53,7 @@ import com.sginnovations.asked.presentation.ui.subscription.SecondOfferStateFul
 import com.sginnovations.asked.presentation.ui.subscription.SubscriptionStateFull
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.topbar.LearnedTopBar
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
@@ -117,6 +118,7 @@ fun LearnedNavigation(
     vmRss: RssFeedViewModel = hiltViewModel(),
     vmOnBoarding: OnBoardingViewModel = hiltViewModel(),
     vmNotification: NotificationViewModel = hiltViewModel(),
+    vmAppsFlyer: AppsFlyerViewModel = hiltViewModel(),
 
     navController: NavHostController = rememberNavController(),
 ) {
@@ -132,7 +134,7 @@ fun LearnedNavigation(
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
             isPremium.value = checkIsPremium()
-
+            vmOnBoarding.getOnBoardingExperimentNum() //TODO SHOUDL DELETE
             // User its logged - set up
             if (firsTimeLaunch.value) { //TODO CHANGE IT
                 vmNavigator.navigateAuthToX(
@@ -235,6 +237,7 @@ fun LearnedNavigation(
                     vmAuth = vmAuth,
                 ) {
                     scope.launch {
+                        vmOnBoarding.getOnBoardingExperimentNum()
                         // IMPORTANT
                         if (firsTimeLaunch.value) { //TODO DELETE !
                             vmNavigator.navigateAuthToX(
@@ -272,6 +275,7 @@ fun LearnedNavigation(
                 CameraStateFul(
                     vmCamera = vmCamera,
                     vmToken = vmToken,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
 
@@ -368,6 +372,7 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     vmChat = vmChat,
                     vmToken = vmToken,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     navController = navController,
 
@@ -404,6 +409,7 @@ fun LearnedNavigation(
                     vmChat = vmChat,
                     vmCamera = vmCamera,
                     vmToken = vmToken,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
                     onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
@@ -418,6 +424,7 @@ fun LearnedNavigation(
                 AssistantNewConversationStateFul(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     onNavigateChat = {
                         scope.launch {
@@ -440,6 +447,7 @@ fun LearnedNavigation(
                     vmAssistant = vmAssistant,
                     vmToken = vmToken,
                     vmReport = vmReport,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
@@ -459,6 +467,7 @@ fun LearnedNavigation(
                     vmChat = vmChat,
                     vmToken = vmToken,
                     vmReport = vmReport,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
                 )
@@ -475,6 +484,7 @@ fun LearnedNavigation(
                     vmAssistant = vmAssistant,
                     vmIntent = vmIntent,
                     vmPreferences = vmPreferences,
+                    vmAppsFlyer = vmAppsFlyer,
 
                     onOpenTranscript = { navController.navigate(route = Transcript.route) },
 

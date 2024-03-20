@@ -202,7 +202,7 @@
     <string name="subscription_year">/ Año</string>
     <string name="subscription_month">/ Mes</string>
     <string name="onboarding_title_1">Bienvenido a ParentsPeak</string>
-    <string name="onboarding_description_1">¡Hola! Es un placer darte la bienvenida a ParentsPeak, tu aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en ti, para hacer tu experiencia en la educación más sencilla y gratificante. \n\n Te presentamos nuestras características principales de forma breve:</string>
+    <string name="onboarding_description_1">"¡Hola! Es un placer darte la bienvenida a ParentsPeak, tu aliado en la hermosa tarea de ser padre o madre.  \n\nHemos creado esta aplicación pensando en ti, para hacer tu experiencia en la educación más sencilla y gratificante. "</string>
     <string name="onboarding_title_camera_use">Cámara Inteligente</string>
     <string name="onboarding_subtitle_camera_use">Resuelve Problemas Escolares</string>
     <string name="onboarding_description_camera_use">**Captura y Consulta:** Toma una foto de cualquier problema escolar.\n\n**Soluciones Paso a Paso:** Recibe explicaciones detalladas para comprender y resolver los problemas.\n\n**Cámaras Especializadas** Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía.\n\n**Consulta Continua:** ¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro.\n\n</string>
@@ -215,7 +215,7 @@
     <string name="onboarding_title_5">Compromiso con su Privacidad</string>
     <string name="onboarding_subtitle_5">" "</string>
     <string name="onboarding_description_5">**Su Privacidad, Nuestra Prioridad:** ParentsPeak no recopila datos personales.\n\n**Confidencialidad Asegurada:** Los mensajes en nuestra app son privados y no se almacenan.</string>
-    <string name="next">Siguiente</string>
+    <string name="next">Continuar</string>
     <string name="finish">Finalizar</string>
     <string name="skip">Saltar</string>
     <string name="topbar_assistant_chat">Asistente</string>
@@ -384,10 +384,10 @@
     <string name="reject_offer">Rechazar oferta</string>
     <string name="onboarding_finalscreen_description">"Felicidades por dar el primer paso con ParentsPeak hacia el futuro de tus hijos. \n\nTu elección te distingue como un padre o madre excepcional, buscando siempre lo mejor para ellos. \n\nAdmiramos tu compromiso con su educación y bienestar. \n\nEstamos aquí para potenciar ese esfuerzo y asegurar un futuro de oportunidades. "</string>
     <string name="onboarding_finalscreen_title">Un futuro brillante comienza hoy</string>
-    <string name="onboarding_finalscreen_subtitle">Únete a la comunidad de padres que transforman el amor en aprendizaje y éxito para sus hijos</string>
+    <string name="onboarding_finalscreen_subtitle">Únete a la creciente comunidad de padres que transforman el amor en aprendizaje y éxito para sus hijos</string>
     <string name="more_lessons_coming_soon">Más lecciones próximamente...</string>
     <string name="benefits">Beneficios</string>
-    <string name="onboarding_camera_title_1">Captura y Consulta</string>
+    <string name="onboarding_camera_title_1">Captura y Resuelve</string>
     <string name="onboarding_camera_title_2">Soluciones Paso a Paso</string>
     <string name="onboarding_camera_title_3">Cámaras Especializadas</string>
     <string name="onboarding_camera_title_4">Consulta Continua</string>
@@ -400,16 +400,16 @@
     <string name="onboarding_guide_title_3">Fomento de un Ambiente Feliz</string>
     <string name="onboarding_privacy_title_1">Su Privacidad, Nuestra Prioridad</string>
     <string name="onboarding_privacy_title_2">Confidencialidad Asegurada</string>
-    <string name="onboarding_camera_subtitle_1">Toma una foto de cualquier problema escolar</string>
+    <string name="onboarding_camera_subtitle_1">Resuelve cualquier problema escolar</string>
     <string name="onboarding_camera_subtitle_2">Recibe explicaciones detalladas</string>
-    <string name="onboarding_camera_subtitle_3">Utiliza cámaras específicas para Traducir, Resumir y Corregir ortografía</string>
-    <string name="onboarding_camera_subtitle_4">¿Tienes más dudas? Pregunta todo lo que necesites hasta que todo quede claro</string>
-    <string name="onboarding_assistant_subtitle_1">¿Tienes cualquier inquietud? Nuestro asistente de IA está listo para ayudarle</string>
-    <string name="onboarding_assistant_subtitle_2">La IA dispone de información extraida de libros y artículos de psicólogos, neurocientíficos y pediatras</string>
-    <string name="onboarding_assistant_subtitle_3">Desde cómo manejar rabietas hasta fomentar buenos hábitos</string>
-    <string name="onboarding_assistant_subtitle_4">Disponible las 24 horas del día, todos los días, para ofrecerle orientación y consejos en su rol como padre o madre</string>
-    <string name="onboarding_guide_subtitle_1">Accede a una colección de conocimientos de psicólogos, neurocientíficos y pediatras</string>
-    <string name="onboarding_guide_subtitle_2">"Encuentra consejos útiles y estrategias para mejorar la convivencia familiar"</string>
+    <string name="onboarding_camera_subtitle_3">Cámaras específicas para Resolver, Traducir y más</string>
+    <string name="onboarding_camera_subtitle_4">Pregunta todo lo que necesites</string>
+    <string name="onboarding_assistant_subtitle_1">Pregunta a la IA cualquier inquietud</string>
+    <string name="onboarding_assistant_subtitle_2">De Psicólogos, Neurocientíficos...</string>
+    <string name="onboarding_assistant_subtitle_3">Simplemente Pregunta y Aplica</string>
+    <string name="onboarding_assistant_subtitle_4">Disponible las 24 horas del día</string>
+    <string name="onboarding_guide_subtitle_1">Accede a información de Expertos</string>
+    <string name="onboarding_guide_subtitle_2">Encuentra consejos y estrategias útiles</string>
     <string name="onboarding_guide_subtitle_3">Aplica lo aprendido para crear un hogar más armonioso y feliz</string>
     <string name="onboarding_privacy_subtitle_1">ParentsPeak no recopila datos personales</string>
     <string name="onboarding_privacy_subtitle_2">Los mensajes en nuestra app son privados y no se almacenan</string>
@@ -453,7 +453,7 @@
     <string name="goal_6">Vivir la parentalidad con menos estrés</string>
     <string name="goal_7">Crear un ambiente de amor y respeto mutuo</string>
     <string name="goal_8">Reforzar la confianza en mis decisiones de crianza</string>
-    <string name="good_response_1">¡Maravilloso! Tu dedicación es el motor que impulsará el futuro de tus hijos. Aquí en ParentsPeak, te ofrecemos las herramientas para convertir ese deseo en realidad. ¡Vamos juntos en este viaje!</string>
+    <string name="good_response_1">¡Maravilloso! Tu dedicación es el motor que impulsará el futuro de tus hijos. \n\nAquí en ParentsPeak, te ofrecemos las herramientas para convertir ese deseo en realidad. ¡Vamos juntos en este viaje!</string>
     <string name="bad_response_1">Ser padre o madre viene con sus desafíos, y está bien tener dudas. Aquí en ParentsPeak, estamos listos para ayudarte a encontrar formas de apoyar el futuro de tus hijos. Estás en buena compañía.</string>
     <string name="quote_3">Estoy comprometido a hacer lo que sea necesario para asegurar un futuro más brillante para mis hijos</string>
     <string name="together_in_every_step">Juntos en Cada Paso</string>
@@ -507,5 +507,12 @@
     <string name="select_your_goal">Selecciona tu objetivo</string>
     <string name="select_your_child_s_age">Selecciona la edad de tu hijo</string>
     <string name="you_can_cancel_at_any_time_billing_is_annual">Puedes cancelar en cualquier momento, el cobro es anual</string>
+    <string name="goal_subtitle">Más adelante podrás cambiar este objetivo siempre que desees</string>
+    <string name="time_screen_title">Ahorra tiempo todos los días</string>
+    <string name="time_screen_subtitle">Encuentra respuestas efectivas al instante, transformando el aprendizaje en una aventura sin estrés</string>
+    <string name="homework_screen_title">Ayuda fácilmente en las tareas</string>
+    <string name="homework_screen_subtitle">Optimiza las sesiones de estudio, convirtiendo los desafíos en oportunidades para el crecimiento</string>
+    <string name="emotion_screen_title">Entiende las emociones de tu hijo</string>
+    <string name="emotion_screen_subtitle">Desbloquea conexiones más profundas, guiándolos a través de sus sentimientos con empatía y perspicacia</string>
 
 </resources>

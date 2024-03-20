@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingAnimation
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingOneSelect
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingChildName
 import com.sginnovations.asked.presentation.ui.onboarding.type.OnBoardingCrafting
@@ -34,9 +35,10 @@ fun OnBoardingBodyPage(
         OnBoardingType.MultipleSelect -> OnBoardingMultipleSelect(vmOnBoarding, onBoardingPage)
         OnBoardingType.Quote -> OnBoardingQuote(onBoardingPage)
         OnBoardingType.Response -> OnBoardingResponse(vmOnBoarding, onBoardingPage)
-        OnBoardingType.Section -> OnBoardingSection(onBoardingPage)
+        OnBoardingType.Section -> OnBoardingSection(pagerState, onBoardingPage)
         OnBoardingType.Personalization -> OnBoardingCrafting(vmOnBoarding, pagerState)
         OnBoardingType.ChildName -> OnBoardingChildName(vmOnBoarding)
+        OnBoardingType.Animation -> OnBoardingAnimation(onBoardingPage)
         else -> OnBoardingDefault(onBoardingPage)
     }
 }

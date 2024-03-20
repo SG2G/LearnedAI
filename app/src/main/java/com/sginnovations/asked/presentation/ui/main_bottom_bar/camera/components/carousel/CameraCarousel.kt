@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalPagerApi::class)
-
 package com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components.carousel
 
 import android.graphics.Bitmap
@@ -41,6 +39,7 @@ import com.sginnovations.asked.data.SummaryCategoryOCR
 import com.sginnovations.asked.data.TextCategoryOCR
 import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.presentation.ui.ui_components.camera.PremiumCameraDialog
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.utils.CheckIsPremium
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -50,6 +49,8 @@ private const val TAG = "sliderList"
 @Composable
 fun CameraCarousel(
     modifier: Modifier = Modifier,
+
+    vmAppsFlyer: AppsFlyerViewModel,
 
     controller: LifecycleCameraController,
 
@@ -126,27 +127,7 @@ fun CameraCarousel(
                     if (isPremium) {
                         Log.d(TAG, "CameraCarousel: sliderList[item].prefix -> ${sliderList[item].prefix}")
 
-                        val eventValues = HashMap<String, Any>()
-                        eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, sliderList[item].prefix)
-
-                        AppsFlyerLib.getInstance().logEvent(
-                            context,
-                            AFInAppEventType.CONTENT_VIEW,
-                            eventValues,
-                            object : AppsFlyerRequestListener {
-                                override fun onSuccess() {
-                                    Log.d(TAG, "Event sent successfully")
-                                }
-
-                                override fun onError(errorCode: Int, errorDesc: String) {
-                                    Log.d(
-                                        TAG, "Launch failed to be sent:\n" +
-                                                "Error code: " + errorCode + "\n"
-                                                + "Error description: " + errorDesc
-                                    )
-                                }
-                            }
-                        )
+                        vmAppsFlyer.logPhotoTakenEvent(sliderList[item].prefix)
 
                         onPhotoTaken(it)
                     } else {
@@ -157,27 +138,7 @@ fun CameraCarousel(
                             else -> {
                                 Log.d(TAG, "CameraCarousel: sliderList[item].prefix -> ${sliderList[item].prefix}")
 
-                                val eventValues = HashMap<String, Any>()
-                                eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, sliderList[item].prefix)
-
-                                AppsFlyerLib.getInstance().logEvent(
-                                    context,
-                                    AFInAppEventType.CONTENT_VIEW,
-                                    eventValues,
-                                    object : AppsFlyerRequestListener {
-                                        override fun onSuccess() {
-                                            Log.d(TAG, "Event sent successfully")
-                                        }
-
-                                        override fun onError(errorCode: Int, errorDesc: String) {
-                                            Log.d(
-                                                TAG, "Launch failed to be sent:\n" +
-                                                        "Error code: " + errorCode + "\n"
-                                                        + "Error description: " + errorDesc
-                                            )
-                                        }
-                                    }
-                                )
+                                vmAppsFlyer.logPhotoTakenEvent(sliderList[item].prefix)
 
                                 onPhotoTaken(it)
                             }

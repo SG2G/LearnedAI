@@ -48,6 +48,7 @@ import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.components.top.TranslateSelector
 import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenDisplay
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 
@@ -57,6 +58,7 @@ private const val TAG = "CameraStateFul"
 fun CameraStateFul(
     vmCamera: CameraViewModel,
     vmToken: TokenViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     onNavigateSubscriptions: () -> Unit,
 
@@ -83,6 +85,8 @@ fun CameraStateFul(
     if (cameraPermissionGranted.value) {
         CameraStateLess(
             vmToken = vmToken,
+            vmAppsFlyer = vmAppsFlyer,
+
             cameraCategoryOCR = cameraCategoryOCR,
             translateLanguage = translateLanguage,
 
@@ -125,6 +129,8 @@ fun CameraStateFul(
 @Composable
 fun CameraStateLess(
     vmToken: TokenViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
+
     cameraCategoryOCR: MutableState<CategoryOCR>,
     translateLanguage: MutableState<String>,
 
@@ -249,6 +255,8 @@ fun CameraStateLess(
                     modifier = Modifier
                         .height(132.dp)
                         .width(212.dp),
+                    vmAppsFlyer = vmAppsFlyer,
+
                     controller = controller,
 
                     onChangeCategory = { categoryOCR -> onChangeCategory(categoryOCR) },

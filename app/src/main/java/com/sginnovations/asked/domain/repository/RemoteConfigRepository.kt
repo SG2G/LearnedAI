@@ -3,6 +3,7 @@ package com.sginnovations.asked.domain.repository
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
@@ -28,6 +29,16 @@ class RemoteConfigRepository @Inject constructor() {
             minimumFetchIntervalInSeconds = 60
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
+
+        val forceRefresh = true
+        FirebaseInstallations.getInstance().getToken(forceRefresh)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Installations", "Installation auth token: " + task.result?.token)
+                } else {
+                    Log.e("Installations", "Unable to get Installation auth token")
+                }
+            }
     }
 
     //TOKENS

@@ -43,10 +43,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
-import com.appsflyer.AFInAppEventParameterName
-import com.appsflyer.AFInAppEventType
-import com.appsflyer.AppsFlyerLib
-import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.sginnovations.asked.Constants
@@ -56,6 +52,7 @@ import com.sginnovations.asked.data.lessons.LessonDataClass
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.components.ComposeYouTubePlayer
 import com.sginnovations.asked.presentation.ui.ui_components.lesson.EndLessonDialog
 import com.sginnovations.asked.presentation.ui.ui_components.lesson.LessonDescriptionWithLinks
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
 import com.sginnovations.asked.presentation.viewmodel.LessonViewModel
@@ -74,6 +71,7 @@ fun LessonStateFul(
     vmAssistant: AssistantViewModel,
     vmIntent: IntentViewModel,
     vmPreferences: PreferencesViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     onOpenTranscript: () -> Unit,
 
@@ -90,6 +88,8 @@ fun LessonStateFul(
     val showEndLesson = remember { mutableStateOf(false) }
 
     LessonStateLess(
+        vmAppsFlyer = vmAppsFlyer,
+
         lesson = lesson,
 
         onOpenTranscript = { onOpenTranscript() },
@@ -124,6 +124,8 @@ fun LessonStateFul(
 
 @Composable
 fun LessonStateLess(
+    vmAppsFlyer: AppsFlyerViewModel,
+
     lesson: LessonDataClass,
 
     onOpenTranscript: () -> Unit,
@@ -194,30 +196,7 @@ fun LessonStateLess(
                 Button(
                     onClick = {
                         if (page == lesson.lessonPages) {
-                            // page actual == page count
-
-                            val eventValues = HashMap<String, Any>()
-                            eventValues.put(AFInAppEventParameterName.LEVEL, lesson.idLesson)
-
-                            AppsFlyerLib.getInstance().logEvent(
-                                context,
-                                AFInAppEventType.LEVEL_ACHIEVED,
-                                eventValues,
-                                object : AppsFlyerRequestListener {
-                                    override fun onSuccess() {
-                                        Log.d(TAG, "Event sent successfully")
-                                        Log.d(TAG, "Event Values: $eventValues")
-                                    }
-
-                                    override fun onError(errorCode: Int, errorDesc: String) {
-                                        Log.d(
-                                            TAG, "Launch failed to be sent:\n" +
-                                                    "Error code: " + errorCode + "\n"
-                                                    + "Error description: " + errorDesc
-                                        )
-                                    }
-                                }
-                            )
+                            vmAppsFlyer.logGuideLevelEvent(lesson.idLesson)
 
                             onLessonReadAndFinish()
                         } else {

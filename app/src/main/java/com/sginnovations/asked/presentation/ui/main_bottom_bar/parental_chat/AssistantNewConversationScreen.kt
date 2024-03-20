@@ -48,6 +48,7 @@ import com.sginnovations.asked.presentation.ui.chat.components.NewChatSendIcon
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_chat.dialog.WhyTrustAiDialog
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.presentation.ui.ui_components.chat.TokenCostDisplay
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 import com.sginnovations.asked.utils.CheckIsPremium
@@ -60,6 +61,7 @@ private const val TAG = "AssistantNewConversationStateFul"
 fun AssistantNewConversationStateFul(
     vmAssistant: AssistantViewModel,
     vmToken: TokenViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     onNavigateChat: () -> Unit,
 
@@ -109,22 +111,24 @@ fun AssistantNewConversationStateFul(
 
                     if (isPremium) {
                         sendNewMessage(
+                            vmAssistant,
+                            vmAppsFlyer,
+
                             context,
 
                             processText,
-
-                            vmAssistant,
                         ) {
                             onNavigateChat()
                         }
                     } else {
                         if (tokens.value >= Constants.ASSISTANT_MESSAGE_COST) {
                             sendNewMessage(
+                                vmAssistant,
+                                vmAppsFlyer,
+
                                 context,
 
                                 processText,
-
-                                vmAssistant,
                             ) {
                                 onNavigateChat()
                             }
@@ -291,18 +295,19 @@ fun AssistantNewConversationStateLess(
 
 fun sendNewMessage(
     //TODO REPEAT CROP
+    vmAssistant: AssistantViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
+
     context: Context,
 
     message: String,
 
-    vmAssistant: AssistantViewModel,
-
     onNavigateChat: () -> Unit,
 ) {
-    //TODO vmAssistant CHECK
+    Log.d(TAG, "sendNewMessage: sending ai message")
 
-    Log.d(TAG, "sendNewMessage: sending message")
     if (NetworkUtils.isOnline(context)) {
+        vmAppsFlyer.logStartMessageAssistantEvent()
         vmAssistant.sendNewMessage(
             message = message,
 

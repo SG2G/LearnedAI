@@ -49,6 +49,8 @@ class Constants {
         const val CHAT_LIMIT_PREMIUM = 4000
         const val DEV_ID = "K2Hr8qLCZaJfBb4KBLFz55"
 
+        // REMOTE CONFIG
+        const val RC_ONBOARDING_EXPERIMENT = "onBoardingExperiment"
         // Other
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
         val PURPLE_COLOR = Color(0xFFBD98F8)

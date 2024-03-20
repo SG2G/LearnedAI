@@ -37,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.sginnovations.asked.R
 
 data class CardInfo(
@@ -134,7 +135,7 @@ fun VerticalFadeDivider(index: Int) {
         .size(width = 1.dp, height = 16.dp)) {
         drawLine(
             brush = brush,
-            start = Offset(x = 0f, y = -60f),
+            start = Offset(x = 0f, y = -28f),
             end = Offset(x = 0f, y = size.height + 60f),
             strokeWidth = 2.dp.toPx()
         )
@@ -154,7 +155,7 @@ fun CardWithTitleAndIcon(
         modifier = modifier
             .width(44.dp)
             .height(44.dp)
-            .alpha(2f)
+            .zIndex(2f)
             .border(
                 width = 2.dp,
                 color =

@@ -15,8 +15,8 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 26
         targetSdk = 33
-        versionCode = 40
-        versionName = "2.1.0"
+        versionCode = 41
+        versionName = "2.1.1"
 
 //        testInstrumentationRunner =
 //            "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING

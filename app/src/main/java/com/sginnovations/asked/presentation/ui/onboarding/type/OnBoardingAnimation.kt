@@ -1,53 +1,40 @@
 package com.sginnovations.asked.presentation.ui.onboarding.type
 
-import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sginnovations.asked.Constants
+import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.onboarding.OnBoardingPage
-import kotlinx.coroutines.delay
+import com.sginnovations.asked.presentation.ui.ui_components.DisplayLottieAnimation
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingSection(
-    pagerState: PagerState,
+fun OnBoardingAnimation(
     onBoardingPage: OnBoardingPage,
 ) {
     val context = LocalContext.current
 
-    Log.d("OnBoardingSection", "currentPage -> ${pagerState.currentPage} \n" +
-            "initialPage -> ${pagerState.initialPage} \n" +
-            "interactionSource -> ${pagerState.interactionSource} \n" +
-            "settledPage -> ${pagerState.settledPage} \n" +
-            "targetPage -> ${pagerState.targetPage} \n" +
-            "currentPageOffsetFraction -> ${pagerState.currentPageOffsetFraction} \n" +
-            "initialPageOffsetFraction -> ${pagerState.initialPageOffsetFraction}\n" )
-
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 60.dp)
-            .verticalScroll(rememberScrollState()),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -67,6 +54,16 @@ fun OnBoardingSection(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
             )
+        }
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 128.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        onBoardingPage.getImage(context)?.let {
+            DisplayLottieAnimation(it)
         }
     }
 }

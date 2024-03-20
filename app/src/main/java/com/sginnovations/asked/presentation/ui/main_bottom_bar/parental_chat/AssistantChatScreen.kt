@@ -43,6 +43,7 @@ import com.sginnovations.asked.presentation.ui.chat.components.LaunchedEffectSna
 import com.sginnovations.asked.presentation.ui.chat.components.MessagesDisplay
 import com.sginnovations.asked.presentation.ui.ui_components.chat.NoTokensDialog
 import com.sginnovations.asked.presentation.ui.ui_components.chat.ReportDialog
+import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
@@ -58,6 +59,7 @@ fun AssistantChatStateFul(
     vmAssistant: AssistantViewModel,
     vmToken: TokenViewModel,
     vmReport: ReportViewModel,
+    vmAppsFlyer: AppsFlyerViewModel,
 
     onNavigateSubscriptionScreen: () -> Unit,
 ) {
@@ -157,12 +159,14 @@ fun AssistantChatStateFul(
             if (message.isNotEmpty()) {
                 if (NetworkUtils.isOnline(context)) {
                     if (isPremium.value) {
+                        vmAppsFlyer.logChatAssistantEvent()
                         scope.launch { vmAssistant.sendMessageToOpenaiApi(message) }
 
                         vmAssistant.messageSent()
                     } else {
                         // No Premium
                         if (tokens.value >= ASSISTANT_MESSAGE_COST) {
+                            vmAppsFlyer.logChatAssistantEvent()
                             scope.launch { vmAssistant.sendMessageToOpenaiApi(message) }
 
                             vmAssistant.messageSent()
