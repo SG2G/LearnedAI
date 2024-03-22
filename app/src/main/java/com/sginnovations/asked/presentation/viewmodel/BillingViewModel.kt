@@ -38,6 +38,7 @@ import kotlin.coroutines.suspendCoroutine
 private const val TAG = "BillingViewModel"
 private const val FIVE_DAYS = 5 * 24 * 60 * 60 * 1000L
 private const val MINUTE = 1 * 60 * 1000L
+
 @HiltViewModel
 class BillingViewModel @Inject constructor(
     @ApplicationContext appContext: Context,
@@ -45,6 +46,8 @@ class BillingViewModel @Inject constructor(
     private val setPremiumUseCase: SetPremiumUseCase,
     private val askedNotificationService: AskedNotificationService,
 ) : ViewModel() {
+
+    val isPremium = mutableStateOf(false)
 
     private var currentProductSKU: String? = null
     private var currentProductPrice: Double? = null
@@ -165,8 +168,11 @@ class BillingViewModel @Inject constructor(
                     when (productDetails.productId) {
                         "asked_subscription_annually" -> productAnnually.value = productDetails
                         "asked_subscription_monthly" -> productMonthly.value = productDetails
-                        "asked_subscription_annually_discount" -> productAnnuallyRR.value = productDetails
-                        "asked_subscription_annually_discount2" -> productAnnuallyRR2.value = productDetails
+                        "asked_subscription_annually_discount" -> productAnnuallyRR.value =
+                            productDetails
+
+                        "asked_subscription_annually_discount2" -> productAnnuallyRR2.value =
+                            productDetails
                     }
                 }
                 subsLoaded.value = true
@@ -211,14 +217,18 @@ class BillingViewModel @Inject constructor(
 
             billingClient.queryPurchasesAsync(params) { _, purchases ->
                 if (purchases.isEmpty()) {
-                    Log.d(TAG, "Purchases empty")
                     viewModelScope.launch {
+                        Log.d(TAG, "Purchases empty")
+                        isPremium.value = false
                         setPremiumUseCase(false)
+                        Log.d("PremiumRun 2", "${isPremium.value} ")
                     }
                 } else {
-                    Log.d(TAG, "Have purchases $purchases")
                     viewModelScope.launch {
+                        Log.d(TAG, "Have purchases $purchases")
+                        isPremium.value = true
                         setPremiumUseCase(true)
+                        Log.d("PremiumRun 3", "${isPremium.value} ")
                     }
                 }
             }
@@ -258,10 +268,13 @@ class BillingViewModel @Inject constructor(
                     .build()
                 billingClient.acknowledgePurchase(acknowledgePurchaseParams) { billingResult ->
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        Log.d(TAG, "verifySubPurchase: Purchase acknowledged successfully")
                         // Purchase acknowledged successfully, grant entitlement to the user
                         // Log the purchase event with AppsFlyer
                         viewModelScope.launch {
+                            Log.d(TAG, "verifySubPurchase: Purchase acknowledged successfully")
+                            isPremium.value = true
+                            setPremiumUseCase(true)
+
                             val eventValues = HashMap<String, Any>()
                             eventValues.put(
                                 AFInAppEventParameterName.CONTENT_ID,
@@ -292,7 +305,6 @@ class BillingViewModel @Inject constructor(
                                     }
                                 }
                             )
-                            setPremiumUseCase(true)
                         }
                     } else {
                         // Handle other response codes
@@ -305,7 +317,10 @@ class BillingViewModel @Inject constructor(
         }
     }
 
-    suspend fun launchBillingFlowSubs(activity: Activity, productDetails: ProductDetails) {
+    suspend fun launchBillingFlowSubs(
+        activity: Activity,
+        productDetails: ProductDetails,
+    ) {
         val subscriptionOfferDetails = productDetails.subscriptionOfferDetails
         if (!subscriptionOfferDetails.isNullOrEmpty()) {
 
@@ -345,6 +360,4 @@ class BillingViewModel @Inject constructor(
 
         }
     }
-
-
 }

@@ -23,14 +23,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.sharp.GppGood
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -44,7 +41,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -331,6 +327,7 @@ fun SubscriptionStateLess(
 
     onLaunchPurchaseFlow: (ProductDetails) -> Unit,
 ) {
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
 
     val firstTimeLaunch = vmPreferences.firstTimeLaunch.value
@@ -343,7 +340,6 @@ fun SubscriptionStateLess(
         Option.OptionAnnuallyRR -> selectedPlan.value = productAnnuallyRR
     }
 
-    val context = LocalContext.current
 
     fun Context.getActivity(): Activity? {
         return when (this) {
@@ -373,7 +369,6 @@ fun SubscriptionStateLess(
                  * Title
                  */
                 AskedSubscriptionTitle(onNavigateUpAndOffer)
-
 
                 /**
                  * Benefits
@@ -456,21 +451,21 @@ fun SubscriptionStateLess(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.Bottom
                         ) {
-                            if (userOption.value != Option.OptionMonthly && !priceSubAnnuallyDiscount.value.isNullOrEmpty()) {
-                                Text(
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    text = stringResource(R.string.subscription_first_year_at) + " " + priceSubAnnuallyDiscount.value + stringResource(
-                                        id = R.string.subscription_year
-                                    ) + ", " + stringResource(
-                                        R.string.then
-                                    ) + " " + priceSubAnnually.value + stringResource(id = R.string.subscription_year) + ". " + stringResource(
-                                        R.string.subscription_automatic_renewal_easy_cancellation
-                                    ),
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
+//                            if (userOption.value != Option.OptionMonthly && !priceSubAnnuallyDiscount.value.isNullOrEmpty()) {
+//                                Text(
+//                                    modifier = Modifier.padding(horizontal = 16.dp),
+//                                    text = stringResource(R.string.subscription_first_year_at) + " " + priceSubAnnuallyDiscount.value + stringResource(
+//                                        id = R.string.subscription_year
+//                                    ) + ", " + stringResource(
+//                                        R.string.then
+//                                    ) + " " + priceSubAnnually.value + stringResource(id = R.string.subscription_year) + ". " + stringResource(
+//                                        R.string.subscription_automatic_renewal_easy_cancellation
+//                                    ),
+//                                    color = MaterialTheme.colorScheme.onBackground,
+//                                    style = MaterialTheme.typography.labelMedium,
+//                                    textAlign = TextAlign.Center
+//                                )
+//                            }
                             /**
                              * Button
                              */

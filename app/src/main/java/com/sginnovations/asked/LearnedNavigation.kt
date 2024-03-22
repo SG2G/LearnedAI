@@ -18,7 +18,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -31,7 +30,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sginnovations.asked.presentation.ui.chat.ChatStateFul
 import com.sginnovations.asked.presentation.ui.crop.CropStateFul
-import com.sginnovations.asked.presentation.ui.earn_points.EarnPoints
 import com.sginnovations.asked.presentation.ui.gallery.GalleryStateFull
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats.StateFulHistoryChats
@@ -69,7 +67,7 @@ import com.sginnovations.asked.presentation.viewmodel.ReferralViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
 import com.sginnovations.asked.presentation.viewmodel.RssFeedViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
-import com.sginnovations.asked.utils.CheckIsPremium.checkIsPremium
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val TAG = "LearnedNavigation"
@@ -126,15 +124,13 @@ fun LearnedNavigation(
     val scope = rememberCoroutineScope()
 
     val intent = remember { (context as Activity).intent }
-    val isPremium = remember { mutableStateOf(false) }
+    val isPremium = vmBilling.isPremium
 
     val firstBottomScreen = ParentalAssist
     val firsTimeLaunch = vmPreferences.firstTimeLaunch
 
     LaunchedEffect(Unit) {
         if (vmAuth.userAuth.value != null) {
-            isPremium.value = checkIsPremium()
-            vmOnBoarding.getOnBoardingExperimentNum() //TODO SHOUDL DELETE
             // User its logged - set up
             if (firsTimeLaunch.value) { //TODO CHANGE IT
                 vmNavigator.navigateAuthToX(
@@ -146,9 +142,15 @@ fun LearnedNavigation(
                     navController,
                     firstBottomScreen
                 )
-                if (!isPremium.value) {
-                    navController.navigate(FirstOfferScreen.route)
+                launch {
+                    Log.d("PremiumRn 0", "${isPremium.value} ")
+                    delay(2000)
+                    Log.d("PremiumRun 1", "${isPremium.value} ")
+                    if (!isPremium.value) {
+                        navController.navigate(FirstOfferScreen.route)
+                    }
                 }
+
             }
 //            vmNavigator.navigateAuthToX(navController, firstBottomScreen)
 
@@ -157,8 +159,6 @@ fun LearnedNavigation(
             vmToken.startTokenListener()
             vmReferral.handleDynamicLink(intent)
             vmBilling.connectToGooglePlay()
-
-            checkIsPremium()
 
             vmToken.ensureMinimumTokensUseCaseCheckPremium()
         }
@@ -279,7 +279,11 @@ fun LearnedNavigation(
 
                     onNavigateSubscriptions = { navController.navigate(route = Subscription.route) },
 
-                    onNavigateFirstOffer = { navController.navigate(route = FirstOfferScreen.route) },
+                    onNavigateFirstOffer = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = FirstOfferScreen.route)
+                        }
+                    },
                     onGetPhotoGallery = { navController.navigate(route = Gallery.route) },
                     onCropNavigation = { navController.navigate(route = Crop.route) },
                 )
@@ -361,7 +365,11 @@ fun LearnedNavigation(
                     vmPreferences = vmPreferences,
 
                     onNavigateLesson = { navController.navigate(route = Lesson.route) },
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    }
                 )
             }
             /**
@@ -376,13 +384,17 @@ fun LearnedNavigation(
 
                     navController = navController,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) },
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    },
 
                     onNavigateChat = {
                         scope.launch { vmNavigator.navigateChat(navController) }
                     },
                     onNavigateNewChat = {
-                        scope.launch { vmNavigator.navigateNewChat(navController) }
+                        scope.launch { vmNavigator.navigateNewChat(navController, isPremium.value) }
                     }
                 )
             }
@@ -412,7 +424,11 @@ fun LearnedNavigation(
                     vmAppsFlyer = vmAppsFlyer,
 
                     onNavigateChat = { scope.launch { vmNavigator.navigateChat(navController) } },
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    }
                 )
             }
             /**
@@ -428,10 +444,14 @@ fun LearnedNavigation(
 
                     onNavigateChat = {
                         scope.launch {
-                            vmNavigator.navigateAssistantChat(navController)
+                            vmNavigator.navigateAssistantChat(navController, isPremium.value)
                         }
                     },
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -449,7 +469,11 @@ fun LearnedNavigation(
                     vmReport = vmReport,
                     vmAppsFlyer = vmAppsFlyer,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -469,7 +493,11 @@ fun LearnedNavigation(
                     vmReport = vmReport,
                     vmAppsFlyer = vmAppsFlyer,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) }
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    }
                 )
 //                EarnPoints(vmToken, navController)
             }
@@ -541,7 +569,11 @@ fun LearnedNavigation(
                     vmCamera = vmCamera,
                     vmToken = vmToken,
 
-                    onNavigateSubscriptionScreen = { navController.navigate(route = SecondOfferScreen.route) },
+                    onNavigateSubscriptionScreen = {
+                        if (!isPremium.value) {
+                            navController.navigate(route = SecondOfferScreen.route)
+                        }
+                    },
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
             }
@@ -562,14 +594,14 @@ fun LearnedNavigation(
                 )
             }
             composable(route = SecondOfferScreen.route) {
-                SecondOfferStateFul(
-                    vmBilling = vmBilling,
-                    vmPreference = vmPreferences,
+                    SecondOfferStateFul(
+                        vmBilling = vmBilling,
+                        vmPreference = vmPreferences,
 
-                    onDismissRequest = {
-                        navController.navigateUp()
-                    }
-                )
+                        onDismissRequest = {
+                            navController.navigateUp()
+                        }
+                    )
             }
         }
     }

@@ -10,6 +10,7 @@ import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.appsflyer.deeplink.DeepLink
 import com.appsflyer.deeplink.DeepLinkListener
 import com.appsflyer.deeplink.DeepLinkResult
+import com.facebook.FacebookSdk
 import com.sginnovations.asked.Constants.Companion.DEV_ID
 import dagger.hilt.android.HiltAndroidApp
 
@@ -31,6 +32,11 @@ class MyApp: Application() {
         val notificationManager=getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(notificationChannel)
 
+        /**
+         * Facebook Initialize
+         */
+        FacebookSdk.sdkInitialize(applicationContext)
+        //FacebookSdk.setIsDebugEnabled(true)
         /**
          * AF
          */

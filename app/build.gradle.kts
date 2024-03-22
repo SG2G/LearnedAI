@@ -15,8 +15,8 @@ android {
         applicationId = "com.sginnovations.asked"
         minSdk = 26
         targetSdk = 33
-        versionCode = 41
-        versionName = "2.1.1"
+        versionCode = 46
+        versionName = "2.1.4"
 
 //        testInstrumentationRunner =
 //            "com.sginnovations.asked.HiltTestRunner" //TODO TEST WHAT IM DOING
@@ -58,6 +58,8 @@ android {
 
 dependencies {
 
+    //Facebook ads
+    implementation ("com.facebook.android:facebook-android-sdk:16.0.0")
     //AppsFlyer
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
     implementation ("com.android.installreferrer:installreferrer:2.2")

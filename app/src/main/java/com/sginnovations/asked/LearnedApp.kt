@@ -2,7 +2,10 @@ package com.sginnovations.asked
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.sginnovations.asked.presentation.ui.theme.LearnedAITheme
 import com.sginnovations.asked.presentation.ui.utils.UpdateScreen
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel

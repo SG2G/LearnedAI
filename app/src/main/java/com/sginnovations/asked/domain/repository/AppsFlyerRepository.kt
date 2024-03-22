@@ -6,6 +6,7 @@ import com.appsflyer.AFInAppEventParameterName
 import com.appsflyer.AFInAppEventType
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.attribution.AppsFlyerRequestListener
+import com.facebook.appevents.AppEventsLogger
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -22,8 +23,11 @@ private const val EVENT_ALL_ENGAGEMENT = "all_engagement"
 class AppsFlyerRepository @Inject constructor(
     @ApplicationContext val context: Context,
 ) {
+    private val logger = AppEventsLogger.newLogger(context)
+
     fun allEngagementEvent() {
         Log.d(TAG, "allEngagementEvent")
+        logger.logEvent("allEngagementEvent")
 
         AppsFlyerLib.getInstance().logEvent(
             context,
@@ -46,6 +50,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logPhotoTakenEvent(cameraType: String) {
         Log.d(TAG, "cameraType -> $cameraType")
+        logger.logEvent("cameraType, $cameraType")
 
         val eventValues = HashMap<String, Any>().apply {
             put(AFInAppEventParameterName.CONTENT_TYPE, cameraType)
@@ -72,6 +77,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logPhotoCropEvent(cropType: String) {
         Log.d(TAG, "cropType -> $cropType")
+        logger.logEvent("cropType, $cropType")
 
         val eventValues = HashMap<String, Any>().apply {
             put(AFInAppEventParameterName.CONTENT_TYPE, cropType)
@@ -98,6 +104,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logStartMessagePhotoEvent() {
         Log.d(TAG, "logStartMessagePhotoEvent")
+        logger.logEvent("logStartMessagePhotoEvent")
 
         AppsFlyerLib.getInstance().logEvent(
             context,
@@ -120,6 +127,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logStartMessageAssistantEvent() {
         Log.d(TAG, "logStartMessageAssistantEvent")
+        logger.logEvent("logStartMessageAssistantEvent")
 
         AppsFlyerLib.getInstance().logEvent(
             context,
@@ -142,6 +150,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logChatPhotoEvent() {
         Log.d(TAG, "logChatPhotoEvent")
+        logger.logEvent("logChatPhotoEvent")
 
         AppsFlyerLib.getInstance().logEvent(
             context,
@@ -164,6 +173,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logChatAssistantEvent() {
         Log.d(TAG, "logChatAssistantEvent")
+        logger.logEvent("logChatAssistantEvent")
 
         AppsFlyerLib.getInstance().logEvent(
             context,
@@ -186,6 +196,7 @@ class AppsFlyerRepository @Inject constructor(
     }
     fun logGuideLevelEvent(idLesson: Int) {
         Log.d(TAG, "logGuideLevelEvent")
+        logger.logEvent("logGuideLevelEvent")
 
         val eventValues = HashMap<String, Any>()
         eventValues.put(AFInAppEventParameterName.LEVEL, idLesson)

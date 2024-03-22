@@ -82,9 +82,7 @@ fun AssistantNewConversationStateFul(
     var isPremium by remember { mutableStateOf(false) }
     val tokens = vmToken.tokens
 
-    LaunchedEffect(Unit) {
-        isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await()
-    }
+    LaunchedEffect(Unit) { isPremium = scope.async { CheckIsPremium.checkIsPremium() }.await() }
 
     // Change navigator bar color
     val navigationBarColor = MaterialTheme.colorScheme.background.toArgb()

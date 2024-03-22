@@ -29,6 +29,17 @@
         android:theme="@style/Theme.LearnedAI"
         android:name="com.sginnovations.asked.MyApp"
         tools:targetApi="31">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token"/>
+
+        <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="true"/>
+        <meta-data android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+            android:value="true" />
+
         <activity
             android:name="com.sginnovations.asked.MainActivity"
             android:screenOrientation="portrait"
@@ -65,7 +76,6 @@
                 <data android:host="app.appsflyer.com" android:scheme="https" />
             </intent-filter>
 
-
         </activity>
 
         <receiver android:name=".NotificationReceiver"/>
@@ -75,5 +85,6 @@
 <!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
 <!--            android:value="ca-app-pub-8452230076174340~9197680270"/>-->
     </application>
+
 
 </manifest>

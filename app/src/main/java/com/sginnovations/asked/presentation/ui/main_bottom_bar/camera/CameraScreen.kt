@@ -24,9 +24,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,6 +53,8 @@ import com.sginnovations.asked.presentation.ui.ui_components.tokens.TokenDisplay
 import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.CameraViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
+import com.sginnovations.asked.utils.CheckIsPremium
+import kotlinx.coroutines.async
 
 private const val TAG = "CameraStateFul"
 
@@ -147,7 +151,10 @@ fun CameraStateLess(
     onChangeCategory: (CategoryOCR) -> Unit,
 ) {
     val context = LocalContext.current
-    val tokens = vmToken.tokens.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
+
+    val isPremium = remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { isPremium.value = scope.async { CheckIsPremium.checkIsPremium() }.await() }
 
     val controller = remember {
         LifecycleCameraController(context).apply {
@@ -187,7 +194,10 @@ fun CameraStateLess(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
+
+            if (!isPremium.value) {
+                GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
+            }
         }
 
         /**

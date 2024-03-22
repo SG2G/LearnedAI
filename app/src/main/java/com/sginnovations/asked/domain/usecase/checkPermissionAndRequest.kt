@@ -28,7 +28,7 @@ fun checkPermissionAndRequest(
             AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.permission_required, permName))
                 .setMessage(context.getString(R.string.this_app_requires_access_to_your, permName))
-                .setPositiveButton("Ok") { dialog, which ->
+                .setPositiveButton(context.getString(R.string.ok)) { dialog, which ->
                     ActivityCompat.requestPermissions(
                         activity,
                         arrayOf(permission),

@@ -41,7 +41,7 @@ fun ChatUserMessage(
     val copyMsg = stringResource(R.string.copy_copied)
 
     // Color
-    val textColor = MaterialTheme.colorScheme.onPrimaryContainer.toArgb()
+    val textColor = MaterialTheme.colorScheme.onPrimary.toArgb()
     val textSizee = MaterialTheme.typography.bodyMedium.fontSize.value
     val backgroundColor = Color.Transparent.toArgb()
 
@@ -80,7 +80,7 @@ fun ChatUserMessage(
         ElevatedCard(
             modifier = Modifier.padding(start = 32.dp),
             colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+                containerColor = MaterialTheme.colorScheme.primary
             )
         ) {
             AndroidView(

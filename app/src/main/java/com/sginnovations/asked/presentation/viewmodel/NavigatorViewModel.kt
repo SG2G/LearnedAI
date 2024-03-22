@@ -35,7 +35,7 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
             navController.navigate(Chat.route)
         }
     }
-    suspend fun navigateAssistantChat(navController: NavController) {
+    suspend fun navigateAssistantChat(navController: NavController, isPremium: Boolean) {
         Log.i(TAG, "Navigating navigateChat")
 
         withContext(Dispatchers.Main) {
@@ -46,7 +46,9 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                 }
             }
             navController.navigate(AssistantChat.route)
-            navController.navigate(SecondOfferScreen.route)
+            if (!isPremium) {
+                navController.navigate(SecondOfferScreen.route)
+            }
         }
     }
     suspend fun navigateAssistantNewChat(navController: NavController) {
@@ -62,7 +64,7 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
             navController.navigate(AssistantNewConversation.route)
         }
     }
-    suspend fun navigateNewChat(navController: NavController) {
+    suspend fun navigateNewChat(navController: NavController,isPremium: Boolean) {
         withContext(Dispatchers.Main) {
             if (navController.currentDestination?.route != NewConversation.route) {
                 Log.i(TAG, "Navigating navigateNewChat")
@@ -74,7 +76,9 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
                     }
                 }
                 navController.navigate(NewConversation.route)
-                navController.navigate(SecondOfferScreen.route)
+                if (!isPremium) {
+                    navController.navigate(SecondOfferScreen.route)
+                }
             }
         }
     }

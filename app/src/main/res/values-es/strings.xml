@@ -514,5 +514,8 @@
     <string name="homework_screen_subtitle">Optimiza las sesiones de estudio, convirtiendo los desafíos en oportunidades para el crecimiento</string>
     <string name="emotion_screen_title">Entiende las emociones de tu hijo</string>
     <string name="emotion_screen_subtitle">Desbloquea conexiones más profundas, guiándolos a través de sus sentimientos con empatía y perspicacia</string>
+    <string name="ok">Ok</string>
+    <string name="unlock_full_access">Desbloquea Acceso Completo</string>
+    <string name="subscription_unlock_text">Aprovecha Cada Momento, Fortalece Cada Paso en Tu Viaje de Crianza</string>
 
 </resources>

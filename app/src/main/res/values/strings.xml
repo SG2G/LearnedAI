@@ -532,4 +532,11 @@
     <string name="emotion_screen_subtitle">Unlock deeper connections, guiding them through feelings with empathy and insight</string>
 
 
+    <string name="facebook_app_id" translatable="false">717212077239605</string>
+    <string name="facebook_client_token" translatable="false">9b2b7a9365e0b137f16125d07f421bbf</string>
+    <string name="ok">Ok</string>
+    <string name="unlock_full_access">Unlock Full Access</string>
+    <string name="subscription_unlock_text">Embrace Every Moment, Empower Every Step in Your Parenting Journey</string>
+
+
 </resources>

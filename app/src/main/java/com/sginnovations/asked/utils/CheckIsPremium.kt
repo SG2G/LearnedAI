@@ -30,6 +30,7 @@ object CheckIsPremium {
             val document = docRef?.get()?.await()
             val isPremium = document?.getBoolean(Constants.IS_PREMIUM) ?: false
             // Stores the value and the time it was obtained
+            Log.d(TAG, "isPremium: $isPremium")
             isPremiumCache = isPremium
             lastCheckTime = currentTime
             isPremium

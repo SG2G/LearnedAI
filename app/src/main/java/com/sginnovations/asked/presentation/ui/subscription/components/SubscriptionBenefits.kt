@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sginnovations.asked.R
 
@@ -26,26 +29,39 @@ fun SubscriptionBenefits() {
             .padding(horizontal = 16.dp),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Icon(
-//                painter = painterResource(id = R.drawable.token_fill0_wght400_grad0_opsz24),
-//                contentDescription = null,
-//                tint = MaterialTheme.colorScheme.primary,
-//                modifier = Modifier.size(24.dp)
-//            )
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Column {
-//                TitleBenefit(
-//                    text = stringResource(R.string.subscription_unlimited)
-//                )
-//                SubTitleBenefit(text = stringResource(R.string.subscription_unlimited_text))
-//            }
-//
-//        }
-//        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            text = stringResource(R.string.benefits),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.subscription_infinite),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column {
+                TitleBenefit(
+                    text = stringResource(R.string.unlock_full_access)
+                )
+                SubTitleBenefit(
+                    text = stringResource(R.string.subscription_unlock_text)
+                )
+            }
+
+        }
+        Spacer(modifier = Modifier.width(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
