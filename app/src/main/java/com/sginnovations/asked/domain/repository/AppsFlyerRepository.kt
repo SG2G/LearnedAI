@@ -1,5 +1,6 @@
 package com.sginnovations.asked.domain.repository
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.appsflyer.AFInAppEventParameterName
@@ -209,6 +210,45 @@ class AppsFlyerRepository @Inject constructor(
                 override fun onSuccess() {
                     Log.d(TAG, "Event sent successfully. logGuideLevelEvent")
                     Log.d(TAG, "Event Values: $eventValues")
+                }
+
+                override fun onError(errorCode: Int, errorDesc: String) {
+                    Log.d(
+                        TAG, "Launch failed to be sent:\n" +
+                                "Error code: " + errorCode + "\n"
+                                + "Error description: " + errorDesc
+                    )
+                }
+            }
+        )
+    }
+    fun logSubscriptionEvent(
+        currentProductSKU: String?,
+        currentProductPrice: Double?,
+        applicationContext: Context
+    ) {
+        Log.d(TAG, "logSubscriptionEvent")
+        logger.logEvent("logSubscriptionEvent")
+
+        val eventValues = HashMap<String, Any>()
+        eventValues.put(
+            AFInAppEventParameterName.CONTENT_ID,
+            currentProductSKU ?: ""
+        )
+        eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, "subscription")
+        eventValues.put(
+            AFInAppEventParameterName.REVENUE,
+            currentProductPrice ?: 44.99
+        )
+        eventValues.put(AFInAppEventParameterName.CURRENCY, "USD")
+
+        AppsFlyerLib.getInstance().logEvent(
+            applicationContext,
+            AFInAppEventType.SUBSCRIBE,
+            eventValues,
+            object : AppsFlyerRequestListener {
+                override fun onSuccess() {
+                    Log.d(TAG, "Event sent successfully - logSubscriptionEvent")
                 }
 
                 override fun onError(errorCode: Int, errorDesc: String) {

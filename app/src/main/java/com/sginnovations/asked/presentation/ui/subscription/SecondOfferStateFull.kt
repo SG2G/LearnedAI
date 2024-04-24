@@ -266,24 +266,24 @@ fun SecondOfferStateLess(
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = stringResource(R.string.oferta_de_lanzamiento),
-                            style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = stringResource(R.string.only_until_march_31st),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                        CountdownTimer(
-                            targetDate = targetDate,
-                            style = MaterialTheme.typography.headlineSmall
-                        )
+//                        Text(
+//                            text = stringResource(R.string.oferta_de_lanzamiento),
+//                            style = MaterialTheme.typography.headlineMedium,
+//                            modifier = Modifier.fillMaxWidth(),
+//                            textAlign = TextAlign.Center
+//                        )
+//                        Text(
+//                            text = stringResource(R.string.only_until_march_31st),
+//                            style = MaterialTheme.typography.bodySmall,
+//                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                            modifier = Modifier.fillMaxWidth(),
+//                            textAlign = TextAlign.Center
+//                        )
+//                        Spacer(modifier = Modifier.height(6.dp))
+//                        CountdownTimer(
+//                            targetDate = targetDate,
+//                            style = MaterialTheme.typography.headlineSmall
+//                        )
                         Spacer(modifier = Modifier.height(8.dp))
                         Divider(modifier = Modifier.padding(horizontal = 16.dp))
                         HappyLottieAnimation(animationId = R.raw.happy_mother)

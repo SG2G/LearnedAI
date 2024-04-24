@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableList
 import com.sginnovations.asked.Constants.Companion.MAX_RECONNECTION_ATTEMPTS
 import com.sginnovations.asked.Constants.Companion.RECONNECTION_DELAY_MILLIS
 import com.sginnovations.asked.data.AskedNotificationService
+import com.sginnovations.asked.domain.repository.AppsFlyerRepository
 import com.sginnovations.asked.domain.usecase.firebase.setters.SetPremiumUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -45,6 +46,7 @@ class BillingViewModel @Inject constructor(
 
     private val setPremiumUseCase: SetPremiumUseCase,
     private val askedNotificationService: AskedNotificationService,
+    private val appsFlyerRepository: AppsFlyerRepository,
 ) : ViewModel() {
 
     val isPremium = mutableStateOf(false)
@@ -219,15 +221,13 @@ class BillingViewModel @Inject constructor(
                 if (purchases.isEmpty()) {
                     viewModelScope.launch {
                         Log.d(TAG, "Purchases empty")
-                        isPremium.value = false
-                        setPremiumUseCase(false)
+                        isPremium.value  = setPremiumUseCase(false)
                         Log.d("PremiumRun 2", "${isPremium.value} ")
                     }
                 } else {
                     viewModelScope.launch {
                         Log.d(TAG, "Have purchases $purchases")
-                        isPremium.value = true
-                        setPremiumUseCase(true)
+                        isPremium.value = setPremiumUseCase(true)
                         Log.d("PremiumRun 3", "${isPremium.value} ")
                     }
                 }
@@ -275,35 +275,11 @@ class BillingViewModel @Inject constructor(
                             isPremium.value = true
                             setPremiumUseCase(true)
 
-                            val eventValues = HashMap<String, Any>()
-                            eventValues.put(
-                                AFInAppEventParameterName.CONTENT_ID,
-                                currentProductSKU ?: ""
-                            )
-                            eventValues.put(AFInAppEventParameterName.CONTENT_TYPE, "subscription")
-                            eventValues.put(
-                                AFInAppEventParameterName.REVENUE,
-                                currentProductPrice ?: 44.99
-                            )
-                            eventValues.put(AFInAppEventParameterName.CURRENCY, "USD")
-
-                            AppsFlyerLib.getInstance().logEvent(
-                                applicationContext,
-                                AFInAppEventType.SUBSCRIBE,
-                                eventValues,
-                                object : AppsFlyerRequestListener {
-                                    override fun onSuccess() {
-                                        Log.d(TAG, "Event sent successfully")
-                                    }
-
-                                    override fun onError(errorCode: Int, errorDesc: String) {
-                                        Log.d(
-                                            TAG, "Launch failed to be sent:\n" +
-                                                    "Error code: " + errorCode + "\n"
-                                                    + "Error description: " + errorDesc
-                                        )
-                                    }
-                                }
+                            // AppsFlyer and Facebook Log
+                            appsFlyerRepository.logSubscriptionEvent(
+                                currentProductSKU = currentProductSKU,
+                                currentProductPrice = currentProductPrice,
+                                applicationContext = applicationContext,
                             )
                         }
                     } else {

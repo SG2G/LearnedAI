@@ -23,6 +23,13 @@ interface ScreensDestinations {
         get() = null
 }
 
+object MainScreen : ScreensDestinations {
+    override val route = "Main"
+    override fun getName(context: Context) = "Main"
+    override fun getBottomName(context: Context) = "Main"
+    override val icon: Int = R.drawable.sofa_svgrepo_outlined
+    override val selectedIcon: Int = R.drawable.sofa_svgrepo_filled
+}
 /**
  * Bottom
  */

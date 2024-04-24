@@ -32,6 +32,7 @@ import com.sginnovations.asked.R
 import com.sginnovations.asked.data.lessons.LessonCategoryDataClass
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.components.CategoryLessonCard
 import com.sginnovations.asked.presentation.ui.rss.RssFeedScreen
+import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.LessonViewModel
 import com.sginnovations.asked.presentation.viewmodel.RssFeedViewModel
 
@@ -125,6 +126,8 @@ fun ParentalGuidanceStateLess(
 
     onNavigateCategoryLessons: (LessonCategoryDataClass) -> Unit,
 ) {
+    ResetStatusBarColor()
+
     val scrollState = rememberScrollState()
 
     Column(

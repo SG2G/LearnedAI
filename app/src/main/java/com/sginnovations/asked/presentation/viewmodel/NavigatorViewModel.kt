@@ -8,8 +8,10 @@ import com.sginnovations.asked.AssistantNewConversation
 import com.sginnovations.asked.Chat
 import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.FirstOfferScreen
+import com.sginnovations.asked.MainScreen
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
+import com.sginnovations.asked.Profile
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.SecondOfferScreen
 import com.sginnovations.asked.Subscription
@@ -93,6 +95,18 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
             navController.navigate(FirstOfferScreen.route)
         }
     }
+    suspend fun navigateUpAndOfferProfile(navController: NavController) {
+        withContext(Dispatchers.Main) {
+            navController.navigate(MainScreen.route) {
+                // This ensures that the previous screen is removed from the backstack
+                popUpTo(navController.graph.id) {
+                    inclusive = true
+                }
+            }
+            navController.navigate(Profile.route)
+            navController.navigate(FirstOfferScreen.route)
+        }
+    }
     suspend fun navigateAuthToX(navController: NavController, screen: ScreensDestinations) {
         withContext(Dispatchers.Main) {
             try {
@@ -113,7 +127,7 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
             if (navController.currentDestination?.route != NewConversation.route) {
                 Log.i(TAG, "Navigating navigateNewChat")
 
-                navController.navigate(ParentalAssist.route) {
+                navController.navigate(MainScreen.route) {
                     // This ensures that the previous screen is removed from the backstack
                     popUpTo(navController.graph.id) {
                         inclusive = true

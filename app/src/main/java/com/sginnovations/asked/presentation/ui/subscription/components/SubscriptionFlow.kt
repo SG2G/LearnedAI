@@ -115,12 +115,13 @@ fun SubscriptionFlow() {
                 }
             }
 
-            if (index != cardsInfo.size -1) {
+            if (index != cardsInfo.size - 1) {
                 VerticalFadeDivider(index)
             }
         }
     }
 }
+
 @Composable
 fun VerticalFadeDivider(index: Int) {
     val brush = when (index) {
@@ -130,9 +131,11 @@ fun VerticalFadeDivider(index: Int) {
         else -> Brush.verticalGradient(colors = listOf(Color(0xFFFFEDE1), Color(0xFFFFEDE1)))
     }
 
-    Canvas(modifier = Modifier
-        .padding(start = 22.dp)
-        .size(width = 1.dp, height = 16.dp)) {
+    Canvas(
+        modifier = Modifier
+            .padding(start = 22.dp)
+            .size(width = 1.dp, height = 16.dp)
+    ) {
         drawLine(
             brush = brush,
             start = Offset(x = 0f, y = -28f),
@@ -140,7 +143,9 @@ fun VerticalFadeDivider(index: Int) {
             strokeWidth = 2.dp.toPx()
         )
     }
+
 }
+
 @Composable
 fun CardWithTitleAndIcon(
     modifier: Modifier = Modifier,

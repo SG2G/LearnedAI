@@ -45,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.auth.FirebaseAuth
 import com.sginnovations.asked.R
 import com.sginnovations.asked.auth.sign_in.data.SignInState
+import com.sginnovations.asked.presentation.ui.crop.components.IsLoadingCrop
 import com.sginnovations.asked.presentation.ui.ui_components.sign_in.GoogleSignInButton
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.utils.test_tags.TestTags.EMAIL_TEXT_FIELD
@@ -68,6 +69,7 @@ fun LearnedAuth(
     val auth = remember { mutableStateOf(FirebaseAuth.getInstance()) }
     val userName = remember { mutableStateOf("") }
     val userPassword = remember { mutableStateOf("") }
+    val isLoading = vmAuth.loadingAuth
 
     val googleAuthUiClient = vmAuth.getGoogleAuthUiClient()
 
@@ -90,6 +92,8 @@ fun LearnedAuth(
                     Log.d(TAG, "LearnedAuth: launcher")
                     vmAuth.onSignInResult(signInResult)
                 }
+            } else {
+                vmAuth.loadingAuth.value = false
             }
         }
     )
@@ -122,6 +126,7 @@ fun LearnedAuth(
             }
         ) { // onSignInClick =
             scope.launch {
+                vmAuth.loadingAuth.value = true
                 val signInIntentSender = googleAuthUiClient.signIn()
                 launcher.launch(
                     IntentSenderRequest.Builder(
@@ -131,6 +136,8 @@ fun LearnedAuth(
             }
         }
     }
+
+    if (isLoading.value) IsLoadingCrop()
 
 }
 

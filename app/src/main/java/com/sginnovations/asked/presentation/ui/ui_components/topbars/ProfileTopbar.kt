@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,14 +23,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sginnovations.asked.Chat
+import com.sginnovations.asked.FirstOfferScreen
 import com.sginnovations.asked.ScreensDestinations
 import com.sginnovations.asked.Settings
+import com.sginnovations.asked.presentation.ui.subscription.components.GiftOffer
 
 @Composable
 fun ProfileTopBar(
     currentScreenTitle: String,
 
-    onNavigateSettings: (ScreensDestinations) -> Unit,
+    navigateUp: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -43,13 +46,11 @@ fun ProfileTopBar(
                 )
             }
         },
-        navigationIcon = {},
-        actions = {
-            IconButton(onClick = { onNavigateSettings(Settings) }) {
+        navigationIcon = {
+            IconButton(onClick = navigateUp) {
                 Icon(
-                    imageVector = Icons.Outlined.Settings, contentDescription = "Settings",
-                    modifier = Modifier.size(28.dp),
-                    tint = MaterialTheme.colorScheme.onBackground
+                    imageVector = Icons.Filled.KeyboardArrowLeft,
+                    contentDescription = "ArrowBack"
                 )
             }
         },

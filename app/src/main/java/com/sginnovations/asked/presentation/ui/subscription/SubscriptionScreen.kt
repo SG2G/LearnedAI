@@ -340,7 +340,6 @@ fun SubscriptionStateLess(
         Option.OptionAnnuallyRR -> selectedPlan.value = productAnnuallyRR
     }
 
-
     fun Context.getActivity(): Activity? {
         return when (this) {
             is Activity -> this

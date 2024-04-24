@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sginnovations.asked.presentation.ui.chat.ChatStateFul
 import com.sginnovations.asked.presentation.ui.crop.CropStateFul
 import com.sginnovations.asked.presentation.ui.gallery.GalleryStateFull
+import com.sginnovations.asked.presentation.ui.main.MainScreenStateFul
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.camera.CameraStateFul
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats.StateFulHistoryChats
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_chat.AssistantChatStateFul
@@ -67,6 +68,8 @@ import com.sginnovations.asked.presentation.viewmodel.ReferralViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
 import com.sginnovations.asked.presentation.viewmodel.RssFeedViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
+import com.sginnovations.asked.utils.CheckIsPremium
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -126,7 +129,7 @@ fun LearnedNavigation(
     val intent = remember { (context as Activity).intent }
     val isPremium = vmBilling.isPremium
 
-    val firstBottomScreen = ParentalAssist
+    val firstBottomScreen = MainScreen
     val firsTimeLaunch = vmPreferences.firstTimeLaunch
 
     LaunchedEffect(Unit) {
@@ -143,11 +146,13 @@ fun LearnedNavigation(
                     firstBottomScreen
                 )
                 launch {
-                    Log.d("PremiumRn 0", "${isPremium.value} ")
-                    delay(2000)
+                    Log.d("PremiumRun 0", "${isPremium.value} ")
+                    delay(3000)
                     Log.d("PremiumRun 1", "${isPremium.value} ")
                     if (!isPremium.value) {
-                        navController.navigate(FirstOfferScreen.route)
+                        if (navController.currentBackStackEntry != null) {
+                            navController.navigate(FirstOfferScreen.route)
+                        }
                     }
                 }
 
@@ -174,6 +179,7 @@ fun LearnedNavigation(
             Crop.route -> Crop
             OnBoarding.route -> OnBoarding
 
+            Camera.route -> Camera
             ChatsHistory.route -> ChatsHistory
             ParentalAssist.route -> ParentalAssist
             ParentalGuidance.route -> ParentalGuidance
@@ -216,15 +222,15 @@ fun LearnedNavigation(
             )
         },
 
-        bottomBar = {
-            LearnedBottomBar(
-                vmPreferences = vmPreferences,
-                navController = navController,
-                currentScreen = currentScreen,
-                canNavigateBack = navController.previousBackStackEntry != null,
-                backStackEntry = backStackEntry,
-            )
-        },
+//        bottomBar = {
+//            LearnedBottomBar(
+//                vmPreferences = vmPreferences,
+//                navController = navController,
+//                currentScreen = currentScreen,
+//                canNavigateBack = navController.previousBackStackEntry != null,
+//                backStackEntry = backStackEntry,
+//            )
+//        },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         NavHost(
@@ -264,6 +270,18 @@ fun LearnedNavigation(
                 }
             }
 
+            composable(
+                route = MainScreen.route,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None }
+            ) {
+                MainScreenStateFul(
+                    onClick = { navController.navigate(route = it) },
+
+                    onNavigateProfile = { navController.navigate(route = Profile.route) },
+                    onNavigateSettings = { navController.navigate(route = Settings.route) },
+                )
+            }
             /**
              *  Bottom Bar Destinations
              */
@@ -542,6 +560,7 @@ fun LearnedNavigation(
                 )
             }
 
+            val firstTime = vmPreferences.firstTimeLaunch.value
             composable(route = Subscription.route) {
                 SubscriptionStateFull(
                     vmBilling = vmBilling,
@@ -554,9 +573,15 @@ fun LearnedNavigation(
                         scope.launch {
                             vmPreferences.setNotFirstTime() //TODO ALWAYS WRITE
                             if (!isPremium.value) {
-                                vmNavigator.navigateUpAndOffer(
-                                    navController
-                                )
+                                if (firstTime) {
+                                    vmNavigator.navigateUpAndOffer(
+                                        navController
+                                    )
+                                } else {
+                                    vmNavigator.navigateUpAndOfferProfile(
+                                        navController
+                                    )
+                                }
                             } else {
                                 navController.navigateUp()
                             }

@@ -54,11 +54,13 @@ fun LearnedTopBar(
          * 4
          */
         Camera.route -> CameraTopBar(
-            vmTokens
-        ) { onNavigate(FirstOfferScreen) }
+            Camera.getName(context),
+            navigateUp
+        ) { onNavigate(it) }
 
         ChatsHistory.route -> ChatsHistoryTopBar(
-            ChatsHistory.getName(context)
+            ChatsHistory.getName(context),
+            navigateUp
         ) { onNavigate(it) }
 
         /**
@@ -66,22 +68,25 @@ fun LearnedTopBar(
          */
         ParentalGuidance.route -> ParentalGuidanceTopBar(
             ParentalGuidance.getName(context),
+            navigateUp
         ) { onNavigate(it) }
 
         ParentalAssist.route -> ParentalGuidanceTopBar(
             ParentalAssist.getName(context),
+            navigateUp,
         ) { onNavigate(it) }
 
         Profile.route -> ProfileTopBar(
             Profile.getName(context),
-        ) { onNavigate(it) }
+            navigateUp,
+        )
 
         /**
          * Other
          */
         Crop.route -> CropTopBar(
             vmCamera,
-            navigateUp
+            navigateUp,
         )
         /**
          * Token

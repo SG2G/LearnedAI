@@ -50,6 +50,7 @@ import com.sginnovations.asked.R
 import com.sginnovations.asked.presentation.ui.subscription.components.AskedSubscriptionTitle
 import com.sginnovations.asked.presentation.ui.subscription.components.CountdownTimer
 import com.sginnovations.asked.presentation.ui.subscription.components.SubscriptionButton
+import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.BillingViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -220,9 +221,6 @@ fun FirstOfferStateLess(
 ) {
     val scrollState = rememberScrollState()
 
-    val targetDate =
-        LocalDateTime.of(2024, 3, 31, 0, 0) // Example: 31 March
-
     val showGiftContent = remember { mutableStateOf(false) }
     val offerFirstShow = vmPreference.showSubOffer
 
@@ -232,6 +230,8 @@ fun FirstOfferStateLess(
         }
         showGiftContent.value = true
     }
+
+    ResetStatusBarColor()
 
     Column(
         modifier = Modifier
@@ -281,24 +281,24 @@ fun FirstOfferStateLess(
                                 .fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = stringResource(R.string.oferta_de_lanzamiento),
-                                style = MaterialTheme.typography.headlineMedium,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                            Text(
-                                text = stringResource(R.string.only_until_march_31st),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.height(6.dp))
-                            CountdownTimer(
-                                targetDate = targetDate,
-                                style = MaterialTheme.typography.headlineSmall
-                            )
+//                            Text(
+//                                text = stringResource(R.string.oferta_de_lanzamiento),
+//                                style = MaterialTheme.typography.headlineMedium,
+//                                modifier = Modifier.fillMaxWidth(),
+//                                textAlign = TextAlign.Center
+//                            )
+//                            Text(
+//                                text = stringResource(R.string.only_until_march_31st),
+//                                style = MaterialTheme.typography.bodySmall,
+//                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                                modifier = Modifier.fillMaxWidth(),
+//                                textAlign = TextAlign.Center
+//                            )
+//                            Spacer(modifier = Modifier.height(6.dp))
+//                            CountdownTimer(
+//                                targetDate = targetDate,
+//                                style = MaterialTheme.typography.headlineSmall
+//                            )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
                                 text = stringResource(id = R.string.subscription_pvu),

@@ -1,5 +1,6 @@
 package com.sginnovations.asked.presentation.ui.main_bottom_bar.parental_guidance.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ fun CategoryLessonCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)
 //        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
     ) {
         Box(modifier = Modifier.clickable { onNavigateCategoryLessons() }) {

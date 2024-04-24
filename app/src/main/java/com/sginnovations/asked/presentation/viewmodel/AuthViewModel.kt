@@ -44,6 +44,8 @@ class AuthViewModel @Inject constructor(
 
     val showSignInScreen = mutableStateOf(false)
 
+    val loadingAuth = mutableStateOf(false)
+
     init {
         viewModelScope.launch {
             userJustLogged()
@@ -111,6 +113,7 @@ class AuthViewModel @Inject constructor(
                 signInError = result.errorMessage
             )
         }
+        loadingAuth.value = false
     }
 
     suspend fun signOut() {

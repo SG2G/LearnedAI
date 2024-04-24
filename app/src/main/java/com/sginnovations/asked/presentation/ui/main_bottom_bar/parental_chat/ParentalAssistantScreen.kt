@@ -62,6 +62,7 @@ import com.sginnovations.asked.data.Assistant
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats.components.OptionMenu
 import com.sginnovations.asked.presentation.ui.ui_components.other.EmptyConversationsMessage
+import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -140,6 +141,7 @@ fun ParentalChatStateLess(
 
     onDeleteConversation: (Int?) -> Unit,
 ) {
+    ResetStatusBarColor()
     val scope = rememberCoroutineScope()
 
     val showMenu = remember { mutableStateOf(false) }

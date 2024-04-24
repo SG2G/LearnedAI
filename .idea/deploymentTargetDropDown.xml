@@ -5,20 +5,23 @@
       <entry key="PreviewCustomLayoutWithTextPerCard">
         <State />
       </entry>
+      <entry key="PreviewMainScreen">
+        <State />
+      </entry>
       <entry key="app">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="D:\Android\.android\avd\Pixel_7_API_33.avd" />
+                  <value value="D:\Android\.android\avd\Medium_Tablet_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-17T20:05:30.840360Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-04-24T21:03:04.990243100Z" />
         </State>
       </entry>
     </value>

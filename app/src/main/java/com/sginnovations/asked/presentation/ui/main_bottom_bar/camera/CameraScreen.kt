@@ -154,7 +154,9 @@ fun CameraStateLess(
     val scope = rememberCoroutineScope()
 
     val isPremium = remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { isPremium.value = scope.async { CheckIsPremium.checkIsPremium() }.await() }
+    LaunchedEffect(Unit) {
+        isPremium.value = scope.async { CheckIsPremium.checkIsPremium() }.await()
+    }
 
     val controller = remember {
         LifecycleCameraController(context).apply {
@@ -195,9 +197,9 @@ fun CameraStateLess(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (!isPremium.value) {
-                GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
-            }
+//            if (!isPremium.value) {
+//                GiftOffer(modifier = Modifier, onNavigateFirstOffer = { onNavigateFirstOffer() })
+//            }
         }
 
         /**

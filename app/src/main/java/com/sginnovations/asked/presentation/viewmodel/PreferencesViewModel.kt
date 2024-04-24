@@ -52,7 +52,6 @@ class PreferencesViewModel @Inject constructor(
     /**
      * Reads
      */
-
     fun markLessonAsRead(lessonId: Int) {
         viewModelScope.launch {
             preferences.markLessonAsRead(lessonId)

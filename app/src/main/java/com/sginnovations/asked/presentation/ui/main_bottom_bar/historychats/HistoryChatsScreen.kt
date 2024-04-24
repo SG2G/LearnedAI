@@ -28,6 +28,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -66,6 +67,7 @@ import com.sginnovations.asked.data.TranslateCategoryOCR
 import com.sginnovations.asked.data.database.entities.ConversationEntity
 import com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats.components.OptionMenu
 import com.sginnovations.asked.presentation.ui.ui_components.other.EmptyConversationsMessage
+import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.delay
@@ -154,6 +156,8 @@ fun StateLessHistoryChats(
     onNavigateMessages: (Int) -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
+    ResetStatusBarColor()
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -172,41 +176,91 @@ fun StateLessHistoryChats(
          * New Chat
          */
         item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = {
-                                onNavigateNewConversation()
-                            }
-                        )
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                OutlinedCard(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
-                    colors = CardDefaults.outlinedCardColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = Color.Transparent
-                    ),
+                        .weight(2f)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    onNavigateNewConversation()
+                                }
+                            )
+                        }
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(16.dp)
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        colors = CardDefaults.outlinedCardColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Add Icon"
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(R.string.historychats_new_chat),
-                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.camera_svgrepo_outlined),
+                                contentDescription = "camera icon",
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.take_photo),
+                            )
+                        }
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    onNavigateNewConversation()
+                                }
+                            )
+                        }
+                ) {
+                    OutlinedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        colors = CardDefaults.outlinedCardColors(
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                            containerColor = Color.Transparent
+                        ),
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add Icon",
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.historychats_new_chat),
+                            )
+                        }
                     }
                 }
             }
+
         }
 
         if (conversations.value.isEmpty()) {
