@@ -12,6 +12,7 @@ import com.sginnovations.asked.ChatsHistory
 import com.sginnovations.asked.Crop
 import com.sginnovations.asked.FirstOfferScreen
 import com.sginnovations.asked.Gallery
+import com.sginnovations.asked.MainScreen
 import com.sginnovations.asked.NewConversation
 import com.sginnovations.asked.ParentalAssist
 import com.sginnovations.asked.ParentalGuidance
@@ -25,6 +26,7 @@ import com.sginnovations.asked.presentation.ui.ui_components.topbars.ChatsHistor
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.CropTopBar
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.DefaultTopBar
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.GalleryTopBar
+import com.sginnovations.asked.presentation.ui.ui_components.topbars.MainTopBar
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.NameAndTokensTopBar
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.ParentalGuidanceTopBar
 import com.sginnovations.asked.presentation.ui.ui_components.topbars.ProfileTopBar
@@ -43,6 +45,9 @@ fun LearnedTopBar(
     currentScreen: ScreensDestinations?,
     canNavigateBack: Boolean,
 
+    onNavigateProfile: () -> Unit,
+    onNavigateSettings: () -> Unit,
+
     onNavigate: (ScreensDestinations) -> Unit,
     navigateUp: () -> Unit,
 ) {
@@ -50,6 +55,11 @@ fun LearnedTopBar(
     Log.i(TAG, "LearnedTopBar: ${currentScreen.toString()}")
 
     when (currentScreen?.route) {
+
+        MainScreen.route -> MainTopBar(
+            onNavigateProfile,
+            onNavigateSettings
+        )
         /**
          * 4
          */

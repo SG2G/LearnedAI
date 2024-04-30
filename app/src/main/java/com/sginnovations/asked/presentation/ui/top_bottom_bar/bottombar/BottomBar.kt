@@ -48,159 +48,159 @@ import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 
 private const val TAG = "LearnedBottomBar"
 
-@Composable
-fun LearnedBottomBar(
-    vmPreferences: PreferencesViewModel,
-
-    navController: NavController,
-    currentScreen: ScreensDestinations?,
-    canNavigateBack: Boolean,
-    backStackEntry: NavBackStackEntry?,
-) {
-    val context = LocalContext.current
-
-    val theme = vmPreferences.theme
-
-    val indicatorColor = if (!theme.value) {
-        LIGHT_NAVIGATION_BAR_COLOR
-    } else {
-        DARK_NAVIGATION_BAR_COLOR
-    }
-    val containerColor = if (!theme.value) {
-        LIGHT_NAVIGATION_BAR_COLOR
-    } else {
-        DARK_NAVIGATION_BAR_COLOR
-    }
-    val unselectedColor = if (!theme.value) {
-        Color(0xFF46464F)
-    } else {
-        Color(0xFF665B61)
-    }
-
-    val selectedIconColor = if (!theme.value) {
-        Color(0xFF554D51)
-    } else {
-        Color(0xFFB6A9AF)
-    }
-
-    Log.i(
-        TAG,
-        "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController"
-    )
-    if (!canNavigateBack) {
-        Log.i(TAG, "currentScreenTitle: $currentScreen")
-        if (currentScreen?.route != Auth.route) {
-            if (currentScreen?.route != OnBoarding.route) {
-                val items = listOf(Camera, ChatsHistory, ParentalAssist, ParentalGuidance, Profile)
-                Column {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .alpha(0.6f)
-                            .background(MaterialTheme.colorScheme.onSurfaceVariant)
-                            .height(2.dp)
-                    ) {
-                    }
-                    NavigationBar(
-                        containerColor = containerColor,
-                    ) {
-                        items.forEach { item ->
-                            val isSelected = item.route == backStackEntry?.destination?.route
-                            NavigationBarItem(
-                                icon = {
-                                    AnimatedIconWithLine(
-                                        item = item,
-                                        isSelected = isSelected
-                                    )
-                                },
-                                selected = isSelected,
-                                onClick = {
-                                    // This is where you handle navigation
-                                    navController.navigate(item.route) {
-                                        // This ensures that the previous screen is removed from the backstack
-                                        popUpTo(navController.currentDestination?.route ?: "") {
-                                            inclusive = true
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
-                                },
-                                colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = selectedIconColor,
-                                    indicatorColor = indicatorColor,
-                                    unselectedIconColor = unselectedColor,
-                                    unselectedTextColor = unselectedColor,
-                                ),
-                                label = {
-                                    Text(
-                                        text = item.getBottomName(context),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
-    val transition = updateTransition(targetState = isSelected, label = "transition")
-    val lineWidth by transition.animateDp(
-        transitionSpec = { tween(durationMillis = 500) },
-        label = "lineWidth"
-    ) { selected -> if (selected) 24.dp else 0.dp }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        AnimatedIcon(item = item, isSelected = isSelected)
-//        Spacer(modifier = Modifier.height(4.dp))
-//        Box(
-//            modifier = Modifier
-//                .width(lineWidth)
-//                .height(2.dp)
-//                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 50))
+//@Composable
+//fun LearnedBottomBar(
+//    vmPreferences: PreferencesViewModel,
+//
+//    navController: NavController,
+//    currentScreen: ScreensDestinations?,
+//    canNavigateBack: Boolean,
+//    backStackEntry: NavBackStackEntry?,
+//) {
+//    val context = LocalContext.current
+//
+//    val theme = vmPreferences.theme
+//
+//    val indicatorColor = if (!theme.value) {
+//        LIGHT_NAVIGATION_BAR_COLOR
+//    } else {
+//        DARK_NAVIGATION_BAR_COLOR
+//    }
+//    val containerColor = if (!theme.value) {
+//        LIGHT_NAVIGATION_BAR_COLOR
+//    } else {
+//        DARK_NAVIGATION_BAR_COLOR
+//    }
+//    val unselectedColor = if (!theme.value) {
+//        Color(0xFF46464F)
+//    } else {
+//        Color(0xFF665B61)
+//    }
+//
+//    val selectedIconColor = if (!theme.value) {
+//        Color(0xFF554D51)
+//    } else {
+//        Color(0xFFB6A9AF)
+//    }
+//
+//    Log.i(
+//        TAG,
+//        "canNavigateBack: $canNavigateBack backStackEntry: ${backStackEntry.toString()} navController: $navController"
+//    )
+//    if (!canNavigateBack) {
+//        Log.i(TAG, "currentScreenTitle: $currentScreen")
+//        if (currentScreen?.route != Auth.route) {
+//            if (currentScreen?.route != OnBoarding.route) {
+//                val items = listOf(Camera, ChatsHistory, ParentalAssist, ParentalGuidance, Profile)
+//                Column {
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .alpha(0.6f)
+//                            .background(MaterialTheme.colorScheme.onSurfaceVariant)
+//                            .height(2.dp)
+//                    ) {
+//                    }
+//                    NavigationBar(
+//                        containerColor = containerColor,
+//                    ) {
+//                        items.forEach { item ->
+//                            val isSelected = item.route == backStackEntry?.destination?.route
+//                            NavigationBarItem(
+//                                icon = {
+//                                    AnimatedIconWithLine(
+//                                        item = item,
+//                                        isSelected = isSelected
+//                                    )
+//                                },
+//                                selected = isSelected,
+//                                onClick = {
+//                                    // This is where you handle navigation
+//                                    navController.navigate(item.route) {
+//                                        // This ensures that the previous screen is removed from the backstack
+//                                        popUpTo(navController.currentDestination?.route ?: "") {
+//                                            inclusive = true
+//                                            saveState = true
+//                                        }
+//                                        launchSingleTop = true
+//                                        restoreState = true
+//                                    }
+//                                },
+//                                colors = NavigationBarItemDefaults.colors(
+//                                    selectedIconColor = selectedIconColor,
+//                                    indicatorColor = indicatorColor,
+//                                    unselectedIconColor = unselectedColor,
+//                                    unselectedTextColor = unselectedColor,
+//                                ),
+//                                label = {
+//                                    Text(
+//                                        text = item.getBottomName(context),
+//                                        style = MaterialTheme.typography.labelMedium,
+//                                        fontWeight = FontWeight.Bold
+//                                    )
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun AnimatedIconWithLine(item: ScreensDestinations, isSelected: Boolean) {
+//    val transition = updateTransition(targetState = isSelected, label = "transition")
+//    val lineWidth by transition.animateDp(
+//        transitionSpec = { tween(durationMillis = 500) },
+//        label = "lineWidth"
+//    ) { selected -> if (selected) 24.dp else 0.dp }
+//
+//    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+//        AnimatedIcon(item = item, isSelected = isSelected)
+////        Spacer(modifier = Modifier.height(4.dp))
+////        Box(
+////            modifier = Modifier
+////                .width(lineWidth)
+////                .height(2.dp)
+////                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 50))
+////        )
+//    }
+//}
+//
+//@Composable
+//fun AnimatedIcon(item: ScreensDestinations, isSelected: Boolean) {
+//    val scale = remember { androidx.compose.animation.core.Animatable(1f) }
+//    LaunchedEffect(isSelected) {
+//        scale.animateTo(
+//            targetValue = if (isSelected) 0.7f else 1f,
+//            animationSpec = tween(100, easing = LinearEasing)
 //        )
-    }
-}
-
-@Composable
-fun AnimatedIcon(item: ScreensDestinations, isSelected: Boolean) {
-    val scale = remember { androidx.compose.animation.core.Animatable(1f) }
-    LaunchedEffect(isSelected) {
-        scale.animateTo(
-            targetValue = if (isSelected) 0.7f else 1f,
-            animationSpec = tween(100, easing = LinearEasing)
-        )
-        scale.animateTo(
-            targetValue = 1f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMedium
-            )
-        )
-    }
-
-    Crossfade(
-        targetState = isSelected, animationSpec = tween(durationMillis = 750),
-        label = ""
-    ) { selected ->
-        (if (selected) item.selectedIcon else item.icon)?.let { iconRedId ->
-            val icon = painterResource(id = iconRedId)
-            Icon(
-                modifier = Modifier
-                    .scale(scale.value)
-                    .size(28.dp),
-                painter = icon,
-                contentDescription = null
-            )
-        }
-    }
-}
+//        scale.animateTo(
+//            targetValue = 1f,
+//            animationSpec = spring(
+//                dampingRatio = Spring.DampingRatioMediumBouncy,
+//                stiffness = Spring.StiffnessMedium
+//            )
+//        )
+//    }
+//
+//    Crossfade(
+//        targetState = isSelected, animationSpec = tween(durationMillis = 750),
+//        label = ""
+//    ) { selected ->
+//        (if (selected) item.selectedIcon else item.icon)?.let { iconRedId ->
+//            val icon = painterResource(id = iconRedId)
+//            Icon(
+//                modifier = Modifier
+//                    .scale(scale.value)
+//                    .size(28.dp),
+//                painter = icon,
+//                contentDescription = null
+//            )
+//        }
+//    }
+//}
 
 
 

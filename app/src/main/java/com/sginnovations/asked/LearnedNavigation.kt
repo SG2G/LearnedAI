@@ -6,6 +6,8 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -50,7 +52,6 @@ import com.sginnovations.asked.presentation.ui.sign_in.LearnedAuth
 import com.sginnovations.asked.presentation.ui.subscription.FirstOfferStateFul
 import com.sginnovations.asked.presentation.ui.subscription.SecondOfferStateFul
 import com.sginnovations.asked.presentation.ui.subscription.SubscriptionStateFull
-import com.sginnovations.asked.presentation.ui.top_bottom_bar.bottombar.LearnedBottomBar
 import com.sginnovations.asked.presentation.ui.top_bottom_bar.topbar.LearnedTopBar
 import com.sginnovations.asked.presentation.viewmodel.AppsFlyerViewModel
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
@@ -68,8 +69,6 @@ import com.sginnovations.asked.presentation.viewmodel.ReferralViewModel
 import com.sginnovations.asked.presentation.viewmodel.ReportViewModel
 import com.sginnovations.asked.presentation.viewmodel.RssFeedViewModel
 import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
-import com.sginnovations.asked.utils.CheckIsPremium
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -179,6 +178,8 @@ fun LearnedNavigation(
             Crop.route -> Crop
             OnBoarding.route -> OnBoarding
 
+            MainScreen.route -> MainScreen
+
             Camera.route -> Camera
             ChatsHistory.route -> ChatsHistory
             ParentalAssist.route -> ParentalAssist
@@ -216,6 +217,9 @@ fun LearnedNavigation(
 
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
+
+                onNavigateProfile = { navController.navigate(route = Profile.route) },
+                onNavigateSettings = { navController.navigate(route = Settings.route) },
 
                 onNavigate = { navController.navigate(it.route) },
                 navigateUp = { navController.navigateUp() },
@@ -277,9 +281,6 @@ fun LearnedNavigation(
             ) {
                 MainScreenStateFul(
                     onClick = { navController.navigate(route = it) },
-
-                    onNavigateProfile = { navController.navigate(route = Profile.route) },
-                    onNavigateSettings = { navController.navigate(route = Settings.route) },
                 )
             }
             /**
@@ -310,7 +311,7 @@ fun LearnedNavigation(
 
             composable(
                 route = ChatsHistory.route,
-                enterTransition = { EnterTransition.None },
+                enterTransition = { scaleIn() },
                 exitTransition = { ExitTransition.None }
             ) {
                 StateFulHistoryChats(
@@ -318,6 +319,7 @@ fun LearnedNavigation(
                     vmPreferences = vmPreferences,
 
                     onNavigateMessages = { navController.navigate(route = Chat.route) },
+                    onNavigateCamera = { navController.navigate(route = Camera.route) },
                     onNavigateNewConversation = {
                         navController.navigate(route = NewConversation.route)
                     }
@@ -619,14 +621,14 @@ fun LearnedNavigation(
                 )
             }
             composable(route = SecondOfferScreen.route) {
-                    SecondOfferStateFul(
-                        vmBilling = vmBilling,
-                        vmPreference = vmPreferences,
+                SecondOfferStateFul(
+                    vmBilling = vmBilling,
+                    vmPreference = vmPreferences,
 
-                        onDismissRequest = {
-                            navController.navigateUp()
-                        }
-                    )
+                    onDismissRequest = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }
