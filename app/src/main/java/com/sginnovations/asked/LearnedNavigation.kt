@@ -6,8 +6,9 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -283,9 +284,72 @@ fun LearnedNavigation(
                     onClick = { navController.navigate(route = it) },
                 )
             }
+
             /**
-             *  Bottom Bar Destinations
+             * Bubbles
              */
+
+            /**
+             * Problem Solver
+             */
+            composable(
+                route = ChatsHistory.route,
+                enterTransition = { scaleIn() },
+                popExitTransition = { scaleOut(
+                    animationSpec = tween(durationMillis = 500)
+                ) + fadeOut(animationSpec = tween(durationMillis = 500)) },
+            ) {
+                StateFulHistoryChats(
+                    vmChat = vmChat,
+                    vmPreferences = vmPreferences,
+
+                    onNavigateMessages = { navController.navigate(route = Chat.route) },
+                    onNavigateCamera = { navController.navigate(route = Camera.route) },
+                    onNavigateNewConversation = {
+                        navController.navigate(route = NewConversation.route)
+                    }
+                )
+            }
+
+            /**
+             * Assistant
+             */
+            composable(
+                route = ParentalAssist.route,
+                enterTransition = { EnterTransition.None },
+                popExitTransition = { scaleOut(
+                    animationSpec = tween(durationMillis = 500)
+                ) + fadeOut(animationSpec = tween(durationMillis = 500)) },
+            ) {
+                ParentalAssistantStateFul(
+                    vmAssistant = vmAssistant,
+                    vmPreferences = vmPreferences,
+
+                    onNavigateNewMessage = { navController.navigate(route = AssistantNewConversation.route) },
+                    onNavigateMessages = { navController.navigate(route = AssistantChat.route) },
+                )
+            }
+
+            /**
+             * Guide
+             */
+            composable(
+                route = ParentalGuidance.route,
+                enterTransition = { EnterTransition.None },
+                popExitTransition = { scaleOut(
+                    animationSpec = tween(durationMillis = 500)
+                ) + fadeOut(animationSpec = tween(durationMillis = 500)) },
+            ) {
+                ParentalGuidanceStateFul(
+                    vmLesson = vmLesson,
+                    vmRss = vmRss,
+
+                    onNavigateCategoryLessons = { navController.navigate(route = CategoryLesson.route) }
+                )
+            }
+
+
+
             composable(
                 route = Camera.route,
                 enterTransition = { EnterTransition.None },
@@ -309,53 +373,16 @@ fun LearnedNavigation(
 //                EarnPoints(vmToken, navController)
             }
 
-            composable(
-                route = ChatsHistory.route,
-                enterTransition = { scaleIn() },
-                exitTransition = { ExitTransition.None }
-            ) {
-                StateFulHistoryChats(
-                    vmChat = vmChat,
-                    vmPreferences = vmPreferences,
-
-                    onNavigateMessages = { navController.navigate(route = Chat.route) },
-                    onNavigateCamera = { navController.navigate(route = Camera.route) },
-                    onNavigateNewConversation = {
-                        navController.navigate(route = NewConversation.route)
-                    }
-                )
-            }
-
-            composable(
-                route = ParentalGuidance.route,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
-            ) {
-                ParentalGuidanceStateFul(
-                    vmLesson = vmLesson,
-                    vmRss = vmRss,
-
-                    onNavigateCategoryLessons = { navController.navigate(route = CategoryLesson.route) }
-                )
-            }
-            composable(
-                route = ParentalAssist.route,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
-            ) {
-                ParentalAssistantStateFul(
-                    vmAssistant = vmAssistant,
-                    vmPreferences = vmPreferences,
-
-                    onNavigateNewMessage = { navController.navigate(route = AssistantNewConversation.route) },
-                    onNavigateMessages = { navController.navigate(route = AssistantChat.route) },
-                )
-            }
 
             composable(
                 route = Profile.route,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
+                enterTransition = { enterTransitionVerticalSlide },
+                popExitTransition = {
+                    slideOutVertically(
+                        targetOffsetY = { fullHeight -> fullHeight },
+                        animationSpec = tween(durationMillis = 500)
+                    ) + fadeOut(animationSpec = tween(durationMillis = 500))
+                },
             ) {
                 StateFulProfile(
                     vmNotification = vmNotification,
@@ -377,8 +404,8 @@ fun LearnedNavigation(
              */
             composable(
                 route = CategoryLesson.route,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
+                enterTransition = { enterTransitionHorizontalSlide },
+                exitTransition = { exitTransitionHorizontalSlide },
             ) {
                 CategoryLessonsStateFul(
                     vmLesson = vmLesson,
@@ -436,6 +463,8 @@ fun LearnedNavigation(
              */
             composable(
                 route = NewConversation.route,
+                enterTransition = { enterTransitionHorizontalSlide },
+                exitTransition = { exitTransitionHorizontalSlide },
             ) {
                 NewConversationStateFul(
                     vmChat = vmChat,
@@ -456,6 +485,8 @@ fun LearnedNavigation(
              */
             composable(
                 route = AssistantNewConversation.route,
+                enterTransition = { enterTransitionHorizontalSlide },
+                exitTransition = { exitTransitionHorizontalSlide },
             ) {
                 AssistantNewConversationStateFul(
                     vmAssistant = vmAssistant,
@@ -524,8 +555,8 @@ fun LearnedNavigation(
 
             composable(
                 route = Lesson.route,
-                enterTransition = { EnterTransition.None },
-                exitTransition = { ExitTransition.None }
+                enterTransition = { enterTransitionHorizontalSlide },
+                exitTransition = { exitTransitionHorizontalSlide },
             ) {
                 LessonStateFul(
                     vmLesson = vmLesson,
@@ -604,7 +635,11 @@ fun LearnedNavigation(
                     onCropNavigation = { navController.navigate(route = Crop.route) }
                 )
             }
-            composable(route = Settings.route) {
+            composable(
+                route = Settings.route,
+                enterTransition = { enterTransitionVerticalSlide },
+                exitTransition = { exitTransitionVerticalSlide }
+            ) {
                 SettingsStateFul(
                     vmPreferences = vmPreferences
                 )

@@ -1,5 +1,6 @@
 package com.sginnovations.asked.presentation.ui.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -73,7 +74,9 @@ fun SettingsStateLess(
          * Theme
          */
         Column(
-            modifier = Modifier.padding(vertical = 16.dp)
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(vertical = 16.dp)
         ) {
             Text(
                 text = stringResource(R.string.settings_theme),
@@ -152,7 +155,8 @@ fun SettingsStateLess(
                     )
                 ) {
                     Text(
-                        text = stringResource(R.string.standard), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        text = stringResource(R.string.standard),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
@@ -163,7 +167,8 @@ fun SettingsStateLess(
                     )
                 ) {
                     Text(
-                        text = stringResource(R.string.large), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        text = stringResource(R.string.large),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
@@ -175,7 +180,8 @@ fun SettingsStateLess(
                     )
                 ) {
                     Text(
-                        text = stringResource(R.string.huge), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        text = stringResource(R.string.huge),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }

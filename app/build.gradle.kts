@@ -58,6 +58,9 @@ android {
 
 dependencies {
 
+    // Google Play Review
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
     // Facebook ads
     //implementation ("com.facebook.android:facebook-android-sdk:16.0.0")
     implementation ("com.facebook.android:facebook-android-sdk:[8,9)")

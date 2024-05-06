@@ -41,8 +41,8 @@ object Camera : ScreensDestinations {
 
 object ChatsHistory : ScreensDestinations {
     override val route = "ChatsHistory"
-    override fun getName(context: Context) = context.getString(R.string.topbar_chats_history)
-    override fun getBottomName(context: Context) = context.getString(R.string.topbar_chats_history)
+    override fun getName(context: Context) = context.getString(R.string.problem_solver)
+    override fun getBottomName(context: Context) = context.getString(R.string.problem_solver)
     override val icon: Int = R.drawable.main_camera
 }
 object ParentalAssist : ScreensDestinations {

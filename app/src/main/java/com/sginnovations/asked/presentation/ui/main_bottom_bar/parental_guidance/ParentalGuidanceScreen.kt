@@ -133,6 +133,7 @@ fun ParentalGuidanceStateLess(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(scrollState)
     ) {
         lessonsCategory.forEach { category ->

@@ -6,7 +6,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -17,23 +16,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -48,11 +39,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
@@ -66,25 +53,27 @@ import com.sginnovations.asked.presentation.ui.utils.StatusBarColorBlue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.hypot
-import kotlin.math.sqrt
 
 private val backGroundColor = Color(0xFF3C5AFA)
 
 @Composable
-fun ExpandingCircleScreen(showAnimation: MutableState<Boolean>) {
+fun ExpandingCircleScreen(
+    showAnimation: MutableState<Boolean>,
+) {
     val maxRadius = remember { Animatable(0f) }
+    val circleColor = MaterialTheme.colorScheme.background
 
     if (showAnimation.value) {
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp.value
         val screenHeight = LocalConfiguration.current.screenHeightDp.dp.value
-        val diagonal = hypot(screenWidth, screenHeight) * 2
+        val diagonal = hypot(screenWidth, screenHeight)
 
         LaunchedEffect(key1 = showAnimation) {
             maxRadius.animateTo(
                 targetValue = diagonal,
                 animationSpec = tween(durationMillis = 250)
             )
-            delay(2000)  // Mantén el círculo expandido por 2 segundos
+            delay(2000)
             showAnimation.value = false
             maxRadius.snapTo(0f)
         }
@@ -92,7 +81,7 @@ fun ExpandingCircleScreen(showAnimation: MutableState<Boolean>) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Canvas(modifier = Modifier.matchParentSize()) {
                 val center = Offset(size.width / 2, size.height / 2)
-                drawCircle(Color.White, radius = maxRadius.value, center = center)
+                drawCircle(circleColor , radius = maxRadius.value, center = center)
             }
         }
     }
@@ -103,26 +92,30 @@ fun ExpandingCircleScreen(showAnimation: MutableState<Boolean>) {
 fun MainScreenStateFul(
     onClick: (String) -> Unit,
 ) {
+//    val animationCenter = remember { mutableStateOf(Offset(166.9F, 222.9F)) }
     val showAnimation = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-
     MainScreenStateLess(
-        onClick = {
+        onClick = { route ->
             scope.launch {
                 showAnimation.value = true
                 delay(150)
-                onClick(it)
+
+                onClick(route)
             }
         },
+
+//        animationCenter = animationCenter,
     )
     ExpandingCircleScreen(showAnimation)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenStateLess(
     onClick: (String) -> Unit,
+
+//    animationCenter: MutableState<Offset>,
 ) {
     val context = LocalContext.current
 
@@ -153,12 +146,6 @@ fun MainScreenStateLess(
 
             val cardWidth = availableWidth / numberOfCards
 
-            Log.d("ResponsiveCardRow", "Total Spacing: ${totalSpacing.value} px")
-            Log.d("ResponsiveCardRow", "Available Width: $availableWidth px")
-            Log.d("ResponsiveCardRow", "Card Width: ${cardWidth.value} dp")
-
-            val xOffset = cardWidth * 0.2f
-            val yOffset = cardWidth * 0.5f
 
             Row(
                 modifier = Modifier
@@ -173,7 +160,7 @@ fun MainScreenStateLess(
                     feature = ChatsHistory,
                     cardSize = cardWidth,
 //                    cardColor = Color(0xFFE0995E),
-                    cardColor = Color.White,
+//                    animationCenter = animationCenter,
                     modifier = Modifier
 //                            .offset(x = (xOffset))  // Adjust this value as needed
                         .zIndex(1f)
@@ -183,8 +170,8 @@ fun MainScreenStateLess(
                     context = context,
                     feature = ParentalAssist,
                     cardSize = cardWidth,
-//                    cardColor = Color(0xFF76C2AF),
-                    cardColor = Color.White,
+                    //                    cardColor = Color(0xFF76C2AF),
+//                    animationCenter = animationCenter,
                     modifier = Modifier
 //                            .offset(y = (-yOffset))
                         .zIndex(2f) // Highest zIndex for the middle card
@@ -195,7 +182,7 @@ fun MainScreenStateLess(
                     feature = ParentalGuidance,
                     cardSize = cardWidth,
 //                    cardColor = Color(0xFF77B3D4),
-                    cardColor = Color.White,
+//                    animationCenter = animationCenter,
                     modifier = Modifier
 //                            .offset(x = (-xOffset))  // Adjust this value as needed
                         .zIndex(1f)
@@ -212,20 +199,25 @@ private fun MainCard(
 
     feature: ScreensDestinations,
     cardSize: Dp,
-    cardColor: Color,
+    //animationCenter: MutableState<Offset>,
     modifier: Modifier = Modifier,
 ) {
 
     Card(
         shape = CircleShape,
-        colors = CardDefaults.cardColors(cardColor),
+        colors = CardDefaults.cardColors(
+            Color.White
+        ),
         modifier = modifier
-            .size(cardSize)  // Aplica el tamaño calculado
+            .size(cardSize)
             .padding(8.dp)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { onClick(feature.route) })
-            }
             .border(1.dp, Color.DarkGray, CircleShape)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    //animationCenter.value = offset
+                    onClick(feature.route)
+                })
+            }
     ) {
         Column(
             modifier = Modifier
@@ -238,18 +230,17 @@ private fun MainCard(
                 Icon(
                     painter = it,
                     contentDescription = null,
-                    modifier = Modifier.size(cardSize * 0.4f),
+                    modifier = Modifier.size(cardSize * 0.35f),
                     tint = Color.Unspecified
                 )
             }
-            Spacer(modifier = Modifier.height(cardSize * 0.05f))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = feature.getBottomName(context),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Black,
                 textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis
+                maxLines = 2
             )
         }
     }
