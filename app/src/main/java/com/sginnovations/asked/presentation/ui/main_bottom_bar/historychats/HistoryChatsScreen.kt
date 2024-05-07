@@ -2,13 +2,10 @@
 
 package com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats
 
-import android.app.Activity
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -31,7 +28,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -43,25 +39,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.sginnovations.asked.Constants
-import com.sginnovations.asked.Constants.Companion.DARK_NAVIGATION_BAR_COLOR
 import com.sginnovations.asked.R
 import com.sginnovations.asked.data.All
 import com.sginnovations.asked.data.GrammarCategoryOCR
@@ -90,19 +80,9 @@ fun StateFulHistoryChats(
     onNavigateCamera: () -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val theme = vmPreferences.theme
-
-    SideEffect {
-        (context as Activity).window.navigationBarColor =
-            if (!theme.value) {
-                Constants.LIGHT_NAVIGATION_BAR_COLOR.toArgb()
-            } else {
-                DARK_NAVIGATION_BAR_COLOR.toArgb()
-            }
-    }
+    ResetStatusBarColor()
 
     LaunchedEffect(Unit) {
         Log.d(TAG, "StateFulHistoryChats: getAllConversations")
@@ -166,8 +146,6 @@ fun StateLessHistoryChats(
     onNavigateCamera: () -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
-    ResetStatusBarColor()
-
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 

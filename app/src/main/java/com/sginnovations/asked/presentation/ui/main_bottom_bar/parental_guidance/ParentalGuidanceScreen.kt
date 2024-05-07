@@ -64,6 +64,8 @@ fun ParentalGuidanceStateFul(
 
     val selectedTab = remember { mutableStateOf(Tabs.Lessons) }
 
+    ResetStatusBarColor()
+
     Column(modifier = Modifier.fillMaxSize()) {
         /**
          * Tab row
@@ -126,8 +128,6 @@ fun ParentalGuidanceStateLess(
 
     onNavigateCategoryLessons: (LessonCategoryDataClass) -> Unit,
 ) {
-    ResetStatusBarColor()
-
     val scrollState = rememberScrollState()
 
     Column(

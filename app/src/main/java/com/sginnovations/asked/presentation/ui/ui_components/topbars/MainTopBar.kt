@@ -32,7 +32,7 @@ fun MainTopBar(
         title = {
             Text(
                 text = stringResource(id = R.string.app_name),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color.White,
                 textAlign = TextAlign.Center
             )
         },
@@ -43,7 +43,7 @@ fun MainTopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.profile_svgrepo_filled),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.background,
+                    tint = Color.White,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -56,7 +56,7 @@ fun MainTopBar(
                 Icon(
                     imageVector = Icons.Rounded.Settings,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.background,
+                    tint = Color.White,
                     modifier = Modifier.size(28.dp)
                 )
             }

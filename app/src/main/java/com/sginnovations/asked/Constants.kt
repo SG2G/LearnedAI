@@ -54,8 +54,8 @@ class Constants {
         // Other
         val CHAT_MSG_PADDING = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
         val PURPLE_COLOR = Color(0xFFBD98F8)
-        val LIGHT_NAVIGATION_BAR_COLOR = Color(0xFFF0EDED)
-        val DARK_NAVIGATION_BAR_COLOR = Color(0xFF282931)
+        val LIGHT_NAVIGATION_BAR_COLOR = Color(0xFFF5F5F5)
+        val DARK_NAVIGATION_BAR_COLOR = Color(0xFF151516)
 
     }
 }

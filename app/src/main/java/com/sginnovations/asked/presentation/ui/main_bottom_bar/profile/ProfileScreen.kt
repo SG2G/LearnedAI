@@ -41,6 +41,7 @@ import com.sginnovations.asked.presentation.ui.ui_components.profile.LogOutButto
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfileButton
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfileName
 import com.sginnovations.asked.presentation.ui.ui_components.profile.ProfilePicture
+import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.AuthViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
 import com.sginnovations.asked.presentation.viewmodel.NotificationViewModel
@@ -64,6 +65,8 @@ fun StateFulProfile(
     val scope = rememberCoroutineScope()
 
     val userAuth = vmAuth.userAuth.collectAsState()
+
+    ResetStatusBarColor()
 
     StateLessProfile(
         vmNotification = vmNotification,

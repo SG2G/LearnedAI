@@ -29,6 +29,7 @@ import com.sginnovations.asked.Constants.Companion.TEXT_SIZE_BIG
 import com.sginnovations.asked.Constants.Companion.TEXT_SIZE_BIGGER
 import com.sginnovations.asked.Constants.Companion.TEXT_SIZE_NORMAL
 import com.sginnovations.asked.R
+import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
 import kotlinx.coroutines.launch
 
@@ -40,6 +41,8 @@ fun SettingsStateFul(
 
     val themeValue = vmPreferences.theme.value
     val textSize = vmPreferences.fontSizeIncrease
+
+    ResetStatusBarColor()
 
     SettingsStateLess(
         themeValue = themeValue,

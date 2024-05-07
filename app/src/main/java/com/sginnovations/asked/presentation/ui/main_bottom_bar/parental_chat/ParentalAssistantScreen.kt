@@ -79,19 +79,9 @@ fun ParentalAssistantStateFul(
     onNavigateNewMessage: () -> Unit,
     onNavigateMessages: () -> Unit,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val theme = vmPreferences.theme
-
-    SideEffect {
-        (context as Activity).window.navigationBarColor =
-            if (!theme.value) {
-                Constants.LIGHT_NAVIGATION_BAR_COLOR.toArgb()
-            } else {
-                DARK_NAVIGATION_BAR_COLOR.toArgb()
-            }
-    }
+    ResetStatusBarColor()
 
     LaunchedEffect(Unit) {
         Log.d(TAG, "StateFulHistoryChats: getAllConversations")
@@ -142,7 +132,6 @@ fun ParentalChatStateLess(
 
     onDeleteConversation: (Int?) -> Unit,
 ) {
-    ResetStatusBarColor()
     val scope = rememberCoroutineScope()
 
     val showMenu = remember { mutableStateOf(false) }
