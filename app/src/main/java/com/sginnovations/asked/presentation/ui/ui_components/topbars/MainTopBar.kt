@@ -1,5 +1,7 @@
 package com.sginnovations.asked.presentation.ui.ui_components.topbars
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
@@ -30,11 +32,14 @@ fun MainTopBar(
 ) {
     TopAppBar(
         title = {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = Color.White,
-                textAlign = TextAlign.Center
-            )
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.app_name),
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
         },
         navigationIcon = {
             IconButton(onClick = {

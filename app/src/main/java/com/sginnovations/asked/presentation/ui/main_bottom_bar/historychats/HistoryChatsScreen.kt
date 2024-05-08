@@ -64,7 +64,8 @@ import com.sginnovations.asked.presentation.ui.main_bottom_bar.historychats.comp
 import com.sginnovations.asked.presentation.ui.ui_components.other.EmptyConversationsMessage
 import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.ChatViewModel
-import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
+import com.sginnovations.asked.utils.FeedBack.findActivity
+import com.sginnovations.asked.utils.FeedBack.showFeedBackDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -73,13 +74,14 @@ private const val TAG = "HistoryChats"
 @Composable
 fun StateFulHistoryChats(
     vmChat: ChatViewModel,
-    vmPreferences: PreferencesViewModel,
 
     onNavigateMessages: () -> Unit,
 
     onNavigateCamera: () -> Unit,
     onNavigateNewConversation: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val activity = context.findActivity()
     val scope = rememberCoroutineScope()
 
     ResetStatusBarColor()
@@ -91,6 +93,12 @@ fun StateFulHistoryChats(
     }
 
     val conversations = vmChat.conversations
+
+    if (conversations.value.isNotEmpty()) {
+        if (activity != null) {
+            showFeedBackDialog(activity)
+        }
+    }
 
     StateLessHistoryChats(
         conversations = conversations,
@@ -131,6 +139,15 @@ fun StateFulHistoryChats(
         }
     }
 }
+
+//fun showFeedBackDialog() {
+//    val reviewManager = ReviewManagerFactory.create(context)
+//    reviewManager.requestReviewFlow().addOnCompleteListener {
+//        if (it.isSuccessful) {
+//            reviewManager.launchReviewFlow(context, it.result)
+//        }
+//    }
+//}
 
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -66,6 +66,8 @@ import com.sginnovations.asked.presentation.ui.ui_components.other.EmptyConversa
 import com.sginnovations.asked.presentation.ui.utils.ResetStatusBarColor
 import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
+import com.sginnovations.asked.utils.FeedBack
+import com.sginnovations.asked.utils.FeedBack.findActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -79,6 +81,8 @@ fun ParentalAssistantStateFul(
     onNavigateNewMessage: () -> Unit,
     onNavigateMessages: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val activity = context.findActivity()
     val scope = rememberCoroutineScope()
 
     ResetStatusBarColor()
@@ -90,6 +94,12 @@ fun ParentalAssistantStateFul(
     }
 
     val conversations = vmAssistant.conversations
+
+    if (conversations.value.isNotEmpty()) {
+        if (activity != null) {
+            FeedBack.showFeedBackDialog(activity)
+        }
+    }
 
     ParentalChatStateLess(
         conversations = conversations,

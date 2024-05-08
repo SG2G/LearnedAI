@@ -26,14 +26,11 @@ import com.sginnovations.asked.presentation.viewmodel.TokenViewModel
 
 @Composable
 fun NameAndTokensTopBar(
-    vmTokens: TokenViewModel,
-
     currentScreen: String?,
 
     onNavigateFirstOffer: () -> Unit,
     navigateUp: () -> Unit,
 ) {
-    val tokens = vmTokens.tokens.collectAsState()
 
     TopAppBar(
         title = {

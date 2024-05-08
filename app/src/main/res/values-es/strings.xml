@@ -36,7 +36,7 @@
     <string name="historychats_new_chat">"Nuevo Chat "</string>
     <string name="profile_upgrade">Actualizar</string>
     <string name="error_error_taking_the_photo_if_the_issue_persists_please_send_us_an_email">"Error al tomar la foto. Si el problema persiste, envíenos un correo electrónico. "</string>
-    <string name="settings_dark_mode">Habilitar el modo oscuro</string>
+    <string name="settings_dark_mode">Modo oscuro</string>
     <string name="settings_text_size">Tamaño del texto</string>
     <string name="settings_theme">Tema</string>
     <string name="topbar_parentalchat">Chat Parental</string>

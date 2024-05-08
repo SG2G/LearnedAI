@@ -105,7 +105,7 @@ fun SettingsStateLess(
                     Text(
                         modifier = Modifier.weight(1f),
                         text = stringResource(R.string.settings_dark_mode),
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Switch(
@@ -160,7 +160,7 @@ fun SettingsStateLess(
                     Text(
                         text = stringResource(R.string.standard),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
                 TextButton(
@@ -172,7 +172,7 @@ fun SettingsStateLess(
                     Text(
                         text = stringResource(R.string.large),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
 
@@ -185,7 +185,7 @@ fun SettingsStateLess(
                     Text(
                         text = stringResource(R.string.huge),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }

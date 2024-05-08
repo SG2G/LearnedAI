@@ -102,25 +102,21 @@ fun LearnedTopBar(
          * Token
          */
         Chat.route -> NameAndTokensTopBar(
-            vmTokens,
             currentScreen.getName(context),
             { onNavigate(FirstOfferScreen) },
             navigateUp
         )
         NewConversation.route -> NameAndTokensTopBar(
-            vmTokens,
             currentScreen.getName(context),
             { onNavigate(FirstOfferScreen) },
             navigateUp
         )
         AssistantNewConversation.route -> NameAndTokensTopBar(
-            vmTokens,
             currentScreen.getName(context),
             { onNavigate(FirstOfferScreen) },
             navigateUp
         )
         AssistantChat.route -> NameAndTokensTopBar(
-            vmTokens,
             currentScreen.getName(context),
             { onNavigate(FirstOfferScreen) },
             navigateUp

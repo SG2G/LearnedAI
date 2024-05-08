@@ -28,12 +28,13 @@ class NavigatorViewModel @Inject constructor(): ViewModel() {
         Log.i(TAG, "Navigating navigateChat")
 
         withContext(Dispatchers.Main) {
-            navController.navigate(ChatsHistory.route) {
+            navController.navigate(MainScreen.route) {
                 // This ensures that the previous screen is removed from the backstack
                 popUpTo(navController.graph.id) {
                     inclusive = true
                 }
             }
+            navController.navigate(ChatsHistory.route)
             navController.navigate(Chat.route)
         }
     }

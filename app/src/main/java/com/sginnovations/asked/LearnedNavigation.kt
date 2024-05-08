@@ -147,7 +147,7 @@ fun LearnedNavigation(
                 )
                 launch {
                     Log.d("PremiumRun 0", "${isPremium.value} ")
-                    delay(3000)
+                    delay(8000)
                     Log.d("PremiumRun 1", "${isPremium.value} ")
                     if (!isPremium.value) {
                         if (navController.currentBackStackEntry != null) {
@@ -223,7 +223,10 @@ fun LearnedNavigation(
                 onNavigateSettings = { navController.navigate(route = Settings.route) },
 
                 onNavigate = { navController.navigate(it.route) },
-                navigateUp = { navController.navigateUp() },
+                navigateUp = {
+                    Log.d("ReviewMode", "im just navigating up")
+                    navController.navigateUp()
+                             },
             )
         },
 
@@ -284,7 +287,6 @@ fun LearnedNavigation(
                     onClick = { navController.navigate(route = it) },
                 )
             }
-
             /**
              * Bubbles
              */
@@ -295,13 +297,10 @@ fun LearnedNavigation(
             composable(
                 route = ChatsHistory.route,
                 enterTransition = { scaleIn() },
-                popExitTransition = { scaleOut(
-                    animationSpec = tween(durationMillis = 500)
-                ) + fadeOut(animationSpec = tween(durationMillis = 500)) },
+                popExitTransition = { fadeOut() },
             ) {
                 StateFulHistoryChats(
                     vmChat = vmChat,
-                    vmPreferences = vmPreferences,
 
                     onNavigateMessages = { navController.navigate(route = Chat.route) },
                     onNavigateCamera = { navController.navigate(route = Camera.route) },
@@ -317,9 +316,7 @@ fun LearnedNavigation(
             composable(
                 route = ParentalAssist.route,
                 enterTransition = { EnterTransition.None },
-                popExitTransition = { scaleOut(
-                    animationSpec = tween(durationMillis = 500)
-                ) + fadeOut(animationSpec = tween(durationMillis = 500)) },
+                popExitTransition = { fadeOut() },
             ) {
                 ParentalAssistantStateFul(
                     vmAssistant = vmAssistant,
@@ -336,9 +333,7 @@ fun LearnedNavigation(
             composable(
                 route = ParentalGuidance.route,
                 enterTransition = { EnterTransition.None },
-                popExitTransition = { scaleOut(
-                    animationSpec = tween(durationMillis = 500)
-                ) + fadeOut(animationSpec = tween(durationMillis = 500)) },
+                popExitTransition = { fadeOut() },
             ) {
                 ParentalGuidanceStateFul(
                     vmLesson = vmLesson,
@@ -347,8 +342,6 @@ fun LearnedNavigation(
                     onNavigateCategoryLessons = { navController.navigate(route = CategoryLesson.route) }
                 )
             }
-
-
 
             composable(
                 route = Camera.route,
@@ -638,7 +631,12 @@ fun LearnedNavigation(
             composable(
                 route = Settings.route,
                 enterTransition = { enterTransitionVerticalSlide },
-                exitTransition = { exitTransitionVerticalSlide }
+                popExitTransition = {
+                    slideOutVertically(
+                        targetOffsetY = { fullHeight -> fullHeight },
+                        animationSpec = tween(durationMillis = 500)
+                    ) + fadeOut(animationSpec = tween(durationMillis = 500))
+                },
             ) {
                 SettingsStateFul(
                     vmPreferences = vmPreferences

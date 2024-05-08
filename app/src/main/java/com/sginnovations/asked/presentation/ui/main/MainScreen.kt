@@ -41,7 +41,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.compose.ui.zIndex
 import com.sginnovations.asked.ChatsHistory
@@ -146,7 +148,6 @@ fun MainScreenStateLess(
 
             val cardWidth = availableWidth / numberOfCards
 
-
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -159,8 +160,6 @@ fun MainScreenStateLess(
                     context = context,
                     feature = ChatsHistory,
                     cardSize = cardWidth,
-//                    cardColor = Color(0xFFE0995E),
-//                    animationCenter = animationCenter,
                     modifier = Modifier
 //                            .offset(x = (xOffset))  // Adjust this value as needed
                         .zIndex(1f)
@@ -170,8 +169,6 @@ fun MainScreenStateLess(
                     context = context,
                     feature = ParentalAssist,
                     cardSize = cardWidth,
-                    //                    cardColor = Color(0xFF76C2AF),
-//                    animationCenter = animationCenter,
                     modifier = Modifier
 //                            .offset(y = (-yOffset))
                         .zIndex(2f) // Highest zIndex for the middle card
@@ -181,8 +178,6 @@ fun MainScreenStateLess(
                     context = context,
                     feature = ParentalGuidance,
                     cardSize = cardWidth,
-//                    cardColor = Color(0xFF77B3D4),
-//                    animationCenter = animationCenter,
                     modifier = Modifier
 //                            .offset(x = (-xOffset))  // Adjust this value as needed
                         .zIndex(1f)
@@ -199,22 +194,19 @@ private fun MainCard(
 
     feature: ScreensDestinations,
     cardSize: Dp,
-    //animationCenter: MutableState<Offset>,
     modifier: Modifier = Modifier,
 ) {
+    val textSize = calculateTextSize(cardSize)
 
     Card(
         shape = CircleShape,
-        colors = CardDefaults.cardColors(
-            Color.White
-        ),
+        colors = CardDefaults.cardColors(Color.White),
         modifier = modifier
             .size(cardSize)
             .padding(8.dp)
             .border(1.dp, Color.DarkGray, CircleShape)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
-                    //animationCenter.value = offset
                     onClick(feature.route)
                 })
             }
@@ -237,11 +229,18 @@ private fun MainCard(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = feature.getBottomName(context),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = textSize),
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 maxLines = 2
             )
         }
     }
+}
+
+
+private fun calculateTextSize(cardSize: Dp): TextUnit {
+    val baseCardSize = 150.dp
+    val scaleFactor = cardSize / baseCardSize
+    return 14.sp * scaleFactor
 }

@@ -57,6 +57,8 @@ import com.sginnovations.asked.presentation.viewmodel.AssistantViewModel
 import com.sginnovations.asked.presentation.viewmodel.IntentViewModel
 import com.sginnovations.asked.presentation.viewmodel.LessonViewModel
 import com.sginnovations.asked.presentation.viewmodel.PreferencesViewModel
+import com.sginnovations.asked.utils.FeedBack
+import com.sginnovations.asked.utils.FeedBack.findActivity
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.latex.JLatexMathPlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
@@ -79,6 +81,7 @@ fun LessonStateFul(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+
     val scope = rememberCoroutineScope()
 
     val lessonId = vmLesson.lessonId
@@ -237,6 +240,13 @@ fun Page2(
 
     onExampleButton: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val activity = context.findActivity()
+
+    if (activity != null) {
+        FeedBack.showFeedBackDialog(activity)
+    }
+
     if (lesson.conclusion != null) {
         val context = LocalContext.current
         val verticalScroll = rememberScrollState()
